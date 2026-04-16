@@ -37,3 +37,10 @@ node_modules/
 # --- CONFIGURACIÓN PARA TÉCNICOS ---
 # Creamos un archivo de ejemplo para que sepan qué configurar
 !wp-config-sample.php
+
+# ServBay / macOS específicas
+.DS_Store
+.servbay/
+php_errors.log
+access.log
+error.log
