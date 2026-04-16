@@ -857,7 +857,7 @@ function swpm_hubspot_mapper_script() {
     // Pasamos la configuración de PHP a JavaScript de forma segura
     $config = array(
         array(
-            'formId' => '#registro-profesional-13',
+            'formId' => '#registro-profesional-13, #swpm-registration-form, .swpm-registration-form',
             'hubspotFormName' => 'MeGeMIT_DE_Fachkreisbereich_Registration',
             'mapping' => array(
                 'swpm-472' => 'firstname',
