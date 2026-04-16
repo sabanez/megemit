@@ -1,0 +1,186 @@
+# Translation of Plugins - reSmush.it : The original free image compressor and optimizer plugin - Stable (latest release) in German
+# This file is distributed under the same license as the Plugins - reSmush.it : The original free image compressor and optimizer plugin - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-12-14 23:54:35+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.3\n"
+"Language: de\n"
+"Project-Id-Version: Plugins - reSmush.it : The original free image compressor and optimizer plugin - Stable (latest release)\n"
+
+#: classes/resmushitUI.class.php:358
+msgid "Feedback"
+msgstr "Feedback"
+
+#: classes/resmushitUI.class.php:343
+msgid "Plugin features"
+msgstr "Plugin-Funktionen"
+
+#: classes/resmushitUI.class.php:340
+msgid "Contact support"
+msgstr "Support kontaktieren"
+
+#: classes/resmushitUI.class.php:214
+msgid "Optimize all images"
+msgstr "Alle Bilder optimieren"
+
+#: classes/Controller/AdminController.php:245 classes/resmushitUI.class.php:333
+msgid "Support"
+msgstr "Support"
+
+#: classes/Controller/AdminController.php:243
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: classes/resmushitUI.class.php:397
+msgid "Restore ALL my original images"
+msgstr "ALLE Originalbilder wiederherstellen"
+
+#: classes/resmushitUI.class.php:383
+msgid "Restore Media Library"
+msgstr "Mediathek wiederherstellen"
+
+#: classes/resmushitUI.class.php:536
+msgid "Backup files can be removed."
+msgstr "Backup-Dateien können entfernt werden."
+
+#: classes/resmushitUI.class.php:541
+msgid "We have found %s files ready to be removed"
+msgstr "Wir haben %s Dateien gefunden, die entfernt werden können."
+
+#: classes/resmushitUI.class.php:543
+msgid "Remove backup files"
+msgstr "Backup-Dateien entfernen"
+
+#: classes/resmushitUI.class.php:140
+msgid "Preserve EXIF"
+msgstr "EXIF behalten"
+
+#: classes/Controller/AdminController.php:244
+#: classes/Controller/AdminController.php:396 classes/resmushitUI.class.php:121
+msgid "Settings"
+msgstr "Einstellungen"
+
+#. Author URI of the plugin
+#: resmushit.php
+msgid "https://resmush.it"
+msgstr "https://resmush.it"
+
+#. Author of the plugin
+#: resmushit.php classes/Controller/AdminController.php:92
+msgid "reSmush.it"
+msgstr "reSmush.it"
+
+#. Plugin Name of the plugin
+#: resmushit.php
+msgid "reSmush.it Image Optimizer"
+msgstr "reSmush.it Image Optimizer"
+
+#: classes/resmushitUI.class.php:191
+msgid "There are currently"
+msgstr "Es gibt aktuell"
+
+#: classes/resmushitUI.class.php:293
+msgid "Statistics"
+msgstr "Statistik"
+
+#: classes/resmushitUI.class.php:304
+msgid "Total reduction:"
+msgstr "Gesamtreduktion:"
+
+#: classes/resmushitUI.class.php:308
+msgid "Attachments optimized:"
+msgstr "Optimierte Anhänge:"
+
+#: classes/resmushitUI.class.php:415
+msgid "News"
+msgstr "Neuigkeiten"
+
+#: classes/resmushitUI.class.php:460
+msgid "Visit resmush.it for more information"
+msgstr "Besuche resmush.it für weitere Informationen"
+
+#: classes/resmushitUI.class.php:465
+msgid "Follow reSmush.it on Twitter"
+msgstr "Folge reSmush.it auf Twitter"
+
+#: classes/resmushitUI.class.php:494
+msgid "Important information"
+msgstr "Wichtige Informationen"
+
+#: classes/resmushitUI.class.php:516
+msgid "Expected Frequency :"
+msgstr "Erwartete Häufigkeit:"
+
+#: classes/Controller/CronController.php:77 classes/resmushitUI.class.php:516
+msgid "Every"
+msgstr "Alle"
+
+#: classes/resmushitUI.class.php:517
+msgid "ago"
+msgstr "her"
+
+#: classes/Controller/AdminController.php:352 classes/resmushitUI.class.php:691
+msgid "Reduced by"
+msgstr "Reduziert um"
+
+#: classes/resmushitUI.class.php:691
+msgid "saved"
+msgstr "gespeichert"
+
+#: classes/resmushitUI.class.php:694
+msgid "Force re-optimize"
+msgstr "Re-Optimierung erzwingen"
+
+#: classes/Controller/AdminController.php:125
+#: classes/Controller/AdminController.php:217
+msgid "reSmush.it Status"
+msgstr "reSmush.it-Status"
+
+#: classes/Controller/AdminController.php:210
+msgid "Disable of reSmush.it"
+msgstr "reSmush.it deaktivieren"
+
+#: classes/resmushitUI.class.php:688
+msgid "Optimize"
+msgstr "Optimieren"
+
+#: classes/resmushitUI.class.php:517
+msgid "Last run :"
+msgstr "Letzter Durchlauf:"
+
+#: classes/resmushitUI.class.php:139
+msgid "Optimize on upload"
+msgstr "Beim Hochladen optimieren"
+
+#: classes/resmushitUI.class.php:137
+msgid "Image quality"
+msgstr "Bildqualität"
+
+#. Plugin URI of the plugin
+#: resmushit.php
+msgid "https://wordpress.org/plugins/resmushit-image-optimizer/"
+msgstr "https://de.wordpress.org/plugins/resmushit-image-optimizer/"
+
+#: classes/resmushitUI.class.php:147
+msgid "Generates statistics about optimized images."
+msgstr "Statistik über optimierte Bilder erzeugen"
+
+#: classes/resmushitUI.class.php:212
+msgid "Optimize all images manually"
+msgstr "Alle Bilder manuell optimieren"
+
+#: classes/resmushitUI.class.php:257
+msgid "List of images above 5MB"
+msgstr "Liste mit Bildern über 5 MB"
+
+#: classes/resmushitUI.class.php:325
+msgid "No image has been optimized yet! Add images to your WordPress' Media Library."
+msgstr "Bisher wurden keine Bilder optimiert! Füge Bilder zu deiner WordPress-Mediathek hinzu."
+
+#: resmushit.inc.php:56
+msgid "just now"
+msgstr "gerade eben"

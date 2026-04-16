@@ -1,0 +1,1653 @@
+/*
+ Theme Name:   Basel Child
+ Description:  Basel Child Theme
+ Author:       XTemos
+ Author URI:   http://xtemos.com
+ Template:     basel
+ Version:      1.0.0
+ Text Domain:  basel-child
+*/
+
+/* Schriften werden geladen um die fehlenden Google-Fonts zu nutzen */
+/* cyrillic-ext */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu5mxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu7mxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu4WxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu7WxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu7GxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZYokSdh18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZYokSdo18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZYokSdg18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZYokSdv18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZYokSdj18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZYokSdi18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZYokSds18S0xR41.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkidh18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkido18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkidg18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkidv18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkidj18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkidi18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkids18S0xR41.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK1dSBYKcSV-LCoeQqfX1RYOo3qPZ7qsDJB9cme_xc.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK1dSBYKcSV-LCoeQqfX1RYOo3qPZ7jsDJB9cme_xc.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK1dSBYKcSV-LCoeQqfX1RYOo3qPZ7rsDJB9cme_xc.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK1dSBYKcSV-LCoeQqfX1RYOo3qPZ7ksDJB9cme_xc.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK1dSBYKcSV-LCoeQqfX1RYOo3qPZ7osDJB9cme_xc.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK1dSBYKcSV-LCoeQqfX1RYOo3qPZ7psDJB9cme_xc.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK1dSBYKcSV-LCoeQqfX1RYOo3qPZ7nsDJB9cme.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZY4lCdh18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZY4lCdo18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZY4lCdg18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZY4lCdv18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZY4lCdj18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZY4lCdi18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZY4lCds18S0xR41.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZclSdh18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZclSdo18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZclSdg18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZclSdv18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZclSdj18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZclSdi18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZclSds18S0xR41.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZklydh18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZklydo18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZklydg18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZklydv18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZklydj18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZklydi18S0xR41YDw.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZklyds18S0xR41.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i94_wmhdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i94_wkxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i94_wmxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i94_wlBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i94_wmBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i94_wmRdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 200;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i94_wlxdu3cOWxw.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwmhdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwkxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwmxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwlBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwmBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwmRdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 300;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwlxdu3cOWxw.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNa7lujVj9_mf.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK3dSBYKcSV-LCoeQqfX1RYOo3qPK7lujVj9_mf.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNK7lujVj9_mf.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK3dSBYKcSV-LCoeQqfX1RYOo3qO67lujVj9_mf.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK3dSBYKcSV-LCoeQqfX1RYOo3qN67lujVj9_mf.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNq7lujVj9_mf.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/sourcesanspro/v21/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7lujVj9w.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwmhdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwkxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwmxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwlBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwmBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwmRdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwlxdu3cOWxw.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmhdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwkxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmRdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu3cOWxw.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3iu4nwmhdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3iu4nwkxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3iu4nwmxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3iu4nwlBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3iu4nwmBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3iu4nwmRdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 900;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3iu4nwlxdu3cOWxw.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Mr Dafoe';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/mrdafoe/v14/lJwE-pIzkS5NXuMMrFijibIgxC_DZdM.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Mr Dafoe';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/mrdafoe/v14/lJwE-pIzkS5NXuMMrFitibIgxC_D.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu5mxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu7mxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu4WxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu7WxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu7GxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/roboto/v30/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+/* cyrillic-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmhdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0460-052F, U + 1C80-1C88, U + 20B4, U + 2DE0-2DFF, U + A640-A69F, U + FE2E-FE2F;
+}
+/* cyrillic */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwkxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0301, U + 0400-045F, U + 0490-0491, U + 04B0-04B1, U + 2116;
+}
+/* greek-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmxdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 1F00-1FFF;
+}
+/* greek */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0370-03FF;
+}
+/* vietnamese */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmBdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0102-0103, U + 0110-0111, U + 0128-0129, U + 0168-0169, U + 01A0-01A1, U + 01AF-01B0, U + 1EA0-1EF9, U + 20AB;
+}
+/* latin-ext */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwmRdu3cOWxy40.woff2) format('woff2');
+    unicode-range: U + 0100-024F, U + 0259, U + 1E00-1EFF, U + 2020, U + 20A0-20AB, U + 20AD-20CF, U + 2113, U + 2C60-2C7F, U + A720-A7FF;
+}
+/* latin */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu3cOWxw.woff2) format('woff2');
+    unicode-range: U + 0000-00FF, U + 0131, U + 0152-0153, U + 02BB-02BC, U + 02C6, U + 02DA, U + 02DC, U + 2000-206F, U + 2074, U + 20AC, U + 2122, U + 2191, U + 2193, U + 2212, U + 2215, U + FEFF, U + FFFD;
+}
+
+/* Menü */
+@media (max-width: 1200px) and(min-width: 992px) {
+    .main-page-wrapper {
+        padding-top: 270px !important;
+    }
+}
+
+@media (max-width: 991px) {
+    body.home .main-page-wrapper {
+        padding-top: 0 !important;
+    }
+}
+
+.mobile-nav ul.sub-menu li.mitglied-werden {
+    padding: 15px;
+}
+
+.basel-navigation .menu > li.menu-item-design-default ul li.mitglied-werden a, .mobile-nav ul.sub-menu li.mitglied-werden a {
+    color: #ffffff;
+    background: #f39910;
+    font-weight: 600;
+    padding: 10px 120px 10px 4px;
+    text-transform: uppercase;
+}
+
+.basel-navigation .menu > li.menu-item-design-default ul li.mitglied-werden a {
+    margin-left: 15px;
+}
+
+.mobile-nav ul.sub-menu li.mitglied-werden a {
+    white-space: nowrap;
+}
+
+.basel-navigation .menu > li.menu-item-design-default ul li.mitglied-werden a:hover, .mobile-nav ul.sub-menu li.mitglied-werden a:hover {
+    color: #ffffff;
+}
+
+.basel-navigation .menu > li.menu-item-design-default ul li.mitglied-werden a:hover {
+    margin-left: 20px;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+@media (min-width: 992px) {
+    .page-title {
+        margin-top: 0;
+    }
+}
+
+/* 404 */
+.error404 .page-title.child-theme-404 {
+    padding: 15px 0;
+    text-transform: none;
+    opacity: 1;
+    letter-spacing: normal;
+    font-weight: 400;
+    width: 100%;
+    border-bottom: 1px solid rgba(168, 168, 168, .15);
+    position: relative;
+    margin-top: -40px;
+    margin-bottom: 40px;
+}
+
+/* Timely */
+.ai1ec-event-details .ai1ec-fa {
+    font-family: FontAwesome;
+}
+
+p.ai1ec-no-results {
+    padding: 25px;
+}
+
+/* Sidebar Ikonen */
+.buttonizer {
+    top: 40%;
+    bottom: auto !important;
+    position: fixed;
+    z-index: 99999;
+    transition: ease-in-out 0s;
+}
+
+.buttonizer.buttonizer-style-square .buttonizer-button-list .buttonizer-button {
+    line-height: 35px;
+}
+
+.buttonizer .buttonizer-button {
+    width: 35px;
+    height: 35px;
+}
+
+.buttonizer.buttonizer-style-square.bottom.right .buttonizer-button.button-desktop-2 {
+    bottom: 35px;
+}
+
+.buttonizer.buttonizer-style-square.bottom.right .buttonizer-button.button-desktop-3 {
+    bottom: 70px;
+}
+
+.buttonizer.buttonizer-style-square.bottom.right .buttonizer-button.button-desktop-4 {
+    bottom: 105px;
+}
+
+/* Footer */
+.footer-sidebar .footer-column a i.fa-facebook-f {
+    background: rgba(255, 255, 255, .6);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    line-height: 24px;
+    color: #0060a8;
+}
+
+.footer-sidebar .footer-column a i.fa-facebook-f:hover {
+    background: rgba(255, 255, 255);
+}
+
+.cncl_pb_events .banner-inner {
+    padding: 0;
+}
+
+#cnclerfahrungen div.vc_gitem-post-data-source-post_title h4 {
+    height: 50px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#cnclerfahrungen div.vc_gitem-zone p {
+    hyphens: auto;
+    -webkit-hyphens: auto;
+}
+
+#cnclerfahrungen div.vc_gitem-zone p:first-child {
+    display: none;
+}
+
+#cnclerfahrungen div.vc_gitem-zone p:nth-child(2) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#cnclerfahrungen div.vc_gitem-zone p:nth-child(2):after {
+    content: ' …';
+}
+
+#cnclerfahrungen div.vc_btn3-container a {
+    color: #fff;
+    background-color: #f39910;
+}
+
+#cnclerfahrungen div.vc_pageable-load-more-btn {
+    display: none;
+}
+
+.blog-post-loop .entry-thumbnail img {
+    width: 25%;
+    min-width: 150px;
+}
+
+.blog-post-loop .entry-thumbnail {
+    text-align: left;
+}
+
+article.events_categories-kongress img, article.events_categories-praesenzseminar img, article.events_categories-webinar img, article.events_categories-aufzeichnung img {
+    width: 100% !important;
+}
+
+.cncl_fb .ifb-flip-box-section-content p {
+    text-align: left;
+}
+
+.flip-box-wrap p {
+    text-align: left;
+}
+
+.basel-navigation .menu > li.menu-item-design-default .sub-sub-menu {
+    width: 100%
+}
+
+#cncl_videobox {
+    position: relative;
+    z-index: 5;
+    width: 600px;
+    height: 600px;
+}
+
+#cncl_videobox video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%
+}
+
+#cncl_videobox img#vblogo {
+    width: 25%;
+    display: block;
+    margin: 0 auto;
+    margin-top: 10%;
+}
+
+#cncl_videobox img#vbstd {
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+}
+
+#cncl_videobox #vbMS {
+    color: #fff;
+    text-align: center;
+    font-size: 3.5em;
+    line-height: 160%;
+    padding: 50px 0 40px 0;
+}
+
+#cncl_videobox #vbMS span {
+    color: #fff;
+}
+
+#cncl_videobox a {
+    font-size: 1.7em;
+    background-color: #f3f3f3;
+    padding: .5em .5em .5em 1em;
+    border-radius: 3em;
+    display: flex;
+    margin: 0 auto;
+    text-decoration: none;
+    width: auto;
+    align-items: center;
+}
+
+#cncl_videobox a span {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    overflow: hidden;
+    margin-left: 1em;
+    border-radius: 1em;
+    background: #5e6064 url(https://megemit.org/wp-content/uploads/2023/10/Pfeil.svg) 50% 50% no-repeat;
+    background-size: 30%;
+}
+
+#cncl_videobox a:hover {
+    background-color: #5e6064;
+    color: #fff;
+}
+
+#cncl_videobox a:hover span {
+    background-color: #6f7175;
+}
+
+#cncl_videobox #vbMI {
+    color: #0066b3;
+    text-align: center;
+    font-size: 2.2em;
+    text-shadow: 0px 0px 8px #ffffff80;
+    margin-top: 1em;
+}
+
+#cncl_videobox #vbMI span {
+    color: #fff;
+}
+
+@media (max-width: 660px) {
+    #cncl_videobox {
+        width: 500px;
+        height: 500px;
+    }
+
+    #cncl_videobox #vbMS {
+        font-size: 2.5em;
+        line-height: 160%;
+        padding: 40px 0 30px 0;
+    }
+
+    #cncl_videobox #vbMI {
+        font-size: 1.7em;
+        margin-top: 2em;
+    }
+
+    #cncl_videobox a {
+        font-size: 1.3em;
+        padding: .5em .5em .5em 1em;
+        border-radius: 3em;
+    }
+}
+
+@media (max-width: 550px) {
+    #cncl_videobox {
+        width: 400px;
+        height: 400px;
+    }
+
+    #cncl_videobox #vbMS {
+        font-size: 2em;
+        line-height: 140%;
+        padding: 30px 0 20px 0;
+    }
+
+    #cncl_videobox #vbMI {
+        font-size: 1.2em;
+        margin-top: 2em;
+    }
+
+    #cncl_videobox a {
+        font-size: 1.3em;
+        padding: .5em .5em .5em 1em;
+        border-radius: 3em;
+    }
+
+    #cncl_videobox img#vblogo {
+        width: 33%;
+        display: block;
+        margin: 0 auto;
+        margin-top: 10%;
+    }
+}
+
+@media (max-width: 450px) {
+    #cncl_videobox {
+        width: calc(100vw - 50px);
+        height: calc(100vw - 50px);
+    }
+
+    #cncl_videobox #vbMS {
+        font-size: 5vw;
+        line-height: 140%;
+        padding: 30px 0 3vw 0;
+    }
+
+    #cncl_videobox #vbMI {
+        font-size: 3.5vw;
+        margin-top: 2em;
+    }
+
+    #cncl_videobox a {
+        font-size: 4vw;
+        padding: .5em .5em .5em 1em;
+        border-radius: 3em;
+    }
+
+    #cncl_videobox img#vblogo {
+        width: 33%;
+        display: block;
+        margin: 0 auto;
+        margin-top: 4vw;
+    }
+}
+
+.vc_tta-panel {
+    border: 1px solid rgba(243, 153, 16, .6);
+    border-radius: 10px;
+    background-color: #f8f8f8;
+}
+
+a.buttonizer-closed-0-0-15 {
+    display: none !important;
+}
+
+/* CNCL WooCommerce-Anpassungen */
+div.product-grid-item {
+    background-color: #dadada;
+    box-sizing: border-box;
+    padding: 2px;
+    border: 10px solid #fff;
+}
+
+div.product-grid-item div.basel-compare-btn.product-compare-button {
+    display: none;
+}
+
+div.product-grid-item.cncl_event span.onsale.product-label {
+    background-color: #0060a8;
+    color: #fff;
+}
+
+div.product-grid-item p.event-date {
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 5px 10px 5px 10px;
+    margin: 0;
+}
+
+div.product-grid-item h3.product-title {
+    padding: 0 10px;
+}
+
+div.product-grid-item.cncl_event h3.product-title a {
+    font-weight: normal;
+    font-size: 0.8em;
+    margin: 0;
+}
+
+div.product-grid-item.cncl_event div.product-element-top {
+    margin: 0;
+}
+
+div.product-grid-item.cncl_event span.price {
+    padding: 0 10px;
+    height: 50px;
+}
+
+div.product-grid-item span.price {
+    padding: 0 10px;
+    height: 50px;
+}
+
+div.product-grid-item ins span.woocommerce-Price-amount.amount bdi {
+    color: #0060a8;
+    font-weight: bold;
+    font-size: 1.5em;
+    line-height: 2em;
+}
+
+div.product-grid-item.cncl_event .basel-buttons .basel-wishlist-btn > a.button.basel-tooltip:before {
+    content: '';
+    width: 35px;
+    height: 35px;
+    background: url(/wp-content/uploads/2024/05/Wish_inaktiv.svg) no-repeat;
+}
+
+div.product-grid-item.cncl_event .basel-buttons .basel-wishlist-btn > a.button.basel-tooltip.added:before {
+    content: '';
+    width: 35px;
+    height: 35px;
+    background: url(/wp-content/uploads/2024/05/Wish_aktiv.svg) no-repeat;
+}
+
+div.product-grid-item.cncl_event a.button.product_type_simple.add_to_cart_button.ajax_add_to_cart.text_replaceable {
+    content: '';
+    color: transparent;
+    display: block;
+    width: 200px;
+    height: 50px;
+    overflow: hidden;
+}
+
+div.product-grid-item.cncl_event a.button.product_type_simple.add_to_cart_button.ajax_add_to_cart.text_replaceable:before {
+    display: block;
+    color: #000;
+    content: '';
+    width: 160px;
+    height: 50px;
+    overflow: hidden;
+    background: url(/wp-content/uploads/2024/05/Buchen_Button-min.svg) no-repeat;
+}
+
+div.product-grid-item div.wrap-price {
+    overflow: hidden;
+    display: block;
+    height: 50px;
+    overflow: hidden;
+}
+
+div.product-grid-item.cncl_event div.btn-add {
+    height: 50px;
+}
+
+div.product-grid-item.basel-hover-alt.cncl_event.product:hover div.swap-elements {
+    transform: translateY(-50px);
+    -webkit-transform: translateY(-50px);
+    -ms-transform: translateY(-50px);
+}
+
+div.product-grid-item.cncl_event .basel-hover-alt.purchasable .wrapp-swap {
+    height: 50px;
+}
+
+div.product-grid-item.cncl_event div.wrapp-swap {
+    height: 50px;
+}
+/*.basel-hover-alt.purchasable .wrapp-swap {height:50px;}*/
+/*div.product-grid-item.cncl_event .basel-buttons .basel-wishlist-btn>a:hover .basel-tooltip-label {background-color:#0060a8;}
+div.product-grid-item.cncl_event .basel-buttons .basel-wishlist-btn>a:hover .basel-tooltip-label:before {color:#0060a8;}*/
+
+div.product-grid-item .basel-buttons .basel-wishlist-btn {
+    display: none;
+}
+
+div.product-grid-item .labels-rounded {
+   display:none;
+}
+
+div.single-product-page.cncl_event ul li {
+    text-align: left;
+}
+
+div.single-product-page.cncl_event div.StripeElement, div.single-product-page.cncl_event div.ppc-button-wrapper, div.single-product-page div.product-share {
+    display: none;
+}
+
+div.single-product-page.cncl_event .product-tabs-wrapper {
+    display: none;
+}
+
+div.single-product-page.cncl_event .wishlist-btn-wrapper {
+    display: none;
+}
+
+div.single-product-page.cncl_event .compare-btn-wrapper {
+    display: none;
+}
+
+div.single-product-page.cncl_event .woocommerce-product-gallery {
+    border: 2px solid #dadada;
+}
+
+.cncl_cart-contents {
+    float: right;
+    border: 1px solid #f39910;
+    padding: 7px 13px 7px 7px;
+    border-radius: 6px;
+    margin-left: 10px;
+}
+
+.cart-contents {
+    position: relative;
+    display: inline-block;
+    color: #f39910 !important;
+}
+
+.cart-contents a li {
+    color: #0f0;
+}
+
+.cart-contents .cart-contents-count {
+    position: absolute;
+    top: -7px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 8px;
+}
+
+.cncl_cart-contents:hover {
+    background-color: #f39910
+}
+
+.cncl_cart-contents:hover .cart-contents {
+    color: #ffffff !important;
+}
+
+/* Suchbutton */
+div.search-button.basel-search-full-screen.mobile-search-icon {
+    font-size: 22px;
+    padding: 1px 6px;
+    border: 1px solid #fdd599;
+    border-radius: 6px;
+}
+
+div.search-button.basel-search-full-screen.mobile-search-icon a {
+    color: #f39910;
+}
+
+div.search-button.basel-search-full-screen.mobile-search-icon:hover {
+    background-color: #f39910;
+}
+
+div.search-button.basel-search-full-screen.mobile-search-icon:hover a {
+    color: #fff;
+}
+
+.woocommerce-checkout .woocommerce-checkout-payment li.wc_payment_method.payment_method_ppcp-gateway {display:none !important;}
+
+a.cncl_wcbutton {
+    background-color: #0060a8;
+    margin-top: 15px;
+    padding: 15px 30px;
+    display: inline-block;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: bold;
+    border: 2px solid #0060a8;
+}
+
+a.cncl_wcbutton:hover {
+    background-color: #fff;
+    color: #0060a8;
+    text-decoration: none;
+}
+
+#ppc-button-ppcp-gateway {
+    display: none !important;
+}
+
+#order_review #ppc-button-ppcp-gateway {
+    display: block !important;
+}
+
+.basel-hover-alt .btn-add > a {
+        margin-left:10px;
+    }
+#wc-stripe-payment-request-wrapper {display:none !important;}
+.compare-btn-wrapper {display:none !important;}
+.basel-wishlist-btn {display:none !important;}
+.woocommerce-pagination {margin-bottom:20px;}
+.onsale.product-label {display:none !important;}
+/* */
+li.cat-link.shop-all-link {display:none !important;}
+li.basel_additional_tab_tab {display:none !important;}
+
+.cat-item-940 {display:none !important;} 
+.cat-item-954 {display:none !important;}
+.cat-item-955 {display:none !important;}
+.cat-item-956 {display:none !important;}
+.cat-item-959 {display:none !important;}
+.cat-item-965 {display:none !important;}
+.woocommerce-ordering {display:none !important;}
+
+a.cncl_wiederholer { background: #f39910; padding: 8px 9px; border-radius: 10px; color: #fff; margin-left: 15px; font-size: 1.5em; text-transform:uppercase; font-weight:bold;}
+a.cncl_wiederholer:hover {background:#fff; text-decoration: none; color:#f39910; border:1px solid #f39910;}
+
+.cncl924button {cursor: pointer; background-color: #0071b9; color: #fff; border-radius: 3em; width: 80%; margin: 0 auto; text-decoration: none; font-weight: bold; padding: 0.5em; margin-top: -28px; transition: margin 0.25s ease}
+.cncl924button:hover {margin-top:-25px; }
+
+.related-products { display: none; }
+
+.clearfix.visible-md-block.visible-lg-block {display:none !important;}
+
+.product-grid-item .product-element-top { margin-bottom: 0px !important; }
+div.product-grid-item h3.product-title { height:90px !important; }
+
+div.single-product-page.cncl_event .woocommerce-product-gallery {border:none;}
+
+div.woocommerce-tabs.wc-tabs-wrapper.tabs-layout-tabs ul .description_tab  {display:none;}
+div.woocommerce-tabs.wc-tabs-wrapper.tabs-layout-tabs ul .additional_information_tab {display:none;}
+div.woocommerce-tabs.wc-tabs-wrapper.tabs-layout-tabs ul .reviews_tab {display:none;}
+div.woocommerce-tabs.wc-tabs-wrapper.tabs-layout-tabs ul .basel_additional_tab_tab {display:none;}
+
+div.woocommerce-tabs.wc-tabs-wrapper.tabs-layout-tabs div:nth-child(5), div.woocommerce-tabs.wc-tabs-wrapper.tabs-layout-tabs div:nth-child(4), div.woocommerce-tabs.wc-tabs-wrapper.tabs-layout-tabs div:nth-child(3) {display:none;}
+div.woocommerce-tabs.wc-tabs-wrapper.tabs-layout-tabs div:nth-child(2) a {display:none;}
+div.woocommerce-tabs.wc-tabs-wrapper.tabs-layout-tabs div:nth-child(2) h2:first-child {display:none;}
+
+.basel-hover-alt .product-title a {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4;
+    line-height: 150% !important;
+
+}
+
+.cnclcert {background:url(/wp-content/uploads/2024/12/Zertifiziert.svg) no-repeat right top; background-size:25%}
+
+.wpsl-more-info-listings span {word-break: break-all;}
+p.must-log-in a {display:inline-block !important; }
+
+.custom-content-above-mdlc { border: #f39910 solid 4px; background-color:#fff; padding: 10px; border-radius: 10px; overflow:hidden; margin-bottom:10px; }
+
+/* (TW:23.06.2025) Beschränkung der Anzahl der WooCommerce-Produkten pro Zeile innerhalb einer Kategorie-Seite */
+@media (min-width:992px) {
+	.col-md-3 { width: calc(100% / 3); }
+    img.attachment-woocommerce_thumbnail { width: 100% !important; height: auto !important; }
+}
+
+/* (TW:08.09.2025) Ausbeldung von Klarna-Zahlungmöglichkeit im Shop*/
+input#payment_method_stripe_klarna {display:none  !important;}
+#payment_method_stripe_klarna, .payment_method_stripe_klarna label {display:none !important;}
+.stripe-klarna-icon {display:none  !important;}
+.payment_method_stripe_klarna {display:none !important;}
+
+
+/*Simple_wp_membership*/
+
+.swpm-hidden-field {
+    display: none !important;
+}

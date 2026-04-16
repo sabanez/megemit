@@ -1,0 +1,95 @@
+# Translation of Plugins - Disable and Remove Google Fonts | GDPR &amp; DSGVO friendly - Stable (latest release) in German
+# This file is distributed under the same license as the Plugins - Disable and Remove Google Fonts | GDPR &amp; DSGVO friendly - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2026-03-16 23:57:42+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.3\n"
+"Language: de\n"
+"Project-Id-Version: Plugins - Disable and Remove Google Fonts | GDPR &amp; DSGVO friendly - Stable (latest release)\n"
+
+#: admin/class-drgf-admin.php:56 admin/class-drgf-admin.php:57
+msgid "Google Fonts"
+msgstr "Google Fonts"
+
+#. translators: %s Link to DRGF welcome page.
+#: admin/class-drgf-notice.php:114
+msgid "Thank you for installing <strong>Disable & Remove Google Fonts</strong>! <a href=\"%s\">Finish the setup process</a>."
+msgstr "Vielen Dank für die Installation von <strong>Disable & Remove Google Fonts</strong>! <a href=\"%s\">Beende den Einrichtungsvorgang</a>."
+
+#. Description of the plugin
+#: disable-remove-google-fonts.php
+msgid "Optimize frontend performance by removing Google Fonts. GDPR-friendly."
+msgstr "Optimiere die Frontend-Leistung durch Entfernen von Google Fonts. DSGVO-freundlich."
+
+#. Author of the plugin
+#: disable-remove-google-fonts.php
+msgid "Fonts Plugin"
+msgstr "Schriftarten-Plugin"
+
+#. Author URI of the plugin
+#: disable-remove-google-fonts.php
+msgid "https://fontsplugin.com"
+msgstr "https://fontsplugin.com"
+
+#. Plugin URI of the plugin
+#: disable-remove-google-fonts.php
+msgid "https://wordpress.org/plugins/disable-remove-google-fonts/"
+msgstr "https://de.wordpress.org/plugins/disable-remove-google-fonts/"
+
+#. Plugin Name of the plugin
+#: disable-remove-google-fonts.php
+msgid "Disable & Remove Google Fonts"
+msgstr "Disable & Remove Google Fonts"
+
+#: inc/check-google-fonts.php:326
+msgid "CSS: Other reference in %s"
+msgstr "CSS: Weitere Referenz in %s"
+
+#: inc/check-google-fonts.php:303
+msgid "CSS: url() in %s"
+msgstr "CSS: url() in %s"
+
+#: inc/check-google-fonts.php:163
+msgid "HTML: JavaScript reference"
+msgstr "HTML: JavaScript-Referenz"
+
+#: admin/class-drgf-admin.php:106
+msgid "An unknown error occurred."
+msgstr "Ein unbekannter Fehler ist aufgetreten."
+
+#: admin/class-drgf-admin.php:105 admin/class-drgf-admin.php:345
+msgid "Error:"
+msgstr "Fehler:"
+
+#: admin/class-drgf-admin.php:103 admin/class-drgf-admin.php:310
+msgid "References Found:"
+msgstr "Referenzen gefunden:"
+
+#. translators: %s: formatted date/time
+#: admin/class-drgf-admin.php:339
+msgid "Last checked: %s"
+msgstr "Zuletzt geprüft: %s"
+
+#. translators: %s: formatted date/time
+#: admin/class-drgf-admin.php:279
+msgid "Checked: %s"
+msgstr "Überprüft: %s"
+
+#. translators: %s: URL of tested page
+#: admin/class-drgf-admin.php:269
+msgid "Tested page: %s"
+msgstr "Getestete Seite: %s"
+
+#: admin/class-drgf-admin.php:124 admin/class-drgf-admin.php:159
+#: admin/class-drgf-notice.php:80
+msgid "You do not have permission to perform this action."
+msgstr "Du hast keine Berechtigung, diese Aktion auszuführen."
+
+#: admin/class-drgf-admin.php:119 admin/class-drgf-admin.php:154
+#: admin/class-drgf-notice.php:75
+msgid "Security check failed."
+msgstr "Die Sicherheitsüberprüfung ist fehlgeschlagen."

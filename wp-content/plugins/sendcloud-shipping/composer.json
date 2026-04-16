@@ -1,0 +1,22 @@
+{
+  "name": "sendcloud/woocommerce",
+  "description": "Sendcloud WooCommerce Integration",
+  "type": "library",
+  "require": {
+    "sendcloud/checkout": "1.1.1",
+    "php": ">=5.3",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "classmap": [
+      "includes", "database"
+    ]
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "no-api": true,
+      "url": "https://gitlab.com/sendcloud/logeecom/checkout-core.git"
+    }
+  ]
+}

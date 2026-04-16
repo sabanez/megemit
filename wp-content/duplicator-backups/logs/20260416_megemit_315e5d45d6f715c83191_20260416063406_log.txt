@@ -1,0 +1,65 @@
+Components: package_component_db, package_component_core, package_component_plugins, package_component_themes, package_component_uploads, package_component_other
+Scan chunk continues.
+Scan chunk complete.
+TABLES: total: 165 | filtered:0 | create:165
+********************************************************************************
+********************************************************************************
+DUPLICATOR PRO PACKAGE-LOG: 2026-04-16 06:44:10
+NOTICE: Do NOT post to public sites or forums 
+PACKAGE CREATION START
+********************************************************************************
+********************************************************************************
+VERSION:	4.5.25.2
+WORDPRESS:	6.9.4
+PHP INFO:	8.3.30 | SAPI: fpm-fcgi
+SERVER:		Apache/2.4 
+ARCHITECTURE:	64-bit 
+CLIENT KICKOFF: on 
+PHP TIME LIMIT: [7200] not allowed 
+PHP MAX MEMORY: 512M (512M default) 
+RUN TYPE:	Schedule
+MEMORY STACK:	240MB
+ARCHIVE ENGINE: ZipArchive: multi-thread
+PACKAGE COMPONENTS:
+	Database,
+	Core,
+	Plugins,
+	Themes,
+	Media,
+	Other
+Build failed
+
+
+====================================================================
+!RUNTIME ERROR!
+---------------------------------------------------------------------
+MESSAGE:
+Backup creation failed.
+ EXCEPTION message: Can't process package schedule 2198 because Duplicator isn't licensed
+/Users/il115/Desktop/webs/megemit/wp-site/wp-content/plugins/duplicator-pro/src/Package/TraitPackageBuild.php LINE: 174
+#0 /Users/il115/Desktop/webs/megemit/wp-site/wp-content/plugins/duplicator-pro/src/Package/TraitPackageBuild.php(54): Duplicator\Package\AbstractPackage->runBuildStart()
+#1 /Users/il115/Desktop/webs/megemit/wp-site/wp-content/plugins/duplicator-pro/src/Package/Runner.php(651): Duplicator\Package\AbstractPackage->runBuild()
+#2 /Users/il115/Desktop/webs/megemit/wp-site/wp-content/plugins/duplicator-pro/src/Package/Runner.php(580): Duplicator\Package\Runner::processPackage(Object(Duplicator\Package\DupPackage))
+#3 /Users/il115/Desktop/webs/megemit/wp-site/wp-content/plugins/duplicator-pro/src/Ajax/ServicesPackage.php(536): Duplicator\Package\Runner::process()
+#4 /Users/il115/Desktop/webs/megemit/wp-site/wp-includes/class-wp-hook.php(341): Duplicator\Ajax\ServicesPackage->processWorker('')
+#5 /Users/il115/Desktop/webs/megemit/wp-site/wp-includes/class-wp-hook.php(365): WP_Hook->apply_filters('', Array)
+#6 /Users/il115/Desktop/webs/megemit/wp-site/wp-includes/plugin.php(522): WP_Hook->do_action(Array)
+#7 /Users/il115/Desktop/webs/megemit/wp-site/wp-admin/admin-ajax.php(192): do_action('wp_ajax_duplica...')
+#8 {main}
+DETAILS:
+(no detail)
+---------------------------------------------------------------------
+TRACE:
+1. DupLog.php : error (152)
+2. TraitPackageBuild.php : errorAndDie (434)
+3. TraitPackageBuild.php : buildFail (104)
+4. Runner.php : runBuild (651)
+5. Runner.php : processPackage (580)
+6. ServicesPackage.php : process (536)
+7. class-wp-hook.php : processWorker (341)
+8. class-wp-hook.php : apply_filters (365)
+9. plugin.php : do_action (522)
+10. admin-ajax.php : do_action (192)
+====================================================================
+
+

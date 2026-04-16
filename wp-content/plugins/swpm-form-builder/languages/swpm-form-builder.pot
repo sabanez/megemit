@@ -1,0 +1,1116 @@
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:340
+msgid ""
+"Please enter any two digits with <strong>no</strong> spaces (Example: 12)"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:423
+msgid "Type password here"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:427
+msgid "Retype password here"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:483
+msgid "Street Address"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:488
+msgid "Apt, Suite, Bldg. (optional)"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:493
+msgid "City"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:498
+msgid "State / Province / Region"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:503
+msgid "Postal / Zip Code"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:508
+msgid "Country"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:631
+msgid "Delete Image"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:632
+msgid ""
+"Check this box to delete the image. The image will be deleted when you save "
+"the profile."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:663
+msgid ""
+"Following is a list of file(s) you uploaded. Mark the file(s) you want to "
+"delete and save the profile to delete it."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:692
+msgid "Click to view the uploaded files from this user in media library"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-fieldmeta.php:701
+msgid "No file uploaded."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:108
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:123
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:132
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:142
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:152
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:163
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:174
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:189
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:203
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:269
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:276
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:286
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:300
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:310
+#: swpm-form-builder/classes/class.swpm-fb-form.php:241
+#: swpm-form-builder/classes/class.swpm-fb-form.php:261
+#: swpm-form-builder/classes/class.swpm-fb-form.php:285
+#: swpm-form-builder/classes/class.swpm-fb-form.php:295
+#: swpm-form-builder/classes/class.swpm-fb-form.php:305
+#: swpm-form-builder/classes/class.swpm-fb-form.php:315
+#: swpm-form-builder/classes/class.swpm-fb-form.php:337
+#: swpm-form-builder/classes/class.swpm-fb-form.php:344
+#: swpm-form-builder/classes/class.swpm-fb-form.php:359
+#: swpm-form-builder/classes/class.swpm-fb-form.php:373
+#: swpm-form-builder/classes/class.swpm-fb-form.php:415
+#: swpm-form-builder/classes/class.swpm-fb-form.php:419
+msgid " Field is required"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:179
+#: swpm-form-builder/classes/class.swpm-fb-form.php:349
+msgid " not a valid phone number"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:193
+msgid "  not a valid url"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:207
+#: swpm-form-builder/classes/class.swpm-fb-form-custom.php:290
+msgid " must be a valid number"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:29
+#: swpm-form-builder/classes/class.swpm-fb-form.php:56
+msgid ""
+"Error! Invalid Request. Could not find a match for the given security code "
+"and the user ID."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:39
+#: swpm-form-builder/classes/class.swpm-form-builder.php:310
+msgid ""
+"Free membership is disabled on this site. Please make a payment from the "
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:88
+msgid "Please login to edit profile."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:202
+msgid ""
+" Information You submitted contains too many spam word. Cannot continue."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:254
+msgid " Password does not match"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:265
+msgid " Field has invalid character"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:265
+msgid ". "
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:265
+msgid "Allowed characters are: letters, numbers and .-_*@"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:274
+#: swpm-form-builder/classes/class.swpm-fb-form.php:388
+msgid "Already taken."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:333
+msgid " Address, City, Country  cannot be empty."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:377
+msgid "Invalid email."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:694
+msgid "Security check: hidden spam field should be blank."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:697
+msgid "Security check: failed secret question. Please try again!"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:716
+msgid "Security check: captcha validation failed."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:725
+msgid "Security check: referal URL does not appear to be set."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:731
+msgid "Security check: referal does not match this site."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-form.php:737
+msgid ""
+"Security check: looks like you are a SPAM bot. If you think this is an "
+"error, please email the site owner."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:44
+msgid "Profile"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:44
+msgid "Registration"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:47
+msgid "All"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:66
+msgid "Edit"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:72
+#: swpm-form-builder/includes/admin-field-options.php:243
+#: swpm-form-builder/includes/admin-field-options.php:510
+#: swpm-form-builder/includes/admin-form-creator.php:113
+msgid "Delete"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:94
+msgid "Custom Form Name"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:95
+msgid "For Membership Level"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:96
+msgid "Form Type"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:97
+msgid "Form ID"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:140
+#, php-format
+msgid ""
+"All <span class=\"count\">(<span class=\"pending-count\">%s</span>)</span>"
+msgid_plural ""
+"All <span class=\"count\">(<span class=\"pending-count\">%s</span>)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:207
+msgid "Delete Permanently"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:363
+#, php-format
+msgid "1 form"
+msgid_plural "%s forms"
+msgstr[0] ""
+msgstr[1] ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:382
+msgid "Go to the first page"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:386
+msgid "Go to the previous page"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:392
+msgid "Current page"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:396
+#, php-format
+msgctxt "paging"
+msgid "%1$s of %2$s"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:398
+msgid "Go to the next page"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-forms-list.php:402
+msgid "Go to the last page"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-profile-formmeta.php:15
+#: swpm-form-builder/includes/admin-form-creator.php:161
+msgid "Profile Updated."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-registration-formmeta.php:83
+#: swpm-form-builder/includes/admin-form-creator.php:161
+msgid "Registration is complete. You can now log into the site."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-settings.php:17
+msgid "Settings updated."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-settings.php:20
+msgid "Nonce check failed."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-utils.php:157
+#, php-format
+msgid "File size exceeds %dMB. Please decrease the file size and try again."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-utils.php:221
+msgid "File not found."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-fb-utils.php:223
+msgid "Invalid file."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:312
+msgid ""
+"You will receive a unique link via email after the payment. You will be able "
+"to use that link to complete the premium membership registration."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:324
+msgid ""
+"You need to confirm your email address. Please check your email and follow "
+"instructions to complete your registration."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:426
+#: swpm-form-builder/includes/admin-form-creator.php:109
+#: swpm-form-builder/views/settings.php:2
+msgid "Settings"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:438
+msgid "Recent SWPM Form Builder Entries"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:462
+msgid "You currently do not have any forms."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:464
+msgid "Get started!"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:481
+msgid "You currently do not have any entries."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:540
+msgid "Number of entries to show:"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:579
+msgid "Forms per page"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:612
+msgid "Form Items"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:661
+msgid "Please check at least one."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1460
+msgid "You must create a registration form before creating edit profile form."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1467
+msgid "Form updated."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1476
+#, php-format
+msgid ""
+"Error saving form. The maximum amount of data allowed by your server has "
+"been reached. Please update <a href=\"%s\" target=\"_blank\">max_input_vars</"
+"a> in your php.ini file to allow more data to be saved. Current limit is "
+"<strong>%d</strong>"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1489
+msgid "Item permanently deleted."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1494
+msgid "Item successfully duplicated."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1498
+msgid "Settings saved."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1517
+msgid "Form Builder"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1546
+msgid "Add New Form"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1557
+msgid "Product License"
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1642
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1657
+msgid "Profile updated successfully."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1647
+msgid "You will need to re-login since you changed your password."
+msgstr ""
+
+#: swpm-form-builder/classes/class.swpm-form-builder.php:1659
+msgid "Registration successful."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:49
+msgid "Edit Field Item"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:59
+msgid "About Legend"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:59
+msgid ""
+"For Fieldsets, a Legend is simply the name of that group. Use general terms "
+"that describe the fields included in this Fieldset."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:66
+#: swpm-form-builder/includes/admin-field-options.php:90
+#: swpm-form-builder/includes/admin-field-options.php:146
+#: swpm-form-builder/includes/admin-field-options.php:195
+#: swpm-form-builder/includes/admin-field-options.php:497
+msgid "CSS Classes"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:67
+#: swpm-form-builder/includes/admin-field-options.php:91
+#: swpm-form-builder/includes/admin-field-options.php:147
+#: swpm-form-builder/includes/admin-field-options.php:196
+#: swpm-form-builder/includes/admin-field-options.php:498
+msgid "About CSS Classes"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:67
+#: swpm-form-builder/includes/admin-field-options.php:91
+#: swpm-form-builder/includes/admin-field-options.php:147
+#: swpm-form-builder/includes/admin-field-options.php:196
+#: swpm-form-builder/includes/admin-field-options.php:498
+msgid ""
+"For each field, you can insert your own CSS class names which can be used in "
+"your own stylesheets."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:77
+#: swpm-form-builder/includes/admin-field-options.php:128
+#: swpm-form-builder/includes/admin-field-options.php:185
+msgid "Name"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:78
+#: swpm-form-builder/includes/admin-field-options.php:129
+#: swpm-form-builder/includes/admin-field-options.php:186
+msgid ""
+"A field's name is the most visible and direct way to describe what that "
+"field is for."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:78
+#: swpm-form-builder/includes/admin-field-options.php:129
+#: swpm-form-builder/includes/admin-field-options.php:186
+msgid "About Name"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:100
+#: swpm-form-builder/includes/admin-field-options.php:156
+#: swpm-form-builder/includes/admin-field-options.php:414
+msgid "Field Layout"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:101
+#: swpm-form-builder/includes/admin-field-options.php:157
+#: swpm-form-builder/includes/admin-field-options.php:415
+msgid "About Field Layout"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:101
+#: swpm-form-builder/includes/admin-field-options.php:157
+#: swpm-form-builder/includes/admin-field-options.php:415
+msgid ""
+"Used to create advanced layouts. Align fields side by side in various "
+"configurations."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:105
+#: swpm-form-builder/includes/admin-field-options.php:161
+#: swpm-form-builder/includes/admin-field-options.php:419
+msgid "Default"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:107
+#: swpm-form-builder/includes/admin-field-options.php:163
+#: swpm-form-builder/includes/admin-field-options.php:421
+msgid "Left Half"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:108
+#: swpm-form-builder/includes/admin-field-options.php:164
+#: swpm-form-builder/includes/admin-field-options.php:422
+msgid "Right Half"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:111
+#: swpm-form-builder/includes/admin-field-options.php:167
+#: swpm-form-builder/includes/admin-field-options.php:425
+msgid "Left Third"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:112
+#: swpm-form-builder/includes/admin-field-options.php:168
+#: swpm-form-builder/includes/admin-field-options.php:426
+msgid "Middle Third"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:113
+#: swpm-form-builder/includes/admin-field-options.php:169
+#: swpm-form-builder/includes/admin-field-options.php:427
+msgid "Right Third"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:116
+#: swpm-form-builder/includes/admin-field-options.php:172
+#: swpm-form-builder/includes/admin-field-options.php:430
+msgid "Left Two Thirds"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:117
+#: swpm-form-builder/includes/admin-field-options.php:173
+#: swpm-form-builder/includes/admin-field-options.php:431
+msgid "Right Two Thirds"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:137
+msgid "Description (HTML tags allowed)"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:138
+msgid "About Instructions Description"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:138
+msgid ""
+"The Instructions field allows for long form explanations, typically seen at "
+"the beginning of Fieldsets or Sections. HTML tags are allowed."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:205
+msgid "Description"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:206
+msgid ""
+"A description is an optional piece of text that further explains the meaning "
+"of this field. Descriptions are displayed below the field. HTML tags are "
+"allowed."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:206
+msgid "About Description"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:218
+msgid "Options"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:219
+msgid "About Options"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:219
+msgid ""
+"This property allows you to set predefined options to be selected by the "
+"user.  Use the plus and minus buttons to add and delete options.  At least "
+"one option must exist."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:245
+msgid "Drag and Drop to Sort Options"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:256
+msgid "Add Option"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:283
+msgid "Accepted File Extensions"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:284
+msgid "About Accepted File Extensions"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:284
+msgid ""
+"Control the types of files allowed.  Enter extensions without periods and "
+"separate multiples using the pipe character ( | )."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:304
+msgid "Date Format"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:305
+msgid "About Date Format"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:305
+msgid "Set the date format for each date picker."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:318
+msgid "Validation"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:319
+msgid "About Validation"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:319
+msgid ""
+"Ensures user-entered data is formatted properly. For more information on "
+"Validation, refer to the Help tab at the top of this page."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:325
+msgid "12 Hour Format"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:326
+msgid "24 Hour Format"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:328
+#: swpm-form-builder/includes/admin-field-options.php:335
+msgid "Number"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:329
+#: swpm-form-builder/includes/admin-field-options.php:336
+msgid "Digits"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:331
+msgid "None"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:332
+msgid "Email"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:333
+msgid "URL"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:334
+msgid "Date"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:337
+msgid "Phone"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:369
+msgid "Required"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:370
+msgid "About Required"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:370
+msgid ""
+"Requires the field to be completed before the form is submitted. By default, "
+"all fields are set to No."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:373
+#: swpm-form-builder/includes/admin-field-options.php:444
+#: swpm-form-builder/includes/admin-field-options.php:460
+msgid "No"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:374
+#: swpm-form-builder/includes/admin-field-options.php:445
+#: swpm-form-builder/includes/admin-field-options.php:461
+msgid "Yes"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:383
+msgid "Size"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:384
+msgid "About Size"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:384
+msgid ""
+"Control the size of the field.  By default, all fields are set to Medium."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:387
+msgid "Small"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:388
+msgid "Medium"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:389
+msgid "Large"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:398
+msgid "Options Layout"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:399
+msgid "About Options Layout"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:399
+msgid ""
+"Control the layout of radio buttons or checkboxes.  By default, options are "
+"arranged in One Column."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:402
+msgid "One Column"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:403
+msgid "Two Columns"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:404
+msgid "Three Columns"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:405
+msgid "Auto Width"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:440
+msgid "Read Only"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:441
+msgid "About Read Only"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:441
+msgid "Makes the field read only."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:456
+msgid "Show to Admin Only"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:457
+msgid "About Show to Admin Only"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:457
+msgid "Makes the field visible on Admin Dashboard only."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:471
+msgid "Default Value"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:472
+msgid "About Default Value"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:472
+msgid "Set a default value that will be inserted automatically."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:481
+msgid "Default Country"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:482
+msgid "About Default Country"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-field-options.php:482
+msgid "Select the country you would like to be displayed by default."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:80
+msgid "Form Name"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:81
+msgid "Enter form name here"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:117
+#: swpm-form-builder/views/settings.php:96
+msgid "Save"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:122
+msgid "General"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:126
+msgid "Label Alignment"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:127
+msgid "About Label Alignment"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:127
+msgid ""
+"Set the field labels for this form to be aligned either on top, to the left, "
+"or to the right.  By default, all labels are aligned on top of the inputs."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:131
+msgid "Top Aligned"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:132
+msgid "Left Aligned"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:133
+msgid "Right Aligned"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:139
+msgid "Confirmation"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:141
+msgid ""
+"After someone submits a form, you can control what is displayed. By default, "
+"it's a message but you can send them to another WordPress Page or a custom "
+"URL."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:144
+msgid "Text"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:148
+msgid "Page"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:152
+msgid "Redirect"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:173
+msgid "Select a Page"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:184
+msgid "Notification"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:186
+msgid ""
+"When a user submits their entry, you can send a customizable notification "
+"email."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:189
+msgid "Send Confirmation Email to User"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:195
+msgid "From Email Address"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:196
+msgid ""
+"Enter the sender email you would like to use for the email notification."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:196
+msgid "Sender Email Address"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:204
+#: swpm-form-builder/includes/admin-new-form.php:71
+msgid "E-mail Subject"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:205
+msgid "About E-mail Subject"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:205
+msgid ""
+"This option sets the subject of the email that is sent to the emails you "
+"have set in the E-mail To field."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:212
+msgid "Message"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:213
+msgid "About Message"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:213
+msgid ""
+"Insert a message to the user. This will be inserted into the beginning of "
+"the email body."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:220
+msgid "Include a Copy of the User's Entry"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:231
+msgid "Warning &mdash; Missing Fieldset"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:231
+msgid ""
+"Your form may not function or display correctly. Please be sure to add or "
+"move a Fieldset to the beginning of your form."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-form-creator.php:243
+msgid "Save Form"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:18
+msgid "You do not have sufficient permissions to create a new form."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:20
+msgid "Create a form"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:26
+msgid "Name the form"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:29
+msgid ""
+"Required. This name is used for admin purposes so you can identify the form."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:33
+msgid "Type of the form"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:39
+msgid ""
+"Required. Select which type of form you want to create. The registration "
+"form will be shown on the registration page. The profile form will be shown "
+"on the edit profile page."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:43
+msgid "Membership level"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:49
+msgid ""
+"Required. Select membership level for this form. Use the \"All\" option if "
+"you want to create one custom form for all your membership levels."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:54
+msgid "Your Name or Company"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:57
+msgid ""
+"Required. This option sets the \"From\" display name of the email that is "
+"sent."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:62
+msgid "Reply-To E-mail"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:65
+msgid "Required. Replies to your email will go here."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:66
+msgid "Tip: for best results, use an email that exists on this domain."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:74
+msgid "This sets the subject of the email that is sent."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:79
+msgid "E-mail To"
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:82
+msgid ""
+"Who to send the submitted data to. You can add more after creating the form."
+msgstr ""
+
+#: swpm-form-builder/includes/admin-new-form.php:88
+msgid "Create Form"
+msgstr ""
+
+#: swpm-form-builder/includes/class-widget.php:44
+msgid "Title:"
+msgstr ""
+
+#: swpm-form-builder/includes/class-widget.php:48
+msgid "Form to display:"
+msgstr ""
+
+#: swpm-form-builder/includes/form-output.php:70
+msgid ""
+"If you are seeing this message, it means you need to <strong>add a Fieldset "
+"to the beginning of your form</strong>. Your form may not function or "
+"display properly without one."
+msgstr ""
+
+#: swpm-form-builder/includes/form-output.php:70
+msgid "Oops! Missing Fieldset"
+msgstr ""
+
+#: swpm-form-builder/includes/form-output.php:172
+msgid ""
+"This box is for spam protection - <strong>please leave it blank</strong>"
+msgstr ""
+
+#: swpm-form-builder/views/all_forms.php:4
+msgid "Add New"
+msgstr ""
+
+#: swpm-form-builder/views/all_forms.php:8
+#, php-format
+msgid "Search results for \"%s\""
+msgstr ""
+
+#: swpm-form-builder/views/button_palette_metabox.php:3
+msgid ""
+"Select the standard or custom tab below. Then click on a field to add it to "
+"the form."
+msgstr ""
+
+#: swpm-form-builder/views/button_palette_metabox.php:7
+#: swpm-form-builder/views/button_palette_metabox.php:11
+msgid "Standard"
+msgstr ""
+
+#: swpm-form-builder/views/button_palette_metabox.php:8
+msgid "Custom"
+msgstr ""
+
+#: swpm-form-builder/views/general_settings.php:6
+msgid "Load a Light Version of the Form Builder CSS"
+msgstr ""
+
+#: swpm-form-builder/views/general_settings.php:9
+msgid ""
+"When this version is loaded, most of the input field styles come from your "
+"theme (instead of the form builder's CSS)."
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:6
+msgid "Global Settings"
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:7
+msgid "These settings will affect all forms on your site."
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:10
+msgid "CSS"
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:15
+msgid "Always load CSS"
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:16
+msgid "Disable CSS"
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:32
+msgid "Form Output"
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:37
+msgid "Place Address labels above fields"
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:38
+msgid "Disable meta tag version"
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:55
+msgid "Spam word sensitivity"
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:63
+msgid "Max Upload Size"
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:71
+msgid "Sender Mail Header"
+msgstr ""
+
+#: swpm-form-builder/views/settings.php:91
+msgid ""
+"Some server configurations require an existing email on the domain be used "
+"when sending emails."
+msgstr ""

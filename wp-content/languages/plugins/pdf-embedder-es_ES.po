@@ -1,0 +1,542 @@
+# Translation of Plugins - PDF Embedder - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - PDF Embedder - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-07-05 20:17:30+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.3\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - PDF Embedder - Stable (latest release)\n"
+
+#: src/Admin/Pages/About.php:41
+msgid "Our goal is to take the pain out of embedding PDF files and make it easy."
+msgstr "Nuestro objetivo es facilitar la incrustación de archivos PDF."
+
+#: block/build/block.json
+msgctxt "block keyword"
+msgid "document"
+msgstr "documento"
+
+#: block/build/block.json
+msgctxt "block keyword"
+msgid "pdf viewer"
+msgstr "visor pdf"
+
+#: src/Admin/Pages/Watermarks.php:23
+msgid "Watermarks"
+msgstr "Marcas de agua"
+
+#: src/Admin/Pages/Settings.php:116
+msgid "On hover"
+msgstr "Al pasar el cursor"
+
+#: src/Admin/Pages/Settings.php:111
+msgid "Toolbar Visibility"
+msgstr "Visibilidad de la barra de herramientas"
+
+#: src/Admin/Pages/GetPro.php:58 src/Admin/Pages/Mobile.php:109
+#: src/Admin/Pages/Secure.php:135 src/Admin/Pages/Watermarks.php:155
+msgid "Upgrade to PDF Embedder Pro"
+msgstr "Mejorar a PDF Embedder Pro"
+
+#: src/Admin/Pages/GetPro.php:52
+msgid "Priority Support"
+msgstr "Soporte prioritario"
+
+#: src/Admin/Pages/GetPro.php:50
+msgid "Custom Watermarks"
+msgstr "Marcas de agua personalizadas"
+
+#: src/Admin/Pages/GetPro.php:43
+msgid "Mobile-Ready"
+msgstr "Listo para dispositivos móviles"
+
+#: src/Admin/Pages/GetPro.php:39
+msgid "Why upgrade to Pro?"
+msgstr "¿Por qué mejorar a Pro?r"
+
+#: src/Admin/Pages/GetPro.php:14
+msgid "Get Pro"
+msgstr "Obtener Pro"
+
+#: src/Admin/License.php:83
+msgid "License key is incorrect."
+msgstr "La clave de licencia es incorrecta."
+
+#: src/Admin/Education/GetStarted.php:150
+msgid "Hide this message"
+msgstr "Ocultar este mensaje"
+
+#: src/Admin/Education/GetStarted.php:110
+msgid "Using a Page Builder or Classic Editor?"
+msgstr "¿Utilizas un maquetador de páginas o el editor clásico?"
+
+#: src/Admin/Education/GetStarted.php:98
+msgid "Using Block Editor?"
+msgstr "¿Usar el editor de bloques?"
+
+#: src/Admin/Education/GetStarted.php:93
+msgid "Get Started with PDF Embedder 🎉"
+msgstr "Primeros pasos con PDF Embedder 🎉"
+
+#: src/Admin/Education/DemoContent.php:46 src/Admin/Pages/Mobile.php:40
+#: src/Admin/Pages/Secure.php:40 src/Admin/Pages/Watermarks.php:39
+#: block/build/index.js:2
+msgid "Upgrade to Pro"
+msgstr "Mejorar a Pro"
+
+#: src/Admin/Admin.php:385
+msgid "Settings were successfully saved."
+msgstr "Los ajustes se han guardado correctamente."
+
+#: src/Admin/Admin.php:271
+msgid "Help"
+msgstr "Ayuda"
+
+#: src/Admin/Admin.php:267
+msgid "Get Started"
+msgstr "Primeros pasos"
+
+#: src/Admin/Admin.php:261
+msgid "PDF Embedder Logo"
+msgstr "Logotipo de PDF Embedder"
+
+#: src/Admin/MediaLibrary.php:154
+msgid "Not Secured PDF."
+msgstr "PDF no protegido."
+
+#: src/Admin/MediaLibrary.php:150
+msgid "Secured PDF"
+msgstr "PDF protegido"
+
+#: src/Admin/MediaLibrary.php:110
+msgid "PDF Downloads / Views"
+msgstr "Descargas/Vistas de PDF"
+
+#. translators: %s - URL to wp-pdf.com page.
+#: src/Admin/MediaLibrary.php:99
+msgid "Not tracked. <a href=\"%s\" target=\"_blank\">Learn more</a>"
+msgstr "No rastreado. <a href=\"%s\" target=\"_blank\">Más información</a>"
+
+#: src/Admin/MediaLibrary.php:93
+msgid "PDF Secured"
+msgstr "PDF protegido"
+
+#: src/Admin/MediaLibrary.php:87
+msgid "Yes"
+msgstr "Sí"
+
+#. translators: %s - URL to the settings page.
+#: src/Admin/MediaLibrary.php:76 src/Admin/MediaLibrary.php:158
+msgid "<a href=\"%s\">Learn more</a>"
+msgstr "<a href=\"%s\">Más información</a>"
+
+#: src/Admin/MediaLibrary.php:73
+msgid "No"
+msgstr "No"
+
+#: block/build/block.json
+msgctxt "block keyword"
+msgid "pdfs"
+msgstr "pdfs"
+
+#: block/build/block.json
+msgctxt "block keyword"
+msgid "pdf embed"
+msgstr "pdf incrustar"
+
+#: block/build/block.json
+msgctxt "block keyword"
+msgid "pdf"
+msgstr "pdf"
+
+#: block/build/block.json
+msgctxt "block description"
+msgid "Embed PDF files straight into your content."
+msgstr "Incrusta ficheros PDF directamente en tu contenido."
+
+#: block/build/block.json
+msgctxt "block title"
+msgid "PDF Embedder"
+msgstr "PDF Embedder"
+
+#: src/Admin/Pages/Settings.php:123 block/build/index.js:2
+msgid "Always visible"
+msgstr "Siempre visible"
+
+#: src/Options.php:300
+msgid "Unspecified error. Please review all the settings and try again."
+msgstr "Error no especificado. Por favor, revisa todos los ajustes e inténtalo de nuevo."
+
+#: src/Admin/WPorgReview.php:106
+msgid "I already did"
+msgstr "Ya lo he hecho"
+
+#: src/Admin/WPorgReview.php:105
+msgid "Nope, maybe later"
+msgstr "No, quizá más tarde"
+
+#: src/Admin/WPorgReview.php:105
+msgid "Dismiss for one month"
+msgstr "Descartar durante un mes"
+
+#: src/Admin/WPorgReview.php:104
+msgid "Ok, you deserve it"
+msgstr "Vale, te lo mereces"
+
+#: src/Admin/WPorgReview.php:96
+msgid "Hey, it looks like you are using <strong>PDF Embedder</strong> for quite a while, which is great! Can you please give it a 5-star rating on WordPress.org to help us spread the word and stay motivated? Thanks!"
+msgstr "Hola, parece que llevas un tiempo usando <strong>PDF Embedder</strong>, ¡lo cual es estupendo! ¿Puedes, por favor, darle una puntuación de 5 estrellas en WordPress.org para ayudarnos a correr la voz y mantenernos motivados? ¡Gracias!"
+
+#. translators: %s - status.
+#: src/Admin/Partners.php:91
+msgid "Status: %s"
+msgstr "Estado: %s"
+
+#: src/Admin/Partners.php:69
+msgid "Inactive"
+msgstr "Inactivo"
+
+#: src/Admin/Partners.php:65
+msgid "Active"
+msgstr "Activo"
+
+#: src/Admin/Partners.php:63
+msgid "Install Plugin"
+msgstr "Instalar plugin"
+
+#: src/Admin/Partners.php:61
+msgid "Not Installed"
+msgstr "No instalado"
+
+#: src/Admin/License.php:90
+msgid "License key was not provided."
+msgstr "No se proporcionó la clave de licencia."
+
+#: src/Admin/License.php:89
+msgid "License key has been disabled."
+msgstr "Se ha desactivado la clave de licencia."
+
+#: src/Admin/License.php:88
+msgid "License key is not active for this website."
+msgstr "La clave de licencia no está activa para este sitio web."
+
+#: src/Admin/License.php:87
+msgid "License key is not permitted for this website."
+msgstr "La clave de licencia no está permitida para este sitio web."
+
+#: src/Admin/License.php:86
+msgid "License key has expired."
+msgstr "La clave de licencia ha caducado."
+
+#: src/Admin/License.php:85
+msgid "License key does not exist in our system."
+msgstr "La clave de licencia no existe en nuestro sistema."
+
+#: src/Admin/License.php:84
+msgid "License key failed to activate."
+msgstr "No se ha podido activar la clave de licencia."
+
+#. translators: %1$s - URL to wp-pdf.com.
+#: src/Admin/Education/SettingsTopBar.php:80
+msgid "<strong>You're using PDF Embedder Lite.</strong> To unlock more features <a href=\"%1$s\" target=\"_blank\"><strong>consider upgrading to Premium</strong></a> for %2$s off."
+msgstr "<strong>Estás utilizando PDF Embedder Lite.</strong> Para desbloquear más características <a href=\"%1$s\" target=\"_blank\"><strong>considera actualizar a Premium</strong></a> con un %2$s de descuento."
+
+#: src/Admin/Pages/GetPro.php:45
+msgid "Jump to any Page"
+msgstr "Salta a cualquier página"
+
+#: src/Admin/Education/DemoContent.php:43
+msgid "Premium Features"
+msgstr "Características Premium"
+
+#: src/Admin/Pages/GetPro.php:29
+msgid "We know that you'll truly love PDF Embedder. <strong>It has over 300+ five-star ratings (⭐⭐⭐⭐⭐) and is active on over 300,000 websites!"
+msgstr "Sabemos que te encantará PDF Embedder. <strong>¡Tiene más de 300 valoraciones de cinco estrellas (⭐⭐⭐⭐⭐) y está activo en más de 300.000 sitios web!"
+
+#: src/Admin/Education/SettingsTopBar.php:96
+msgid "Dismiss this message"
+msgstr "Descartar este mensaje"
+
+#: src/Admin/Admin.php:582
+msgid "Premium"
+msgstr "Premium"
+
+#. translators: $1$s - PDF Embedder plugin name, $2$s - WP.org review link,
+#. $3$s - WP.org review link.
+#: src/Admin/Admin.php:449
+msgid "Please rate %1$s <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">&#9733;&#9733;&#9733;&#9733;&#9733;</a> on <a href=\"%3$s\" target=\"_blank\">WordPress.org</a> to help us spread the word."
+msgstr "Por favor, valora %1$s <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">&#9733;&#9733;&#9733;&#9733;&#9733;</a> en <a href=\"%3$s\" target=\"_blank\">WordPress.org</a> para ayudarnos a correr la voz."
+
+#: src/Admin/Admin.php:423
+msgid "By allowing us to track usage data, we can better help you, as we will know which WordPress configurations, themes, and plugins we should test."
+msgstr "Al permitirnos rastrear tus datos de uso, podemos ayudarte mejor, ya que sabremos con qué configuraciones, temas y plugins para WordPress debemos probar."
+
+#: src/Admin/Admin.php:417
+msgid "Allow Usage Tracking"
+msgstr "Permitir el seguimiento de uso"
+
+#: src/Admin/Admin.php:410
+msgid "Miscellaneous"
+msgstr "Varios"
+
+#: src/Admin/Pages/Settings.php:101
+msgid "No Toolbar"
+msgstr "Sin barra de herramientas"
+
+#: src/Admin/Pages/Settings.php:37
+msgid "PDF Embedder Configuration"
+msgstr "Configuración de PDF Embedder"
+
+#: src/Admin/Admin.php:369
+msgid "Free Plugins"
+msgstr "Plugins gratuitos"
+
+#: src/Admin/Admin.php:367
+msgid "Docs"
+msgstr "Documentación"
+
+#: src/Admin/Admin.php:365
+msgid "Support"
+msgstr "Soporte"
+
+#: src/Admin/Admin.php:359
+msgid "Made with ♥ by the WP PDF Team"
+msgstr "Hecho con ♥ por el equipo de WP PDF"
+
+#: requirements.php:33
+msgid "<strong>Note:</strong> The PDF Embedder plugin is disabled on your site until you fix the issue."
+msgstr "<strong>Nota:</strong> El plugin PDF Embedder está desactivado en tu sitio hasta que corrijas el conflicto."
+
+#. translators: %s - WPBeginner URL for recommended WordPress hosting.
+#: requirements.php:17
+msgid "Your site is running an <strong>insecure version</strong> of PHP that is no longer supported. Please contact your web hosting provider to update your PHP version or switch to a <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">recommended WordPress hosting company</a>."
+msgstr "Tu sitio está ejecutando una <strong>versión insegura</strong> de PHP que ya no es compatible. Por favor, contacta con tu proveedor de alojamiento web para actualizar tu versión de PHP o cambia a una <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">empresa de alojamiento recomendada para WordPress</a>."
+
+#: deprecated/install_skin.php:77
+msgid "There was an error installing the plugin. Please try again."
+msgstr "Ha habido un error al instalar el plugin. Por favor, inténtalo de nuevo."
+
+#: src/Options.php:293
+msgid "Height must be \"max\" or an integer (number of pixels). This setting is reset to \"max\"."
+msgstr "La altura debe ser «max» o un número entero (número de píxeles). Los ajustes se restablecen a «max»."
+
+#: src/Options.php:292
+msgid "Width must be \"max\" or an integer (number of pixels). This setting is reset to \"max\"."
+msgstr "La anchura debe ser «max» o un número entero (número de píxeles). Los ajustes se restablecen a «max»."
+
+#: src/Admin/Pages/About.php:23
+msgid "About"
+msgstr "Acerca de"
+
+#: src/Admin/Admin.php:171
+msgid "Proceed"
+msgstr "Continuar"
+
+#: src/Admin/Admin.php:170
+msgid "Installing..."
+msgstr "Instalando..."
+
+#: src/Admin/Admin.php:168
+msgid "Install"
+msgstr "Instalar"
+
+#: src/Admin/Admin.php:167
+msgid "Status: Inactive"
+msgstr "Estado: Inactivo"
+
+#: src/Admin/Admin.php:166
+msgid "Deactivating..."
+msgstr "Desactivando..."
+
+#: src/Admin/Admin.php:164 src/Admin/Partners.php:67
+msgid "Deactivate"
+msgstr "Desactivar"
+
+#: src/Admin/Admin.php:162
+msgid "Activating..."
+msgstr "Activando..."
+
+#: src/Admin/Admin.php:161 src/Admin/Partners.php:71
+msgid "Activate"
+msgstr "Activar"
+
+#: src/Admin/Admin.php:160
+msgid "Status: Active"
+msgstr "Estado: Activo"
+
+#. Description of the plugin
+#: pdf_embedder.php
+msgid "Embed PDFs straight into your posts and pages, with flexible width and height. No third-party services required. Compatible with Gutenberg Editor WordPress"
+msgstr "Incrusta PDFs directamente en tus publicaciones y páginas, con versatilidad en el ancho y la altura. Sin obligación de uso de servicios de terceras partes. Compatible con Gutenberg, el editor de WordPress"
+
+#. translators: %s - URL to wp-pdf.com page.
+#: src/Admin/MediaLibrary.php:175
+msgid "Track downloads and views with <a href=\"%s\" target=\"_blank\">PDF Embedder Premium</a>."
+msgstr "Monitoriza tus descargas y vistas con <a href=\"%s\" target=\"_blank\">PDF Embedder Premium</a>"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: pdf_embedder.php
+msgid "https://wp-pdf.com"
+msgstr "https://wp-pdf.com"
+
+#: src/Admin/Pages/Mobile.php:37
+msgid "Mobile-friendly embedding using PDF Embedder Premium"
+msgstr "Incrustado adaptable usando PDF Embedder Premium"
+
+#: src/Admin/Admin.php:581 src/Admin/Pages/Settings.php:23
+msgid "Settings"
+msgstr "Ajustes"
+
+#: src/Admin/Admin.php:604
+msgid "Settings saved."
+msgstr "Ajustes guardados."
+
+#: src/Admin/License.php:93
+msgid "Unspecified error"
+msgstr "Error no específico"
+
+#: src/Admin/Pages/Secure.php:37
+msgid "Protect your PDFs using PDF Embedder Premium"
+msgstr "Protege tus PDFs usando PDF Embedder Premium"
+
+#. translators: %s - URL to wp-pdf.com doc.
+#: src/Admin/Pages/Settings.php:134
+msgid "You can override these defaults for specific embeds by modifying the shortcodes - see <a href=\"%s\" target=\"_blank\">instructions</a>."
+msgstr "Puedes anular estas opciones por defecto para incrustados específicos modificando los shortcodes - mira las <a href=\"%s\" target=\"_blank\">instrucciones</a>."
+
+#: src/Admin/Pages/Settings.php:98 block/build/index.js:2
+msgid "Both"
+msgstr "Ambos"
+
+#: src/Admin/Pages/Settings.php:95 block/build/index.js:2
+msgid "Bottom"
+msgstr "Inferior"
+
+#: src/Admin/Pages/Settings.php:92 block/build/index.js:2
+msgid "Top"
+msgstr "Superior"
+
+#: src/Admin/Pages/Settings.php:88
+msgid "Toolbar Location"
+msgstr "Posición de la barra de herramientas"
+
+#: src/Admin/Pages/Settings.php:76 block/build/index.js:2
+msgid "Enter <code>max</code> or an integer number of pixels."
+msgstr "Introduce <code>max</code> o un número entero de píxeles."
+
+#: src/Admin/Pages/Settings.php:64 block/build/index.js:2
+msgid "Height"
+msgstr "Altura"
+
+#: src/Admin/Pages/Settings.php:55 block/build/index.js:2
+msgid "Width"
+msgstr "Ancho"
+
+#: src/Admin/Pages/Settings.php:50
+msgid "Default Viewer Settings"
+msgstr "Ajustes del visor por defecto"
+
+#: src/Admin/Pages/Settings.php:162
+msgid "Save Changes"
+msgstr "Guardar los cambios"
+
+#: src/Admin/Pages/Mobile.php:23 block/build/index.js:2
+msgid "Mobile"
+msgstr "Móvil"
+
+#: src/Admin/Pages/Settings.php:44
+msgid "From the post editor, click Add Media, and then drag-and-drop your PDF file into the media library. When you insert the PDF into your post, it will automatically embed using the plugin's viewer."
+msgstr ""
+"En el editor de entradas, haz clic en añadir medios, y después arrastra y suelta tu PDF en la biblioteca de medios.\n"
+"Cuando insertas el PDF en la entrada, automáticamente se incrustara usando el visor del plugin."
+
+#: src/Admin/Pages/Settings.php:41
+msgid "To use the plugin, just embed PDFs in the same way as you would normally embed images in your posts/pages - but try with a PDF file instead."
+msgstr "Para usar el plugin, solamente incrusta PDFs de la misma manera como lo harías normalmente con imágenes en tus entradas/páginas - en su lugar prueba con un PDF."
+
+#. Plugin Name of the plugin
+#. Author of the plugin
+#: pdf_embedder.php src/Admin/Admin.php:122 src/Admin/Admin.php:130
+#: src/Admin/MediaLibrary.php:35 block/build/index.js:2
+msgid "PDF Embedder"
+msgstr "PDF Embedder"
+
+#: src/Admin/Admin.php:121 src/Admin/Admin.php:129
+msgid "PDF Embedder settings"
+msgstr "Ajustes de PDF Embedder"
+
+#. translators: %s - number of PDF files.
+#: src/Admin/MediaLibrary.php:220
+msgid "PDF <span class=\"count\">(%s)</span>"
+msgid_plural "PDFs <span class=\"count\">(%s)</span>"
+msgstr[0] "PDF <span class=\"count\">(%s)</span>"
+msgstr[1] "PDFs <span class=\"count\">(%s)</span>"
+
+#: src/Admin/MediaLibrary.php:218
+msgid "Manage PDFs"
+msgstr "Gestionar PDFs"
+
+#: src/Admin/MediaLibrary.php:217
+msgid "PDFs"
+msgstr "PDFs"
+
+#: src/Plugin.php:176 block/build/index.js:2
+msgid "View in Full Screen"
+msgstr "Ver en pantalla completa"
+
+#: src/Plugin.php:175
+msgid "PDF page width or height are invalid"
+msgstr "La anchura o altura del PDF no son válidas"
+
+#: src/Plugin.php:174
+msgid "Click here for more info"
+msgstr "Haz clic aquí para más información"
+
+#: src/Plugin.php:173
+msgid "Error: URL to the PDF file must be on exactly the same domain as the current web page."
+msgstr "Error: La URL del archivo PDF debe estar exactamente en el mismo dominio que esta web."
+
+#: src/Plugin.php:172
+msgid "Full Screen"
+msgstr "Pantalla completa"
+
+#: src/Plugin.php:171
+msgid "Download PDF"
+msgstr "Descarga PDF"
+
+#: src/Admin/Admin.php:583 src/Admin/Pages/Secure.php:23 src/Plugin.php:169
+msgid "Secure"
+msgstr "Seguro"
+
+#: src/Plugin.php:170
+msgid "Zoom Out"
+msgstr "Alejar"
+
+#: src/Plugin.php:168
+msgid "Zoom In"
+msgstr "Acercar"
+
+#: src/Plugin.php:167
+msgid "Next page"
+msgstr "Próxima página"
+
+#: src/Plugin.php:166
+msgid "Previous page"
+msgstr "Página anterior"
+
+#: src/Plugin.php:165 block/build/index.js:2
+msgid "Zoom"
+msgstr "Zoom"
+
+#: src/Plugin.php:164
+msgid "Page"
+msgstr "Página"
+
+#: src/Plugin.php:163
+msgid "Loading..."
+msgstr "Cargando…"

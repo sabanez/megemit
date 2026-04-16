@@ -1,0 +1,138 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2017-06-13 04:53+0000\n"
+"Language: de-DE\n"
+"Plural-Forms: nplurals=2; plural=n != 1\n"
+"PO-Revision-Date: 2017-06-13 13:15+0000\n"
+"X-Generator: Loco - https://localise.biz/\n"
+"Project-Id-Version: Edwiser Bridge Single Sign On\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: sudam <sudam.chakor@wisdmlabs.com>\n"
+"Language-Team: German (Germany)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: sso.php:66
+msgid "Edwiser Bridge Single Sign On Documentation"
+msgstr ""
+"Edwiser Bridge Single Sign On Dokumentation \n"
+
+#: sso.php:67
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: includes/class-single-sign-on.php:177
+msgid "Edwiser Bridge"
+msgstr "Edwiser Bridge"
+
+#: includes/class-single-sign-on.php:178
+msgid "Mcrypt"
+msgstr "Mcrypt"
+
+#: includes/class-single-sign-on.php:187
+msgid "Following things are required to activate Single Single Sign On plugin:"
+msgstr ""
+"Das Folgende ist zur Aktivierung des Single Sign On Plugins notwendig: "
+
+#: includes/class-single-sign-on.php:191
+#, php-format
+msgid "Plugin %s version 1.1 or higher"
+msgstr "Plugin %s Version 1.1 oder höhere "
+
+#: includes/class-single-sign-on.php:195
+#, php-format
+msgid "%s PHP Extension"
+msgstr "%s PHP Erweiterung "
+
+#: includes/class-single-sign-on.php:223
+msgid "Please set the same secret key on WordPress as well as on Moodle"
+msgstr ""
+"Bitte stellen Sie den gleichen Geheimschlüssel, sowohol auf WordPress als "
+"auch auf Moodle ein"
+
+#: includes/class-single-sign-on.php:269 includes/class-single-sign-on.php:275
+msgid "Please check your Edwiser Bridge Connection Settings first!"
+msgstr "Bitte prüfen Sie zuerst Ihre Edwiser Bridge Verbindungseinstellungen! "
+
+#: includes/class-single-sign-on.php:280
+msgid "Please set your WordPress SSO Secret Key first!"
+msgstr ""
+"Bitte stellen Sie zuerst Ihren WordPress SSO Geheimschlüssel ein! \n"
+
+#: includes/class-single-sign-on.php:306
+msgid "Please check Moodle URL !"
+msgstr "Bitte Prüfen Sie die Moodle URL! "
+
+#: includes/class-single-sign-on.php:327
+msgid "You don't have moodle account."
+msgstr "Sie haben kein Moodle Konto. "
+
+#: includes/class-single-sign-on.php:329
+msgid "Please login to view this page."
+msgstr "Bitte melden Sie sich an, diese Seite anzusehen. "
+
+#: includes/class-single-sign-on.php:387
+msgid "Access Course"
+msgstr "Auf den Kurs zugreifen "
+
+#: includes/class-sso-settings.php:34
+msgid "Single Sign On"
+msgstr "Single Sign On "
+
+#: includes/class-sso-settings.php:55
+msgid "Single Sign On Settings"
+msgstr "Single Sign On Einstellungen "
+
+#: includes/class-sso-settings.php:60
+msgid "Login Redirect URL"
+msgstr "Login Redirect URL"
+
+#: includes/class-sso-settings.php:61
+msgid ""
+"Redirect to custom URL after login. Keep it blank for default redirection. "
+"Do not forget to add http or https before the URL."
+msgstr ""
+"Zur custom URL nach der Anmeldung umleiten. Lassen Sie es leer für standard "
+"Umleitung. Vergessen sie nicht, http oder https vor der URL hinzuzufügen. "
+
+#: includes/class-sso-settings.php:70
+msgid "Secret Key"
+msgstr "Geheimschlüssel "
+
+#: includes/class-sso-settings.php:71
+msgid "Enter your secret key here."
+msgstr "Geben Sie Ihren Geheimschlüssel hier ein. "
+
+#: includes/class-sso-settings.php:82
+msgid "Verify token with moodle"
+msgstr "Prüfen Sie Token mit Moodle "
+
+#: includes/ebsso-functions.php:23 includes/ebsso-functions.php:47
+msgid "Something went wrong"
+msgstr "Etwas ist los "
+
+#. Name of the plugin
+msgid "Edwiser Bridge Single Sign On"
+msgstr "Edwiser Bridge Single Sign On"
+
+#. Description of the plugin
+msgid ""
+"The plugin is an extension for Edwiser Bridge that allows users to login "
+"once and have access to both WordPress and Moodle."
+msgstr ""
+"Dies Plugin ist eine Erweiterung für Edwiser Bridge, mithilfe dessen die "
+"Benutzer sich nur einmal anmelden müssen und immer noch sowohl auf WordPress "
+"als such auf Moodle zugreifen können.    "
+
+#. URI of the plugin
+msgid "https://edwiser.org/bridge/"
+msgstr "https://edwiser.org/bridge/"
+
+#. Author of the plugin
+msgid "WisdmLabs"
+msgstr "WisdmLabs"
+
+#. Author URI of the plugin
+msgid "https://edwiser.org"
+msgstr "https://edwiser.org"

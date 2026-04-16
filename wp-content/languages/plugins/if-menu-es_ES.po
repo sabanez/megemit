@@ -1,0 +1,1414 @@
+# Translation of Plugins - If Menu &#8211; Visibility control for Menu Items - Development (trunk) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - If Menu &#8211; Visibility control for Menu Items - Development (trunk) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2021-08-08 04:33:43+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - If Menu &#8211; Visibility control for Menu Items - Development (trunk)\n"
+
+#. Description of the plugin/theme
+msgid "Display tailored menu items to each visitor with visibility rules"
+msgstr "Muestra elementos de menú adaptados a cada visitante mediante reglas de visibilidad"
+
+#: src/conditions-multiple-options.php:347
+msgid "WishList Membership Level"
+msgstr "Nivel de miembro en la lista de deseos"
+
+#: src/conditions-multiple-options.php:318
+msgid "Has active subscription"
+msgstr "Tiene una suscripción activa"
+
+#: src/conditions-multiple-options.php:280
+msgid "Is in group"
+msgstr "Esta en el grupo"
+
+#: src/conditions-multiple-options.php:262
+msgid "Zimbabwe"
+msgstr "Zimbabue"
+
+#: src/conditions-multiple-options.php:261
+msgid "Zambia"
+msgstr "Zambia"
+
+#: src/conditions-multiple-options.php:260
+msgid "Yemen"
+msgstr "Yemen"
+
+#: src/conditions-multiple-options.php:259
+msgid "Samoa"
+msgstr "Samoa"
+
+#: src/conditions-multiple-options.php:258
+msgid "Western Sahara"
+msgstr "Sáhara Occidental"
+
+#: src/conditions-multiple-options.php:257
+msgid "Wallis and Futuna"
+msgstr "Wallis y Futuna"
+
+#: src/conditions-multiple-options.php:256
+msgid "Vietnam"
+msgstr "Vietnam"
+
+#: src/conditions-multiple-options.php:255
+msgid "Venezuela"
+msgstr "Venezuela"
+
+#: src/conditions-multiple-options.php:254
+msgid "Vatican"
+msgstr "Ciudad del Vaticano"
+
+#: src/conditions-multiple-options.php:253
+msgid "Vanuatu"
+msgstr "Vanuatu"
+
+#: src/conditions-multiple-options.php:252
+msgid "Uzbekistan"
+msgstr "Uzbekistán"
+
+#: src/conditions-multiple-options.php:251
+msgid "Uruguay"
+msgstr "Uruguay"
+
+#: src/conditions-multiple-options.php:250
+msgid "United States (US) Virgin Islands"
+msgstr "Islas Vírgenes de los Estados Unidos (US)"
+
+#: src/conditions-multiple-options.php:249
+msgid "United States (US) Minor Outlying Islands"
+msgstr "Islas exteriores menores de los Estados Unidos (US)"
+
+#: src/conditions-multiple-options.php:248
+msgid "United States (US)"
+msgstr "Estados Unidos (US)"
+
+#: src/conditions-multiple-options.php:247
+msgid "United Kingdom (UK)"
+msgstr "Reino Unido (UK)"
+
+#: src/conditions-multiple-options.php:246
+msgid "United Arab Emirates"
+msgstr "Emiratos Árabes Unidos"
+
+#: src/conditions-multiple-options.php:245
+msgid "Ukraine"
+msgstr "Ucrania"
+
+#: src/conditions-multiple-options.php:244
+msgid "Uganda"
+msgstr "Uganda"
+
+#: src/conditions-multiple-options.php:243
+msgid "Tuvalu"
+msgstr "Tuvalu"
+
+#: src/conditions-multiple-options.php:242
+msgid "Turks and Caicos Islands"
+msgstr "Islas Turcas y Caicos"
+
+#: src/conditions-multiple-options.php:241
+msgid "Turkmenistan"
+msgstr "Turkmenistán"
+
+#: src/conditions-multiple-options.php:240
+msgid "Turkey"
+msgstr "Turquía"
+
+#: src/conditions-multiple-options.php:239
+msgid "Tunisia"
+msgstr "Túnez"
+
+#: src/conditions-multiple-options.php:238
+msgid "Trinidad and Tobago"
+msgstr "Trinidad y Tobago"
+
+#: src/conditions-multiple-options.php:237
+msgid "Tonga"
+msgstr "Tonga"
+
+#: src/conditions-multiple-options.php:236
+msgid "Tokelau"
+msgstr "Tokelau"
+
+#: src/conditions-multiple-options.php:235
+msgid "Togo"
+msgstr "Togo"
+
+#: src/conditions-multiple-options.php:234
+msgid "Timor-Leste"
+msgstr "Timor Oriental"
+
+#: src/conditions-multiple-options.php:233
+msgid "Thailand"
+msgstr "Tailandia"
+
+#: src/conditions-multiple-options.php:232
+msgid "Tanzania"
+msgstr "Tanzania"
+
+#: src/conditions-multiple-options.php:231
+msgid "Tajikistan"
+msgstr "Tayikistán"
+
+#: src/conditions-multiple-options.php:230
+msgid "Taiwan"
+msgstr "Taiwán"
+
+#: src/conditions-multiple-options.php:229
+msgid "Syria"
+msgstr "Siria"
+
+#: src/conditions-multiple-options.php:228
+msgid "Switzerland"
+msgstr "Suiza"
+
+#: src/conditions-multiple-options.php:227
+msgid "Sweden"
+msgstr "Suecia"
+
+#: src/conditions-multiple-options.php:226
+msgid "Swaziland"
+msgstr "Swazilandia"
+
+#: src/conditions-multiple-options.php:225
+msgid "Svalbard and Jan Mayen"
+msgstr "Svalbard y Jan Mayen"
+
+#: src/conditions-multiple-options.php:224
+msgid "Suriname"
+msgstr "Surinam"
+
+#: src/conditions-multiple-options.php:223
+msgid "Sudan"
+msgstr "Sudán"
+
+#: src/conditions-multiple-options.php:222
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+#: src/conditions-multiple-options.php:221
+msgid "Spain"
+msgstr "España"
+
+#: src/conditions-multiple-options.php:220
+msgid "South Sudan"
+msgstr "Sudán del Sur"
+
+#: src/conditions-multiple-options.php:219
+msgid "South Korea"
+msgstr "Corea del Sur"
+
+#: src/conditions-multiple-options.php:218
+msgid "South Georgia/Sandwich Islands"
+msgstr "Islas Georgias del Sur y Sandwich del Sur"
+
+#: src/conditions-multiple-options.php:217
+msgid "South Africa"
+msgstr "Sudáfrica"
+
+#: src/conditions-multiple-options.php:216
+msgid "Somalia"
+msgstr "Somalia"
+
+#: src/conditions-multiple-options.php:215
+msgid "Solomon Islands"
+msgstr "Islas Salomón"
+
+#: src/conditions-multiple-options.php:214
+msgid "Slovenia"
+msgstr "Eslovenia"
+
+#: src/conditions-multiple-options.php:213
+msgid "Slovakia"
+msgstr "Eslovaquia"
+
+#: src/conditions-multiple-options.php:212
+msgid "Singapore"
+msgstr "Singapur"
+
+#: src/conditions-multiple-options.php:211
+msgid "Sierra Leone"
+msgstr "Sierra Leona"
+
+#: src/conditions-multiple-options.php:210
+msgid "Seychelles"
+msgstr "Islas Seychelles"
+
+#: src/conditions-multiple-options.php:209
+msgid "Serbia"
+msgstr "Serbia"
+
+#: src/conditions-multiple-options.php:208
+msgid "Senegal"
+msgstr "Senegal"
+
+#: src/conditions-multiple-options.php:207
+msgid "Saudi Arabia"
+msgstr "Arabia Saudí"
+
+#: src/conditions-multiple-options.php:206
+msgid "S&atilde;o Tom&eacute; and Pr&iacute;ncipe"
+msgstr "Santo Tomé y Príncipe"
+
+#: src/conditions-multiple-options.php:205
+msgid "San Marino"
+msgstr "San Marino"
+
+#: src/conditions-multiple-options.php:204
+msgid "Saint Vincent and the Grenadines"
+msgstr "San Vicente y las Granadinas"
+
+#: src/conditions-multiple-options.php:203
+msgid "Saint Pierre and Miquelon"
+msgstr "San Pedro y Miquelón"
+
+#: src/conditions-multiple-options.php:202
+msgid "Saint Martin (Dutch part)"
+msgstr "San Martín (parte de Holanda)"
+
+#: src/conditions-multiple-options.php:201
+msgid "Saint Martin (French part)"
+msgstr "San Martín (parte francesa)"
+
+#: src/conditions-multiple-options.php:200
+msgid "Saint Lucia"
+msgstr "Santa Lucía"
+
+#: src/conditions-multiple-options.php:199
+msgid "Saint Kitts and Nevis"
+msgstr "San Cristóbal y Nevis"
+
+#: src/conditions-multiple-options.php:198
+msgid "Saint Helena"
+msgstr "Santa Elena"
+
+#: src/conditions-multiple-options.php:197
+msgid "Saint Barth&eacute;lemy"
+msgstr "San Bartolomé"
+
+#: src/conditions-multiple-options.php:196
+msgid "Rwanda"
+msgstr "Ruanda"
+
+#: src/conditions-multiple-options.php:195
+msgid "Russia"
+msgstr "Rusia"
+
+#: src/conditions-multiple-options.php:194
+msgid "Romania"
+msgstr "Rumania"
+
+#: src/conditions-multiple-options.php:193
+msgid "Reunion"
+msgstr "Reunión"
+
+#: src/conditions-multiple-options.php:192
+msgid "Qatar"
+msgstr "Qatar"
+
+#: src/conditions-multiple-options.php:191
+msgid "Puerto Rico"
+msgstr "Puerto Rico"
+
+#: src/conditions-multiple-options.php:190
+msgid "Portugal"
+msgstr "Portugal"
+
+#: src/conditions-multiple-options.php:189
+msgid "Poland"
+msgstr "Polonia"
+
+#: src/conditions-multiple-options.php:188
+msgid "Pitcairn"
+msgstr "Pitcairn"
+
+#: src/conditions-multiple-options.php:187
+msgid "Philippines"
+msgstr "Filipinas"
+
+#: src/conditions-multiple-options.php:186
+msgid "Peru"
+msgstr "Perú"
+
+#: src/conditions-multiple-options.php:185
+msgid "Paraguay"
+msgstr "Paraguay"
+
+#: src/conditions-multiple-options.php:184
+msgid "Papua New Guinea"
+msgstr "Papua Nueva Guinea"
+
+#: src/conditions-multiple-options.php:183
+msgid "Panama"
+msgstr "Panamá"
+
+#: src/conditions-multiple-options.php:182
+msgid "Palestinian Territory"
+msgstr "Territorios Palestinos"
+
+#: src/conditions-multiple-options.php:181
+msgid "Pakistan"
+msgstr "Pakistán"
+
+#: src/conditions-multiple-options.php:180
+msgid "Oman"
+msgstr "Omán"
+
+#: src/conditions-multiple-options.php:179
+msgid "Norway"
+msgstr "Noruega"
+
+#: src/conditions-multiple-options.php:178
+msgid "North Korea"
+msgstr "Corea del Norte"
+
+#: src/conditions-multiple-options.php:177
+msgid "Northern Mariana Islands"
+msgstr "Islas Marianas del Norte"
+
+#: src/conditions-multiple-options.php:176
+msgid "Norfolk Island"
+msgstr "Isla Norfolk"
+
+#: src/conditions-multiple-options.php:175
+msgid "Niue"
+msgstr "Niué"
+
+#: src/conditions-multiple-options.php:174
+msgid "Nigeria"
+msgstr "Nigeria"
+
+#: src/conditions-multiple-options.php:173
+msgid "Niger"
+msgstr "Niger"
+
+#: src/conditions-multiple-options.php:172
+msgid "Nicaragua"
+msgstr "Nicaragua"
+
+#: src/conditions-multiple-options.php:171
+msgid "New Zealand"
+msgstr "Nueva Zelanda"
+
+#: src/conditions-multiple-options.php:170
+msgid "New Caledonia"
+msgstr "Nueva Caledonia"
+
+#: src/conditions-multiple-options.php:169
+msgid "Netherlands"
+msgstr "Países Bajos"
+
+#: src/conditions-multiple-options.php:168
+msgid "Nepal"
+msgstr "Nepal"
+
+#: src/conditions-multiple-options.php:167
+msgid "Nauru"
+msgstr "Nauru"
+
+#: src/conditions-multiple-options.php:166
+msgid "Namibia"
+msgstr "Namibia"
+
+#: src/conditions-multiple-options.php:165
+msgid "Myanmar"
+msgstr "Myanmar"
+
+#: src/conditions-multiple-options.php:164
+msgid "Mozambique"
+msgstr "Mozambique"
+
+#: src/conditions-multiple-options.php:163
+msgid "Morocco"
+msgstr "Marruecos"
+
+#: src/conditions-multiple-options.php:162
+msgid "Montserrat"
+msgstr "Montserrat"
+
+#: src/conditions-multiple-options.php:161
+msgid "Montenegro"
+msgstr "Montenegro"
+
+#: src/conditions-multiple-options.php:160
+msgid "Mongolia"
+msgstr "Mongolia"
+
+#: src/conditions-multiple-options.php:159
+msgid "Monaco"
+msgstr "Mónaco"
+
+#: src/conditions-multiple-options.php:158
+msgid "Moldova"
+msgstr "Moldavia"
+
+#: src/conditions-multiple-options.php:157
+msgid "Micronesia"
+msgstr "Micronesia"
+
+#: src/conditions-multiple-options.php:156
+msgid "Mexico"
+msgstr "México"
+
+#: src/conditions-multiple-options.php:155
+msgid "Mayotte"
+msgstr "Mayotte"
+
+#: src/conditions-multiple-options.php:154
+msgid "Mauritius"
+msgstr "Mauricio"
+
+#: src/conditions-multiple-options.php:153
+msgid "Mauritania"
+msgstr "Mauritania"
+
+#: src/conditions-multiple-options.php:152
+msgid "Martinique"
+msgstr "Martinica"
+
+#: src/conditions-multiple-options.php:151
+msgid "Marshall Islands"
+msgstr "Islas Marshall"
+
+#: src/conditions-multiple-options.php:150
+msgid "Malta"
+msgstr "Malta"
+
+#: src/conditions-multiple-options.php:149
+msgid "Mali"
+msgstr "Mali"
+
+#: src/conditions-multiple-options.php:148
+msgid "Maldives"
+msgstr "Maldivas"
+
+#: src/conditions-multiple-options.php:147
+msgid "Malaysia"
+msgstr "Malasia"
+
+#: src/conditions-multiple-options.php:146
+msgid "Malawi"
+msgstr "Malawi"
+
+#: src/conditions-multiple-options.php:145
+msgid "Madagascar"
+msgstr "Madagascar"
+
+#: src/conditions-multiple-options.php:144
+msgid "Macedonia"
+msgstr "Macedonia"
+
+#: src/conditions-multiple-options.php:143
+msgid "Macao S.A.R., China"
+msgstr "Región Administrativa Especial de Macao, República Popular China"
+
+#: src/conditions-multiple-options.php:142
+msgid "Luxembourg"
+msgstr "Luxemburgo"
+
+#: src/conditions-multiple-options.php:141
+msgid "Lithuania"
+msgstr "Lituania"
+
+#: src/conditions-multiple-options.php:140
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#: src/conditions-multiple-options.php:139
+msgid "Libya"
+msgstr "Libia"
+
+#: src/conditions-multiple-options.php:138
+msgid "Liberia"
+msgstr "Liberia"
+
+#: src/conditions-multiple-options.php:137
+msgid "Lesotho"
+msgstr "Lesotho"
+
+#: src/conditions-multiple-options.php:136
+msgid "Lebanon"
+msgstr "Líbano"
+
+#: src/conditions-multiple-options.php:135
+msgid "Latvia"
+msgstr "Letonia"
+
+#: src/conditions-multiple-options.php:134
+msgid "Laos"
+msgstr "Laos"
+
+#: src/conditions-multiple-options.php:133
+msgid "Kyrgyzstan"
+msgstr "Kirguistán"
+
+#: src/conditions-multiple-options.php:132
+msgid "Kuwait"
+msgstr "Kuwait"
+
+#: src/conditions-multiple-options.php:131
+msgid "Kiribati"
+msgstr "Kiribati"
+
+#: src/conditions-multiple-options.php:130
+msgid "Kenya"
+msgstr "Kenia"
+
+#: src/conditions-multiple-options.php:129
+msgid "Kazakhstan"
+msgstr "Kazajstán"
+
+#: src/conditions-multiple-options.php:128
+msgid "Jordan"
+msgstr "Jordania"
+
+#: src/conditions-multiple-options.php:127
+msgid "Jersey"
+msgstr "Jersey"
+
+#: src/conditions-multiple-options.php:126
+msgid "Japan"
+msgstr "Japón"
+
+#: src/conditions-multiple-options.php:125
+msgid "Jamaica"
+msgstr "Jamaica"
+
+#: src/conditions-multiple-options.php:124
+msgid "Ivory Coast"
+msgstr "Costa de Marfil"
+
+#: src/conditions-multiple-options.php:123
+msgid "Italy"
+msgstr "Italia"
+
+#: src/conditions-multiple-options.php:122
+msgid "Israel"
+msgstr "Israel"
+
+#: src/conditions-multiple-options.php:121
+msgid "Isle of Man"
+msgstr "Isla de Man"
+
+#: src/conditions-multiple-options.php:120
+msgid "Ireland"
+msgstr "Irlanda"
+
+#: src/conditions-multiple-options.php:119
+msgid "Iraq"
+msgstr "Irak"
+
+#: src/conditions-multiple-options.php:118
+msgid "Iran"
+msgstr "Irán"
+
+#: src/conditions-multiple-options.php:117
+msgid "Indonesia"
+msgstr "Indonesia"
+
+#: src/conditions-multiple-options.php:116
+msgid "India"
+msgstr "India"
+
+#: src/conditions-multiple-options.php:115
+msgid "Iceland"
+msgstr "Islandia"
+
+#: src/conditions-multiple-options.php:114
+msgid "Hungary"
+msgstr "Hungría"
+
+#: src/conditions-multiple-options.php:113
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+#: src/conditions-multiple-options.php:112
+msgid "Honduras"
+msgstr "Honduras"
+
+#: src/conditions-multiple-options.php:111
+msgid "Heard Island and McDonald Islands"
+msgstr "Islas Heard y McDonald"
+
+#: src/conditions-multiple-options.php:110
+msgid "Haiti"
+msgstr "Haití"
+
+#: src/conditions-multiple-options.php:109
+msgid "Guyana"
+msgstr "Guyana"
+
+#: src/conditions-multiple-options.php:108
+msgid "Guinea-Bissau"
+msgstr "Guinea-Bissau"
+
+#: src/conditions-multiple-options.php:107
+msgid "Guinea"
+msgstr "Guinea"
+
+#: src/conditions-multiple-options.php:106
+msgid "Guernsey"
+msgstr "Guernsey"
+
+#: src/conditions-multiple-options.php:105
+msgid "Guatemala"
+msgstr "Guatemala"
+
+#: src/conditions-multiple-options.php:104
+msgid "Guam"
+msgstr "Guam"
+
+#: src/conditions-multiple-options.php:103
+msgid "Guadeloupe"
+msgstr "Guadalupe"
+
+#: src/conditions-multiple-options.php:102
+msgid "Grenada"
+msgstr "Granada"
+
+#: src/conditions-multiple-options.php:101
+msgid "Greenland"
+msgstr "Groenlandia"
+
+#: src/conditions-multiple-options.php:100
+msgid "Greece"
+msgstr "Grecia"
+
+#: src/conditions-multiple-options.php:99
+msgid "Gibraltar"
+msgstr "Gibraltar"
+
+#: src/conditions-multiple-options.php:98
+msgid "Ghana"
+msgstr "Ghana"
+
+#: src/conditions-multiple-options.php:97
+msgid "Germany"
+msgstr "Alemania"
+
+#: src/conditions-multiple-options.php:96
+msgid "Georgia"
+msgstr "Georgia"
+
+#: src/conditions-multiple-options.php:95
+msgid "Gambia"
+msgstr "Gambia"
+
+#: src/conditions-multiple-options.php:94
+msgid "Gabon"
+msgstr "Gabón"
+
+#: src/conditions-multiple-options.php:93
+msgid "French Southern Territories"
+msgstr "Tierras Australes y Antárticas Francesas"
+
+#: src/conditions-multiple-options.php:92
+msgid "French Polynesia"
+msgstr "Polinesia Francesa"
+
+#: src/conditions-multiple-options.php:91
+msgid "French Guiana"
+msgstr "Guyana Francesa"
+
+#: src/conditions-multiple-options.php:90
+msgid "France"
+msgstr "Francia"
+
+#: src/conditions-multiple-options.php:89
+msgid "Finland"
+msgstr "Finlandia"
+
+#: src/conditions-multiple-options.php:88
+msgid "Fiji"
+msgstr "Fiji"
+
+#: src/conditions-multiple-options.php:87
+msgid "Faroe Islands"
+msgstr "Islas Faroe"
+
+#: src/conditions-multiple-options.php:86
+msgid "Falkland Islands"
+msgstr "Islas Malvinas"
+
+#: src/conditions-multiple-options.php:85
+msgid "Ethiopia"
+msgstr "Etiopía"
+
+#: src/conditions-multiple-options.php:84
+msgid "Estonia"
+msgstr "Estonia"
+
+#: src/conditions-multiple-options.php:83
+msgid "Eritrea"
+msgstr "Eritrea"
+
+#: src/conditions-multiple-options.php:82
+msgid "Equatorial Guinea"
+msgstr "Guinea Ecuatorial"
+
+#: src/conditions-multiple-options.php:81
+msgid "El Salvador"
+msgstr "El Salvador"
+
+#: src/conditions-multiple-options.php:80
+msgid "Egypt"
+msgstr "Egipto"
+
+#: src/conditions-multiple-options.php:79
+msgid "Ecuador"
+msgstr "Ecuador"
+
+#: src/conditions-multiple-options.php:78
+msgid "Dominican Republic"
+msgstr "República Dominicana"
+
+#: src/conditions-multiple-options.php:77
+msgid "Dominica"
+msgstr "Dominica"
+
+#: src/conditions-multiple-options.php:76
+msgid "Djibouti"
+msgstr "Yibuti"
+
+#: src/conditions-multiple-options.php:75
+msgid "Denmark"
+msgstr "Dinamarca"
+
+#: src/conditions-multiple-options.php:74
+msgid "Czech Republic"
+msgstr "República Checa"
+
+#: src/conditions-multiple-options.php:73
+msgid "Cyprus"
+msgstr "Chipre"
+
+#: src/conditions-multiple-options.php:72
+msgid "Cura&ccedil;ao"
+msgstr "Curazao"
+
+#: src/conditions-multiple-options.php:71
+msgid "Cuba"
+msgstr "Cuba"
+
+#: src/conditions-multiple-options.php:70
+msgid "Croatia"
+msgstr "Croacia"
+
+#: src/conditions-multiple-options.php:69
+msgid "Costa Rica"
+msgstr "Costa Rica"
+
+#: src/conditions-multiple-options.php:68
+msgid "Cook Islands"
+msgstr "Islas Cook"
+
+#: src/conditions-multiple-options.php:67
+msgid "Congo (Kinshasa)"
+msgstr "Congo (Kinsasa)"
+
+#: src/conditions-multiple-options.php:66
+msgid "Congo (Brazzaville)"
+msgstr "Congo (Brazzaville)"
+
+#: src/conditions-multiple-options.php:65
+msgid "Comoros"
+msgstr "Comoros"
+
+#: src/conditions-multiple-options.php:64
+msgid "Colombia"
+msgstr "Colombia"
+
+#: src/conditions-multiple-options.php:63
+msgid "Cocos (Keeling) Islands"
+msgstr "Islas Cocos (Keeling)"
+
+#: src/conditions-multiple-options.php:62
+msgid "Christmas Island"
+msgstr "Isla de Navidad"
+
+#: src/conditions-multiple-options.php:61
+msgid "China"
+msgstr "República Popular China"
+
+#: src/conditions-multiple-options.php:60
+msgid "Chile"
+msgstr "Chile"
+
+#: src/conditions-multiple-options.php:59
+msgid "Chad"
+msgstr "Chad"
+
+#: src/conditions-multiple-options.php:58
+msgid "Central African Republic"
+msgstr "República Centroafricana"
+
+#: src/conditions-multiple-options.php:57
+msgid "Cayman Islands"
+msgstr "Islas Caimán"
+
+#: src/conditions-multiple-options.php:56
+msgid "Cape Verde"
+msgstr "Cabo Verde"
+
+#: src/conditions-multiple-options.php:55
+msgid "Canada"
+msgstr "Canadá"
+
+#: src/conditions-multiple-options.php:54
+msgid "Cameroon"
+msgstr "Camerún"
+
+#: src/conditions-multiple-options.php:53
+msgid "Cambodia"
+msgstr "Camboya"
+
+#: src/conditions-multiple-options.php:52
+msgid "Burundi"
+msgstr "Burundi"
+
+#: src/conditions-multiple-options.php:51
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+#: src/conditions-multiple-options.php:50
+msgid "Bulgaria"
+msgstr "Bulgaria"
+
+#: src/conditions-multiple-options.php:49
+msgid "Brunei"
+msgstr "Brunei"
+
+#: src/conditions-multiple-options.php:48
+msgid "British Virgin Islands"
+msgstr "Islas Vírgenes Británicas"
+
+#: src/conditions-multiple-options.php:47
+msgid "British Indian Ocean Territory"
+msgstr "Territorio Británico del Océano Índico"
+
+#: src/conditions-multiple-options.php:46
+msgid "Brazil"
+msgstr "Brasil"
+
+#: src/conditions-multiple-options.php:45
+msgid "Bouvet Island"
+msgstr "Isla Bouvet"
+
+#: src/conditions-multiple-options.php:44
+msgid "Botswana"
+msgstr "Botswana"
+
+#: src/conditions-multiple-options.php:43
+msgid "Bosnia and Herzegovina"
+msgstr "Bosnia y Herzegovina"
+
+#: src/conditions-multiple-options.php:42
+msgid "Bonaire, Saint Eustatius and Saba"
+msgstr "Bonaire, San Eustaquio y Saba"
+
+#: src/conditions-multiple-options.php:41
+msgid "Bolivia"
+msgstr "Bolivia"
+
+#: src/conditions-multiple-options.php:40
+msgid "Bhutan"
+msgstr "Bhutan"
+
+#: src/conditions-multiple-options.php:39
+msgid "Bermuda"
+msgstr "Bermuda"
+
+#: src/conditions-multiple-options.php:38
+msgid "Benin"
+msgstr "Benin"
+
+#: src/conditions-multiple-options.php:37
+msgid "Belize"
+msgstr "Belize"
+
+#: src/conditions-multiple-options.php:36
+msgid "Belau"
+msgstr "Belau"
+
+#: src/conditions-multiple-options.php:35
+msgid "Belgium"
+msgstr "Bélgica"
+
+#: src/conditions-multiple-options.php:34
+msgid "Belarus"
+msgstr "Bielorusia"
+
+#: src/conditions-multiple-options.php:33
+msgid "Barbados"
+msgstr "Barbados"
+
+#: src/conditions-multiple-options.php:32
+msgid "Bangladesh"
+msgstr "Bangladesh"
+
+#: src/conditions-multiple-options.php:31
+msgid "Bahrain"
+msgstr "Bahrain"
+
+#: src/conditions-multiple-options.php:30
+msgid "Bahamas"
+msgstr "Bahamas"
+
+#: src/conditions-multiple-options.php:29
+msgid "Azerbaijan"
+msgstr "Azerbaijan"
+
+#: src/conditions-multiple-options.php:28
+msgid "Austria"
+msgstr "Austria"
+
+#: src/conditions-multiple-options.php:27
+msgid "Australia"
+msgstr "Australia"
+
+#: src/conditions-multiple-options.php:26
+msgid "Aruba"
+msgstr "Aruba"
+
+#: src/conditions-multiple-options.php:25
+msgid "Armenia"
+msgstr "Armenia"
+
+#: src/conditions-multiple-options.php:24
+msgid "Argentina"
+msgstr "Argentina"
+
+#: src/conditions-multiple-options.php:23
+msgid "Antigua and Barbuda"
+msgstr "Antigua y Barbuda"
+
+#: src/conditions-multiple-options.php:22
+msgid "Antarctica"
+msgstr "Antártida"
+
+#: src/conditions-multiple-options.php:21
+msgid "Anguilla"
+msgstr "Anguilla"
+
+#: src/conditions-multiple-options.php:20
+msgid "Angola"
+msgstr "Angola"
+
+#: src/conditions-multiple-options.php:19
+msgid "Andorra"
+msgstr "Andorra"
+
+#: src/conditions-multiple-options.php:18
+msgid "American Samoa"
+msgstr "Samoa Americana"
+
+#: src/conditions-multiple-options.php:17
+msgid "Algeria"
+msgstr "Argelia"
+
+#: src/conditions-multiple-options.php:16
+msgid "Albania"
+msgstr "Albania"
+
+#: src/conditions-multiple-options.php:15
+msgid "&#197;land Islands"
+msgstr "Islas Åland"
+
+#: src/conditions-multiple-options.php:14
+msgid "Afghanistan"
+msgstr "Afganistán"
+
+#: src/conditions-multiple-options.php:12
+msgid "From country"
+msgstr "Desde País"
+
+#: src/conditions-basic.php:36
+msgid "Is logged in"
+msgstr "Está conectado"
+
+#: src/conditions-basic.php:19 src/conditions-basic.php:28
+#: src/conditions-basic.php:39 src/conditions-basic.php:49
+#: src/conditions-multiple-options.php:267
+#: src/conditions-multiple-options.php:292
+#: src/conditions-multiple-options.php:331
+#: src/conditions-multiple-options.php:360
+msgid "User"
+msgstr "Usuario"
+
+#: src/conditions-basic.php:13 src/conditions-basic.php:26
+msgid "Is %s"
+msgstr "Es %s"
+
+#: if-menu.php:328
+msgid "Visibility rule examples"
+msgstr "Ejemplos de regla de visibilidad"
+
+#: if-menu.php:296
+msgid "Support"
+msgstr "Soporte"
+
+#: if-menu.php:295
+msgid "Reviews"
+msgstr "Reseñas"
+
+#: if-menu.php:294
+msgid "FAQs"
+msgstr "FAQs"
+
+#: if-menu.php:257
+msgid "Get premium"
+msgstr "Obtener Premium"
+
+#: if-menu.php:255
+msgid "Active until %s"
+msgstr "Activa hasta %s"
+
+#: if-menu.php:249
+msgid "Priority support"
+msgstr "Soporte prioritario"
+
+#: if-menu.php:246
+msgid "Users above a Membership Level"
+msgstr "Usuarios por encima de un nivel de miembro"
+
+#: if-menu.php:245
+msgid "Users are in a Group"
+msgstr "Los usuarios están en un grupo"
+
+#: if-menu.php:244
+msgid "Customer has active subscription"
+msgstr "Cliente tiene una suscripción activa"
+
+#: if-menu.php:242
+msgid "3rd-party plugin integrations:"
+msgstr "Integraciones de plugins de terceros:"
+
+#: if-menu.php:238
+msgid "Visitor location - detect visitor's country"
+msgstr "Ubicación del visitante - detecta el país del visitante"
+
+#: if-menu.php:236
+msgid "Advanced visibility rules:"
+msgstr "Reglas avanzadas de visibilidad:"
+
+#: if-menu.php:232
+msgid "Premium"
+msgstr "Premiun"
+
+#: if-menu.php:231
+msgid "annually"
+msgstr "anualmente"
+
+#: if-menu.php:223 if-menu.php:254
+msgid "Current plan"
+msgstr "Plan actual"
+
+#: if-menu.php:218
+msgid "Support on WordPress forum"
+msgstr "Soporte en los foros de WordPress"
+
+#: if-menu.php:215
+msgid "Visitor device - detect mobile or desktop"
+msgstr "Dsipositivo del visitante - detectar móvil u ordenador"
+
+#: if-menu.php:214
+msgid "User state - visitor is logged in or out"
+msgstr "Estado del usuario - el visitantes está conectado o no"
+
+#: if-menu.php:213
+msgid "User role - is Admin, Editor, Author or Shop Manager"
+msgstr "Perfil del usuario - es administrador, editor, autor o gestor de la tienda"
+
+#: if-menu.php:211
+msgid "Basic visibility rules:"
+msgstr "Regals básicas de visibilidad:"
+
+#: if-menu.php:207
+msgid "Basic"
+msgstr "Básico"
+
+#: if-menu.php:206
+msgid "Free"
+msgstr "Gratis"
+
+#: if-menu.php:199
+msgid "User from country: US, UK"
+msgstr "Usuarios de los países: EEUU, GB"
+
+#: if-menu.php:199
+msgid "Display menu item for users in US and UK:"
+msgstr "Muestra un elemento en el menú para usuarios en EEUU y GB:"
+
+#: if-menu.php:198
+msgid "Hide menu item on mobile devices:"
+msgstr "Oculta el elemento del menú en dispositivos móviles:"
+
+#: if-menu.php:197
+msgid "Display Logout link for logged-in users:"
+msgstr "Muestra el enlace «Salir» para los usuarios conectados:"
+
+#: if-menu.php:196
+msgid "Hide Login or Register links for logged-in users:"
+msgstr "Oculta el enlace de acceso o de registro para los usuarios conectados:"
+
+#: if-menu.php:194
+msgid "Thanks for using <strong>If Menu</strong>! Now you can display tailored menu items to each visitor, based on visibility rules. Here are a few examples:"
+msgstr "¡Gracias por usar <strong>If Menu</strong>! Ahora puedes mostrar elementos de menú personalizados para cada visitante, basado en reglas de visibilidad. Aquí tienes unos ejemplos:"
+
+#: if-menu.php:181
+msgid "Use Basic plan"
+msgstr "Usar el plan básico"
+
+#: if-menu.php:180
+msgid "Get If Menu Premium"
+msgstr "Obtener If Menu Premium"
+
+#: if-menu.php:178
+msgid "Get <strong>If Menu Premium</strong> plan to enable integrations with third-party plugins, user location detection and priority support"
+msgstr "Consigue el plan <strong>If Menu Premium</strong> para activar las integraciones con plugins de terceros, ubicación de los usuarios y soporte prioritario."
+
+#: if-menu.php:177
+msgid "That's a Premium feature"
+msgstr "Esta es una característica premium"
+
+#: if-menu.php:283
+msgid "Save Changes"
+msgstr "Guardar los cambios"
+
+#: if-menu.php:277
+msgid "Let administrators preview hidden menu items on website (useful for testing)"
+msgstr "Permite a los administradores previsualizar elementos ocultos del menú en la web (útil para pruebas)"
+
+#: if-menu.php:275
+msgid "Enable If Menu peek"
+msgstr "Activar vistazo de If Menu"
+
+#: if-menu.php:272
+msgid "If Menu peek"
+msgstr "Vistazo de If Menu"
+
+#: if-menu.php:266
+msgid "Settings"
+msgstr "Ajustes"
+
+#: src/conditions-basic.php:91
+msgid "Language"
+msgstr "Idioma"
+
+#: src/conditions-basic.php:89
+msgid "Is RTL"
+msgstr "Es RTL"
+
+#. Author URI of the plugin/theme
+msgid "https://layered.studio"
+msgstr "https://layered.studio"
+
+#. Author of the plugin/theme
+msgid "Layered"
+msgstr "En capas"
+
+#: if-menu.php:398
+msgid "and %d more rule"
+msgid_plural "and %d more rules"
+msgstr[0] "y %d regla más"
+msgstr[1] "y %d reglas más"
+
+#: if-menu.php:331
+msgid "Change menu item visibility"
+msgstr "Cambiar visibilidad del elemento del menú"
+
+#: src/conditions-basic.php:82
+msgid "Device"
+msgstr "Dispositivo"
+
+#: src/conditions-basic.php:59 src/conditions-basic.php:66
+#: src/conditions-basic.php:73
+msgid "Page type"
+msgstr "Tipo de página"
+
+#: src/conditions-basic.php:14
+msgid "User is %s"
+msgstr "El usuario es %s"
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/if-menu/"
+msgstr "https://es.wordpress.org/plugins/if-menu/"
+
+#. Plugin Name of the plugin/theme
+msgid "If Menu"
+msgstr "If Menu"
+
+#: if-menu.php:396
+msgid "%s if %s"
+msgstr "%s si %s"
+
+#: if-menu.php:366
+msgid "OR"
+msgstr "O"
+
+#: if-menu.php:365
+msgid "AND"
+msgstr "Y"
+
+#: if-menu.php:196 if-menu.php:197 if-menu.php:198 if-menu.php:199
+#: if-menu.php:347
+msgid "if"
+msgstr "si"
+
+#: if-menu.php:196 if-menu.php:198 if-menu.php:345
+msgid "Hide"
+msgstr "Ocultar"
+
+#: if-menu.php:197 if-menu.php:199 if-menu.php:344
+msgid "Show"
+msgstr "Mostrar"
+
+#: if-menu.php:153
+msgid "<strong>If Menu</strong> detected a conflict with another plugin or theme (%s) and may not work as expected. <a href=\"%s\" target=\"_blank\">Read more about the issue here</a>"
+msgstr "<strong>If Menu</strong> detectó un conflicto con otro plugin o tema (%s) y no puede funcionar como se esperaría. <a href=\"%s\" target=\"_blank\">Lee más sobre el problema aquí</a>"
+
+#: src/if-menu-nav-menu.php:149
+msgid "Open link in a new window/tab"
+msgstr "Abrir enlace en una nueva ventana/pestaña"
+
+#: src/if-menu-nav-menu.php:118 src/if-menu-nav-menu.php:120
+msgid "Edit Menu Item"
+msgstr "Editar elemento del menú"
+
+#: src/if-menu-nav-menu-4.5.php:210 src/if-menu-nav-menu-4.7.php:200
+#: src/if-menu-nav-menu.php:206
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/if-menu-nav-menu-4.5.php:209 src/if-menu-nav-menu-4.7.php:199
+#: src/if-menu-nav-menu.php:205
+msgid "Remove"
+msgstr "Borrar"
+
+#: src/if-menu-nav-menu-4.5.php:196 src/if-menu-nav-menu-4.7.php:186
+#: src/if-menu-nav-menu.php:192
+msgid "Original: %s"
+msgstr "Original: %s"
+
+#: src/if-menu-nav-menu-4.5.php:189 src/if-menu-nav-menu-4.7.php:180
+#: src/if-menu-nav-menu.php:185
+msgid "To the top"
+msgstr "Al principio"
+
+#: src/if-menu-nav-menu-4.5.php:186 src/if-menu-nav-menu-4.7.php:177
+#: src/if-menu-nav-menu.php:182
+msgid "Down one"
+msgstr "Uno abajo"
+
+#: src/if-menu-nav-menu-4.5.php:185 src/if-menu-nav-menu-4.7.php:176
+#: src/if-menu-nav-menu.php:181
+msgid "Up one"
+msgstr "Uno arriba"
+
+#: src/if-menu-nav-menu-4.5.php:184 src/if-menu-nav-menu-4.7.php:175
+#: src/if-menu-nav-menu.php:180
+msgid "Move"
+msgstr "Mover"
+
+#: src/if-menu-nav-menu-4.5.php:172 src/if-menu-nav-menu-4.7.php:164
+#: src/if-menu-nav-menu.php:168
+msgid "The description will be displayed in the menu if the current theme supports it."
+msgstr "La descripción se mostrará en el menú si el tema actual es compatible con ello."
+
+#: src/if-menu-nav-menu-4.5.php:170 src/if-menu-nav-menu-4.7.php:162
+#: src/if-menu-nav-menu.php:166
+msgid "Description"
+msgstr "Descripción"
+
+#: src/if-menu-nav-menu-4.5.php:164 src/if-menu-nav-menu-4.7.php:156
+#: src/if-menu-nav-menu.php:160
+msgid "Link Relationship (XFN)"
+msgstr "Relación con el enlace (XFN)"
+
+#: src/if-menu-nav-menu-4.5.php:158 src/if-menu-nav-menu-4.7.php:150
+#: src/if-menu-nav-menu.php:154
+msgid "CSS Classes (optional)"
+msgstr "Clases CSS (opcional)"
+
+#: src/if-menu-nav-menu-4.5.php:153 src/if-menu-nav-menu-4.7.php:145
+msgid "Open link in a new tab"
+msgstr "Abrir enlace en nueva pestaña"
+
+#: src/if-menu-nav-menu-4.5.php:146 src/if-menu-nav-menu-4.7.php:138
+#: src/if-menu-nav-menu.php:142
+msgid "Title Attribute"
+msgstr "Atributo del título"
+
+#: src/if-menu-nav-menu-4.5.php:140 src/if-menu-nav-menu-4.7.php:132
+#: src/if-menu-nav-menu.php:136
+msgid "Navigation Label"
+msgstr "Etiqueta de navegación"
+
+#: src/if-menu-nav-menu-4.5.php:133 src/if-menu-nav-menu-4.7.php:125
+#: src/if-menu-nav-menu.php:129
+msgid "URL"
+msgstr "URL"
+
+#: src/if-menu-nav-menu-4.5.php:124 src/if-menu-nav-menu-4.7.php:116
+msgid "Edit"
+msgstr "Editar"
+
+#: src/if-menu-nav-menu-4.5.php:124 src/if-menu-nav-menu-4.7.php:116
+msgid "Edit menu item"
+msgstr "Editar elemento del menú"
+
+#: src/if-menu-nav-menu-4.5.php:120 src/if-menu-nav-menu-4.7.php:112
+#: src/if-menu-nav-menu.php:116
+msgid "Move down"
+msgstr "Mover abajo"
+
+#: src/if-menu-nav-menu-4.5.php:107 src/if-menu-nav-menu-4.7.php:99
+#: src/if-menu-nav-menu.php:103
+msgid "Move up"
+msgstr "Mover arriba"
+
+#: src/if-menu-nav-menu-4.5.php:86 src/if-menu-nav-menu-4.7.php:78
+#: src/if-menu-nav-menu.php:81
+msgid "sub item"
+msgstr "subelemento"
+
+#. translators: %s: title of menu item in draft status
+#: src/if-menu-nav-menu-4.5.php:71 src/if-menu-nav-menu-4.7.php:66
+#: src/if-menu-nav-menu.php:66
+msgid "%s (Pending)"
+msgstr "%s (pendiente)"
+
+#. translators: %s: title of menu item which is invalid
+#: src/if-menu-nav-menu-4.5.php:67 src/if-menu-nav-menu-4.7.php:62
+#: src/if-menu-nav-menu.php:62
+msgid "%s (Invalid)"
+msgstr "%s (no válido)"
+
+#: src/conditions-basic.php:45
+msgid "Is logged in for current site"
+msgstr "Está conectado en el sitio actual"
+
+#: if-menu.php:198 src/conditions-basic.php:80
+msgid "Mobile"
+msgstr "Móvil"
+
+#: src/conditions-basic.php:71
+msgid "Page"
+msgstr "Página"
+
+#: src/conditions-basic.php:64
+msgid "Single Post"
+msgstr "Entrada"
+
+#: src/conditions-basic.php:57
+msgid "Front Page"
+msgstr "Portada"
+
+#: if-menu.php:196 if-menu.php:197 src/conditions-basic.php:37
+msgid "User is logged in"
+msgstr "El usuario está conectado"

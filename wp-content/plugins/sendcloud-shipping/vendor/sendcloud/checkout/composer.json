@@ -1,0 +1,23 @@
+{
+    "name": "sendcloud/checkout",
+    "description": "SendCloud checkout library.",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": ">=5.3",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "SendCloud\\Checkout\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SendCloud\\Tests\\": "tests"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    }
+}

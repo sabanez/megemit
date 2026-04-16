@@ -1,0 +1,729 @@
+{
+  "checkout_configuration": {
+    "asdf": "a2bace8c-8941-4da7-b812-291beae616f9",
+    "integration_id": 192763,
+    "version": null,
+    "updated_at": "2021-11-04T13:25:41.462374+01:00",
+    "currency": "EUR",
+    "delivery_zones": [
+      {
+        "asdfa": "42615c7d-9c39-4a1c-b71a-f9551fa5bf01",
+        "location": {
+          "country": {
+            "name": null
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "1dd4812e-c512-4ce8-8932-ed71a1ce0c7f",
+            "internal_title": "Nominated day delivery",
+            "external_title": "Nominated day delivery",
+            "description": "Test description",
+            "delivery_method_type": "same_day_delivery",
+            "carrier": {
+              "code": "fietskoeriers",
+              "name": "Fietskoeriers.nl",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/fietskoeriers/img/logo.svg"
+            },
+            "sender_address_id": 47565,
+            "shipping_product": {
+              "code": "fietskoeriers:letterbox/sameday",
+              "name": "Fietskoeriers Letterbox Sameday",
+              "lead_time_hours": 12,
+              "carrier_delivery_days": {
+                "friday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "monday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "sunday": null,
+                "tuesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "saturday": null,
+                "thursday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "wednesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                }
+              },
+              "lead_time_hours_override": null,
+              "selected_functionalities": {
+                "b2b": true,
+                "b2c": true,
+                "tracked": true,
+                "last_mile": "home_delivery",
+                "first_mile": "pickup",
+                "multicollo": true,
+                "form_factor": "mailbox",
+                "service_area": "domestic",
+                "delivery_attempts": 1,
+                "delivery_deadline": "sameday",
+                "direct_contract_only": true
+              }
+            },
+            "parcel_handover_days": {
+              "friday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "sunday": {
+                "enabled": false,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "saturday": {
+                "enabled": false,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              }
+            },
+            "show_carrier_information_in_checkout": true,
+            "holidays": [],
+            "shipping_rate_data": {
+              "enabled": true,
+              "currency": "EUR",
+              "free_shipping": {
+                "enabled": true,
+                "from_amount": "500"
+              },
+              "shipping_rates": [
+                {
+                  "rate": "1",
+                  "enabled": true,
+                  "is_default": true,
+                  "max_weight": 2000,
+                  "min_weight": 0
+                }
+              ]
+            },
+            "time_zone_name": "Europe/Amsterdam"
+          },
+          null
+        ]
+      },
+      {
+        "id": "4fb0eb8d-3a57-4710-b82a-e224a6a9378f",
+        "location": {
+          "country": {
+            "name": "Germany",
+            "iso_2": "DE"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": null,
+            "delivery_method_type": null,
+            "carrier": {
+              "code": "dhl",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/dhl/img/logo.svg"
+            },
+            "sender_address_id": 47565,
+            "shipping_product": {
+              "code": "dhl:complete/parcel_connect",
+              "name": "DHL Parcel Connect",
+              "lead_time_hours": 48,
+              "carrier_delivery_days": {
+                "friday": null,
+                "monday": null,
+                "sunday": null,
+                "tuesday": null,
+                "saturday": null,
+                "thursday": null,
+                "wednesday": null
+              },
+              "lead_time_hours_override": null,
+              "selected_functionalities": {
+                "b2b": true,
+                "b2c": true,
+                "tracked": true,
+                "last_mile": "home_delivery",
+                "signature": true,
+                "first_mile": "pickup",
+                "form_factor": "parcel",
+                "service_area": "domestic",
+                "fragile_goods": true,
+                "delivery_attempts": 1,
+                "delivery_deadline": "best_effort",
+                "neighbor_delivery": true
+              }
+            },
+            "order_placement_days": {
+              "friday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "sunday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "saturday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              }
+            },
+            "show_carrier_information_in_checkout": true,
+            "shipping_rate_data": {
+              "enabled": true,
+              "currency": "EUR",
+              "free_shipping": {
+                "enabled": true,
+                "from_amount": "700.00"
+              },
+              "shipping_rates": [
+                {
+                  "rate": "1",
+                  "enabled": true,
+                  "is_default": false,
+                  "max_weight": 2001,
+                  "min_weight": 1
+                },
+                {
+                  "rate": "3",
+                  "enabled": true,
+                  "is_default": true,
+                  "max_weight": 5001,
+                  "min_weight": 2001
+                },
+                {
+                  "rate": "5",
+                  "enabled": false,
+                  "is_default": false,
+                  "max_weight": 15001,
+                  "min_weight": 5001
+                },
+                {
+                  "rate": "10",
+                  "enabled": true,
+                  "is_default": false,
+                  "max_weight": 31500,
+                  "min_weight": 15000
+                }
+              ]
+            },
+            "time_zone_name": "Europe/Amsterdam"
+          }
+        ]
+      },
+      {
+        "id": "20",
+        "location": {
+          "country": {
+            "name": "Belgium",
+            "iso_2": "BE"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "37",
+            "internal_title": "one-day-handover-cut-off-15",
+            "external_title": "DHL-a-lot-of-methods_signature-required",
+            "delivery_method_type": "nominated_day_delivery",
+            "description": "Test description",
+            "carrier": {
+              "code": null,
+              "asdf": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/dhl_express/img/logo.svg"
+            },
+            "shipping_product": null,
+            "shipping_rate_data": {
+
+            },
+            "parcel_handover_days": {
+              "friday": {
+                "enabled": true,
+                "cut_off_time_hours": 13,
+                "cut_off_time_minutes": 0
+              },
+              "monday": null,
+              "sunday": null,
+              "tuesday": null,
+              "saturday": null,
+              "thursday": null,
+              "wednesday": null
+            },
+            "show_carrier_information_in_checkout": true
+          }
+        ]
+      },
+      {
+        "id": "21",
+        "location": {
+          "country": {
+            "name": "France",
+            "iso_2": "FR"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "38",
+            "internal_title": "all-days-handover_cut-off-15",
+            "external_title": "Chrono-a-lot-of-methods_signature-disabled",
+            "delivery_method_type": "nominated_day_delivery",
+            "description": "Test description",
+            "carrier": {
+              "code": "chronopost",
+              "name": "Chronopost",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/chronopost/img/logo.svg"
+            },
+            "sender_address_id": 2,
+            "time_zone_name": "Europe/Amsterdam",
+            "shipping_product": {
+              "code": "chronopost:18",
+              "name": "Chrono 18",
+              "lead_time_hours": 24,
+              "lead_time_hours_override": null,
+              "carrier_delivery_days": {
+                "monday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "tuesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "wednesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "thursday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "friday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "saturday": null,
+                "sunday": null
+              },
+              "selected_functionalities": {}
+            },
+            "shipping_rate_data": {
+
+            },
+            "parcel_handover_days": {
+              "friday": {
+                "enabled": null,
+                "asdf": 15,
+                "cut_off_time_minutes": 0
+              },
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 15
+              },
+              "sunday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "saturday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              }
+            },
+            "show_carrier_information_in_checkout": true
+          }
+        ]
+      },
+      {
+        "id": "22",
+        "location": {
+          "country": {
+            "name": "Germany",
+            "iso_2": "DE"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "39",
+            "internal_title": "one-day-handover_cut-off-0015",
+            "external_title": "Brief-Kilotarif_signature-disabled",
+            "delivery_method_type": "nominated_day_delivery",
+            "description": "Test description",
+            "carrier": {
+              "code": "dp",
+              "name": "Deutsche Post",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/dp/img/logo.svg"
+            },
+            "sender_address_id": 3,
+            "time_zone_name": "Europe/Amsterdam",
+            "shipping_product": {
+              "code": "dp:brief_kilotarif_international/mailbox",
+              "name": "Brief Kilotarif international ohne USt.",
+              "lead_time_hours": 24,
+              "lead_time_hours_override": null,
+              "carrier_delivery_days": {
+                "monday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "tuesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "wednesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "thursday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "friday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "saturday": null,
+                "sunday": null
+              },
+              "selected_functionalities": {}
+            },
+            "shipping_rate_data": {
+
+            },
+            "parcel_handover_days": {
+              "friday": null,
+              "monday": null,
+              "sunday": null,
+              "tuesday": null,
+              "saturday": null,
+              "thursday": null,
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 0,
+                "cut_off_time_minutes": 15
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "23",
+        "location": {
+          "country": {
+            "name": "Italy",
+            "iso_2": "IT"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "40",
+            "internal_title": "almost-all-handover-days_cut-off-2330",
+            "external_title": "PosteItaliane_signature-not-required",
+            "delivery_method_type": "nominated_day_delivery",
+            "description": "Test description",
+            "carrier": {
+              "code": "poste_italiane",
+              "name": "Poste Italiane",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/poste_italiane/img/logo.svg"
+            },
+            "sender_address_id": 7,
+            "time_zone_name": "Europe/Amsterdam",
+            "shipping_product": {
+              "code": "poste_italiane:P46",
+              "name": "Poste Italiane Crono Express",
+              "lead_time_hours": 24,
+              "lead_time_hours_override": null,
+              "carrier_delivery_days": {
+                "monday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "tuesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "wednesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "thursday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "friday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "saturday": null,
+                "sunday": null
+              },
+              "selected_functionalities": {
+                "signature": false
+              }
+            },
+            "shipping_rate_data": {
+
+            },
+            "parcel_handover_days": {
+              "friday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 30
+              },
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 30
+              },
+              "sunday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 30
+              },
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 30
+              },
+              "saturday": null,
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 30
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 30
+              }
+            },
+            "show_carrier_information_in_checkout": true
+          }
+        ]
+      },
+      {
+        "id": "24",
+        "location": {
+          "country": {
+            "name": "Spain",
+            "iso_2": "ES"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "41",
+            "internal_title": "workdays-handover_cut-off-15",
+            "external_title": "SEUR-servicepoint_sugnature-disabled",
+            "delivery_method_type": "nominated_day_delivery",
+            "description": "Test description",
+            "carrier": {
+              "code": "seur",
+              "name": "SEUR",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/seur/img/logo.svg"
+            },
+            "sender_address_id": 6,
+            "time_zone_name": "Europe/Amsterdam",
+            "shipping_product": {
+              "code": "seur:servicepoint",
+              "name": "SEUR Servicepoint Delivery 0-1 kg",
+              "lead_time_hours": 24,
+              "lead_time_hours_override": null,
+              "carrier_delivery_days": {
+                "monday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "tuesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "wednesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "thursday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "friday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "saturday": null,
+                "sunday": null
+              },
+              "selected_functionalities": {}
+            },
+            "shipping_rate_data": {
+
+            },
+            "parcel_handover_days": {
+              "friday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "sunday": null,
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "saturday": null,
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              }
+            },
+            "show_carrier_information_in_checkout": true
+          }
+        ]
+      }
+    ],
+    "minimal_plugin_version": "2.0.0"
+  }
+}

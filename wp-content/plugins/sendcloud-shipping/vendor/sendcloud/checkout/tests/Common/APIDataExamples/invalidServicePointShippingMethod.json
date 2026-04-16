@@ -1,0 +1,97 @@
+{
+  "checkout_configuration": {
+    "id": "60def8ff-417c-488f-bf20-c8c9d57412b6",
+    "integration_id": 203141,
+    "service_point_check_dimensions": false,
+    "version": 3,
+    "updated_at": "2021-12-23T15:13:58.133868+01:00",
+    "currency": "EUR",
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOTgzNiwiaW50ZWdyYXRpb25faWQiOjIwMzE0MSwiY2hlY2tvdXRfY29uZmlnX2lkIjoiNjBkZWY4ZmYtNDE3Yy00ODhmLWJmMjAtYzhjOWQ1NzQxMmI2In0.tBpHe63apITP4mOj9KVbc0w4qOndDhCuWDkopIWxWGU",
+    "minimal_plugin_version": "2.0.0",
+    "delivery_zones": [
+      {
+        "id": "1633259c-1928-43fe-8116-d22d9da974a1",
+        "location": {
+          "country": {
+            "name": "Netherlands",
+            "iso_2": "NL"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "8b92208b-b620-4434-9114-24f31e7fab79",
+            "delivery_method_type": "service_point_delivery",
+            "description": "Test description",
+            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOTgzNiwiaW50ZWdyYXRpb25faWQiOjIwMzE0MSwiY2hlY2tvdXRfY29uZmlnX2lkIjoiNjBkZWY4ZmYtNDE3Yy00ODhmLWJmMjAtYzhjOWQ1NzQxMmI2In0.tBpHe63apITP4mOj9KVbc0w4qOndDhCuWDkopIWxWGU",
+            "carriers": [
+              {
+                "name": "DPD (Benelux and Germany)",
+                "code": "dpd",
+                "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/dpd/img/logo.svg"
+              }
+            ],
+            "sender_address_id": 47565,
+            "show_carrier_information_in_checkout": true,
+            "shipping_rate_data": {},
+            "time_zone_name": "Europe/Amsterdam",
+            "service_point_data": {
+              "api_key": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOTgzNiwiaW50ZWdyYXRpb25faWQiOjIwMzE0MSwiY2hlY2tvdXRfY29uZmlnX2lkIjoiNjBkZWY4ZmYtNDE3Yy00ODhmLWJmMjAtYzhjOWQ1NzQxMmI2In0.tBpHe63apITP4mOj9KVbc0w4qOndDhCuWDkopIWxWGU",
+              "country_iso_2": "NL"
+            }
+          }
+        ]
+      },
+      {
+        "id": "5544259c-1928-43fe-8116-d22d9da974a1",
+        "location": {
+          "country": {
+            "name": "Germany",
+            "iso_2": "DE"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "8b92208b-b620-4434-9114-24f31e7fab79",
+            "internal_title": "Service points test 2",
+            "external_title": "Service points test 3",
+            "description": "Test description",
+            "delivery_method_type": "service_point_delivery",
+            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOTgzNiwiaW50ZWdyYXRpb25faWQiOjIwMzE0MSwiY2hlY2tvdXRfY29uZmlnX2lkIjoiNjBkZWY4ZmYtNDE3Yy00ODhmLWJmMjAtYzhjOWQ1NzQxMmI2In0.tBpHe63apITP4mOj9KVbc0w4qOndDhCuWDkopIWxWGU",
+            "carriers": [
+              {
+                "code": "dpd"
+              }
+            ],
+            "show_carrier_information_in_checkout": true,
+            "shipping_rate_data": {},
+            "service_point_data": {
+              "country_iso_2": "NL"
+            }
+          },
+          {
+            "id": "8b92208b-b620-4434-9114-24f31e7fab79",
+            "internal_title": "Service points DRP",
+            "external_title": "Service points DRP",
+            "description": "Test description",
+            "delivery_method_type": "service_point_delivery",
+            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOTgzNiwiaW50ZWdyYXRpb25faWQiOjIwMzE0MSwiY2hlY2tvdXRfY29uZmlnX2lkIjoiNjBkZWY4ZmYtNDE3Yy00ODhmLWJmMjAtYzhjOWQ1NzQxMmI2In0.tBpHe63apITP4mOj9KVbc0w4qOndDhCuWDkopIWxWGU",
+            "carriers": [
+              {
+                "code": null,
+                "name": "DPD (Benelux and Germany)",
+                "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/dpd/img/logo.svg"
+              }
+            ],
+            "sender_address_id": 47565,
+            "shipping_rate_data": {},
+            "time_zone_name": "Europe/Amsterdam",
+            "service_point_data": {
+              "api_key": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOTgzNiwiaW50ZWdyYXRpb25faWQiOjIwMzE0MSwiY2hlY2tvdXRfY29uZmlnX2lkIjoiNjBkZWY4ZmYtNDE3Yy00ODhmLWJmMjAtYzhjOWQ1NzQxMmI2In0.tBpHe63apITP4mOj9KVbc0w4qOndDhCuWDkopIWxWGU",
+              "country_iso_2": null
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

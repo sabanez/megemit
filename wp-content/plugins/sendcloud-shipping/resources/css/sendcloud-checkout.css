@@ -1,0 +1,18 @@
+.woocommerce-checkout-review-order-table input[type="radio"].shipping_method + label {
+    font-weight: 700;
+}
+
+.sc-delivery-method-description {
+    padding-left: 2.75rem;
+    font-size: 0.9em;
+    padding-bottom:0
+}
+
+.sc-delivery-method-mount-point {
+    display: block;
+    width: 100%;
+}
+
+.woocommerce-shipping-totals input[type="radio"].shipping_method + label {
+    font-weight: 700;
+}

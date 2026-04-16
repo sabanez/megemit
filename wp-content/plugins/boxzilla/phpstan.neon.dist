@@ -1,0 +1,13 @@
+parameters:
+    level: 5
+    treatPhpDocTypesAsCertain: false
+    paths:
+      - boxzilla.php
+      - autoload.php
+      - src/
+      - uninstall.php
+    ignoreErrors:
+        - identifier: function.impossibleType
+          path: src/default-filters.php
+        - message: '#Parameter \#2 \$callback of function add_filter expects callable\(\)#'
+          path: src/default-filters.php

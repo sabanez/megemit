@@ -1,0 +1,437 @@
+{
+  "checkout_configuration": {
+    "id": "a2bace8c-8941-4da7-b812-291beae616f9",
+    "integration_id": 192763,
+    "version": 4,
+    "updated_at": "2021-11-04T13:25:41.462374+01:00",
+    "currency": "EUR",
+    "delivery_zones": [
+      {
+        "id": "42615c7d-9c39-4a1c-b71a-f9551fa5bf01",
+        "location": {
+          "country": {
+            "name": "Netherlands",
+            "iso_2": "NL"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "1dd4812e-c512-4ce8-8932-ed71a1ce0c7f",
+            "internal_title": "Nominated day delivery",
+            "external_title": "Nominated day delivery",
+            "description": "Test description",
+            "delivery_method_type": "same_day_delivery",
+            "carrier": {
+              "code": "fietskoeriers",
+              "name": "Fietskoeriers.nl",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/fietskoeriers/img/logo.svg"
+            },
+            "sender_address_id": 47565,
+            "shipping_product": {
+              "code": "fietskoeriers:letterbox/sameday",
+              "name": "Fietskoeriers Letterbox Sameday",
+              "lead_time_hours": 12,
+              "carrier_delivery_days": {
+                "friday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "monday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "sunday": null,
+                "tuesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "saturday": null,
+                "thursday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "wednesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                }
+              },
+              "lead_time_hours_override": null,
+              "selected_functionalities": {
+                "b2b": true,
+                "b2c": true,
+                "tracked": true,
+                "last_mile": "home_delivery",
+                "first_mile": "pickup",
+                "multicollo": true,
+                "form_factor": "mailbox",
+                "service_area": "domestic",
+                "delivery_attempts": 1,
+                "delivery_deadline": "sameday",
+                "direct_contract_only": true
+              }
+            },
+            "parcel_handover_days": {
+              "friday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 0
+              },
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 0
+              },
+              "sunday": {
+                "enabled": false,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 0
+              },
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 0
+              },
+              "saturday": {
+                "enabled": false,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 0
+              },
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 0
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 23,
+                "cut_off_time_minutes": 0
+              }
+            },
+            "show_carrier_information_in_checkout": true,
+            "holidays": [
+              {
+                "frequency": null,
+                "from_date": "2021-07-07",
+                "recurring": false,
+                "title": "Birthday extravaganza",
+                "to_date": "2021-07-09"
+              },
+              {
+                "frequency": "yearly",
+                "from_date": "2021-12-24",
+                "recurring": true,
+                "title": "Saturnalia",
+                "to_date": "2021-12-26"
+              }
+            ],
+            "shipping_rate_data": {
+              "enabled": true,
+              "currency": "EUR",
+              "free_shipping": {
+                "enabled": true,
+                "from_amount": "500"
+              },
+              "shipping_rates": [
+                {
+                  "rate": "1",
+                  "enabled": true,
+                  "is_default": true,
+                  "max_weight": 3000,
+                  "min_weight": 0
+                },
+                {
+                  "rate": "2",
+                  "enabled": false,
+                  "is_default": true,
+                  "max_weight": 6000,
+                  "min_weight": 3000
+                },
+                {
+                  "rate": "3",
+                  "enabled": true,
+                  "is_default": true,
+                  "max_weight": 9000,
+                  "min_weight": 6000
+                }
+              ]
+            },
+            "time_zone_name": "Europe/Amsterdam"
+          },
+          {
+            "id": "2a89657c-78f7-461a-8f3c-f3863eb8c97f",
+            "internal_title": "Same day delivery",
+            "external_title": "Same day delivery",
+            "description": "Test description",
+            "delivery_method_type": "same_day_delivery",
+            "carrier": {
+              "code": "fietskoeriers",
+              "name": "Fietskoeriers.nl",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/fietskoeriers/img/logo.svg"
+            },
+            "sender_address_id": 47565,
+            "shipping_product": {
+              "code": "fietskoeriers:standard/sameday",
+              "name": "Fietskoeriers Standard Same Day",
+              "lead_time_hours": 12,
+              "carrier_delivery_days": {
+                "friday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "monday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "sunday": null,
+                "tuesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "saturday": null,
+                "thursday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "wednesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                }
+              },
+              "lead_time_hours_override": null,
+              "selected_functionalities": {
+                "b2b": true,
+                "b2c": true,
+                "tracked": true,
+                "last_mile": "home_delivery",
+                "first_mile": "pickup",
+                "multicollo": true,
+                "form_factor": "parcel",
+                "service_area": "domestic",
+                "delivery_attempts": 2,
+                "delivery_deadline": "sameday",
+                "direct_contract_only": true
+              }
+            },
+            "parcel_handover_days": {
+              "friday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "sunday": {
+                "enabled": false,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "saturday": {
+                "enabled": false,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              }
+            },
+            "show_carrier_information_in_checkout": true,
+            "holidays": [
+              {
+                "frequency": null,
+                "from_date": "2021-07-07",
+                "recurring": false,
+                "title": "Birthday extravaganza",
+                "to_date": "2021-07-09"
+              },
+              {
+                "frequency": "yearly",
+                "from_date": "2021-12-24",
+                "recurring": true,
+                "title": "Saturnalia",
+                "to_date": "2021-12-26"
+              }
+            ],
+            "shipping_rate_data": {},
+            "time_zone_name": "Europe/Amsterdam"
+          }
+        ]
+      },
+      {
+        "id": "4fb0eb8d-3a57-4710-b82a-e224a6a9378f",
+        "location": {
+          "country": {
+            "name": "Germany",
+            "iso_2": "DE"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "7ab769d5-5c5a-49b5-bee5-040406eb3655",
+            "internal_title": "Standard",
+            "external_title": "Standard",
+            "description": "Test description",
+            "delivery_method_type": "standard_delivery",
+            "carrier": {
+              "code": "dhl",
+              "name": "DHL",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/dhl/img/logo.svg"
+            },
+            "sender_address_id": 47565,
+            "shipping_product": {
+              "code": "dhl:complete/parcel_connect",
+              "name": "DHL Parcel Connect",
+              "lead_time_hours": 48,
+              "carrier_delivery_days": {
+                "friday": null,
+                "monday": null,
+                "sunday": null,
+                "tuesday": null,
+                "saturday": null,
+                "thursday": null,
+                "wednesday": null
+              },
+              "lead_time_hours_override": null,
+              "selected_functionalities": {
+                "b2b": true,
+                "b2c": true,
+                "tracked": true,
+                "last_mile": "home_delivery",
+                "signature": true,
+                "first_mile": "pickup",
+                "form_factor": "parcel",
+                "service_area": "domestic",
+                "fragile_goods": true,
+                "delivery_attempts": 1,
+                "delivery_deadline": "best_effort",
+                "neighbor_delivery": true
+              }
+            },
+            "order_placement_days": {
+              "friday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "sunday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "saturday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              }
+            },
+            "show_carrier_information_in_checkout": true,
+            "shipping_rate_data": {
+              "enabled": true,
+              "currency": "EUR",
+              "free_shipping": {
+                "enabled": true,
+                "from_amount": "700.00"
+              },
+              "shipping_rates": [
+                {
+                  "rate": "1",
+                  "enabled": true,
+                  "is_default": false,
+                  "max_weight": 2001,
+                  "min_weight": 1
+                },
+                {
+                  "rate": "3",
+                  "enabled": true,
+                  "is_default": true,
+                  "max_weight": 5001,
+                  "min_weight": 2001
+                },
+                {
+                  "rate": "5",
+                  "enabled": false,
+                  "is_default": false,
+                  "max_weight": 15001,
+                  "min_weight": 5001
+                },
+                {
+                  "rate": "10",
+                  "enabled": true,
+                  "is_default": false,
+                  "max_weight": 31500,
+                  "min_weight": 15000
+                }
+              ]
+            },
+            "time_zone_name": "Europe/Amsterdam"
+          }
+        ]
+      }
+    ],
+    "minimal_plugin_version": "2.0.0"
+  }
+}

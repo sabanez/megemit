@@ -1,0 +1,283 @@
+#sendcloud_shipping_connect .connect {
+    margin-bottom: 15px;
+}
+
+.sendcloud-enable-permalinks {
+    color: red;
+}
+
+#sendcloud-config-panel {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    gap: 32px;
+    font-family: Source Sans Pro, sans-serif;
+    color: #000000;
+    max-width: 1600px;
+    padding-right: 20px;
+}
+
+#sendcloud-config-panel a {
+    text-decoration: none;
+}
+
+#sendcloud-config-panel .sendcloud-shipping-methods {
+    width: 100%;
+    overflow: auto;
+}
+
+#sendcloud-config-panel .sendcloud-main-content {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: inherit;
+    width: 100%;
+}
+
+#sendcloud-config-panel .sendcloud-side-content {
+    flex: 1;
+    min-width: 350px;
+}
+
+#sendcloud-config-panel table {
+    width: 100%;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    border-radius: 0 0 6px 6px;
+    color: #212121;
+}
+
+#sendcloud-config-panel table thead {
+    color: #686868;
+}
+
+#sendcloud-config-panel table tr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+}
+
+#sendcloud-config-panel .main-table {
+    min-width: 950px;
+}
+
+#sendcloud-config-panel .main-table .shipping-rates-table tr:nth-child(n+1) {
+    background-color: #FFFFFF;
+}
+
+#sendcloud-config-panel .main-table .shipping-rates {
+    padding: 10px 20px 10px 20px;
+}
+
+#sendcloud-config-panel .main-table .shipping-rates-table {
+    max-width: 100%;
+}
+
+#sendcloud-config-panel .main-table .shipping-rates-table tr {
+    padding: 5px 0 5px 0;
+}
+
+#sendcloud-config-panel .main-table .shipping-rates-table td {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+#sendcloud-config-panel .main-table tbody tr:nth-child(4n+1) {
+    background-color: #F5F6FA;
+}
+
+#sendcloud-config-panel .main-table td {
+    width: 100%;
+}
+
+.sendcloud-panel-box {
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+#sendcloud-config-panel h3 {
+    padding: 0 0 16px 0;
+    margin: 0;
+    color: #212121;
+}
+
+#sendcloud-config-panel .sendcloud-main-content h3 {
+    color: #212121;
+}
+
+#sendcloud-config-panel hr {
+    margin: 0 -20px 0 -20px;
+    padding: 0 0 20px 0;
+}
+
+.sendcloud-integration-info .sendcloud-button-text-container {
+    padding-top: 20px;
+}
+
+.sendcloud-integration-info .sendcloud-button-text-container p {
+    padding-bottom: 8px;
+    margin: 0;
+    font-weight: normal;
+}
+
+.sendcloud-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 18px;
+    height: 43px;
+    border: 1px solid #0C1C3C;
+    box-sizing: border-box;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    vertical-align: middle;
+    font-weight: 700;
+    font-family: inherit;
+    line-height: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sendcloud-button--primary {
+    background-color: #112857;
+    border-color: #4D5E81;
+    color: #FFFFFF
+}
+
+.sendcloud-button--primary:hover {
+    background-color: #4d5e81;
+    border-color: #112857;
+    color: #fff;
+}
+
+
+.sendcloud-button--secondary {
+    background-color: #FFFFFF;
+    border-color: currentColor;
+    color: #112857;
+}
+
+.sendcloud-button--secondary:hover {
+    background-color: #D2EAFF;
+    border-color: #A5D5FF;
+    color: #112857;
+}
+
+#sendcloud-config-panel .edit-btn {
+    height: 43px;
+    width: 43px;
+    padding: 10px;
+}
+
+#sendcloud-config-panel .action-column {
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    max-width: 70px;
+}
+
+#sendcloud-config-panel .nav-column {
+    max-width: 20px;
+}
+
+#sendcloud-config-panel .sendcloud-shipping-zones {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+#sendcloud-config-panel .sc-hidden {
+    display: none;
+}
+
+.sc-expand {
+    padding-right: 5px;
+    cursor: pointer;
+}
+
+.sc-arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.sc-left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.sc-right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.sc-up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.sc-down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+.sc-info-banner {
+    background-color: #e8f5ff;
+    border: 1px solid #a5d5ff;
+    border-radius: 6px;
+    color: #112857;
+    display: flex;
+    align-items: center;
+    line-height: 20px;
+    padding: 20px;
+}
+
+.sc-info-banner a {
+    font-weight: bold;
+    color: #112857;
+}
+
+.sc-info-icon {
+    height: 23px;
+    margin-right: 20px;
+    width: 23px;
+    color: #1d97ff;
+}
+
+@media only screen and (max-width: 680px) {
+    #sendcloud-config-panel {
+        padding-right: 0;
+    }
+
+    #sendcloud-config-panel .sendcloud-side-content {
+        min-width: 100%;
+    }
+}
+
+.sendcloud-button-disabled {
+    background: #fff;
+    pointer-events: none;
+    color: grey;
+    border: 1px solid #0C1C3C;
+}
+
+.banner-add-space {
+    margin-top: 10px;
+}
+
+.sc-error-banner {
+    background-color: #ffebf0;
+    border: 1px solid #C5C5C5;
+    border-radius: 6px;
+    color: #112857;
+    display: flex;
+    align-items: center;
+    line-height: 20px;
+    padding: 20px;
+}

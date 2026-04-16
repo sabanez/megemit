@@ -1,0 +1,1026 @@
+# Translation of Plugins - WooCommerce Legacy REST API - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - WooCommerce Legacy REST API - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2024-12-24 12:59:14+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.1\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - WooCommerce Legacy REST API - Stable (latest release)\n"
+
+#: includes/class-wc-legacy-rest-api-plugin.php:86
+msgid "⚠ <b>The Legacy REST API plugin and HPOS are both active on this site.</b><br/><br/>Please be aware that the WooCommerce Legacy REST API is <b>not</b> compatible with HPOS. <a target=\"_blank\" href=\"%s\">Manage features</a>"
+msgstr "⚠ <b>El plugin API REST heredada y HPOS están ambos activos en este sitio.</b><br/><br/>Por favor, ten en cuenta que la API REST heredada de WooCommerce es <b>no</b> compatible con HPOS. <a target=\"_blank\" href=\"%s\">Gestionar funciones</a>"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:639
+msgid "You do not have permission to read the tax classes count"
+msgstr "No tienes permiso para leer el recuento de tipos de impuestos"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:620
+msgid "Could not delete the tax class"
+msgstr "No se ha podido borrar el tipo de impuesto"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:612
+msgid "You do not have permission to delete tax classes"
+msgstr "No tienes permisos para borrar los tipos de impuestos"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:569
+msgid "You do not have permission to create tax classes"
+msgstr "No tienes permiso para crear tipos de impuestos"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:534
+msgid "Standard rate"
+msgstr "Tarifa estándar"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:526
+msgid "You do not have permission to read tax classes"
+msgstr "No tienes permiso para leer las tipos de impuestos"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:373
+msgid "You do not have permission to read the taxes count"
+msgstr "No tienes permiso para leer el recuento de impuestos"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:351
+msgid "Could not delete the tax rate"
+msgstr "No se ha podido borrar la tasa de impuestos"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:343
+msgid "You do not have permission to delete tax rates"
+msgstr "No tienes permisos para borrar las tasas de impuestos"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:259
+msgid "You do not have permission to edit tax rates"
+msgstr "No tienes permiso para editar las tasas de impuestos"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:189
+msgid "You do not have permission to create tax rates"
+msgstr "No tienes permisos para crear tasas de impuestos"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:135
+msgid "A tax rate with the provided ID could not be found"
+msgstr "No se ha encontrado un tipo impositivo con el ID proporcionado"
+
+#: includes/legacy/api/v3/class-wc-api-taxes.php:128
+msgid "You do not have permission to read tax rate"
+msgstr "No tienes permisos para leer la tasa de impuesto"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:3300
+msgid "Could not delete the shipping class"
+msgstr "No se ha podido borrar la clase de envío"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:3294
+msgid "You do not have permission to delete product shipping classes"
+msgstr "No tienes permisos para borrar las clases de envío de producto"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:3269
+msgid "Could not edit the shipping class"
+msgstr "No se ha podido editar la clase de envío"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:3257
+msgid "You do not have permission to edit product shipping classes"
+msgstr "No tienes permisos para editar las clases de envío de producto"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:3214
+msgid "Product shipping class parent is invalid"
+msgstr "La clase de envío padre del producto no es válida"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:3196
+msgid "You do not have permission to create product shipping classes"
+msgstr "No tienes permisos para crear clases de envío de producto"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:3158
+msgid "A product shipping class with the provided ID could not be found"
+msgstr "No se ha encontrado una clase de envío de producto con el ID proporcionado"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:3147
+msgid "Invalid product shipping class ID"
+msgstr "ID de clase de envío de producto no válido"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:3117
+#: includes/legacy/api/v3/class-wc-api-products.php:3152
+msgid "You do not have permission to read product shipping classes"
+msgstr "No tienes permiso para leer las clases de envío de los productos"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:2974
+msgid "You do not have permission to delete product attribute terms"
+msgstr "No tienes permisos para borrar términos de atributos del producto."
+
+#: includes/legacy/api/v3/class-wc-api-products.php:2817
+msgid "A product attribute term with the provided ID could not be found"
+msgstr "No se ha podido encontrar un término de atributo de producto con el ID proporcionado"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:2752
+#: includes/legacy/api/v3/class-wc-api-products.php:2805
+msgid "You do not have permission to read product attribute terms"
+msgstr "No tienes permiso para leer las condiciones de los atributos del producto"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:1053
+msgid "Could not delete the tag"
+msgstr "No se ha podido borrar la etiqueta"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:1047
+msgid "You do not have permission to delete product tag"
+msgstr "No tienes permisos para borrar la etiqueta de producto"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:1024
+msgid "Could not edit the tag"
+msgstr "No se ha podido editar la etiqueta"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:1012
+msgid "You do not have permission to edit product tags"
+msgstr "No tienes permisos para editar etiquetas de productos"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:964
+msgid "You do not have permission to create product tags"
+msgstr "No tienes permisos para crear etiquetas de productos"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:929
+msgid "A product tag with the provided ID could not be found"
+msgstr "No se ha podido encontrar una etiqueta de producto con la ID proporcionada"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:918
+msgid "Invalid product tag ID"
+msgstr "ID de etiqueta de producto no válida"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:885
+#: includes/legacy/api/v3/class-wc-api-products.php:923
+msgid "You do not have permission to read product tags"
+msgstr "No tienes permisos para leer las etiquetas de los productos"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:861
+msgid "Could not delete the category"
+msgstr "No se ha podido borrar la categoría"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:855
+msgid "You do not have permission to delete product category"
+msgstr "No tienes permisos para borrar categorías de productos"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:822
+msgid "Could not edit the category"
+msgstr "No se ha podido editar la categoría"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:792
+msgid "You do not have permission to edit product categories"
+msgstr "No tienes permisos para editar categorías de productos"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:732
+msgid "Product category parent is invalid"
+msgstr "La categoría de producto padre no es válida"
+
+#: includes/legacy/api/v3/class-wc-api-products.php:712
+msgid "You do not have permission to create product categories"
+msgstr "No tienes permisos para crear categorías de productos"
+
+#: includes/legacy/api/v3/class-wc-api-authentication.php:114
+msgid "Consumer Secret is invalid."
+msgstr "El secreto del consumidor no es válido."
+
+#: includes/legacy/api/v3/class-wc-api-authentication.php:111
+msgid "WooCommerce API. Use a consumer key in the username field and a consumer secret in the password field."
+msgstr "API de WooCommerce. Utiliza una clave de consumidor en el campo nombre de usuario y un secreto de consumidor en el campo contraseña."
+
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:449
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:449
+msgid "Invalid webhook delivery."
+msgstr "Entrega de webhook no válida."
+
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:441
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:441
+msgid "Invalid webhook delivery ID."
+msgstr "ID de entrega de webhook no válido."
+
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:265
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:265
+msgid "Webhook topic must be valid."
+msgstr "El debate del webhook debe ser válido."
+
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:199
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:199
+msgctxt "Webhook created on date parsed by DateTime::format"
+msgid "M d, Y @ h:i A"
+msgstr "M d, Y @ h:i A"
+
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:199
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:199
+msgid "Webhook created on %s"
+msgstr "Webhook creado en %s"
+
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:190
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:276
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:190
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:276
+msgid "Webhook delivery URL must be a valid URL starting with http:// or https://"
+msgstr "La URL de entrega del webhook debe ser una URL válida que empiece por http:// o https://"
+
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:185
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:185
+msgid "Webhook topic is required and must be valid."
+msgstr "El tema del Webhook es obligatorio y debe ser válido."
+
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:178
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:178
+msgid "You do not have permission to create webhooks."
+msgstr "No tienes permiso para crear webhooks."
+
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:143
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:143
+msgid "You do not have permission to read the webhooks count"
+msgstr "No tienes permiso para leer el recuento de webhooks"
+
+#: includes/legacy/api/v2/class-wc-api-resource.php:103
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:482
+#: includes/legacy/api/v3/class-wc-api-resource.php:111
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:482
+msgid "No %1$s found with the ID equal to %2$s"
+msgstr "No se ha encontrado ningún %1$s con el ID igual a %2$s"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:2199
+msgid "Invalid product SKU"
+msgstr "SKU de producto no válido"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:2157
+#: includes/legacy/api/v3/class-wc-api-products.php:2712
+msgid "Could not delete the attribute"
+msgstr "No se ha podido borrar el atributo"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:2135
+#: includes/legacy/api/v3/class-wc-api-products.php:2690
+msgid "You do not have permission to delete product attributes"
+msgstr "No tienes permisos para borrar atributos de producto"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:2105
+#: includes/legacy/api/v3/class-wc-api-products.php:2659
+msgid "Could not edit the attribute"
+msgstr "No se ha podido editar el atributo"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:2059
+#: includes/legacy/api/v3/class-wc-api-products.php:2613
+#: includes/legacy/api/v3/class-wc-api-products.php:2921
+msgid "You do not have permission to edit product attributes"
+msgstr "No tienes permisos para editar los atributos de producto"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:1974
+#: includes/legacy/api/v3/class-wc-api-products.php:2527
+#: includes/legacy/api/v3/class-wc-api-products.php:2855
+msgid "You do not have permission to create product attributes"
+msgstr "No tienes permisos para crear atributos de producto"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:1947
+#: includes/legacy/api/v3/class-wc-api-products.php:2500
+msgid "Invalid product attribute order_by type - the product attribute order_by type must be any of these: %s"
+msgstr "El tipo de atributo de producto «order_by» no es válido - el tipo de atributo de producto «order_by» debe ser alguno de los siguientes: %s"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:1942
+#: includes/legacy/api/v3/class-wc-api-products.php:2495
+msgid "Invalid product attribute type - the product attribute type must be any of these: %s"
+msgstr "Tipo de atributo de producto no válido - el tipo de atributo de producto debe ser cualquiera de estos: %s"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:1937
+#: includes/legacy/api/v3/class-wc-api-products.php:2490
+msgid "Slug \"%s\" is already in use. Change it, please."
+msgstr "El slug «%s» ya se está utilizando. Cámbialo, por favor."
+
+#: includes/legacy/api/v2/class-wc-api-products.php:1935
+#: includes/legacy/api/v3/class-wc-api-products.php:2488
+msgid "Slug \"%s\" is not allowed because it is a reserved term. Change it, please."
+msgstr "El slug «%s» no está permitido porque es un término reservado. Cámbialo, por favor."
+
+#: includes/legacy/api/v2/class-wc-api-products.php:1933
+#: includes/legacy/api/v3/class-wc-api-products.php:2486
+msgid "Slug \"%s\" is too long (28 characters max). Shorten it, please."
+msgstr "El slug «%s» es demasiado largo (el máximo es 28 caracteres) . Acórtalo, por favor."
+
+#: includes/legacy/api/v2/class-wc-api-products.php:1897
+#: includes/legacy/api/v2/class-wc-api-products.php:2147
+#: includes/legacy/api/v3/class-wc-api-products.php:2450
+#: includes/legacy/api/v3/class-wc-api-products.php:2702
+#: includes/legacy/api/v3/class-wc-api-products.php:2759
+#: includes/legacy/api/v3/class-wc-api-products.php:2811
+#: includes/legacy/api/v3/class-wc-api-products.php:2861
+#: includes/legacy/api/v3/class-wc-api-products.php:2927
+#: includes/legacy/api/v3/class-wc-api-products.php:2980
+msgid "A product attribute with the provided ID could not be found"
+msgstr "No se ha podido encontrar un atributo de producto con la ID proporcionada"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:1882
+#: includes/legacy/api/v3/class-wc-api-products.php:2435
+#: includes/legacy/api/v3/class-wc-api-products.php:2800
+msgid "Invalid product attribute ID"
+msgstr "ID de atributo de producto no válida"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:1841
+#: includes/legacy/api/v2/class-wc-api-products.php:1887
+#: includes/legacy/api/v3/class-wc-api-products.php:2394
+#: includes/legacy/api/v3/class-wc-api-products.php:2440
+msgid "You do not have permission to read product attributes"
+msgstr "No tienes permisos para leer los atributos de producto"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:949
+#: includes/legacy/api/v3/class-wc-api-products.php:1434
+msgid "The SKU already exists on another product."
+msgstr "El SKU ya existe en otro producto."
+
+#: includes/legacy/api/v2/class-wc-api-products.php:604
+#: includes/legacy/api/v3/class-wc-api-products.php:663
+msgid "A product category with the provided ID could not be found"
+msgstr "No se ha podido encontrar una categoría de producto con la ID proporcionada"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:593
+#: includes/legacy/api/v3/class-wc-api-products.php:652
+msgid "Invalid product category ID"
+msgstr "ID de categoría de producto no válida"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:560
+#: includes/legacy/api/v2/class-wc-api-products.php:598
+#: includes/legacy/api/v3/class-wc-api-products.php:619
+#: includes/legacy/api/v3/class-wc-api-products.php:657
+msgid "You do not have permission to read product categories"
+msgstr "No tienes permisos para leer las categorías de producto"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:243
+#: includes/legacy/api/v2/class-wc-api-products.php:369
+#: includes/legacy/api/v3/class-wc-api-products.php:292
+#: includes/legacy/api/v3/class-wc-api-products.php:423
+msgid "Invalid product type - the product type must be any of these: %s"
+msgstr "Tipo de producto no válido - el tipo de producto debe ser alguno de estos: %s"
+
+#: includes/legacy/api/v2/class-wc-api-products.php:221
+#: includes/legacy/api/v3/class-wc-api-products.php:270
+msgid "You do not have permission to create products"
+msgstr "No tienes permisos para crear productos"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1686
+#: includes/legacy/api/v2/class-wc-api-orders.php:1747
+#: includes/legacy/api/v3/class-wc-api-orders.php:1731
+#: includes/legacy/api/v3/class-wc-api-orders.php:1792
+msgid "The order refund ID provided is not associated with the order."
+msgstr "El ID de reembolso del pedido proporcionado no está asociado al pedido."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1628
+#: includes/legacy/api/v3/class-wc-api-orders.php:1673
+msgid "An error occurred while attempting to create the refund using the payment gateway API."
+msgstr "Se ha producido un error al intentar crear el reembolso utilizando la API de la pasarela de pago."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1611
+#: includes/legacy/api/v3/class-wc-api-orders.php:1656
+msgid "Cannot create order refund, please try again."
+msgstr "No se puede crear el reembolso del pedido, inténtalo de nuevo."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1601
+#: includes/legacy/api/v3/class-wc-api-orders.php:1646
+msgid "Refund amount must be positive."
+msgstr "El importe del reembolso debe ser positivo."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1599
+#: includes/legacy/api/v3/class-wc-api-orders.php:1644
+msgid "Refund amount is required."
+msgstr "Es obligatorio el importe del reembolso."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1586
+#: includes/legacy/api/v3/class-wc-api-orders.php:1631
+msgid "You do not have permission to create order refunds"
+msgstr "No tienes permisos para crear reembolsos de pedidos"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1519
+#: includes/legacy/api/v2/class-wc-api-orders.php:1681
+#: includes/legacy/api/v2/class-wc-api-orders.php:1742
+#: includes/legacy/api/v3/class-wc-api-orders.php:1564
+#: includes/legacy/api/v3/class-wc-api-orders.php:1726
+#: includes/legacy/api/v3/class-wc-api-orders.php:1787
+msgid "An order refund with the provided ID could not be found."
+msgstr "No se ha podido encontrar un reembolso de pedido con la ID proporcionada."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1512
+#: includes/legacy/api/v2/class-wc-api-orders.php:1674
+#: includes/legacy/api/v2/class-wc-api-orders.php:1735
+#: includes/legacy/api/v3/class-wc-api-orders.php:1557
+#: includes/legacy/api/v3/class-wc-api-orders.php:1719
+#: includes/legacy/api/v3/class-wc-api-orders.php:1780
+msgid "Invalid order refund ID."
+msgstr "ID de reembolso de pedido no válida."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1450
+#: includes/legacy/api/v3/class-wc-api-orders.php:1495
+msgid "Permanently deleted order note"
+msgstr "Nota de pedido borrada permanentemente"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1445
+#: includes/legacy/api/v3/class-wc-api-orders.php:1490
+msgid "This order note cannot be deleted"
+msgstr "Esta nota de pedido no se puede borrar"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1374
+#: includes/legacy/api/v2/class-wc-api-orders.php:1438
+#: includes/legacy/api/v3/class-wc-api-orders.php:1419
+#: includes/legacy/api/v3/class-wc-api-orders.php:1483
+msgid "The order note ID provided is not associated with the order"
+msgstr "El ID de nota de pedido facilitado no está asociado al pedido"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1316
+#: includes/legacy/api/v3/class-wc-api-orders.php:1361
+msgid "Cannot create order note, please try again."
+msgstr "No se ha podido crear la nota de pedido, por favor, inténtalo de nuevo."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1307
+#: includes/legacy/api/v3/class-wc-api-orders.php:1352
+msgid "Order note is required"
+msgstr "Se requiere nota de pedido"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1292
+#: includes/legacy/api/v3/class-wc-api-orders.php:1337
+msgid "You do not have permission to create order notes"
+msgstr "No tienes permisos para crear notas de pedidos"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1258
+#: includes/legacy/api/v2/class-wc-api-orders.php:1369
+#: includes/legacy/api/v2/class-wc-api-orders.php:1433
+#: includes/legacy/api/v3/class-wc-api-orders.php:1303
+#: includes/legacy/api/v3/class-wc-api-orders.php:1414
+#: includes/legacy/api/v3/class-wc-api-orders.php:1478
+msgid "An order note with the provided ID could not be found"
+msgstr "No se ha podido encontrar ninguna nota de pedido con el ID proporcionado"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1252
+#: includes/legacy/api/v2/class-wc-api-orders.php:1362
+#: includes/legacy/api/v2/class-wc-api-orders.php:1426
+#: includes/legacy/api/v3/class-wc-api-orders.php:1297
+#: includes/legacy/api/v3/class-wc-api-orders.php:1407
+#: includes/legacy/api/v3/class-wc-api-orders.php:1471
+msgid "Invalid order note ID"
+msgstr "ID de nota de pedido no válido"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1185
+#: includes/legacy/api/v3/class-wc-api-orders.php:1230
+msgid "Cannot update coupon, try again."
+msgstr "No se puede actualizar el cupón, inténtalo de nuevo."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1159
+#: includes/legacy/api/v3/class-wc-api-orders.php:1204
+msgid "Coupon code is required."
+msgstr "El código de cupón no es válido."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1152
+#: includes/legacy/api/v3/class-wc-api-orders.php:1197
+msgid "Coupon discount total must be a positive amount."
+msgstr "El total del descuento del cupón debe ser una cantidad positiva."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1134
+#: includes/legacy/api/v3/class-wc-api-orders.php:1179
+msgid "Cannot update fee, try again."
+msgstr "No se puede actualizar la cuota, inténtalo de nuevo."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1094
+#: includes/legacy/api/v3/class-wc-api-orders.php:1139
+msgid "Fee tax class is required when fee is taxable."
+msgstr "La tipo de impuesto es necesario cuando la cuota es imponible."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1083
+#: includes/legacy/api/v3/class-wc-api-orders.php:1128
+msgid "Fee title is required"
+msgstr "Se requiere un título de cuota"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1063
+#: includes/legacy/api/v3/class-wc-api-orders.php:1108
+msgid "Cannot update shipping method, try again."
+msgstr "No se puede actualizar el método de envío, inténtalo de nuevo."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1036
+#: includes/legacy/api/v3/class-wc-api-orders.php:1081
+msgid "Shipping method ID is required."
+msgstr "Se requiere el ID del método de envío."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:1029
+#: includes/legacy/api/v3/class-wc-api-orders.php:1074
+msgid "Shipping total must be a positive amount."
+msgstr "El total del envío debe ser un importe positivo."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:953
+#: includes/legacy/api/v3/class-wc-api-orders.php:998
+msgid "Cannot create line item, try again."
+msgstr "No se puede crear el elemento de la línea, inténtalo de nuevo."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:910
+#: includes/legacy/api/v3/class-wc-api-orders.php:954
+msgid "Product quantity is required."
+msgstr "Se requiere la cantidad de producto."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:905
+#: includes/legacy/api/v3/class-wc-api-orders.php:949
+msgid "Product quantity must be a positive float."
+msgstr "La cantidad de producto debe ser un float positivo."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:900
+#: includes/legacy/api/v3/class-wc-api-orders.php:944
+msgid "Product is invalid."
+msgstr "El producto no es válido."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:890
+#: includes/legacy/api/v3/class-wc-api-orders.php:934
+msgid "The product variation is invalid"
+msgstr "La variación del producto no es válida"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:875
+#: includes/legacy/api/v3/class-wc-api-orders.php:919
+msgid "Product ID provided does not match this line item"
+msgstr "El ID de producto facilitado no coincide con este elemento de la línea"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:865
+#: includes/legacy/api/v3/class-wc-api-orders.php:909
+msgid "Product ID or SKU is required"
+msgstr "Se requiere el ID del producto o SKU"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:844
+#: includes/legacy/api/v3/class-wc-api-orders.php:888
+msgid "Order item ID provided is not associated with order."
+msgstr "El ID del artículo del pedido proporcionado no está asociado con el pedido."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:521
+#: includes/legacy/api/v2/class-wc-api-orders.php:1592
+#: includes/legacy/api/v3/class-wc-api-orders.php:559
+#: includes/legacy/api/v3/class-wc-api-orders.php:1637
+msgid "Order ID is invalid"
+msgstr "El ID del pedido no es válido"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:448
+#: includes/legacy/api/v2/class-wc-api-orders.php:600
+#: includes/legacy/api/v3/class-wc-api-orders.php:488
+#: includes/legacy/api/v3/class-wc-api-orders.php:637
+msgid "Provided order currency is invalid."
+msgstr "La moneda del pedido no es válida."
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:432
+#: includes/legacy/api/v3/class-wc-api-orders.php:472
+msgid "Payment method ID and title are required"
+msgstr "El ID del método de pago y el título son obligatorios"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:398
+#: includes/legacy/api/v3/class-wc-api-orders.php:433
+msgid "Cannot create order: %s"
+msgstr "No se puede crear el pedido: %s"
+
+#: includes/legacy/api/v2/class-wc-api-orders.php:372
+#: includes/legacy/api/v3/class-wc-api-orders.php:407
+msgid "You do not have permission to create orders"
+msgstr "No tienes permisos para crear pedidos"
+
+#: includes/legacy/api/v2/class-wc-api-customers.php:374
+#: includes/legacy/api/v3/class-wc-api-customers.php:375
+msgid "This resource cannot be created."
+msgstr "El recurso no puede ser creado."
+
+#: includes/legacy/api/v2/class-wc-api-customers.php:207
+#: includes/legacy/api/v2/class-wc-api-customers.php:210
+#: includes/legacy/api/v3/class-wc-api-customers.php:208
+#: includes/legacy/api/v3/class-wc-api-customers.php:211
+msgid "Invalid customer email"
+msgstr "El correo electrónico del cliente no es válido"
+
+#: includes/legacy/api/v2/class-wc-api-coupons.php:529
+#: includes/legacy/api/v2/class-wc-api-customers.php:792
+#: includes/legacy/api/v2/class-wc-api-orders.php:1783
+#: includes/legacy/api/v2/class-wc-api-products.php:2257
+#: includes/legacy/api/v3/class-wc-api-coupons.php:529
+#: includes/legacy/api/v3/class-wc-api-customers.php:782
+#: includes/legacy/api/v3/class-wc-api-orders.php:1828
+#: includes/legacy/api/v3/class-wc-api-products.php:3049
+#: includes/legacy/api/v3/class-wc-api-taxes.php:465
+msgid "Unable to accept more than %s items for this request."
+msgstr "No se han podido aceptar más de %s elementos para esta solicitud."
+
+#: includes/legacy/api/v2/class-wc-api-coupons.php:521
+#: includes/legacy/api/v2/class-wc-api-customers.php:784
+#: includes/legacy/api/v2/class-wc-api-orders.php:1775
+#: includes/legacy/api/v2/class-wc-api-products.php:2249
+#: includes/legacy/api/v3/class-wc-api-coupons.php:521
+#: includes/legacy/api/v3/class-wc-api-customers.php:774
+#: includes/legacy/api/v3/class-wc-api-orders.php:1820
+#: includes/legacy/api/v3/class-wc-api-products.php:3041
+#: includes/legacy/api/v3/class-wc-api-taxes.php:457
+msgid "No %1$s data specified to create/edit %1$s"
+msgstr "No se han especificado datos %1$s para crear/editar %1$s"
+
+#: includes/legacy/api/v2/class-wc-api-coupons.php:350
+#: includes/legacy/api/v2/class-wc-api-coupons.php:358
+#: includes/legacy/api/v3/class-wc-api-coupons.php:348
+#: includes/legacy/api/v3/class-wc-api-coupons.php:356
+msgid "Failed to update coupon"
+msgstr "Se ha producido un fallo al actualizar el cupón"
+
+#: includes/legacy/api/v2/class-wc-api-coupons.php:324
+#: includes/legacy/api/v2/class-wc-api-customers.php:404
+#: includes/legacy/api/v2/class-wc-api-orders.php:504
+#: includes/legacy/api/v2/class-wc-api-orders.php:1344
+#: includes/legacy/api/v2/class-wc-api-orders.php:1658
+#: includes/legacy/api/v2/class-wc-api-products.php:323
+#: includes/legacy/api/v2/class-wc-api-products.php:2051
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:242
+#: includes/legacy/api/v3/class-wc-api-coupons.php:322
+#: includes/legacy/api/v3/class-wc-api-customers.php:405
+#: includes/legacy/api/v3/class-wc-api-orders.php:542
+#: includes/legacy/api/v3/class-wc-api-orders.php:1389
+#: includes/legacy/api/v3/class-wc-api-orders.php:1703
+#: includes/legacy/api/v3/class-wc-api-products.php:377
+#: includes/legacy/api/v3/class-wc-api-products.php:784
+#: includes/legacy/api/v3/class-wc-api-products.php:1004
+#: includes/legacy/api/v3/class-wc-api-products.php:2605
+#: includes/legacy/api/v3/class-wc-api-products.php:2913
+#: includes/legacy/api/v3/class-wc-api-products.php:3249
+#: includes/legacy/api/v3/class-wc-api-taxes.php:254
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:242
+msgid "No %1$s data specified to edit %1$s"
+msgstr "No se han especificado datos %1$s para editar %1$s"
+
+#: includes/legacy/api/v2/class-wc-api-coupons.php:261
+#: includes/legacy/api/v2/class-wc-api-coupons.php:365
+#: includes/legacy/api/v3/class-wc-api-coupons.php:259
+#: includes/legacy/api/v3/class-wc-api-coupons.php:363
+msgid "Invalid coupon type - the coupon type must be any of these: %s"
+msgstr "Tipo de cupón no válido - el tipo de cupón debe ser alguno de estos: %s"
+
+#: includes/legacy/api/v2/class-wc-api-coupons.php:219
+#: includes/legacy/api/v3/class-wc-api-coupons.php:217
+msgid "You do not have permission to create coupons"
+msgstr "No tienes permisos para crear cupones"
+
+#: includes/legacy/api/v2/class-wc-api-coupons.php:212
+#: includes/legacy/api/v2/class-wc-api-customers.php:349
+#: includes/legacy/api/v2/class-wc-api-orders.php:365
+#: includes/legacy/api/v2/class-wc-api-orders.php:1285
+#: includes/legacy/api/v2/class-wc-api-orders.php:1579
+#: includes/legacy/api/v2/class-wc-api-products.php:214
+#: includes/legacy/api/v2/class-wc-api-products.php:1967
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:171
+#: includes/legacy/api/v3/class-wc-api-coupons.php:210
+#: includes/legacy/api/v3/class-wc-api-customers.php:350
+#: includes/legacy/api/v3/class-wc-api-orders.php:400
+#: includes/legacy/api/v3/class-wc-api-orders.php:1330
+#: includes/legacy/api/v3/class-wc-api-orders.php:1624
+#: includes/legacy/api/v3/class-wc-api-products.php:263
+#: includes/legacy/api/v3/class-wc-api-products.php:707
+#: includes/legacy/api/v3/class-wc-api-products.php:959
+#: includes/legacy/api/v3/class-wc-api-products.php:2520
+#: includes/legacy/api/v3/class-wc-api-products.php:2848
+#: includes/legacy/api/v3/class-wc-api-products.php:3191
+#: includes/legacy/api/v3/class-wc-api-taxes.php:184
+#: includes/legacy/api/v3/class-wc-api-taxes.php:564
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:171
+msgid "No %1$s data specified to create %1$s"
+msgstr "No se han especificado datos %1$s para crear %1$s"
+
+#: includes/legacy/api/v1/class-wc-api-server.php:412
+#: includes/legacy/api/v2/class-wc-api-coupons.php:226
+#: includes/legacy/api/v2/class-wc-api-customers.php:363
+#: includes/legacy/api/v2/class-wc-api-products.php:228
+#: includes/legacy/api/v2/class-wc-api-products.php:1929
+#: includes/legacy/api/v2/class-wc-api-server.php:430
+#: includes/legacy/api/v3/class-wc-api-coupons.php:224
+#: includes/legacy/api/v3/class-wc-api-customers.php:364
+#: includes/legacy/api/v3/class-wc-api-products.php:277
+#: includes/legacy/api/v3/class-wc-api-products.php:2482
+#: includes/legacy/api/v3/class-wc-api-products.php:2868
+#: includes/legacy/api/v3/class-wc-api-server.php:431
+#: includes/legacy/api/v3/class-wc-api-taxes.php:575
+msgid "Missing parameter %s"
+msgstr "Falta el parámetro %s"
+
+#: includes/legacy/api/v1/class-wc-api-server.php:377
+#: includes/legacy/api/v2/class-wc-api-server.php:375
+#: includes/legacy/api/v3/class-wc-api-server.php:375
+msgid "No route was found matching the URL and request method"
+msgstr "No se encontró la ruta que coincida con la URL y el método de la petición"
+
+#: includes/legacy/api/v1/class-wc-api-server.php:340
+#: includes/legacy/api/v2/class-wc-api-server.php:338
+#: includes/legacy/api/v3/class-wc-api-server.php:338
+msgid "The handler for the route is invalid"
+msgstr "El controlador para la ruta es no válido"
+
+#: includes/legacy/api/v1/class-wc-api-server.php:321
+#: includes/legacy/api/v2/class-wc-api-server.php:319
+#: includes/legacy/api/v3/class-wc-api-server.php:319
+msgid "Unsupported request method"
+msgstr "Método de solicitud no compatible"
+
+#: includes/legacy/api/v1/class-wc-api-server.php:168
+#: includes/legacy/api/v2/class-wc-api-server.php:164
+#: includes/legacy/api/v3/class-wc-api-server.php:164
+msgid "Invalid authentication method"
+msgstr "Método de identificación no válido"
+
+#: includes/legacy/api/v1/class-wc-api-resource.php:333
+#: includes/legacy/api/v2/class-wc-api-products.php:468
+#: includes/legacy/api/v2/class-wc-api-products.php:2176
+#: includes/legacy/api/v2/class-wc-api-resource.php:390
+#: includes/legacy/api/v3/class-wc-api-products.php:527
+#: includes/legacy/api/v3/class-wc-api-products.php:866
+#: includes/legacy/api/v3/class-wc-api-products.php:1058
+#: includes/legacy/api/v3/class-wc-api-products.php:2732
+#: includes/legacy/api/v3/class-wc-api-products.php:2994
+#: includes/legacy/api/v3/class-wc-api-products.php:3305
+#: includes/legacy/api/v3/class-wc-api-resource.php:400
+#: includes/legacy/api/v3/class-wc-api-taxes.php:354
+#: includes/legacy/api/v3/class-wc-api-taxes.php:623
+msgid "Deleted %s"
+msgstr "%s borrado"
+
+#: includes/legacy/api/v1/class-wc-api-resource.php:327
+#: includes/legacy/api/v2/class-wc-api-products.php:464
+#: includes/legacy/api/v2/class-wc-api-resource.php:386
+#: includes/legacy/api/v3/class-wc-api-products.php:523
+#: includes/legacy/api/v3/class-wc-api-resource.php:394
+msgid "Permanently deleted %s"
+msgstr "Se ha borrado permanentemente %s"
+
+#: includes/legacy/api/v1/class-wc-api-resource.php:323
+#: includes/legacy/api/v2/class-wc-api-products.php:455
+#: includes/legacy/api/v2/class-wc-api-resource.php:382
+#: includes/legacy/api/v3/class-wc-api-products.php:514
+#: includes/legacy/api/v3/class-wc-api-products.php:2987
+#: includes/legacy/api/v3/class-wc-api-resource.php:390
+msgid "This %s cannot be deleted"
+msgstr "Este %s no se puede borrar"
+
+#: includes/legacy/api/v1/class-wc-api-resource.php:315
+#: includes/legacy/api/v2/class-wc-api-resource.php:374
+#: includes/legacy/api/v3/class-wc-api-resource.php:382
+msgid "The customer cannot be deleted"
+msgstr "El cliente no puede borrarse"
+
+#: includes/legacy/api/v1/class-wc-api-resource.php:313
+#: includes/legacy/api/v2/class-wc-api-resource.php:372
+#: includes/legacy/api/v3/class-wc-api-resource.php:380
+msgid "Permanently deleted customer"
+msgstr "Cliente borrado permanentemente"
+
+#: includes/legacy/api/v1/class-wc-api-resource.php:107
+#: includes/legacy/api/v2/class-wc-api-resource.php:131
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:502
+#: includes/legacy/api/v3/class-wc-api-resource.php:140
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:502
+msgid "You do not have permission to delete this %s"
+msgstr "No tienes permisos para borrar este %s"
+
+#: includes/legacy/api/v1/class-wc-api-resource.php:101
+#: includes/legacy/api/v2/class-wc-api-resource.php:125
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:496
+#: includes/legacy/api/v3/class-wc-api-resource.php:134
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:496
+msgid "You do not have permission to edit this %s"
+msgstr "No tienes permisos para editar este %s"
+
+#: includes/legacy/api/v1/class-wc-api-resource.php:95
+#: includes/legacy/api/v2/class-wc-api-resource.php:119
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:490
+#: includes/legacy/api/v3/class-wc-api-resource.php:128
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:490
+msgid "You do not have permission to read this %s"
+msgstr "No tienes permisos para leer este %s"
+
+#: includes/legacy/api/v1/class-wc-api-resource.php:87
+#: includes/legacy/api/v2/class-wc-api-resource.php:111
+#: includes/legacy/api/v3/class-wc-api-resource.php:119
+msgid "Invalid %s"
+msgstr "%s no válido"
+
+#: includes/legacy/api/v1/class-wc-api-resource.php:74
+#: includes/legacy/api/v2/class-wc-api-resource.php:94
+#: includes/legacy/api/v2/class-wc-api-webhooks.php:476
+#: includes/legacy/api/v3/class-wc-api-resource.php:96
+#: includes/legacy/api/v3/class-wc-api-webhooks.php:476
+msgid "Invalid %s ID"
+msgstr "ID %s no válida"
+
+#: includes/legacy/api/v1/class-wc-api-reports.php:475
+#: includes/legacy/api/v2/class-wc-api-reports.php:322
+#: includes/legacy/api/v3/class-wc-api-reports.php:326
+msgid "You do not have permission to read this report"
+msgstr "No tienes permisos para leer este informe"
+
+#: includes/legacy/api/v1/class-wc-api-products.php:459
+#: includes/legacy/api/v1/class-wc-api-products.php:460
+#: includes/legacy/api/v2/class-wc-api-products.php:1620
+#: includes/legacy/api/v2/class-wc-api-products.php:1621
+#: includes/legacy/api/v3/class-wc-api-products.php:2119
+#: includes/legacy/api/v3/class-wc-api-products.php:2120
+msgid "Placeholder"
+msgstr "Marcador de posición"
+
+#: includes/legacy/api/v1/class-wc-api-products.php:147
+#: includes/legacy/api/v2/class-wc-api-products.php:185
+#: includes/legacy/api/v3/class-wc-api-products.php:234
+msgid "You do not have permission to read the products count"
+msgstr "No tienes permisos para leer la cantidad de productos"
+
+#: includes/legacy/api/v1/class-wc-api-orders.php:255
+#: includes/legacy/api/v2/class-wc-api-orders.php:299
+#: includes/legacy/api/v3/class-wc-api-orders.php:336
+msgid "You do not have permission to read the orders count"
+msgstr "No tienes permisos para leer la cantidad de pedidos"
+
+#: includes/legacy/api/v1/class-wc-api-json-handler.php:62
+#: includes/legacy/api/v2/class-wc-api-json-handler.php:61
+#: includes/legacy/api/v3/class-wc-api-json-handler.php:61
+msgid "The JSONP callback function is invalid"
+msgstr "La función callback de JSONP no es válida"
+
+#: includes/legacy/api/v1/class-wc-api-json-handler.php:55
+#: includes/legacy/api/v2/class-wc-api-json-handler.php:54
+#: includes/legacy/api/v3/class-wc-api-json-handler.php:54
+msgid "JSONP support is disabled on this site"
+msgstr "La compatibilidad con JSONP está desactivada en este sitio."
+
+#: includes/legacy/api/v1/class-wc-api-customers.php:461
+#: includes/legacy/api/v2/class-wc-api-customers.php:746
+#: includes/legacy/api/v3/class-wc-api-customers.php:736
+msgid "You do not have permission to delete this customer"
+msgstr "No tienes permisos para borrar este cliente"
+
+#: includes/legacy/api/v1/class-wc-api-customers.php:455
+#: includes/legacy/api/v2/class-wc-api-customers.php:740
+#: includes/legacy/api/v3/class-wc-api-customers.php:730
+msgid "You do not have permission to edit this customer"
+msgstr "No tienes permisos para editar este cliente"
+
+#: includes/legacy/api/v1/class-wc-api-customers.php:449
+#: includes/legacy/api/v2/class-wc-api-customers.php:734
+#: includes/legacy/api/v3/class-wc-api-customers.php:724
+msgid "You do not have permission to read this customer"
+msgstr "No tienes permisos para leer este cliente"
+
+#: includes/legacy/api/v1/class-wc-api-customers.php:441
+#: includes/legacy/api/v2/class-wc-api-customers.php:726
+#: includes/legacy/api/v3/class-wc-api-customers.php:716
+msgid "Invalid customer"
+msgstr "Cliente no válido"
+
+#: includes/legacy/api/v1/class-wc-api-customers.php:434
+#: includes/legacy/api/v2/class-wc-api-customers.php:719
+#: includes/legacy/api/v3/class-wc-api-customers.php:709
+msgid "Invalid customer ID"
+msgstr "ID de cliente no válida"
+
+#: includes/legacy/api/v1/class-wc-api-customers.php:202
+#: includes/legacy/api/v2/class-wc-api-customers.php:356
+#: includes/legacy/api/v3/class-wc-api-customers.php:357
+msgid "You do not have permission to create this customer"
+msgstr "No tienes permisos para crear este cliente"
+
+#: includes/legacy/api/v1/class-wc-api-customers.php:186
+#: includes/legacy/api/v2/class-wc-api-customers.php:231
+#: includes/legacy/api/v3/class-wc-api-customers.php:232
+msgid "You do not have permission to read the customers count"
+msgstr "No tienes permisos para leer la cantidad de clientes"
+
+#: includes/legacy/api/v1/class-wc-api-coupons.php:174
+#: includes/legacy/api/v2/class-wc-api-coupons.php:189
+#: includes/legacy/api/v3/class-wc-api-coupons.php:187
+msgid "Invalid coupon code"
+msgstr "Código de cupón no válido"
+
+#: includes/legacy/api/v1/class-wc-api-coupons.php:154
+#: includes/legacy/api/v2/class-wc-api-coupons.php:163
+#: includes/legacy/api/v3/class-wc-api-coupons.php:161
+msgid "You do not have permission to read the coupons count"
+msgstr "No tienes permisos para leer la cantidad de cupones"
+
+#: includes/legacy/api/v1/class-wc-api-coupons.php:111
+#: includes/legacy/api/v2/class-wc-api-coupons.php:117
+#: includes/legacy/api/v3/class-wc-api-coupons.php:117
+msgid "Invalid coupon ID"
+msgstr "ID de cupón no válida"
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:387
+#: includes/legacy/api/v2/class-wc-api-authentication.php:384
+#: includes/legacy/api/v3/class-wc-api-authentication.php:391
+msgid "The API key provided does not have write permissions."
+msgstr "La clave API proporcionada no tiene permisos de escritura."
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:378
+#: includes/legacy/api/v2/class-wc-api-authentication.php:375
+#: includes/legacy/api/v3/class-wc-api-authentication.php:382
+msgid "The API key provided does not have read permissions."
+msgstr "La clave de la API proporcionada no tiene permisos de lectura."
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:343
+#: includes/legacy/api/v2/class-wc-api-authentication.php:340
+#: includes/legacy/api/v3/class-wc-api-authentication.php:347
+msgid "Invalid nonce - nonce has already been used."
+msgstr "Nonce no válido - este nonce ya se ha utilizado."
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:333
+#: includes/legacy/api/v2/class-wc-api-authentication.php:330
+#: includes/legacy/api/v3/class-wc-api-authentication.php:337
+msgid "Invalid timestamp."
+msgstr "La marca de tiempo no es válida."
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:275
+#: includes/legacy/api/v2/class-wc-api-authentication.php:272
+#: includes/legacy/api/v3/class-wc-api-authentication.php:272
+msgid "Invalid signature - provided signature does not match."
+msgstr "La firma no es válida: la firma proporcionada no coincide."
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:267
+#: includes/legacy/api/v2/class-wc-api-authentication.php:264
+#: includes/legacy/api/v3/class-wc-api-authentication.php:263
+msgid "Invalid signature - signature method is invalid."
+msgstr "La firma no es válida - el método de firma no es válido."
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:253
+#: includes/legacy/api/v2/class-wc-api-authentication.php:250
+#: includes/legacy/api/v3/class-wc-api-authentication.php:243
+msgid "Invalid signature - failed to sort parameters."
+msgstr "La firma no es válida - se ha producido un fallo al ordenar los parámetros."
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:203
+#: includes/legacy/api/v2/class-wc-api-authentication.php:200
+#: includes/legacy/api/v3/class-wc-api-authentication.php:199
+msgid "API user is invalid"
+msgstr "El usuario de la API no es válido"
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:184
+#: includes/legacy/api/v2/class-wc-api-authentication.php:182
+#: includes/legacy/api/v3/class-wc-api-authentication.php:179
+msgid "Consumer key is invalid."
+msgstr "La clave del consumidor no es válida."
+
+#. translators: %s: parameter name
+#: includes/legacy/api/v1/class-wc-api-authentication.php:149
+#: includes/legacy/api/v2/class-wc-api-authentication.php:147
+#: includes/legacy/api/v3/class-wc-api-authentication.php:144
+msgid "%s parameter is missing"
+msgstr "Falta el parámetro %s"
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:115
+#: includes/legacy/api/v2/class-wc-api-authentication.php:114
+#: includes/legacy/api/v3/class-wc-api-authentication.php:83
+msgid "Consumer secret is invalid."
+msgstr "La clave secreta de cliente no es válida."
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:109
+#: includes/legacy/api/v2/class-wc-api-authentication.php:108
+msgid "Consumer secret is missing."
+msgstr "Falta la clave secreta de cliente."
+
+#: includes/legacy/api/v1/class-wc-api-authentication.php:93
+#: includes/legacy/api/v2/class-wc-api-authentication.php:92
+msgid "Consumer key is missing."
+msgstr "Falta la clave de cliente."
+
+#. translators: 1: variation id 2: product name
+#: includes/legacy/api/class-wc-rest-legacy-products-controller.php:532
+#: includes/legacy/api/v2/class-wc-api-products.php:1293
+#: includes/legacy/api/v3/class-wc-api-products.php:1783
+msgid "Variation #%1$s of %2$s"
+msgstr "Variación #%1$s de %2$s"
+
+#: includes/legacy/api/class-wc-rest-legacy-orders-controller.php:249
+#: includes/legacy/api/v2/class-wc-api-orders.php:388
+#: includes/legacy/api/v2/class-wc-api-orders.php:535
+#: includes/legacy/api/v3/class-wc-api-orders.php:423
+#: includes/legacy/api/v3/class-wc-api-orders.php:573
+msgid "Customer ID is invalid."
+msgstr "La ID del cliente no es válida."
+
+#: includes/legacy/api/class-wc-rest-legacy-coupons-controller.php:129
+#: includes/legacy/api/v2/class-wc-api-coupons.php:233
+#: includes/legacy/api/v2/class-wc-api-coupons.php:344
+#: includes/legacy/api/v3/class-wc-api-coupons.php:231
+#: includes/legacy/api/v3/class-wc-api-coupons.php:342
+msgid "The coupon code already exists"
+msgstr "El código del cupón ya existe"
+
+#: includes/legacy/api/class-wc-rest-legacy-coupons-controller.php:113
+msgid "The coupon code cannot be empty."
+msgstr "El código del cupón no puede estar vacío."
+
+#: includes/class-wc-api.php:80
+msgid "The Rest API is unavailable."
+msgstr "La Rest API no está disponible."
+
+#. Author URI of the plugin
+#: woocommerce-legacy-rest-api.php
+msgid "https://woocommerce.com"
+msgstr "https://woocommerce.com"
+
+#. Author of the plugin
+#: woocommerce-legacy-rest-api.php
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#. Description of the plugin
+#: woocommerce-legacy-rest-api.php
+msgid "The legacy WooCommerce REST API, which used to be part of WooCommerce itself but is removed as of WooCommerce 9.0."
+msgstr "La API REST heredada de WooCommerce, que solía formar parte del propio WooCommerce pero que se ha eliminado a partir de WooCommerce 9.0."
+
+#. Plugin URI of the plugin
+#: woocommerce-legacy-rest-api.php
+msgid "https://github.com/woocommerce/woocommerce-legacy-rest-api"
+msgstr "https://github.com/woocommerce/woocommerce-legacy-rest-api"
+
+#. Plugin Name of the plugin
+#: woocommerce-legacy-rest-api.php
+msgid "WooCommerce Legacy REST API"
+msgstr "WooCommerce Legacy REST API"

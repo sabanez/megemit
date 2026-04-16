@@ -1,0 +1,371 @@
+{
+  "checkout_configuration": {
+    "id": "6206d461-2be9-42a6-a181-2c7151033bfc",
+    "version": 1,
+    "updated_at": "2020-10-20T07:33:56.328Z",
+    "minimal_plugin_version": "2.0.0",
+    "delivery_zones": [
+      {
+        "id": "1",
+        "location": {
+          "country": {
+            "name": "Netherlands",
+            "iso_2": "NL"
+          }
+        },
+        "delivery_methods": [
+          {
+            "id": "1",
+            "internal_title": "all-days-handover_cut-off-15",
+            "external_title": "Unstamped-letter_signature-disabled",
+            "delivery_method_type": "nominated_day_delivery",
+            "description": "Nominated day delivery",
+            "carrier": {
+              "code": "sendcloud",
+              "name": "Sendcloud",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/sendcloud/img/logo.svg"
+            },
+            "sender_address_id": 1,
+            "time_zone_name": "Europe/Amsterdam",
+            "shipping_product": {
+              "code": "sendcloud:letter",
+              "name": "Unstamped letter",
+              "lead_time_hours": 24,
+              "lead_time_hours_override": null,
+              "carrier_delivery_days": {
+                "monday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "tuesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "wednesday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "thursday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "friday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "saturday": {
+                  "enabled": true,
+                  "end_time_hours": null,
+                  "end_time_minutes": null,
+                  "start_time_hours": null,
+                  "start_time_minutes": null
+                },
+                "sunday": null
+              },
+              "selected_functionalities": {}
+            },
+            "parcel_handover_days": {
+              "friday": null,
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "sunday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "saturday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              }
+            },
+            "holidays": [
+              {
+                "frequency": null,
+                "from_date": "2021-07-07",
+                "recurring": false,
+                "title": "Birthday extravaganza",
+                "to_date": "2021-07-09"
+              },
+              {
+                "frequency": "yearly",
+                "from_date": "2021-12-24",
+                "recurring": true,
+                "title": "Saturnalia",
+                "to_date": "2021-12-26"
+              }
+            ],
+            "show_carrier_information_in_checkout": true
+          },
+          {
+            "id": "66daa9f2-386d-4651-8474-94280b23335e",
+            "external_title": "Hex, hex",
+            "internal_title": "Default delivery method 6 cm ellen keys",
+            "description": "Test description",
+            "delivery_method_type": "same_day_delivery",
+            "sender_address_id": 1,
+            "time_zone_name": "Europe/Amsterdam",
+            "shipping_product": {
+              "code": "postnl:standard",
+              "name": "PostNL Standard",
+              "selected_functionalities": {},
+              "carrier_delivery_days": {
+                "monday": {
+                  "enabled": true,
+                  "start_time_hours": 9,
+                  "start_time_minutes": 30,
+                  "end_time_hours": 16,
+                  "end_time_minutes": 30
+                },
+                "tuesday": {
+                  "enabled": true,
+                  "start_time_hours": 6,
+                  "start_time_minutes": 0,
+                  "end_time_hours": 18,
+                  "end_time_minutes": 0
+                },
+                "wednesday": {
+                  "enabled": true,
+                  "start_time_hours": 6,
+                  "start_time_minutes": 0,
+                  "end_time_hours": 18,
+                  "end_time_minutes": 0
+                },
+                "thursday": {
+                  "enabled": true,
+                  "start_time_hours": 6,
+                  "start_time_minutes": 0,
+                  "end_time_hours": 18,
+                  "end_time_minutes": 0
+                },
+                "friday": {
+                  "enabled": true,
+                  "start_time_hours": 6,
+                  "start_time_minutes": 0,
+                  "end_time_hours": 15,
+                  "end_time_minutes": 0
+                },
+                "saturday": null,
+                "sunday": null
+              },
+              "lead_time_hours": 24,
+              "lead_time_hours_override": null
+            },
+            "show_carrier_information_in_checkout": true,
+            "carrier": {
+              "name": "PostNL",
+              "code": "postnl",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/postnl/img/logo.svg"
+            },
+            "parcel_handover_days": {
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 16,
+                "cut_off_time_minutes": 30
+              },
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 18,
+                "cut_off_time_minutes": 0
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 18,
+                "cut_off_time_minutes": 0
+              },
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 18,
+                "cut_off_time_minutes": 0
+              },
+              "friday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "saturday": null,
+              "sunday": null
+            },
+            "holidays": [
+              {
+                "frequency": null,
+                "from_date": "2021-07-07",
+                "recurring": false,
+                "title": "Birthday extravaganza",
+                "to_date": "2021-07-09"
+              },
+              {
+                "frequency": "yearly",
+                "from_date": "2021-12-24",
+                "recurring": true,
+                "title": "Saturnalia",
+                "to_date": "2021-12-26"
+              }
+            ]
+          },
+          {
+            "id": "12",
+            "external_title": "Hex, hex",
+            "internal_title": "Default delivery method 6 cm ellen keys",
+            "description": "Test description",
+            "delivery_method_type": "standard_delivery",
+            "sender_address_id": 1,
+            "shipping_product": {
+              "code": "postnl:standard",
+              "name": "PostNL Standard",
+              "selected_functionalities": {},
+              "carrier_delivery_days": {
+                "monday": {
+                  "enabled": true,
+                  "start_time_hours": 9,
+                  "start_time_minutes": 30,
+                  "end_time_hours": 16,
+                  "end_time_minutes": 30
+                },
+                "tuesday": {
+                  "enabled": true,
+                  "start_time_hours": 6,
+                  "start_time_minutes": 0,
+                  "end_time_hours": 18,
+                  "end_time_minutes": 0
+                },
+                "wednesday": {
+                  "enabled": true,
+                  "start_time_hours": 6,
+                  "start_time_minutes": 0,
+                  "end_time_hours": 18,
+                  "end_time_minutes": 0
+                },
+                "thursday": {
+                  "enabled": true,
+                  "start_time_hours": 6,
+                  "start_time_minutes": 0,
+                  "end_time_hours": 18,
+                  "end_time_minutes": 0
+                },
+                "friday": {
+                  "enabled": true,
+                  "start_time_hours": 6,
+                  "start_time_minutes": 0,
+                  "end_time_hours": 15,
+                  "end_time_minutes": 0
+                },
+                "saturday": null,
+                "sunday": null
+              },
+              "lead_time_hours": 24,
+              "lead_time_hours_override": null
+            },
+            "show_carrier_information_in_checkout": true,
+            "carrier": {
+              "name": "PostNL",
+              "code": "postnl",
+              "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/postnl/img/logo.svg"
+            },
+            "order_placement_days": {
+              "monday": {
+                "enabled": true,
+                "cut_off_time_hours": 16,
+                "cut_off_time_minutes": 30
+              },
+              "tuesday": {
+                "enabled": true,
+                "cut_off_time_hours": 18,
+                "cut_off_time_minutes": 0
+              },
+              "wednesday": {
+                "enabled": true,
+                "cut_off_time_hours": 18,
+                "cut_off_time_minutes": 0
+              },
+              "thursday": {
+                "enabled": true,
+                "cut_off_time_hours": 18,
+                "cut_off_time_minutes": 0
+              },
+              "friday": {
+                "enabled": true,
+                "cut_off_time_hours": 15,
+                "cut_off_time_minutes": 0
+              },
+              "saturday": null,
+              "sunday": null
+            },
+            "time_zone_name": "Europe/Amsterdam"
+          },
+          {
+            "id": "8b92208b-b620-4434-9114-24f31e7fab79",
+            "delivery_method_type": "service_point_delivery",
+            "external_title": "Service point test",
+            "internal_title": "Service point test",
+            "description": null,
+            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOTgzNiwiaW50ZWdyYXRpb25faWQiOjIwMzE0MSwiY2hlY2tvdXRfY29uZmlnX2lkIjoiNjBkZWY4ZmYtNDE3Yy00ODhmLWJmMjAtYzhjOWQ1NzQxMmI2In0.tBpHe63apITP4mOj9KVbc0w4qOndDhCuWDkopIWxWGU",
+            "carriers": [
+              {
+                "name": "DPD (Benelux and Germany)",
+                "code": "dpd",
+                "logo_url": "https://sendcloud-prod-scp-static-files.s3.amazonaws.com/dpd/img/logo.svg"
+              }
+            ],
+            "sender_address_id": 47565,
+            "show_carrier_information_in_checkout": true,
+            "shipping_rate_data": {
+              "enabled": true,
+              "currency": "EUR",
+              "free_shipping": {
+                "enabled": false,
+                "from_amount": ""
+              },
+              "shipping_rates": [
+                {
+                  "rate": "1.00",
+                  "enabled": true,
+                  "is_default": true,
+                  "carrier_code": "dpd"
+                }
+              ]
+            },
+            "time_zone_name": "Europe/Amsterdam",
+            "service_point_data": {
+              "api_key": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOTgzNiwiaW50ZWdyYXRpb25faWQiOjIwMzE0MSwiY2hlY2tvdXRfY29uZmlnX2lkIjoiNjBkZWY4ZmYtNDE3Yy00ODhmLWJmMjAtYzhjOWQ1NzQxMmI2In0.tBpHe63apITP4mOj9KVbc0w4qOndDhCuWDkopIWxWGU",
+              "country_iso_2": "NL"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+*** WooCommerce Sendcloud | The all-in-one shipping platform Changelog ***
+
+= 2024-08-28 - version 2.4.5 =
+* Add missing carrier list on the checkout blocks
+
+= 2024-04-17 - version 2.4.4 =
+* Add compatibility with Mollie payments for WooCommerce blocks in the checkout
+
+= 2024-03-26 - version 2.4.3 =
+* Fix issue with plugin significantly affects site efficiency
+
+= 2024-03-13 - version 2.4.2 =
+* Fix issue with service point carrier list
+
+= 2024-02-27 - version 2.4.1 =
+* Changed: removed errors in console on checkout
+
+= 2024-01-16 - version 2.4.0 =
+* Added: Compatibility with WooCommerce 8.3.0
+
+= 2023-12-05 - version 2.3.0 =
+* Feature: Enable message logging based on the log level
+
+= 2023-11-06 - version 2.2.22 =
+* Changed: readme.txt file
+* Changed: compatible versions of WooCommerce (8.2.1) and WordPress (6.3.2)
+
+= 2023-06-13 - version 2.2.21 =
+* Changed: Adjustment of order synchronization flow
+
+= 2023-05-25 - version 2.2.20 =
+* Feature: Deprecate DynamicCheckout. Remove dynamic checkout configuration, mark dynamic checkout shippping methods as
+deprecated and legacy service point as the only available option for new Sendcloud users.
+
+= 2023-04-11 - version 2.2.19 =
+* Changed: Replace get_woocommerce_currency() with get_option('woocommerce_currency')
+
+= 2023-03-28 - version 2.2.18 =
+* Fix issue with accessing undefined array key
+
+= 2023-01-31 - version 2.2.17 =
+* Added: Enable shop manager role to access plugin page
+
+= 2023-01-16 - version 2.2.16 =
+* Added: New optional public description field for dynamic checkout delivery methods
+* Added: Custom CSS styling classes to allow the customization of the delivery method title and new public description
+* Changed: Remove saving access token on order payload
+
+= 2022-11-10 - version 2.2.14 =
+* Added: Support weight rate logic for Service Point Delivery method
+
+= 2022-11-30 - version 2.2.13 =
+* Fix nonce verification
+
+= 2022-11-01 - version 2.2.12 =
+* Fix shipping rate links
+
+= 2022-10-19 - version 2.2.11 =
+* Add notice when connect button is disabled
+
+= 2022-10-17 - version 2.2.10 =
+* Fix: Fix issue with nominated date delivery shipping method
+* Fix: Fix issue with postal code not being sent to service point picker
+
+= 2022-09-26 - version 2.2.9 =
+* Fix: Add missing translations for checkout shipping methods
+
+= 2022-08-31 - version 2.2.8 =
+* Add compatibility with malware scanner.
+
+= 2022-08-24 - version 2.2.7 =
+* Add compatibility with WooFunnels plugin.
+
+= 2022-06-28 - version 2.2.6 =
+* Fix: Add compatibility with WooCommerce sniffs.
+
+= 2022-06-28 - version 2.2.5 =
+* Fix: Fix issue with service points on checkout.
+
+= 2022-05-23 - version 2.2.4 =
+* Fix: Fix issue with invalid weight.
+
+= 2022-04-14 - version 2.2.3 =
+* Fix: Remove extra array from error response.
+
+= 2022-04-06 - version 2.2.2 =
+* Fix: Fix wp_register_script called incorrectly.
+
+= 2022-03-31 - version 2.2.1 =
+* Fix: Fixed small issue with free shipping method.
+
+= 2022-03-29 - version 2.2.0 =
+* New delivery method in Dynamic Checkout - Service point delivery (available for all users). The service point map is embedded on the page and possible to style with CSS.
+* Legacy Service points method still supported.
+* Setup weight based rates directly in the Dynamic Checkout Delivery methods (standard, same day, nominated day methods).
+* New Coupon support for Dynamic Checkout delivery methods.
+
+= 2022-02-21 - version 2.1.3 =
+* Fix: Replace deprecated function and fix escaping javascript.
+
+= 2022-01-26 - version 2.1.2 =
+* Added: Added more security validations.
+
+= 2021-10-27 - version 2.1.1 =
+* Added: Support for configuring nominated day methods internationally.
+
+= 2021-08-03 - version 2.1.0 =
+* Added: Support for 2 new delivery methods in the Checkout feature for subscription users.
+* New delivery method for small shop and above: standard delivery (international and domestic).
+* New delivery method for large shop and above: same day delivery (domestic, dependent on carrier).
+* Added: Holiday support (for same day/nominated day methods, configurable in Sendcloud platform).
+* Added: Translations for all Sendcloud supported languages (English, Dutch, German, Spanish, French, Italian).
+* WordPress compatibility check for 5.8.
+
+= 2021-07-12 - version 2.0.3 =
+* Fix - Updated translations.
+* Fix - Service points delivery (with same free shipping threshold) are now all visible at checkout.
+
+= 2021-06-21 - version 2.0.2 =
+* Fix - Fixed rendering Nominated day.
+
+= 2021-05-11 - version 2.0.1 =
+* Fix - Enabled compatibility with Woo Funnels plugin to fix Service points Sendcloud.
+
+= 2021-05-05 - version 2.0.0 =
+* Add - Introduced compatibility with the Sendcloud Checkout module giving users the best delivery options.
+  Sendcloud Checkout module allows for the following:
+  Set up delivery options and customize them.
+  Set the pricing for the delivery options based on weight classes.
+  Offer time slots for delivery which are sensitive to cut-off times.
+* Fix - Bug fixes related to compatibility Sendcloud Servicepoints for Woocommerce version 3.
+
+= 2021-02-02 - version 1.1.2 =
+* Added support for Wordpress 5.3
+
+= 2021-01-21 - version 1.1.1 =
+* Added support for Wordpress 5.2.3
+
+= 2021-01-19 - version 1.1.0 =
+* Rebranding

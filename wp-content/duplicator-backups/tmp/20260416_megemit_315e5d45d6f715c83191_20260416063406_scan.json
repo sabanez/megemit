@@ -1,0 +1,1213 @@
+{
+    "Status": 1,
+    "ARC": {
+        "Size": "5.01GB",
+        "DirCount": "6,963",
+        "FileCount": "58,830",
+        "FullCount": "65,793",
+        "USize": 5376329136,
+        "UDirCount": 6963,
+        "UFileCount": 58830,
+        "UFullCount": 65793,
+        "UnreadableDirCount": 0,
+        "UnreadableFileCount": 0,
+        "FilterDirsAll": [
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/.opcache",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/.tmb",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/ai1wm-backups",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/backups-dup-lite",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/backups-dup-pro",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/backupwordpress",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/bps-backup",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/cache",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/content\/cache",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/contents\/cache",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/duplicator-backups",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/infinitewp\/backups",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/managewp\/backups",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/old-cache",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/plugins\/all-in-one-wp-migration\/storage",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/plugins\/really-simple-captcha\/tmp",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/plugins\/wordfence\/tmp",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/updraft",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/aiowps_backups",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/backup-guard",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/backupbuddy_backups",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/backupbuddy_temp",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/ithemes-security\/backups",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/mainwp\/backup",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/pb_backupbuddy",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/snapshots",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/sucuri",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/wp-clone",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/wp_all_backup",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads\/wpbackitup_backups",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/wfcache",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/wishlist-backup",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/wpvividbackups",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-snapshots"
+        ],
+        "FilterFilesAll": [
+            ".DS_Store",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/.htaccess",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/.user.ini",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/php.ini",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/web.config",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-config.php",
+            "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/debug.log",
+            "dbcache",
+            "debug_log",
+            "error_log",
+            "objectcache",
+            "pgcache",
+            "ws_ftp.log"
+        ],
+        "FilterExtsAll": [],
+        "FilteredCoreDirs": [],
+        "RecursiveLinks": [],
+        "UnreadableItems": [],
+        "PathsOutOpenbaseDir": [],
+        "FilteredSites": [],
+        "Subsites": [
+            {
+                "id": 1,
+                "domain": "megemit.loc",
+                "path": "\/",
+                "blogname": "MeGeMIT",
+                "blog_prefix": "wpgr_",
+                "filteredTables": [],
+                "adminUsers": [
+                    {
+                        "ID": "7478",
+                        "user_login": "CristinaCarrasco",
+                        "id": "7478"
+                    },
+                    {
+                        "ID": "4253",
+                        "user_login": "DorisHagleitner",
+                        "id": "4253"
+                    },
+                    {
+                        "ID": "4217",
+                        "user_login": "elenanunez",
+                        "id": "4217"
+                    },
+                    {
+                        "ID": "4206",
+                        "user_login": "Jeremie",
+                        "id": "4206"
+                    },
+                    {
+                        "ID": "7502",
+                        "user_login": "Kathi",
+                        "id": "7502"
+                    },
+                    {
+                        "ID": "4379",
+                        "user_login": "KatjaHansen",
+                        "id": "4379"
+                    },
+                    {
+                        "ID": "6093",
+                        "user_login": "kumbi",
+                        "id": "6093"
+                    },
+                    {
+                        "ID": "5468",
+                        "user_login": "MeGeMIT-Admin",
+                        "id": "5468"
+                    },
+                    {
+                        "ID": "7691",
+                        "user_login": "petfloe",
+                        "id": "7691"
+                    },
+                    {
+                        "ID": "8034",
+                        "user_login": "petra LL",
+                        "id": "8034"
+                    },
+                    {
+                        "ID": "4198",
+                        "user_login": "Sergiomonjon5",
+                        "id": "4198"
+                    },
+                    {
+                        "ID": "5149",
+                        "user_login": "wessel",
+                        "id": "5149"
+                    }
+                ],
+                "fullHomeUrl": "http:\/\/megemit.loc",
+                "fullSiteUrl": "http:\/\/megemit.loc",
+                "uploadPath": "wp-content\/uploads",
+                "fullUploadPath": "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads",
+                "fullUploadSafePath": "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/uploads",
+                "fullUploadUrl": "http:\/\/megemit.loc\/wp-content\/uploads",
+                "filteredPaths": []
+            }
+        ],
+        "Status": {
+            "Size": false,
+            "Big": false,
+            "AddonSites": true,
+            "UnreadableItems": true,
+            "showCreateFuncStatus": true,
+            "showCreateFunc": true,
+            "HasImportableSites": true,
+            "HasNotImportableSites": false,
+            "HasFilteredCoreFolders": false,
+            "HasFilteredSiteTables": false,
+            "HasFilteredSites": false,
+            "IsDBOnly": false,
+            "Network": true,
+            "PackageIsNotImportable": false
+        }
+    },
+    "DB": {
+        "Status": {
+            "Success": true,
+            "Size": false,
+            "Rows": true,
+            "Excluded": true,
+            "Triggers": true,
+            "mysqlDumpMemoryCheck": true,
+            "requiredMysqlDumpLimit": "253.83MB"
+        },
+        "SizeInBytes": 213730848,
+        "Size": "203.83MB",
+        "Rows": "705,145",
+        "TableCount": 165,
+        "TableList": {
+            "wpgr_actionscheduler_actions": {
+                "Case": 0,
+                "Rows": "11,286",
+                "Size": "16.05MB",
+                "USize": 16826368
+            },
+            "wpgr_actionscheduler_claims": {
+                "Case": 0,
+                "Rows": "183",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_actionscheduler_groups": {
+                "Case": 0,
+                "Rows": "18",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_actionscheduler_logs": {
+                "Case": 0,
+                "Rows": "34,037",
+                "Size": "7.55MB",
+                "USize": 7913472
+            },
+            "wpgr_addonlibrary_addons": {
+                "Case": 0,
+                "Rows": "15",
+                "Size": "80KB",
+                "USize": 81920
+            },
+            "wpgr_addonlibrary_categories": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_basel_wishlist_products": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_basel_wishlists": {
+                "Case": 0,
+                "Rows": "1,837",
+                "Size": "96KB",
+                "USize": 98304
+            },
+            "wpgr_borlabs_cookie_cloud_scan_cookies": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_cloud_scan_ext_res": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_cloud_scan_suggests": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_cloud_scans": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_borlabs_cookie_compatibility_patches": {
+                "Case": 0,
+                "Rows": "14",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_borlabs_cookie_consent_logs": {
+                "Case": 0,
+                "Rows": "10,587",
+                "Size": "6.03MB",
+                "USize": 6324224
+            },
+            "wpgr_borlabs_cookie_consent_stats_day": {
+                "Case": 0,
+                "Rows": "3,667",
+                "Size": "576KB",
+                "USize": 589824
+            },
+            "wpgr_borlabs_cookie_consent_stats_day_grp": {
+                "Case": 0,
+                "Rows": "748",
+                "Size": "112KB",
+                "USize": 114688
+            },
+            "wpgr_borlabs_cookie_consent_stats_hour": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_consent_stats_hour_grp": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_content_blocker_locations": {
+                "Case": 0,
+                "Rows": "17",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_content_blockers": {
+                "Case": 0,
+                "Rows": "17",
+                "Size": "160KB",
+                "USize": 163840
+            },
+            "wpgr_borlabs_cookie_countries": {
+                "Case": 0,
+                "Rows": "250",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_iab_tcf_vendors": {
+                "Case": 0,
+                "Rows": "1,009",
+                "Size": "1.53MB",
+                "USize": 1605632
+            },
+            "wpgr_borlabs_cookie_jobs": {
+                "Case": 0,
+                "Rows": "67",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_legacy_consent_log": {
+                "Case": 0,
+                "Rows": "10,257",
+                "Size": "6.03MB",
+                "USize": 6324224
+            },
+            "wpgr_borlabs_cookie_legacy_content_blocker": {
+                "Case": 0,
+                "Rows": "11",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_legacy_cookies": {
+                "Case": 0,
+                "Rows": "11",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_borlabs_cookie_legacy_groups": {
+                "Case": 0,
+                "Rows": "4",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_legacy_script_blocker": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_legacy_statistics": {
+                "Case": 0,
+                "Rows": "11,800",
+                "Size": "2.25MB",
+                "USize": 2359296
+            },
+            "wpgr_borlabs_cookie_logs": {
+                "Case": 0,
+                "Rows": "49",
+                "Size": "272KB",
+                "USize": 278528
+            },
+            "wpgr_borlabs_cookie_packages": {
+                "Case": 0,
+                "Rows": "225",
+                "Size": "4.53MB",
+                "USize": 4751360
+            },
+            "wpgr_borlabs_cookie_providers": {
+                "Case": 0,
+                "Rows": "14",
+                "Size": "64KB",
+                "USize": 65536
+            },
+            "wpgr_borlabs_cookie_script_blockers": {
+                "Case": 0,
+                "Rows": "12",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_borlabs_cookie_service_cookies": {
+                "Case": 0,
+                "Rows": "69",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_service_groups": {
+                "Case": 0,
+                "Rows": "10",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_service_locations": {
+                "Case": 0,
+                "Rows": "17",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_service_options": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_borlabs_cookie_services": {
+                "Case": 0,
+                "Rows": "20",
+                "Size": "224KB",
+                "USize": 229376
+            },
+            "wpgr_borlabs_cookie_style_blockers": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_cf7paypal_extension": {
+                "Case": 0,
+                "Rows": "5,118",
+                "Size": "6.52MB",
+                "USize": 6832128
+            },
+            "wpgr_commentmeta": {
+                "Case": 0,
+                "Rows": "849",
+                "Size": "176KB",
+                "USize": 180224
+            },
+            "wpgr_comments": {
+                "Case": 0,
+                "Rows": "5,168",
+                "Size": "3.08MB",
+                "USize": 3227648
+            },
+            "wpgr_dlm_api_keys": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_dlm_cookiemeta": {
+                "Case": 0,
+                "Rows": "381",
+                "Size": "80KB",
+                "USize": 81920
+            },
+            "wpgr_dlm_cookies": {
+                "Case": 0,
+                "Rows": "370",
+                "Size": "80KB",
+                "USize": 81920
+            },
+            "wpgr_dlm_downloads": {
+                "Case": 0,
+                "Rows": "133",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_dlm_order": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_dlm_order_customer": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_dlm_order_item": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_dlm_order_transaction": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_dlm_reports_log": {
+                "Case": 0,
+                "Rows": "946",
+                "Size": "1.53MB",
+                "USize": 1605632
+            },
+            "wpgr_dlm_session": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_download_log": {
+                "Case": 0,
+                "Rows": "17,525",
+                "Size": "7.03MB",
+                "USize": 7372800
+            },
+            "wpgr_duplicator_activity_logs": {
+                "Case": 0,
+                "Rows": "2,397",
+                "Size": "4.05MB",
+                "USize": 4243456
+            },
+            "wpgr_duplicator_backups": {
+                "Case": 0,
+                "Rows": "12",
+                "Size": "1.16MB",
+                "USize": 1212416
+            },
+            "wpgr_duplicator_entities": {
+                "Case": 0,
+                "Rows": "17",
+                "Size": "192KB",
+                "USize": 196608
+            },
+            "wpgr_fb3d_pages": {
+                "Case": 0,
+                "Rows": "2",
+                "Size": "64KB",
+                "USize": 65536
+            },
+            "wpgr_gp_oauth_users": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_irrp_redirection_logs": {
+                "Case": 0,
+                "Rows": "59,318",
+                "Size": "12.21MB",
+                "USize": 12807368
+            },
+            "wpgr_irrp_redirectionmeta": {
+                "Case": 0,
+                "Rows": "80",
+                "Size": "20.49KB",
+                "USize": 20980
+            },
+            "wpgr_irrp_redirections": {
+                "Case": 0,
+                "Rows": "5",
+                "Size": "16.85KB",
+                "USize": 17252
+            },
+            "wpgr_irrp_referer_urls": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "1KB",
+                "USize": 1024
+            },
+            "wpgr_jetpack_sync_queue": {
+                "Case": 0,
+                "Rows": "7",
+                "Size": "80KB",
+                "USize": 81920
+            },
+            "wpgr_links": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_mkb_hits": {
+                "Case": 0,
+                "Rows": "9,733",
+                "Size": "400KB",
+                "USize": 409600
+            },
+            "wpgr_mkb_hits_meta": {
+                "Case": 0,
+                "Rows": "16,229",
+                "Size": "1.52MB",
+                "USize": 1589248
+            },
+            "wpgr_mkb_keywords": {
+                "Case": 0,
+                "Rows": "3,673",
+                "Size": "384KB",
+                "USize": 393216
+            },
+            "wpgr_moodle_enrollment": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_options": {
+                "Case": 0,
+                "Rows": "2,200",
+                "Size": "6.7MB",
+                "USize": 7028736
+            },
+            "wpgr_postmeta": {
+                "Case": 0,
+                "Rows": "168,781",
+                "Size": "34.61MB",
+                "USize": 36290560
+            },
+            "wpgr_posts": {
+                "Case": 0,
+                "Rows": "6,130",
+                "Size": "10.3MB",
+                "USize": 10797056
+            },
+            "wpgr_revslider_css": {
+                "Case": 0,
+                "Rows": "121",
+                "Size": "160KB",
+                "USize": 163840
+            },
+            "wpgr_revslider_css_bkp": {
+                "Case": 0,
+                "Rows": "121",
+                "Size": "144KB",
+                "USize": 147456
+            },
+            "wpgr_revslider_layer_animations": {
+                "Case": 0,
+                "Rows": "2",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_revslider_layer_animations_bkp": {
+                "Case": 0,
+                "Rows": "2",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_revslider_navigations": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_revslider_navigations_bkp": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_revslider_sliders": {
+                "Case": 0,
+                "Rows": "6",
+                "Size": "128KB",
+                "USize": 131072
+            },
+            "wpgr_revslider_sliders7": {
+                "Case": 0,
+                "Rows": "6",
+                "Size": "64KB",
+                "USize": 65536
+            },
+            "wpgr_revslider_sliders_bkp": {
+                "Case": 0,
+                "Rows": "5",
+                "Size": "112KB",
+                "USize": 114688
+            },
+            "wpgr_revslider_slides": {
+                "Case": 0,
+                "Rows": "20",
+                "Size": "240KB",
+                "USize": 245760
+            },
+            "wpgr_revslider_slides7": {
+                "Case": 0,
+                "Rows": "25",
+                "Size": "272KB",
+                "USize": 278528
+            },
+            "wpgr_revslider_slides_bkp": {
+                "Case": 0,
+                "Rows": "10",
+                "Size": "1.2MB",
+                "USize": 1261568
+            },
+            "wpgr_revslider_static_slides": {
+                "Case": 0,
+                "Rows": "5",
+                "Size": "96KB",
+                "USize": 98304
+            },
+            "wpgr_revslider_static_slides_bkp": {
+                "Case": 0,
+                "Rows": "4",
+                "Size": "112KB",
+                "USize": 114688
+            },
+            "wpgr_sc_delivery_methods": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "64KB",
+                "USize": 65536
+            },
+            "wpgr_sc_delivery_zones": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_swpm_events_tbl": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_swpm_form_builder_custom": {
+                "Case": 0,
+                "Rows": "45,118",
+                "Size": "3.52MB",
+                "USize": 3686400
+            },
+            "wpgr_swpm_form_builder_fields": {
+                "Case": 0,
+                "Rows": "88",
+                "Size": "64KB",
+                "USize": 65536
+            },
+            "wpgr_swpm_form_builder_forms": {
+                "Case": 0,
+                "Rows": "4",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_swpm_members_meta_tbl": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_swpm_members_tbl": {
+                "Case": 0,
+                "Rows": "6,556",
+                "Size": "1.52MB",
+                "USize": 1589248
+            },
+            "wpgr_swpm_membership_meta_tbl": {
+                "Case": 0,
+                "Rows": "46",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_swpm_membership_tbl": {
+                "Case": 0,
+                "Rows": "3",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_swpm_payments_tbl": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_term_relationships": {
+                "Case": 0,
+                "Rows": "4,926",
+                "Size": "384KB",
+                "USize": 393216
+            },
+            "wpgr_term_taxonomy": {
+                "Case": 0,
+                "Rows": "494",
+                "Size": "96KB",
+                "USize": 98304
+            },
+            "wpgr_termmeta": {
+                "Case": 0,
+                "Rows": "110",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_terms": {
+                "Case": 0,
+                "Rows": "494",
+                "Size": "96KB",
+                "USize": 98304
+            },
+            "wpgr_usermeta": {
+                "Case": 0,
+                "Rows": "133,534",
+                "Size": "21.55MB",
+                "USize": 22593536
+            },
+            "wpgr_users": {
+                "Case": 0,
+                "Rows": "6,675",
+                "Size": "2.44MB",
+                "USize": 2555904
+            },
+            "wpgr_wc_admin_note_actions": {
+                "Case": 0,
+                "Rows": "184",
+                "Size": "80KB",
+                "USize": 81920
+            },
+            "wpgr_wc_admin_notes": {
+                "Case": 0,
+                "Rows": "150",
+                "Size": "96KB",
+                "USize": 98304
+            },
+            "wpgr_wc_category_lookup": {
+                "Case": 0,
+                "Rows": "16",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wc_customer_lookup": {
+                "Case": 0,
+                "Rows": "1,362",
+                "Size": "320KB",
+                "USize": 327680
+            },
+            "wpgr_wc_download_log": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_wc_order_coupon_lookup": {
+                "Case": 0,
+                "Rows": "29",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_wc_order_product_lookup": {
+                "Case": 0,
+                "Rows": "1,969",
+                "Size": "816KB",
+                "USize": 835584
+            },
+            "wpgr_wc_order_stats": {
+                "Case": 0,
+                "Rows": "1,918",
+                "Size": "640KB",
+                "USize": 655360
+            },
+            "wpgr_wc_order_tax_lookup": {
+                "Case": 0,
+                "Rows": "1,748",
+                "Size": "288KB",
+                "USize": 294912
+            },
+            "wpgr_wc_product_attributes_lookup": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_wc_product_download_directories": {
+                "Case": 0,
+                "Rows": "2",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_wc_product_meta_lookup": {
+                "Case": 0,
+                "Rows": "278",
+                "Size": "176KB",
+                "USize": 180224
+            },
+            "wpgr_wc_rate_limits": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_wc_reserved_stock": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wc_tax_rate_classes": {
+                "Case": 0,
+                "Rows": "8",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_wc_webhooks": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_wfauditevents": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wfblockediplog": {
+                "Case": 0,
+                "Rows": "2,202",
+                "Size": "144KB",
+                "USize": 147456
+            },
+            "wpgr_wfblocks7": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "64KB",
+                "USize": 65536
+            },
+            "wpgr_wfconfig": {
+                "Case": 0,
+                "Rows": "296",
+                "Size": "1.52MB",
+                "USize": 1589248
+            },
+            "wpgr_wfcrawlers": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wffilechanges": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wffilemods": {
+                "Case": 0,
+                "Rows": "30,930",
+                "Size": "10.55MB",
+                "USize": 11059200
+            },
+            "wpgr_wfhits": {
+                "Case": 0,
+                "Rows": "1,715",
+                "Size": "1.77MB",
+                "USize": 1851392
+            },
+            "wpgr_wfhoover": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_wfissues": {
+                "Case": 0,
+                "Rows": "27",
+                "Size": "144KB",
+                "USize": 147456
+            },
+            "wpgr_wfknownfilelist": {
+                "Case": 0,
+                "Rows": "29,875",
+                "Size": "7.52MB",
+                "USize": 7880704
+            },
+            "wpgr_wflivetraffichuman": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_wflocs": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wflogins": {
+                "Case": 0,
+                "Rows": "1,957",
+                "Size": "592KB",
+                "USize": 606208
+            },
+            "wpgr_wfls_2fa_secrets": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_wfls_role_counts": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "0B",
+                "USize": 0
+            },
+            "wpgr_wfls_settings": {
+                "Case": 0,
+                "Rows": "30",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wfnotifications": {
+                "Case": 0,
+                "Rows": "5",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wfpendingissues": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "80KB",
+                "USize": 81920
+            },
+            "wpgr_wfreversecache": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wfsecurityevents": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wfsnipcache": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "64KB",
+                "USize": 65536
+            },
+            "wpgr_wfstatus": {
+                "Case": 0,
+                "Rows": "2,352",
+                "Size": "512KB",
+                "USize": 524288
+            },
+            "wpgr_wftrafficrates": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_wfwaffailures": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_woocommerce_api_keys": {
+                "Case": 0,
+                "Rows": "2",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_woocommerce_attribute_taxonomies": {
+                "Case": 0,
+                "Rows": "4",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_woocommerce_downloadable_product_permissions": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "96KB",
+                "USize": 98304
+            },
+            "wpgr_woocommerce_log": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_woocommerce_order_itemmeta": {
+                "Case": 0,
+                "Rows": "36,784",
+                "Size": "6.55MB",
+                "USize": 6864896
+            },
+            "wpgr_woocommerce_order_items": {
+                "Case": 0,
+                "Rows": "5,092",
+                "Size": "576KB",
+                "USize": 589824
+            },
+            "wpgr_woocommerce_payment_tokenmeta": {
+                "Case": 0,
+                "Rows": "105",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_woocommerce_payment_tokens": {
+                "Case": 0,
+                "Rows": "22",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_woocommerce_sessions": {
+                "Case": 0,
+                "Rows": "50",
+                "Size": "144KB",
+                "USize": 147456
+            },
+            "wpgr_woocommerce_shipping_zone_locations": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "64KB",
+                "USize": 65536
+            },
+            "wpgr_woocommerce_shipping_zone_methods": {
+                "Case": 0,
+                "Rows": "2",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_woocommerce_shipping_zones": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_woocommerce_tax_rate_locations": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_woocommerce_tax_rates": {
+                "Case": 0,
+                "Rows": "18",
+                "Size": "80KB",
+                "USize": 81920
+            },
+            "wpgr_wpforms_tasks_meta": {
+                "Case": 0,
+                "Rows": "290",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_wpmailsmtp_debug_events": {
+                "Case": 0,
+                "Rows": "117",
+                "Size": "64KB",
+                "USize": 65536
+            },
+            "wpgr_wpmailsmtp_tasks_meta": {
+                "Case": 0,
+                "Rows": "22",
+                "Size": "16KB",
+                "USize": 16384
+            },
+            "wpgr_yoast_indexable": {
+                "Case": 0,
+                "Rows": "944",
+                "Size": "624KB",
+                "USize": 638976
+            },
+            "wpgr_yoast_indexable_hierarchy": {
+                "Case": 0,
+                "Rows": "940",
+                "Size": "144KB",
+                "USize": 147456
+            },
+            "wpgr_yoast_migrations": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "32KB",
+                "USize": 32768
+            },
+            "wpgr_yoast_primary_term": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "48KB",
+                "USize": 49152
+            },
+            "wpgr_yoast_seo_links": {
+                "Case": 0,
+                "Rows": "0",
+                "Size": "80KB",
+                "USize": 81920
+            }
+        },
+        "FilteredTables": [],
+        "DBExcluded": false
+    },
+    "SRV": {
+        "Brand": {
+            "LogoAttachmentExists": false,
+            "LogoCount": 0,
+            "LogoFinded": 0,
+            "LogoImageExists": true,
+            "LogoImages": [],
+            "Name": "Default",
+            "Notes": "The default content used when a brand is not defined"
+        },
+        "HOST": [],
+        "PHP": {
+            "websrv": true,
+            "openbase": true,
+            "maxtime": true,
+            "mysqli": true,
+            "allowurlfopen": true,
+            "curlavailable": true,
+            "arch64bit": true,
+            "minMemory": true,
+            "version": true,
+            "ALL": true
+        },
+        "WP": {
+            "version": true,
+            "core": true,
+            "ismu": false,
+            "ismuplus": false,
+            "ALL": true
+        }
+    },
+    "RPT": {
+        "ScanCreated": "2026-04-16 06:43:51",
+        "ScanTime": "0.030 sec.",
+        "ScanPath": "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/duplicator-backups\/tmp\/20260416_megemit_315e5d45d6f715c83191_20260416063406_scan.json",
+        "ScanFile": "20260416_megemit_315e5d45d6f715c83191_20260416063406_scan.json"
+    }
+}

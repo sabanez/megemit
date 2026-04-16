@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+
+<meta charset="utf-8" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="generator" content="Concloo CMS (c) 2009 - 2024 by TW-Datentechnik" >
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+	<link rel="stylesheet" type="text/css" media="all" href="/files/css/style_0046.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="/files/css/style_0046.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="/files/css/fonts.css" />
+
+<script 
+src="https://code.jquery.com/jquery-1.8.3.min.js" 
+integrity="sha256-YcbK69I5IXQftf/mYD8WY0/KmEDCv1asggHpJk1trM8="   
+crossorigin="anonymous">
+</script>
+	<script type='text/javascript' src='/files/js/jquery.resize.js.js'></script>
+	<script type='text/javascript' src='/files/js/megemit_01.js'></script>
+	<script type='text/javascript' src='/files/js/upload.js'></script>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+document._domino_target = "_self";
+function _doClick(v, o, t, h) {
+  var form = document._OnlinePage;
+  if (form.onsubmit) {
+     var retVal = form.onsubmit();
+     if (typeof retVal == "boolean" && retVal == false)
+       return false;
+  }
+  var target = document._domino_target;
+  if (o.href != null) {
+    if (o.target != null)
+       target = o.target;
+  } else {
+    if (t != null)
+      target = t;
+  }
+  form.target = target;
+  form.__Click.value = v;
+  if (h != null)
+    form.action += h;
+  form.submit();
+  return false;
+}
+// -->
+</script>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" class="  main" onload="onloader();">
+
+<form onsubmit="return submitter();return true;" method="post" action="/MGMSOLVE.nsf/OnlinePage!OpenForm&amp;Seq=1&amp;Wunsch=%2Ftest" name="_OnlinePage">
+<input type="hidden" name="__Click" value="0"></form>
+<form onsubmit="return submitter();" method="post" action="#" style="height:100%;">
+<div style="display:none;">
+<input name="lgncode" value="" id="lgncode"></div>
+<div id="system-edit-container"></div>
+<div id="system-message-container"></div>
+<!---->
+<div style="display:none" id="submit"></div>
+<div style="display:none;" id="load">resizeParent();</div>
+	<div id="content"><div id="concloo"></div></div>
+
+</div>
+<!-- BottomJS Anfang -->
+<script type="text/javascript">
+  var cnclrsc = function() {
+    resizeParent();
+  };
+  
+  $('#concloo').resize(cnclrsc);
+</script>
+<!-- BottomJS Ende -->
+
+</form>
+</body>
+</html>

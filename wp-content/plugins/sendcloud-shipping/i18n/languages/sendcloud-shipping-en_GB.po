@@ -1,0 +1,1051 @@
+msgid ""
+msgstr ""
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Phrase (phrase.com)\n"
+
+#: includes/ServicePoint/Shipping/class-sc-service-point-shipping-method.php:62
+msgid "A comma separated list of your Sendcloud enabled carrier codes (e.g. ups, dpd, dhl), an empty value here will display all your Sendcloud enabled carriers"
+msgstr "A comma separated list of your Sendcloud enabled carrier codes (e.g. ups, dpd, dhl), an empty value here will display all your Sendcloud enabled carriers"
+
+msgid "A comma separated list of your Sendcloud enabled carrier codes (e.g. UPS, DPD, DHL), an empty value here will display all your Sendcloud enabled carriers."
+msgstr "A comma separated list of your Sendcloud enabled carrier codes (e.g. UPS, DPD, DHL), an empty value here will display all your Sendcloud enabled carriers."
+
+#: includes/Checkout/Shipping/class-abstract-free-shipping-shipping-method.php:204
+msgid "A minimum order amount"
+msgstr "A minimum order amount"
+
+#: includes/Checkout/Shipping/class-abstract-free-shipping-shipping-method.php:206
+msgid "A minimum order amount AND a coupon"
+msgstr "A minimum order amount AND a coupon"
+
+#: includes/Checkout/Shipping/class-abstract-free-shipping-shipping-method.php:205
+msgid "A minimum order amount OR a coupon"
+msgstr "A minimum order amount OR a coupon"
+
+msgid "Add a new shipping zone"
+msgstr "Add a new shipping zone"
+
+msgid "Add Shipping Method"
+msgstr "Add Shipping Method"
+
+msgid "Allows you to see your WooCommerce orders in the Sendcloud Panel."
+msgstr "Allows you to see your WooCommerce orders in the Sendcloud Panel."
+
+msgid "Already have an account? Login!"
+msgstr "Already have an account? Login!"
+
+msgid "Attention"
+msgstr "Attention"
+
+msgid "Automatically create label"
+msgstr "Automatically create label"
+
+msgid "Awaiting Payment"
+msgstr "Awaiting Payment"
+
+msgid "Awaiting Processing"
+msgstr "Awaiting Processing"
+
+msgid "Bad Request"
+msgstr "Bad Request"
+
+msgid "Branded tracking page"
+msgstr "Branded tracking page"
+
+msgid "Cancel label"
+msgstr "Cancel label"
+
+msgid "Cancelled"
+msgstr "Cancelled"
+
+msgid "Carrier Selection"
+msgstr "Carrier Selection"
+
+msgid "Carriers"
+msgstr "Carriers"
+
+#: resources/views/wc-settings/sendcloud-page.php:99
+msgid "CARRIERS"
+msgstr "CARRIERS"
+
+msgid "Change service point"
+msgstr "Change service point"
+
+msgid "Clear search"
+msgstr "Clear search"
+
+#: resources/views/wc-settings/sendcloud-page.php:30
+msgid "Click here to go to Sendcloud."
+msgstr "Click here to go to Sendcloud."
+
+msgid "Closed"
+msgstr "Closed"
+
+msgid "Closed tomorrow"
+msgstr "Closed tomorrow"
+
+msgid "Commercial Goods"
+msgstr "Commercial Goods"
+
+msgid "Commercial Sample"
+msgstr "Commercial Sample"
+
+msgid "Condition lower limit and shipping cost values cannot be empty."
+msgstr "Condition lower limit and shipping cost values cannot be empty."
+
+msgid "Condition lower limit is not valid!"
+msgstr "Condition lower limit is not valid!"
+
+msgid "Condition lower limit must be positive numeric value."
+msgstr "Condition lower limit must be positive numeric value."
+
+msgid "Condition upper limit  must be positive numeric value."
+msgstr "Condition upper limit  must be positive numeric value."
+
+msgid "Condition upper limit cannot be lower or equal to the condition lower limit!"
+msgstr "Condition upper limit cannot be lower or equal to the condition lower limit!"
+
+msgid "Configuration"
+msgstr "Configuration"
+
+msgid "Configuration deleted"
+msgstr "Configuration deleted"
+
+msgid "Configuration updated"
+msgstr "Configuration updated"
+
+msgid "Configure label creation"
+msgstr "Configure label creation"
+
+msgid "Configure service point delivery"
+msgstr "Configure service point delivery"
+
+msgid "Configure service point location mapping"
+msgstr "Configure service point location mapping"
+
+msgid "Configure warehouse mapping"
+msgstr "Configure warehouse mapping"
+
+#: resources/views/wc-settings/sendcloud-page.php:214
+msgid "Connect"
+msgstr "Connect"
+
+msgid "Connect to Sendcloud"
+msgstr "Connect to Sendcloud"
+
+msgid "Connect to your favourite carriers and start shipping efficiently with our pre-negotiated shipping rates. Exceed customer expectations with branded tracking mails, tracking pages, and a fully self-service return portal."
+msgstr "Connect to your favourite carriers and start shipping efficiently with our pre-negotiated shipping rates. Exceed customer expectations with branded tracking mails, tracking pages, and a fully self-service return portal."
+
+msgid "Connect to your favourite carriers and start shipping efficiently with our pre-negotiated shipping rates. Press connect to integrate with Sendcloud in 4 easy steps."
+msgstr "Connect to your favourite carriers and start shipping efficiently with our pre-negotiated shipping rates. Press connect to integrate with Sendcloud in 4 easy steps."
+
+msgid "Connect with Sendcloud"
+msgstr "Connect with Sendcloud"
+
+msgid "Connecting..."
+msgstr "Connecting..."
+
+msgid "Cost"
+msgstr "Cost"
+
+msgid "Cost must be numeric value."
+msgstr "Cost must be numeric value."
+
+msgid "Could not find any service points for this location."
+msgstr "Could not find any service points for this location."
+
+msgid "Country of origin"
+msgstr "Country of origin"
+
+msgid "Create label"
+msgstr "Create label"
+
+msgid "Created"
+msgstr "Created"
+
+msgid "Customer name"
+msgstr "Customer name"
+
+msgid "Customs information"
+msgstr "Customs information"
+
+msgid "Customs information has been saved."
+msgstr "Customs information has been saved."
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Data mapping"
+msgstr "Data mapping"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Day"
+msgstr "Day"
+
+#: resources/views/wc-settings/sendcloud-page.php:97
+msgid "DEFAULT RATE"
+msgstr "DEFAULT RATE"
+
+msgid "Default values"
+msgstr "Default values"
+
+msgid "Define whether label should be automatically created on Sendcloud when Good Delivery is created in Exact Online"
+msgstr "Define whether label should be automatically created on Sendcloud when Good Delivery is created in Exact Online"
+
+msgid "Deliver to a service point in the customer’s area."
+msgstr "Deliver to a service point in the customer’s area."
+
+msgid "Delivered"
+msgstr "Delivered"
+
+msgid "Delivered by {carrier}"
+msgstr "Delivered by {carrier}"
+
+#: resources/views/wc-settings/sendcloud-page.php:56
+msgid "DELIVERY METHOD"
+msgstr "DELIVERY METHOD"
+
+msgid "disabled"
+msgstr "disabled"
+
+msgid "Discount coupon shipping methods"
+msgstr "Discount coupon shipping methods"
+
+msgid "Do not cancel"
+msgstr "Do not cancel"
+
+msgid "Documents"
+msgstr "Documents"
+
+msgid "Download label"
+msgstr "Download label"
+
+msgid "Easy shipping directly from your store with multiple carriers using pre-negotiated prices. We will activate the carriers DPD and UPS but feel free to add as much carriers as you need."
+msgstr "Easy shipping directly from your store with multiple carriers using pre-negotiated prices. We will activate the carriers DPD and UPS but feel free to add as much carriers as you need."
+
+msgid "Edit Service Point Delivery Shipping"
+msgstr "Edit Service Point Delivery Shipping"
+
+msgid "Enable advanced shipping method"
+msgstr "Enable advanced shipping method"
+
+msgid "Enable at least one Geo Zone in System > Localisation > Geo Zones in order to offer Service Point Delivery in your checkout."
+msgstr "Enable at least one Geo Zone in System > Localisation > Geo Zones in order to offer Service Point Delivery in your checkout."
+
+msgid "Enable Free Shipping"
+msgstr "Enable Free Shipping"
+
+msgid "Enable service point delivery picker"
+msgstr "Enable service point delivery picker"
+
+msgid "Enable service points in your Sendcloud settings > Connect Shops > Opencart to offer Service Point Delivery in your checkout."
+msgstr "Enable service points in your Sendcloud settings > Connect Shops > Opencart to offer Service Point Delivery in your checkout."
+
+msgid "Enable simple shipping method"
+msgstr "Enable simple shipping method"
+
+msgid "enabled"
+msgstr "enabled"
+
+msgid "Enter default value fot HS code field"
+msgstr "Enter default value fot HS code field"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Europe's Number 1 Shipping Tool"
+msgstr "Europe's Number 1 Shipping Tool"
+
+msgid "Expected delivery date"
+msgstr "Expected delivery date"
+
+msgid "Failed to delete checkout configuration."
+msgstr "Failed to delete checkout configuration."
+
+msgid "Failed to save Sendcloud shipment data"
+msgstr "Failed to save Sendcloud shipment data"
+
+msgid "Forbidden"
+msgstr "Forbidden"
+
+#: resources/views/wc-settings/sendcloud-page.php:96
+#: resources/views/wc-settings/sendcloud-page.php:101
+msgid "FREE SHIPPING ABOVE"
+msgstr "FREE SHIPPING ABOVE"
+
+#: includes/Checkout/Shipping/class-abstract-free-shipping-shipping-method.php:199
+msgid "Free shipping requires..."
+msgstr "Free shipping requires..."
+
+msgid "Friday"
+msgstr "Friday"
+
+msgid "From"
+msgstr "From"
+
+msgid "From order total"
+msgstr "From order total"
+
+msgid "General"
+msgstr "General"
+
+msgid "Geo Zone"
+msgstr "Geo Zone"
+
+msgid "Geographical zone that this shipping method is available to."
+msgstr "Geographical zone that this shipping method is available to."
+
+msgid "Gift"
+msgstr "Gift"
+
+msgid "Go to Sendcloud"
+msgstr "Go to Sendcloud"
+
+msgid "Good delivery"
+msgstr "Good delivery"
+
+msgid "Heads Up! The opening times of this service point have changed. If the opening times are still OK to you, click on select again."
+msgstr "Heads Up! The opening times of this service point have changed. If the opening times are still OK to you, click on select again."
+
+msgid "HS code"
+msgstr "HS code"
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "http://sendcloud.sc"
+msgstr "http://sendcloud.sc"
+
+msgid "If enabled, users will need to spend this amount to get free shipping."
+msgstr "If enabled, users will need to spend this amount to get free shipping."
+
+msgid "If you enable this option, service point delivery will be available to all customers from all countries and they will be charged entered amount."
+msgstr "If you enable this option, service point delivery will be available to all customers from all countries and they will be charged entered amount."
+
+msgid "If you enable this option, service point delivery will be available to all customers from specified zone and they will be charged entered amount."
+msgstr "If you enable this option, service point delivery will be available to all customers from specified zone and they will be charged entered amount."
+
+msgid "If you enable this option, service point delivery will be available to all customers from the list of countries selected in the \"Advanced settings\" section. Customers will be charged entered amount."
+msgstr "If you enable this option, service point delivery will be available to all customers from the list of countries selected in the \"Advanced settings\" section. Customers will be charged entered amount."
+
+msgid "If you enable this option, you can use existing shipping method as service point delivery. It will be available to customers and countries that you specified in selected shipping method."
+msgstr "If you enable this option, you can use existing shipping method as service point delivery. It will be available to customers and countries that you specified in selected shipping method."
+
+msgid "If you enable this option, you can use existing shipping methods as service point delivery. It will be available to customers and zones that you specified."
+msgstr "If you enable this option, you can use existing shipping methods as service point delivery. It will be available to customers and zones that you specified."
+
+msgid "In most cases, the country where the product is manufactured."
+msgstr "In most cases, the country where the product is manufactured."
+
+msgid "In order to application work as expected please, set and save configuration"
+msgstr "In order to application work as expected please, set and save configuration"
+
+msgid "In transit"
+msgstr "In transit"
+
+msgid "Incomplete"
+msgstr "Incomplete"
+
+msgid "Internal Server Error"
+msgstr "Internal Server Error"
+
+#: resources/views/wc-settings/sendcloud-page.php:52
+msgid "INTERNAL TITLE"
+msgstr "INTERNAL TITLE"
+
+msgid "Invalid checkout payload."
+msgstr "Invalid checkout payload."
+
+msgid "Join over 15.000+ online stores automating their shipping process."
+msgstr "Join over 15.000+ online stores automating their shipping process."
+
+msgid "Label has been cancelled successfully."
+msgstr "Label has been cancelled successfully."
+
+msgid "Label has been created successfully."
+msgstr "Label has been created successfully."
+
+#: resources/views/wc-settings/sendcloud-page.php:203
+msgid "Last published:"
+msgstr "Last published:"
+
+msgid "Learn more about Sendcloud"
+msgstr "Learn more about Sendcloud"
+
+msgid "Learn more about Sendcloud features"
+msgstr "Learn more about Sendcloud features"
+
+msgid "Let your buyer choose the delivery date. Configure the method in the Sendcloud Checkout panel."
+msgstr "Let your buyer choose the delivery date. Configure the method in the Sendcloud Checkout panel."
+
+msgid "Load more"
+msgstr "Load more"
+
+msgid "Loading..."
+msgstr "Loading..."
+
+msgid "Login or create your free Sendcloud account"
+msgstr "Login or create your free Sendcloud account"
+
+msgid "Logs"
+msgstr "Logs"
+
+msgid "Map Exact warehouses to Sendcloud sender addresses. If mapping is not set, the integration will use default sender address defined in Sendcloud under Settings > Addresses > Sender Address."
+msgstr "Map Exact warehouses to Sendcloud sender addresses. If mapping is not set, the integration will use default sender address defined in Sendcloud under Settings > Addresses > Sender Address."
+
+msgid "Mapping of Sendcloud parcel statuses to OpenCart order statuses"
+msgstr "Mapping of Sendcloud parcel statuses to OpenCart order statuses"
+
+msgid "Method"
+msgstr "Method"
+
+msgid "Minimum Order Amount for Free Shipping"
+msgstr "Minimum Order Amount for Free Shipping"
+
+msgid "Monday"
+msgstr "Monday"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "New to Sendcloud? Create your account"
+msgstr "New to Sendcloud? Create your account"
+
+msgid "No"
+msgstr "No"
+
+msgid "No data specified to enable the plugin"
+msgstr "No data specified to enable the plugin"
+
+msgid "No orders with errors."
+msgstr "No orders with errors."
+
+msgid "No Sendcloud status yet"
+msgstr "No Sendcloud status yet"
+
+msgid "No service point yet"
+msgstr "No service point yet"
+
+msgid "No tracking number yet"
+msgstr "No tracking number yet"
+
+#: includes/Controllers/class-sendcloud-view-controller.php:92
+msgid "Nominated day"
+msgstr "Nominated day"
+
+msgid "Nominated Day Delivery"
+msgstr "Nominated Day Delivery"
+
+msgid "Non editable"
+msgstr "Non editable"
+
+msgid "None"
+msgstr "None"
+
+msgid "Not announced"
+msgstr "Not announced"
+
+msgid "Not enabled"
+msgstr "Not enabled"
+
+msgid "Not Found"
+msgstr "Not Found"
+
+msgid "Notify"
+msgstr "Notify"
+
+msgid "Notify the customer via email"
+msgstr "Notify the customer via email"
+
+msgid "Offer same day delivery before a chosen cut-off time. Configure the method in the Sendcloud Checkout panel."
+msgstr "Offer same day delivery before a chosen cut-off time. Configure the method in the Sendcloud Checkout panel."
+
+msgid "Ok, cancel"
+msgstr "Ok, cancel"
+
+msgid "One of the items in your cart is too large to be shipped to a service point."
+msgstr "One of the items in your cart is too large to be shipped to a service point."
+
+msgid "One shipment will be voided and the accompanying fees will be refunded. If the shipment is past its cancellation deadline this may take up to 14 days. In case you cancel a shipment, and you still ship it, the shipping costs will be charged and an additional fee of €1.00 will be added to your next invoice."
+msgstr "One shipment will be voided and the accompanying fees will be refunded. If the shipment is past its cancellation deadline this may take up to 14 days. In case you cancel a shipment, and you still ship it, the shipping costs will be charged and an additional fee of €1.00 will be added to your next invoice."
+
+msgid "Open the Sendcloud panel and start shipping."
+msgstr "Open the Sendcloud panel and start shipping."
+
+msgid "Open tomorrow"
+msgstr "Open tomorrow"
+
+msgid "OpenCart Order Status"
+msgstr "OpenCart Order Status"
+
+msgid "Opening times"
+msgstr "Opening times"
+
+msgid "Order id"
+msgstr "Order id"
+
+msgid "Order Status Mapping"
+msgstr "Order Status Mapping"
+
+msgid "Order will be shipped to"
+msgstr "Order will be shipped to"
+
+msgid "Orders fulfilled by the selected shipping methods will be synchronized to the Sendcloud."
+msgstr "Orders fulfilled by the selected shipping methods will be synchronized to the Sendcloud."
+
+msgid "Out for delivery"
+msgstr "Out for delivery"
+
+msgid "Pack and go solution"
+msgstr "Pack and go solution"
+
+msgid "Paid"
+msgstr "Paid"
+
+msgid "Partially Refunded"
+msgstr "Partially Refunded"
+
+msgid "Please activate plugin."
+msgstr "Please activate plugin."
+
+msgid "Please choose a delivery date."
+msgstr "Please choose a delivery date."
+
+msgid "Please choose a service point."
+msgstr "Please choose a service point."
+
+msgid "Please choose existing shipping method"
+msgstr "Please choose existing shipping method"
+
+msgid "Please contact BigCommerce support in order to switch to Stencil theme if you want to use all Service point delivery functionalities"
+msgstr "Please contact BigCommerce support in order to switch to Stencil theme if you want to use all Service point delivery functionalities"
+
+msgid "Please enter valid cost"
+msgstr "Please enter valid cost"
+
+msgid "Please enter valid title"
+msgstr "Please enter valid title"
+
+msgid "Please map product HS-code and origin country to Shopware custom product attributes. Mapped attribute values will be used when plugin sends order data to Sendcloud."
+msgstr "Please map product HS-code and origin country to Shopware custom product attributes. Mapped attribute values will be used when plugin sends order data to Sendcloud."
+
+msgid "Please notice"
+msgstr "Please notice"
+
+msgid "Please select a service point."
+msgstr "Please select a service point."
+
+msgid "Please select attribute for mapping"
+msgstr "Please select attribute for mapping"
+
+msgid "Please select country of origin"
+msgstr "Please select country of origin"
+
+msgid "Please select sender address"
+msgstr "Please select sender address"
+
+msgid "Please select shipment type"
+msgstr "Please select shipment type"
+
+msgid "Please select shipping method"
+msgstr "Please select shipping method"
+
+msgid "Please select shipping zone"
+msgstr "Please select shipping zone"
+
+msgid "Plugin disabled"
+msgstr "Plugin disabled"
+
+msgid "Plugin enabled"
+msgstr "Plugin enabled"
+
+msgid "PO box number"
+msgstr "PO box number"
+
+msgid "PO box number is required."
+msgstr "PO box number is required."
+
+msgid "Post office box"
+msgstr "Post office box"
+
+msgid "Processing"
+msgstr "Processing"
+
+#: resources/views/wc-settings/sendcloud-page.php:53
+msgid "PUBLIC TITLE"
+msgstr "PUBLIC TITLE"
+
+#: resources/views/wc-settings/sendcloud-page.php:55
+msgid "RATES ENABLED"
+msgstr "RATES ENABLED"
+
+msgid "Ready For Pickup"
+msgstr "Ready For Pickup"
+
+msgid "Ready to send"
+msgstr "Ready to send"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Refresh this page if you encounter any issues"
+msgstr "Refresh this page if you encounter any issues"
+
+msgid "Refunded"
+msgstr "Refunded"
+
+msgid "Return solution"
+msgstr "Return solution"
+
+msgid "Returned"
+msgstr "Returned"
+
+msgid "Returned Goods"
+msgstr "Returned Goods"
+
+#: includes/Controllers/class-sendcloud-view-controller.php:94
+msgid "Same day"
+msgstr "Same day"
+
+msgid "Same Day Delivery"
+msgstr "Same Day Delivery"
+
+msgid "Saturday"
+msgstr "Saturday"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Search for service point locations"
+msgstr "Search for service point locations"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Select a service point to send your packages to:"
+msgstr "Select a service point to send your packages to:"
+
+msgid "Select location"
+msgstr "Select location"
+
+msgid "Select Service Point"
+msgstr "Select Service Point"
+
+msgid "Select synchronized shipping methods"
+msgstr "Select synchronized shipping methods"
+
+msgid "Select the field from Exact sales order, which will be used for Sendcloud service point location ID."
+msgstr "Select the field from Exact sales order, which will be used for Sendcloud service point location ID."
+
+msgid "Selected"
+msgstr "Selected"
+
+msgid "Selected Sendcloud shipping method is no longer active on Sendcloud"
+msgstr "Selected Sendcloud shipping method is no longer active on Sendcloud"
+
+msgid "Selected service point"
+msgstr "Selected service point"
+
+msgid "Selected shipping method"
+msgstr "Selected shipping method"
+
+msgid "Sencloud label ID"
+msgstr "Sencloud label ID"
+
+msgid "Sencloud parcel status"
+msgstr "Sencloud parcel status"
+
+msgid "Sencloud shipping method"
+msgstr "Sencloud shipping method"
+
+msgid "Sencloud tracking number"
+msgstr "Sencloud tracking number"
+
+msgid "Sendcloud"
+msgstr "Sendcloud"
+
+#: resources/views/plugin/methods-disabled-notice.php:3
+msgid "Sendcloud | All Sendcloud shipping methods are disabled due to currency changes. Please go to Sendcloud and check shipping rates"
+msgstr "Sendcloud | All Sendcloud shipping methods are disabled due to currency changes. Please go to Sendcloud and check shipping rates"
+
+msgid "Sendcloud | Smart Shipping Service"
+msgstr "Sendcloud | Smart Shipping Service"
+
+msgid "Sendcloud | Smart Shipping Service plugin deactivated itself because WooCommerce is not available."
+msgstr "Sendcloud | Smart Shipping Service plugin deactivated itself because WooCommerce is not available."
+
+msgid "Sendcloud B.V."
+msgstr "Sendcloud B.V."
+
+msgid "Sendcloud error description"
+msgstr "Sendcloud error description"
+
+#: resources/views/wc-settings/sendcloud-page.php:190
+msgid "Sendcloud Integration"
+msgstr "v"
+
+msgid "Sendcloud is amazing!"
+msgstr "Sendcloud is amazing!"
+
+msgid "Sendcloud Label"
+msgstr "Sendcloud Label"
+
+msgid "Sendcloud Parcel Status"
+msgstr "Sendcloud Parcel Status"
+
+msgid "Sendcloud plugin"
+msgstr "Sendcloud plugin"
+
+#. Description of the plugin
+msgid "Sendcloud plugin."
+msgstr "Sendcloud plugin."
+
+msgid "Sendcloud shipment status"
+msgstr "Sendcloud shipment status"
+
+msgid "Sendcloud shipping methods have been successfully refreshed"
+msgstr "Sendcloud shipping methods have been successfully refreshed"
+
+msgid "Sendcloud status"
+msgstr "Sendcloud status"
+
+msgid "Sendcloud tracking URL"
+msgstr "Sendcloud tracking URL"
+
+msgid "Service Point"
+msgstr "Service Point"
+
+#: includes/Controllers/class-sendcloud-view-controller.php:93
+msgid "Service point"
+msgstr "Service point"
+
+msgid "Service Point Address"
+msgstr "Service Point Address"
+
+msgid "Service Point City"
+msgstr "Service Point City"
+
+msgid "Service Point Delivery"
+msgstr "Service Point Delivery"
+
+msgid "Service Point Delivery (legacy)"
+msgstr "Service Point Delivery (legacy)"
+
+msgid "Service point delivery is disabled"
+msgstr "Service point delivery is disabled"
+
+msgid "Service point delivery is not available for your store"
+msgstr "Service point delivery is not available for your store"
+
+msgid "Service point delivery is not enabled"
+msgstr "Service point delivery is not enabled"
+
+#: includes/ServicePoint/Shipping/class-sc-service-point-shipping-method.php:28
+msgid "Service point delivery is supported for legacy purposes, please set up Service point delivery via Dynamic Checkout in <a href=\"https://panel.sendcloud.sc/v2/checkout/configurations\" target=\"_blank\">Sendcloud</a>."
+msgstr "Service point delivery is supported for legacy purposes, please set up Service point delivery via Dynamic Checkout in <a href=\"https://panel.sendcloud.sc/v2/checkout/configurations\" target=\"_blank\">Sendcloud</a>."
+
+msgid "Service point delivery is supported for legacy purposes, please set up Service point delivery via Dynamic Checkout in Sendcloud."
+msgstr "Service point delivery is supported for legacy purposes, please set up Service point delivery via Dynamic Checkout in Sendcloud."
+
+msgid "Service Point Delivery lets the customer select a servicepoint in the checkout."
+msgstr "Service Point Delivery lets the customer select a servicepoint in the checkout."
+
+msgid "Service Point is required"
+msgstr "Service Point is required"
+
+msgid "Service point location id"
+msgstr "Service point location id"
+
+msgid "Service Point must be selected before order purchase. Please return to shipping and select service point."
+msgstr "Service Point must be selected before order purchase. Please return to shipping and select service point."
+
+msgid "Service Point Postal Code"
+msgstr "Service Point Postal Code"
+
+msgid "Service Point Street"
+msgstr "Service Point Street"
+
+msgid "Set up next day, standard, international depending on carrier. Configure the method in the Sendcloud Checkout panel. "
+msgstr "Set up next day, standard, international depending on carrier. Configure the method in the Sendcloud Checkout panel. "
+
+#: includes/Checkout/Shipping/Standard/class-standard-shipping-method.php:27
+msgid "Set up next day, standard, international depending on carrier. Configure the method in the Sendcloud Checkout panel."
+msgstr "Set up next day, standard, international depending on carrier. Configure the method in the Sendcloud Checkout panel."
+
+msgid "Shipment type"
+msgstr "Shipment type"
+
+msgid "Shipped"
+msgstr "Shipped"
+
+msgid "Shipping"
+msgstr "Shipping"
+
+msgid "Shipping cost"
+msgstr "Shipping cost"
+
+msgid "Shipping cost based on the value of the package in the default shop currency"
+msgstr "Shipping cost based on the value of the package in the default shop currency"
+
+msgid "Shipping cost in default currency."
+msgstr "Shipping cost in default currency."
+
+msgid "Shipping cost is not valid!"
+msgstr "Shipping cost is not valid!"
+
+msgid "Shipping labels"
+msgstr "Shipping labels"
+
+msgid "Shipping method is unable to become active until Sendcloud module is connected."
+msgstr "Shipping method is unable to become active until Sendcloud module is connected."
+
+msgid "Shipping method name"
+msgstr "Shipping method name"
+
+msgid "Shipping method not available."
+msgstr "Shipping method not available."
+
+#: resources/views/wc-settings/sendcloud-page.php:54
+msgid "SHIPPING PRODUCT"
+msgstr "SHIPPING PRODUCT"
+
+#: resources/views/wc-settings/sendcloud-page.php:95
+#: resources/views/wc-settings/sendcloud-page.php:100
+msgid "SHIPPING RATE"
+msgstr "SHIPPING RATE"
+
+#: resources/views/wc-settings/sendcloud-page.php:167
+msgid "Shipping rates are not enabled. Please add pricing in the WooCommerce shipping method settings."
+msgstr "Shipping rates are not enabled. Please add pricing in the WooCommerce shipping method settings."
+
+msgid "Shopware shipping powered by Sendcloud"
+msgstr "Shopware shipping powered by Sendcloud"
+
+msgid "Sorry, this service point is no longer available."
+msgstr "Sorry, this service point is no longer available."
+
+msgid "Sorry, we were unable to record your selected service point. Please try again."
+msgstr "Sorry, we were unable to record your selected service point. Please try again."
+
+msgid "Sort Order"
+msgstr "Sort Order"
+
+msgid "Sort order must be numeric value."
+msgstr "Sort order must be numeric value."
+
+#: includes/Controllers/class-sendcloud-view-controller.php:91
+msgid "Standard"
+msgstr "Standard"
+
+msgid "Standard delivery"
+msgstr "Standard delivery"
+
+#: includes/Checkout/Shipping/Standard/class-standard-shipping-method.php:26
+msgid "Standard Delivery"
+msgstr "Standard Delivery"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Status determines whether the shipping method will be available for this Geo Zone."
+msgstr "Status determines whether the shipping method will be available for this Geo Zone."
+
+msgid "Status determines whether the shipping method will be available in the store front."
+msgstr "Status determines whether the shipping method will be available in the store front."
+
+msgid "Success"
+msgstr "Success"
+
+msgid "Success: You have modified shipping."
+msgstr "Success: You have modified shipping."
+
+msgid "Sunday"
+msgstr "Sunday"
+
+msgid "Synchronized shipping methods"
+msgstr "Synchronized shipping methods"
+
+msgid "Tax class that will be applied on shipping cost."
+msgstr "Tax class that will be applied on shipping cost."
+
+msgid "Temporarily unavailable"
+msgstr "Temporarily unavailable"
+
+msgid "The all-in-one-shipping platform for Shopware"
+msgstr "The all-in-one-shipping platform for Shopware"
+
+msgid "The HS code is the harmonized system code. If you want to ship your products internationally, you would need to enter these codes. These codes provide customs with information so that correct tariffs can be applied to the order. Used by border officers to classify this product."
+msgstr "The HS code is the harmonized system code. If you want to ship your products internationally, you would need to enter these codes. These codes provide customs with information so that correct tariffs can be applied to the order. Used by border officers to classify this product."
+
+msgid "The order of a shipping method determines the placement of a certain shipping method among other available shipping methods."
+msgstr "The order of a shipping method determines the placement of a certain shipping method among other available shipping methods."
+
+msgid "The shipping software for e-commerce"
+msgstr "The shipping software for e-commerce"
+
+msgid "There are unsaved changes on this form."
+msgstr "There are unsaved changes on this form."
+
+msgid "There has been an error while refreshing Sendcloud shipping methods"
+msgstr "There has been an error while refreshing Sendcloud shipping methods"
+
+msgid "This tab is for orders with Sendcloud Service Point delivery method only"
+msgstr "This tab is for orders with Sendcloud Service Point delivery method only"
+
+msgid "Thursday"
+msgstr "Thursday"
+
+msgid "To"
+msgstr "To"
+
+msgid "To connect shipping, your billing information needs to be complete. Please add the missing information in billing information to continue."
+msgstr "To connect shipping, your billing information needs to be complete. Please add the missing information in billing information to continue."
+
+msgid "To country"
+msgstr "To country"
+
+msgid "To order total"
+msgstr "To order total"
+
+msgid "To send information shipment data to Sendcloud, please select a default value that will be used. If you have mapped value for HS code and origin country in the next section, and the value is not found on the product, the defined value below will be used."
+msgstr "To send information shipment data to Sendcloud, please select a default value that will be used. If you have mapped value for HS code and origin country in the next section, and the value is not found on the product, the defined value below will be used."
+
+msgid "Toggle list"
+msgstr "Toggle list"
+
+msgid "Toggle map"
+msgstr "Toggle map"
+
+msgid "Total number of orders"
+msgstr "Total number of orders"
+
+msgid "Total orders with errors"
+msgstr "Total orders with errors"
+
+msgid "Track and trace emails"
+msgstr "Track and trace emails"
+
+msgid "Tracking number"
+msgstr "Tracking number"
+
+msgid "Tuesday"
+msgstr "Tuesday"
+
+msgid "Type of shipment."
+msgstr "Type of shipment."
+
+msgid "Unauthorized"
+msgstr "Unauthorized"
+
+msgid "Unexpected error occurred"
+msgstr "Unexpected error occurred"
+
+msgid "Unknown"
+msgstr "Unknown"
+
+msgid "Updated at"
+msgstr "Updated at"
+
+msgid "VAT"
+msgstr "VAT"
+
+msgid "View opening times"
+msgstr "View opening times"
+
+msgid "Wait"
+msgstr "Wait"
+
+msgid "Want more? Go to Sendcloud and activate:"
+msgstr "Want more? Go to Sendcloud and activate:"
+
+#: resources/views/wc-settings/sendcloud-page.php:220
+msgid "Want to change any setting?"
+msgstr "Want to change any setting?"
+
+#: resources/views/wc-settings/sendcloud-page.php:210
+msgid "Want to see your WooCommerce orders in the Sendcloud Panel?"
+msgstr "Want to see your WooCommerce orders in the Sendcloud Panel?"
+
+msgid "Warehouse"
+msgstr "Warehouse"
+
+msgid "Warning: You do not have permission to modify Sendcloud service point delivery!"
+msgstr "Warning: You do not have permission to modify Sendcloud service point delivery!"
+
+msgid "We couldn’t display this delivery option. Choose another option to continue."
+msgstr "We couldn’t display this delivery option. Choose another option to continue."
+
+msgid "We failed to save your configuration. Please check your input form and try again."
+msgstr "We failed to save your configuration. Please check your input form and try again."
+
+msgid "Wednesday"
+msgstr "Wednesday"
+
+#: resources/views/wc-settings/sendcloud-page.php:94
+msgid "WEIGHT CLASS"
+msgstr "WEIGHT CLASS"
+
+msgid "Will Not Deliver"
+msgstr "Will Not Deliver"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "You are connected with Sendcloud"
+msgstr "You are connected with Sendcloud"
+
+msgid "You are successfully connected! You have access to your favourite carriers, efficient shipping and more. For more information, please visit Sendcloud"
+msgstr "You are successfully connected! You have access to your favourite carriers, efficient shipping and more. For more information, please visit Sendcloud"
+
+#: includes/Checkout/Shipping/class-abstract-free-shipping-shipping-method.php:76
+msgid "You can see all shipping zones, shipping methods and shipping costs on <a href=\"/wp-admin/admin.php?page=sendcloud-wc\">Sendcloud page</a>"
+msgstr "You can see all shipping zones, shipping methods and shipping costs on <a href=\"/wp-admin/admin.php?page=sendcloud-wc\">Sendcloud page</a>"
+
+#: resources/views/checkout/delivery-date-admin-widget.php:15
+msgid "You can't change the selected delivery date"
+msgstr "You can't change the selected delivery date"
+
+msgid "You can't change the selected delivery date."
+msgstr "You can't change the selected delivery date."
+
+msgid "You can't change the selected Service Point"
+msgstr "You can't change the selected Service Point"
+
+#: resources/views/wc-settings/sendcloud-page.php:30
+msgid "You haven't configured Checkout yet."
+msgstr "You haven't configured Checkout yet."
+
+msgid "You must configure service point delivery before it can be offered to your customer during checkout."
+msgstr "You must configure service point delivery before it can be offered to your customer during checkout."
+
+msgid "You must configure service point delivery before it can be offered to your customers during checkout."
+msgstr "You must configure service point delivery before it can be offered to your customers during checkout."
+
+msgid "You must select a service point location before saving"
+msgstr "You must select a service point location before saving"
+
+msgid "You need to enable permalinks. Go to Settings -> Permalinks."
+msgstr "You need to enable permalinks. Go to Settings -> Permalinks."
+
+msgid "You succesfully integrated your Shopware store with Sendcloud. You can now ship more efficient using your favourite carriers. Do you want to ship with DHL? Please visit our help center for more information."
+msgstr "You succesfully integrated your Shopware store with Sendcloud. You can now ship more efficient using your favourite carriers. Do you want to ship with DHL? Please visit our help center for more information."
+
+msgid "You're all set to start shipping more efficiently!"
+msgstr "You're all set to start shipping more efficiently!"
+
+msgid "Your configuration has been saved successfully!"
+msgstr "Your configuration has been saved successfully!"
+
+msgid "Your store doesn't use Stencil theme engine, and therefore Service point delivery is not available."
+msgstr "Your store doesn't use Stencil theme engine, and therefore Service point delivery is not available."
+
+msgid "Zone"
+msgstr "Zone"

@@ -1,0 +1,51 @@
+{
+    "packages": [
+        {
+            "name": "sendcloud/checkout",
+            "version": "v1.1.1",
+            "version_normalized": "1.1.1.0",
+            "source": {
+                "type": "git",
+                "url": "git@gitlab.com:sendcloud/logeecom/checkout-core.git",
+                "reference": "bf18ae7eb681e40e29333a36f134ba73d5c6206e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/sendcloud%2Flogeecom%2Fcheckout-core/repository/archive.zip?sha=bf18ae7eb681e40e29333a36f134ba73d5c6206e",
+                "reference": "bf18ae7eb681e40e29333a36f134ba73d5c6206e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7"
+            },
+            "time": "2023-01-16T11:19:11+01:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "SendCloud\\Checkout\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "SendCloud\\Tests\\": "tests"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "SendCloud checkout library.",
+            "support": {
+                "source": "https://gitlab.com/sendcloud/logeecom/checkout-core/-/tree/v1.1.1",
+                "issues": "https://gitlab.com/sendcloud/logeecom/checkout-core/-/issues"
+            },
+            "install-path": "../sendcloud/checkout"
+        }
+    ],
+    "dev": false,
+    "dev-package-names": []
+}

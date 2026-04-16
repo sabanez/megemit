@@ -1,0 +1,56 @@
+# Translation of Plugins - Disable and Remove Google Fonts | GDPR &amp; DSGVO friendly - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - Disable and Remove Google Fonts | GDPR &amp; DSGVO friendly - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2026-01-19 14:25:33+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.3\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - Disable and Remove Google Fonts | GDPR &amp; DSGVO friendly - Stable (latest release)\n"
+
+#: admin/class-drgf-admin.php:124 admin/class-drgf-admin.php:159
+#: admin/class-drgf-notice.php:80
+msgid "You do not have permission to perform this action."
+msgstr "No tienes permiso para realizar esta acción."
+
+#: admin/class-drgf-admin.php:119 admin/class-drgf-admin.php:154
+#: admin/class-drgf-notice.php:75
+msgid "Security check failed."
+msgstr "La comprobación de seguridad ha fallado."
+
+#: admin/class-drgf-admin.php:56 admin/class-drgf-admin.php:57
+msgid "Google Fonts"
+msgstr "Google Fonts"
+
+#. translators: %s Link to DRGF welcome page.
+#: admin/class-drgf-notice.php:114
+msgid "Thank you for installing <strong>Disable & Remove Google Fonts</strong>! <a href=\"%s\">Finish the setup process</a>."
+msgstr "¡Gracias por instalar <strong>Disable & Remove Google Fonts</strong>! <a href=\"%s\">Finaliza el proceso de configuración</a>."
+
+#. Description of the plugin
+#: disable-remove-google-fonts.php
+msgid "Optimize frontend performance by removing Google Fonts. GDPR-friendly."
+msgstr "Optimiza el rendimiento de la portada desactivando Google Fonts. Compatible con el RGPD."
+
+#. Author URI of the plugin
+#: disable-remove-google-fonts.php
+msgid "https://fontsplugin.com"
+msgstr "https://fontsplugin.com"
+
+#. Plugin URI of the plugin
+#: disable-remove-google-fonts.php
+msgid "https://wordpress.org/plugins/disable-remove-google-fonts/"
+msgstr "https://es.wordpress.org/plugins/disable-remove-google-fonts/"
+
+#. Author of the plugin
+#: disable-remove-google-fonts.php
+msgid "Fonts Plugin"
+msgstr "Fonts Plugin"
+
+#. Plugin Name of the plugin
+#: disable-remove-google-fonts.php
+msgid "Disable & Remove Google Fonts"
+msgstr "Disable & Remove Google Fonts"
