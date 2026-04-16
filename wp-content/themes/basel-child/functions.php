@@ -37,42 +37,43 @@ function cncl_after_edit_callback ($member_info)
 }
 */
 
-// Hook robusto para marcar al usuario después del registro (ahora con Cookies)
+// Hook robusto para marcar al usuario y generar token de Auto-Login
 add_action('swpm_front_end_registration_complete_user_data', 'mgmit_after_registration_hs_logic');
 function mgmit_after_registration_hs_logic($member_info) {
-    // Establecemos una cookie de 24 horas para identificar a este navegador como "en proceso de alta"
-    // Usamos '/' para que sea válida en toda la web
-    setcookie('mgmit_hs_pending', '1', time() + 86400, '/');
-    
-    // También guardamos en Meta por si el usuario se loguea en otro navegador o sesión más tarde
     $username = $member_info['user_name'];
     $wp_user = get_user_by('login', $username);
+    
     if ($wp_user && $member_info['membership_level'] == 2) {
+        // Generamos un token aleatorio seguro
+        $token = bin2hex(random_bytes(20));
+        
+        // Guardamos el token y el estado pendiente
         update_user_meta($wp_user->ID, 'mgmit_hs_details_pending', '1');
+        update_user_meta($wp_user->ID, 'mgmit_hs_login_token', $token);
+        
+        // Ponemos el token en la cookie del navegador (24h)
+        setcookie('mgmit_hs_pending_token', $token, time() + 86400, '/');
     }
 }
 
-// Lógica de redirección forzosa basada en Cookies y Meta
+// Lógica de redirección forzosa basada en Cookies de Token y Meta
 add_action('template_redirect', 'mgmit_enforce_hs_form_completion', 1);
 function mgmit_enforce_hs_form_completion() {
-    // Si estamos en el logout, admin o procesos internos, no bloqueamos
     if (strstr($_SERVER['REQUEST_URI'], 'action=logout') || is_admin()) return;
 
     $is_pending = false;
 
-    // Caso A: El usuario está logueado (comprobamos su Meta)
     if (is_user_logged_in()) {
         if (get_user_meta(get_current_user_id(), 'mgmit_hs_details_pending', true) === '1') {
             $is_pending = true;
         }
     } 
-    // Caso B: El usuario acaba de registrarse pero NO tiene sesión (comprobamos la Cookie)
-    else if (isset($_COOKIE['mgmit_hs_pending']) && $_COOKIE['mgmit_hs_pending'] === '1') {
+    else if (isset($_COOKIE['mgmit_hs_pending_token'])) {
         $is_pending = true;
     }
 
     if ($is_pending) {
-        $forced_page_id = 21568; // ID de 'registrierungsdetails'
+        $forced_page_id = 21568; 
         if (!is_page($forced_page_id) && !is_page('registrierungsdetails')) {
             wp_redirect(get_permalink($forced_page_id) . '?enforced=1');
             exit;
@@ -80,28 +81,42 @@ function mgmit_enforce_hs_form_completion() {
     }
 }
 
-// Limpiar bloqueo (Cookie + Meta)
+// Limpiar bloqueo y realizar AUTO-LOGIN
 add_action('init', 'mgmit_clear_hs_pending_status');
 function mgmit_clear_hs_pending_status() {
-    // Triple Seguro: Detectar el envío del formulario de registro antes del proceso
-    if (isset($_POST['swpm_registration_submit']) && isset($_POST['level_id']) && $_POST['level_id'] == 2) {
-        setcookie('mgmit_hs_pending', '1', time() + 86400, '/');
-    }
-
     if (isset($_GET['hs_finish'])) {
-        // Borramos cookie
-        setcookie('mgmit_hs_pending', '', time() - 3600, '/');
+        $token = isset($_COOKIE['mgmit_hs_pending_token']) ? $_COOKIE['mgmit_hs_pending_token'] : '';
         
-        // Si está logueado, limpiamos su meta
-        if (is_user_logged_in()) {
-            update_user_meta(get_current_user_id(), 'mgmit_hs_details_pending', '0');
+        if (!empty($token)) {
+            // Buscamos al usuario que tenga este token
+            $users = get_users(array(
+                'meta_key' => 'mgmit_hs_login_token',
+                'meta_value' => $token,
+                'number' => 1
+            ));
+
+            if (!empty($users)) {
+                $user = $users[0];
+                
+                // Realizamos el AUTO-LOGIN para WordPress
+                wp_set_current_user($user->ID);
+                wp_set_auth_cookie($user->ID);
+                do_action('wp_login', $user->user_login, $user);
+
+                // También forzamos el login en Simple Membership si es necesario
+                if (class_exists('SwpmMemberSession')) {
+                    SwpmMemberSession::get_instance()->set_session_by_username($user->user_login);
+                }
+
+                // Limpiamos los rastros
+                update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
+                delete_user_meta($user->ID, 'mgmit_hs_login_token');
+                setcookie('mgmit_hs_pending_token', '', time() - 3600, '/');
+            }
         }
         
-        wp_redirect(home_url('/fachkreisbereich/'));
+        wp_redirect(home_url('/fachkreisbereich-mitglied/'));
         exit;
-    }
-}
-
     }
 }
 
@@ -896,25 +911,33 @@ function custom_more_info_template() {
 }
 
 add_filter('action_scheduler_queue_runner_interval', function() {
-    return 120; // alle 120 Sekunden statt jede Minute
-});
-
-add_filter('action_scheduler_queue_runner_concurrent_batches', function() {
+    retuadd_filter('action_scheduler_queue_runner_concurrent_batches', function() {
     return 1; // nur ein Batch gleichzeitig
 });
 
-function swpm_hubspot_mapper_script() {
-    $js_path = '/inc/hubspot_map.js';
+function swpm_hubspot_scripts() {
+    $map_js = '/inc/hubspot_map.js';
+    $enforce_js = '/inc/onboarding-enforcement.js';
     
+    // 1. Script de Mapeo (Genérico)
     wp_enqueue_script(
         'swpm-hubspot-mapper',
-        get_stylesheet_directory_uri() . $js_path,
+        get_stylesheet_directory_uri() . $map_js,
         array('jquery'),
-        filemtime(get_stylesheet_directory() . $js_path),
+        filemtime(get_stylesheet_directory() . $map_js),
         true
     );
 
-    // Pasamos la configuración de PHP a JavaScript de forma segura
+    // 2. Script de Cumplimiento (Específico de este sitio)
+    wp_enqueue_script(
+        'mgmit-onboarding-enforcement',
+        get_stylesheet_directory_uri() . $enforce_js,
+        array('jquery'),
+        filemtime(get_stylesheet_directory() . $enforce_js),
+        true
+    );
+
+    // Pasamos la configuración al mapeador
     $config = array(
         array(
             'formId' => '#registro-profesional-13, #swpm-registration-form, .swpm-registration-form',
@@ -938,4 +961,4 @@ function swpm_hubspot_mapper_script() {
 
     wp_localize_script('swpm-hubspot-mapper', 'HS_CONFIG', $config);
 }
-add_action('wp_enqueue_scripts', 'swpm_hubspot_mapper_script', 20);
+add_action('wp_enqueue_scripts', 'swpm_hubspot_scripts', 20);
