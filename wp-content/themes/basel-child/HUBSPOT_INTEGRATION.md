@@ -50,6 +50,27 @@ array(
 
 ---
 
+## Flujo de Onboarding Obligatorio (Registro en 2 Pasos)
+
+Para mejorar la captación de datos, se ha implementado un sistema de "paso obligatorio" para los miembros del **Fachkreisbereich (Nivel 2)**.
+
+### 1. Bloqueo de Navegación
+Cuando un usuario completa el primer registro (SWPM), se le asigna el metadato `mgmit_hs_details_pending = 1`. 
+*   **Consecuencia:** Mientras este valor sea `1`, cualquier intento de navegar fuera de `/registrierungsdetails/` resultará en una redirección forzosa de vuelta a dicha página.
+*   **Aviso UX:** La redirección incluye el parámetro `?enforced=1`, que activa un Pop-up informativo en el frontend.
+
+### 2. Desbloqueo (Finalización)
+El usuario solo recupera la libertad de navegación cuando el servidor detecta el parámetro `hs_finish=1`.
+
+**Configuración Requerida en HubSpot:**
+El formulario de HubSpot en el paso 2 DEBE estar configurado para "Redirigir a otra página" tras el envío a la siguiente URL:
+`https://dominio.com/registrierungsdetails/?hs_finish=1`
+
+### 3. Pop-up de Aviso
+El Pop-up está definido en `hubspot_map.js` y utiliza estilos en línea para evitar dependencias de CSS externas, asegurando que se vea correctamente incluso si hay problemas con las hojas de estilo del tema.
+
+---
+
 ## Guía de Debugging
 
 Si el mapeo no parece funcionar:

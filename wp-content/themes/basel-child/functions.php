@@ -35,16 +35,76 @@ function cncl_after_edit_callback ($member_info)
 		$user_data = wp_update_user( array( 'ID' => $user->ID, 'display_name' => $post->value ) );
 	};
 }
-
-add_action('swpm_front_end_registration_complete_fb', 'cncl_after_registration_callback');
-function cncl_after_registration_callback ($member_info)
-{
-    write_log('************************************************************************+');
-	write_log($member_info);
-	$_url = "https://solve.mgm.concloo.net/mgm&memberid=".$member_info["member_id"]."&accountstate=".$member_info["account_state"];
-	$_buffer = implode('', file($_url));
-}
 */
+
+// Hook robusto para marcar al usuario después del registro (ahora con Cookies)
+add_action('swpm_front_end_registration_complete_user_data', 'mgmit_after_registration_hs_logic');
+function mgmit_after_registration_hs_logic($member_info) {
+    // Establecemos una cookie de 24 horas para identificar a este navegador como "en proceso de alta"
+    // Usamos '/' para que sea válida en toda la web
+    setcookie('mgmit_hs_pending', '1', time() + 86400, '/');
+    
+    // También guardamos en Meta por si el usuario se loguea en otro navegador o sesión más tarde
+    $username = $member_info['user_name'];
+    $wp_user = get_user_by('login', $username);
+    if ($wp_user && $member_info['membership_level'] == 2) {
+        update_user_meta($wp_user->ID, 'mgmit_hs_details_pending', '1');
+    }
+}
+
+// Lógica de redirección forzosa basada en Cookies y Meta
+add_action('template_redirect', 'mgmit_enforce_hs_form_completion', 1);
+function mgmit_enforce_hs_form_completion() {
+    // Si estamos en el logout, admin o procesos internos, no bloqueamos
+    if (strstr($_SERVER['REQUEST_URI'], 'action=logout') || is_admin()) return;
+
+    $is_pending = false;
+
+    // Caso A: El usuario está logueado (comprobamos su Meta)
+    if (is_user_logged_in()) {
+        if (get_user_meta(get_current_user_id(), 'mgmit_hs_details_pending', true) === '1') {
+            $is_pending = true;
+        }
+    } 
+    // Caso B: El usuario acaba de registrarse pero NO tiene sesión (comprobamos la Cookie)
+    else if (isset($_COOKIE['mgmit_hs_pending']) && $_COOKIE['mgmit_hs_pending'] === '1') {
+        $is_pending = true;
+    }
+
+    if ($is_pending) {
+        $forced_page_id = 21568; // ID de 'registrierungsdetails'
+        if (!is_page($forced_page_id) && !is_page('registrierungsdetails')) {
+            wp_redirect(get_permalink($forced_page_id) . '?enforced=1');
+            exit;
+        }
+    }
+}
+
+// Limpiar bloqueo (Cookie + Meta)
+add_action('init', 'mgmit_clear_hs_pending_status');
+function mgmit_clear_hs_pending_status() {
+    // Triple Seguro: Detectar el envío del formulario de registro antes del proceso
+    if (isset($_POST['swpm_registration_submit']) && isset($_POST['level_id']) && $_POST['level_id'] == 2) {
+        setcookie('mgmit_hs_pending', '1', time() + 86400, '/');
+    }
+
+    if (isset($_GET['hs_finish'])) {
+        // Borramos cookie
+        setcookie('mgmit_hs_pending', '', time() - 3600, '/');
+        
+        // Si está logueado, limpiamos su meta
+        if (is_user_logged_in()) {
+            update_user_meta(get_current_user_id(), 'mgmit_hs_details_pending', '0');
+        }
+        
+        wp_redirect(home_url('/fachkreisbereich/'));
+        exit;
+    }
+}
+
+    }
+}
+
 
 // Change the default "from name"
 function wp_email_set_from_name( $from_name ) {
