@@ -911,15 +911,17 @@ function custom_more_info_template() {
 }
 
 add_filter('action_scheduler_queue_runner_interval', function() {
-    retuadd_filter('action_scheduler_queue_runner_concurrent_batches', function() {
+    return 120; // alle 120 Sekunden statt jede Minute
+});
+
+add_filter('action_scheduler_queue_runner_concurrent_batches', function() {
     return 1; // nur ein Batch gleichzeitig
 });
 
-function swpm_hubspot_scripts() {
+// Función de Mapeo (Genérica - Portabilidad)
+function swpm_hubspot_mapper_script() {
     $map_js = '/inc/hubspot_map.js';
-    $enforce_js = '/inc/onboarding-enforcement.js';
     
-    // 1. Script de Mapeo (Genérico)
     wp_enqueue_script(
         'swpm-hubspot-mapper',
         get_stylesheet_directory_uri() . $map_js,
@@ -928,16 +930,7 @@ function swpm_hubspot_scripts() {
         true
     );
 
-    // 2. Script de Cumplimiento (Específico de este sitio)
-    wp_enqueue_script(
-        'mgmit-onboarding-enforcement',
-        get_stylesheet_directory_uri() . $enforce_js,
-        array('jquery'),
-        filemtime(get_stylesheet_directory() . $enforce_js),
-        true
-    );
-
-    // Pasamos la configuración al mapeador
+    // Pasamos la configuración al mapeador genérico
     $config = array(
         array(
             'formId' => '#registro-profesional-13, #swpm-registration-form, .swpm-registration-form',
@@ -961,4 +954,18 @@ function swpm_hubspot_scripts() {
 
     wp_localize_script('swpm-hubspot-mapper', 'HS_CONFIG', $config);
 }
-add_action('wp_enqueue_scripts', 'swpm_hubspot_scripts', 20);
+add_action('wp_enqueue_scripts', 'swpm_hubspot_mapper_script', 20);
+
+// Función de Cumplimiento de Onboarding (Específica de este sitio)
+function mgmit_onboarding_enforcement_script() {
+    $enforce_js = '/inc/onboarding-enforcement.js';
+    
+    wp_enqueue_script(
+        'mgmit-onboarding-enforcement',
+        get_stylesheet_directory_uri() . $enforce_js,
+        array('jquery', 'swpm-hubspot-mapper'),
+        filemtime(get_stylesheet_directory() . $enforce_js),
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'mgmit_onboarding_enforcement_script', 20);
