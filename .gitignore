@@ -1,48 +1,39 @@
-# Wordpress - ignore core, configuration, examples, uploads and logs.
-# https://github.com/github/gitignore/blob/main/WordPress.gitignore
+# --- SEGURIDAD ---
+wp-config.php
+.htaccess
+*.log
+/wp-content/backups/
+/wp-content/upgrade/
 
-# Core
-#
-# Note: if you want to stage/commit WP core files
-# you can delete this whole section/until Configuration.
+# --- ARCHIVOS DE SISTEMA Y CACHÉ ---
+.DS_Store
+Thumbs.db
+wp-content/cache/
+wp-content/et-cache/
+node_modules/
+
+# --- CONTENIDO MULTIMEDIA (No se sube a Git) ---
+# Las imágenes deben ir por copia de seguridad aparte, no en el repo
+/wp-content/uploads/
+
+# --- CORE (Opcional) ---
+# Si quieres que el repo sea ligero y los técnicos instalen WP aparte, déjalo así.
+# Si quieres que al clonar ya esté WP ahí, comenta estas líneas con un #
 /wp-admin/
-/wp-content/index.php
-/wp-content/languages
-/wp-content/plugins/index.php
-/wp-content/themes/index.php
 /wp-includes/
 /index.php
 /license.txt
 /readme.html
 /wp-*.php
 /xmlrpc.php
+!/wp-content/
 
-# Configuration
-wp-config.php
-
-# Example themes
+# --- TEMAS Y PLUGINS ---
+# Subiremos todo el contenido de temas y plugins para que el técnico 
+# tenga el sitio funcional al clonar.
+# (Ignoramos solo los temas por defecto de WP para no ensuciar)
 /wp-content/themes/twenty*/
 
-# Example plugin
-/wp-content/plugins/hello.php
-
-# Uploads
-/wp-content/uploads/
-
-# Log files
-*.log
-
-# htaccess
-/.htaccess
-
-# All plugins
-#
-# Note: If you wish to whitelist plugins,
-# uncomment the next line
-#/wp-content/plugins
-
-# All themes
-#
-# Note: If you wish to whitelist themes,
-# uncomment the next line
-#/wp-content/themes
+# --- CONFIGURACIÓN PARA TÉCNICOS ---
+# Creamos un archivo de ejemplo para que sepan qué configurar
+!wp-config-sample.php
