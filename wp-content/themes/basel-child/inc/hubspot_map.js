@@ -6,6 +6,7 @@
 
 const HubSpotMapper = (function($) {
     'use strict';
+    console.log('[HS Mapper] Script cargado y ejecutándose...');
 
     const registry = window.HS_CONFIG || [];
 
@@ -148,12 +149,14 @@ const HubSpotMapper = (function($) {
                         
                         // Si es el formulario de registro, ponemos la cookie al hacer clic en enviar
                         if (config.formId.includes('registro-profesional')) {
+                            // 1. Escuchar el submit estándar
                             $form.on('submit', function() {
-                                // Ponemos la cookie para que expire en 24h
-                                const date = new Date();
-                                date.setTime(date.getTime() + (24*60*60*1000));
-                                document.cookie = "mgmit_hs_pending=1; expires=" + date.toUTCString() + "; path=/";
-                                console.log('[HS Mapper] Cookie de seguridad establecida por JS');
+                                document.cookie = "mgmit_hs_pending=1; path=/; max-age=86400";
+                            });
+
+                            // 2. Escuchar el CLICK en el botón de submit
+                            $form.find('input[type="submit"], button[type="submit"]').on('click', function() {
+                                document.cookie = "mgmit_hs_pending=1; path=/; max-age=86400";
                             });
                         }
                     }
