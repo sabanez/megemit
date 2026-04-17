@@ -944,14 +944,25 @@ add_filter('action_scheduler_queue_runner_concurrent_batches', function() {
     return 1; // nur ein Batch gleichzeitig
 });
 
-function swpm_hubspot_mapper_script() {
-    $js_path = '/inc/hubspot_map.js';
+function mgmit_enqueue_onboarding_scripts() {
+    $map_js = '/inc/hubspot_map.js';
+    $enforce_js = '/inc/onboarding-enforcement.js';
     
+    // 1. Mapeador de campos (Genérico)
     wp_enqueue_script(
-        'swpm-hubspot-mapper',
-        get_stylesheet_directory_uri() . $js_path,
+        'mgmit-hubspot-mapper',
+        get_stylesheet_directory_uri() . $map_js,
         array('jquery'),
-        filemtime(get_stylesheet_directory() . $js_path),
+        filemtime(get_stylesheet_directory() . $map_js),
+        true
+    );
+
+    // 2. Sistema de Bloqueo y Onboarding (Específico)
+    wp_enqueue_script(
+        'mgmit-onboarding-enforcement',
+        get_stylesheet_directory_uri() . $enforce_js,
+        array('jquery'),
+        filemtime(get_stylesheet_directory() . $enforce_js),
         true
     );
 
@@ -977,6 +988,6 @@ function swpm_hubspot_mapper_script() {
         )
     );
 
-    wp_localize_script('swpm-hubspot-mapper', 'HS_CONFIG', $config);
+    wp_localize_script('mgmit-hubspot-mapper', 'HS_CONFIG', $config);
 }
-add_action('wp_enqueue_scripts', 'swpm_hubspot_mapper_script', 20);
+add_action('wp_enqueue_scripts', 'mgmit_enqueue_onboarding_scripts', 20);

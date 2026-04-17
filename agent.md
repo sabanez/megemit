@@ -7,11 +7,17 @@ Este archivo contiene información técnica sobre el entorno de WordPress, versi
 | Componente | Versión | Notas |
 | :--- | :--- | :--- |
 | **WordPress** | 6.9.4 | Detectado en `wp-includes/version.php` |
-| **PHP** | 8.3.30 | Ejecutando vía ServBay (`php-8.3/current`) |
+| **PHP** | 8.3.30 (Local) / **7.4 (Producción)** | Compatibilidad obligatoria con **7.4** |
 | **MySQL** | 8.4.8 | ServBay (Community Server) |
 | **Entorno** | ServBay | Hosting local en macOS |
 | **Tema Activo** | Basel Child | Tema padre: Basel (Confirmado en DB) |
 | **Conexión DB** | Exitosa | Conectado vía binary de ServBay |
+
+## ⚖️ Reglas de Conducta del Agente
+
+1. **Aprobación Obligatoria:** El agente NUNCA modificará código sin solicitar y recibir aprobación del usuario anteriormente.
+2. **Planificación por Fases:** Las modificaciones técnicas se deben organizar siempre por fases incrementales. Cada fase debe validarse antes de pasar a la siguiente para minimizar errores. Finalizada la fase, se añade la información al `CHANGELOG.md`.
+3. **Compatibilidad PHP 7.4:** El código escrito debe ser compatible con PHP 7.4 (evitar sintaxis moderna de PHP 8.0+ como constructor promotion o union types).
 
 ## 🗄 Configuración de Base de Datos
 

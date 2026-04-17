@@ -2,6 +2,24 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [1.2.0] - 2026-04-17
+
+### Añadido
+- **Módulo Independiente de Onboarding:** Creación de `inc/onboarding-enforcement.js` para separar totalmente la lógica de seguridad del mapeo de datos.
+- **Seguridad de Grado Bancario (Sesiones PHP):** Migración de la persistencia de tokens de Cookies a Sesiones nativas de PHP (`$_SESSION`), garantizando cero colisiones de datos entre usuarios concurrentes.
+
+### Modificado
+- **`basel-child/functions.php`:** 
+    - Unificación de la lógica de captura en el hook universal `user_register`.
+    - Refactorización de la lógica de carga de scripts para soportar carga modular.
+- **`basel-child/inc/hubspot_map.js`:** Simplificación radical; ahora actúa como un componente puro de sincronización de campos (Agnóstico a la lógica de negocio).
+
+### Corregido
+- **Fallo de Auto-login Local:** Resuelto el problema de "cookies invisibles" en PHP mediante el uso de almacenamiento persistente en el servidor (Sessions).
+- **Redundancia de Bloqueo:** Corregido fallo donde el bloqueo se desactivaba prematuramente bajo ciertas condiciones de redirección.
+
+---
+
 ## [1.1.0] - 2026-04-16
 
 ### Añadido
