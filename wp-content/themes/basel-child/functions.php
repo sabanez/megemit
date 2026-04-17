@@ -37,22 +37,22 @@ function cncl_after_edit_callback ($member_info)
 }
 */
 
-// --- SISTEMA DE ONBOARDING OBLIGATORIO (HubSpot + SWPM) ---
-
-// 1. Marcar al usuario tras finalizar el registro en la web
-add_action('swpm_front_end_registration_complete_user_data', 'mgmit_after_registration_hs_logic');
-function mgmit_after_registration_hs_logic($member_info) {
-    $username = $member_info['user_name'];
-    $wp_user = get_user_by('login', $username);
+add_action('user_register', 'mgmit_after_registration_mark_user', 5, 1);
+function mgmit_after_registration_mark_user($user_id) {
+    update_user_meta($user_id, 'mgmit_hs_details_pending', '1');
     
-    if ($wp_user && $member_info['membership_level'] == 2) {
-        update_user_meta($wp_user->ID, 'mgmit_hs_details_pending', '1');
-        
-        // Ponemos la cookie de respaldo (visibilidad inmediata y futura)
-        setcookie('mgmit_hs_pending', '1', time() + 86400, '/', '', false, false);
-        $_COOKIE['mgmit_hs_pending'] = '1';
+    // Guardamos en la SESIÓN del servidor (Bloqueo + ID)
+    if (!session_id()) { session_start(); }
+    $_SESSION['mgmit_hs_user_id'] = $user_id;
+    $_SESSION['mgmit_hs_pending'] = 1;
+
+    // Sincronizamos con el token por si acaso (redundancia)
+    $login_token = isset($_POST['mgmit_hs_token']) ? sanitize_text_field($_POST['mgmit_hs_token']) : (isset($_COOKIE['mgmit_hs_login_token']) ? $_COOKIE['mgmit_hs_login_token'] : '');
+    if (!empty($login_token)) {
+        update_user_meta($user_id, 'mgmit_hs_login_token', $login_token);
     }
 }
+
 
 // 2. Redirección forzosa si el perfil está pendiente
 add_action('template_redirect', 'mgmit_enforce_hs_form_completion', 1);
@@ -66,8 +66,14 @@ function mgmit_enforce_hs_form_completion() {
             $is_pending = true;
         }
     } 
-    else if (isset($_COOKIE['mgmit_hs_pending']) && $_COOKIE['mgmit_hs_pending'] === '1') {
-        $is_pending = true;
+    
+    // Check session or cookie for guest users who just registered
+    if (!$is_pending) {
+        if (!session_id()) { session_start(); }
+        if ((isset($_SESSION['mgmit_hs_pending']) && $_SESSION['mgmit_hs_pending'] == 1) || 
+            (isset($_COOKIE['mgmit_hs_pending']) && $_COOKIE['mgmit_hs_pending'] === '1')) {
+            $is_pending = true;
+        }
     }
 
     if ($is_pending) {
@@ -87,18 +93,50 @@ function mgmit_clear_hs_pending_status() {
                             isset($_POST['swpm-fb-submit']) || 
                             (isset($_POST['swpm_registr_level_id']) && !empty($_POST['swpm_registr_level_id']));
 
-    if ($is_registration_post) {
-        setcookie('mgmit_hs_pending', '1', time() + 86400, '/', '', false, false);
-        $_COOKIE['mgmit_hs_pending'] = '1';
+    // Inicializar sesión si no existe
+    if (!session_id()) { 
+        session_start(); 
     }
 
-    // Limpieza al terminar el formulario de HubSpot
-    if (isset($_GET['hs_finish'])) {
-        setcookie('mgmit_hs_pending', '', time() - 3600, '/');
+    if ($is_registration_post) {
+        $login_token = isset($_POST['mgmit_hs_token']) ? sanitize_text_field($_POST['mgmit_hs_token']) : wp_generate_password(32, false);
         
-        if (is_user_logged_in()) {
-            update_user_meta(get_current_user_id(), 'mgmit_hs_details_pending', '0');
+        setcookie('mgmit_hs_pending', '1', time() + 86400, '/', '', false, false);
+        $_COOKIE['mgmit_hs_pending'] = '1';
+        $_SESSION['mgmit_hs_pending'] = 1;
+    }
+
+    // El hook user_register se encargará de guardar el ID en la SESIÓN
+    
+    // Fase 2: Limpieza y Auto-login SEGURO por Sesión
+    if (isset($_GET['hs_finish']) || isset($_GET['hs_test'])) {
+        $user_id = isset($_SESSION['mgmit_hs_user_id']) ? absint($_SESSION['mgmit_hs_user_id']) : 0;
+        $user = null;
+
+        if ($user_id > 0) {
+            $user = get_userdata($user_id);
         }
+        
+        if ($user) {
+            update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
+
+            // Auto-login WordPress
+            wp_set_current_user($user->ID, $user->user_login);
+            wp_set_auth_cookie($user->ID, true);
+            
+            // Auto-login Simple Membership
+            if (class_exists('SwpmMemberAuth')) {
+                $auth = SwpmMemberAuth::get_instance();
+                if (method_exists($auth, 'login')) {
+                    $auth->login($user->user_login, '', true);
+                }
+            }
+        }
+
+        // Limpiar
+        unset($_SESSION['mgmit_hs_user_id']);
+        unset($_SESSION['mgmit_hs_pending']);
+        setcookie('mgmit_hs_pending', '', time() - 3600, '/');
         
         wp_redirect(home_url('/fachkreisbereich/'));
         exit;

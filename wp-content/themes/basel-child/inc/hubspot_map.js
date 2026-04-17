@@ -149,20 +149,41 @@ const HubSpotMapper = (function($) {
                         
                         // Si es el formulario de registro, ponemos la cookie al hacer clic en enviar
                         if (config.formId.includes('registro-profesional')) {
+                            // Función para generar un token aleatorio simple
+                            const generateToken = () => {
+                                return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                            };
+
+                            const setCookies = () => {
+                                const token = generateToken();
+                                console.log('[HS Mapper] Generando tokens de fase 1...');
+                                document.cookie = "mgmit_hs_pending=1; path=/; max-age=86400";
+                                document.cookie = "mgmit_hs_login_token=" + token + "; path=/; max-age=86400";
+                                
+                                // Inyectar campo oculto para que PHP lo reciba
+                                if ($form.find('input[name="mgmit_hs_token"]').length === 0) {
+                                    $form.append('<input type="hidden" name="mgmit_hs_token" value="' + token + '">');
+                                }
+                            };
+
                             // 1. Escuchar el submit estándar
                             $form.on('submit', function() {
-                                document.cookie = "mgmit_hs_pending=1; path=/; max-age=86400";
+                                setCookies();
                             });
 
                             // 2. Escuchar el CLICK en el botón de submit
                             $form.find('input[type="submit"], button[type="submit"]').on('click', function() {
-                                document.cookie = "mgmit_hs_pending=1; path=/; max-age=86400";
+                                setCookies();
                             });
                         }
                     }
                 });
                 
-                // Ejecutamos el aviso de navegación si existe el parámetro
+                // Ejecutar aviso de navegación o simulación de test
+                const params = new URLSearchParams(window.location.search);
+                if (params.has('hs_test')) {
+                    console.log('[HS TEST] Modo simulación detectado. Ejecutando limpieza y login...');
+                }
                 handleEnforcedNavigation();
             });
         }
