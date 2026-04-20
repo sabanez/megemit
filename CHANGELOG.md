@@ -2,6 +2,19 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [1.2.1] - 2026-04-20
+
+### Añadido
+- **Mapeo de Formulario de Perfil:** Configuración de puente para el formulario `#profile-form-level-13-16` hacia HubSpot (`MeGeMIT_DE_Profile_Update`).
+- **Optimización de Action Scheduler:** Ajuste de intervalos de ejecución (120s) y lotes concurrentes (1) para mejorar el rendimiento en el entorno ServBay.
+
+### Modificado
+- **Estandarización de Scripts:** Renombre de funciones y handles de `swpm-hubspot-mapper` a `mgmit-hubspot-mapper` para consistencia con el prefijo del proyecto.
+- **Limpieza de Base de Datos:** Eliminación de registros duplicados en la tabla de plugins activos (causados por redundancia en el proceso de migración/duplicación).
+- **Documentación Técnica:** Refinado de `HUBSPOT_INTEGRATION.md` para reflejar la nueva estructura modular de scripts.
+
+---
+
 ## [1.2.0] - 2026-04-17
 
 ### Añadido

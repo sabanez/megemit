@@ -1,14 +1,14 @@
 {
     "Status": 1,
     "ARC": {
-        "Size": "5.01GB",
-        "DirCount": "6,963",
-        "FileCount": "58,830",
-        "FullCount": "65,793",
-        "USize": 5376329136,
-        "UDirCount": 6963,
-        "UFileCount": 58830,
-        "UFullCount": 65793,
+        "Size": "5.15GB",
+        "DirCount": "7,051",
+        "FileCount": "58,916",
+        "FullCount": "65,967",
+        "USize": 5531423150,
+        "UDirCount": 7051,
+        "UFileCount": 58916,
+        "UFullCount": 65967,
         "UnreadableDirCount": 0,
         "UnreadableFileCount": 0,
         "FilterDirsAll": [
@@ -172,16 +172,16 @@
             "Excluded": true,
             "Triggers": true,
             "mysqlDumpMemoryCheck": true,
-            "requiredMysqlDumpLimit": "253.83MB"
+            "requiredMysqlDumpLimit": "251.01MB"
         },
-        "SizeInBytes": 213730848,
-        "Size": "203.83MB",
-        "Rows": "705,145",
+        "SizeInBytes": 210769076,
+        "Size": "201.01MB",
+        "Rows": "697,605",
         "TableCount": 165,
         "TableList": {
             "wpgr_actionscheduler_actions": {
                 "Case": 0,
-                "Rows": "11,286",
+                "Rows": "11,262",
                 "Size": "16.05MB",
                 "USize": 16826368
             },
@@ -199,7 +199,7 @@
             },
             "wpgr_actionscheduler_logs": {
                 "Case": 0,
-                "Rows": "34,037",
+                "Rows": "33,964",
                 "Size": "7.55MB",
                 "USize": 7913472
             },
@@ -259,9 +259,9 @@
             },
             "wpgr_borlabs_cookie_consent_logs": {
                 "Case": 0,
-                "Rows": "10,587",
-                "Size": "6.03MB",
-                "USize": 6324224
+                "Rows": "3,190",
+                "Size": "2.7MB",
+                "USize": 2834432
             },
             "wpgr_borlabs_cookie_consent_stats_day": {
                 "Case": 0,
@@ -355,13 +355,13 @@
             },
             "wpgr_borlabs_cookie_logs": {
                 "Case": 0,
-                "Rows": "49",
-                "Size": "272KB",
-                "USize": 278528
+                "Rows": "42",
+                "Size": "256KB",
+                "USize": 262144
             },
             "wpgr_borlabs_cookie_packages": {
                 "Case": 0,
-                "Rows": "225",
+                "Rows": "219",
                 "Size": "4.53MB",
                 "USize": 4751360
             },
@@ -499,13 +499,13 @@
             },
             "wpgr_duplicator_activity_logs": {
                 "Case": 0,
-                "Rows": "2,397",
+                "Rows": "2,400",
                 "Size": "4.05MB",
                 "USize": 4243456
             },
             "wpgr_duplicator_backups": {
                 "Case": 0,
-                "Rows": "12",
+                "Rows": "14",
                 "Size": "1.16MB",
                 "USize": 1212416
             },
@@ -529,9 +529,9 @@
             },
             "wpgr_irrp_redirection_logs": {
                 "Case": 0,
-                "Rows": "59,318",
-                "Size": "12.21MB",
-                "USize": 12807368
+                "Rows": "59,323",
+                "Size": "12.22MB",
+                "USize": 12811100
             },
             "wpgr_irrp_redirectionmeta": {
                 "Case": 0,
@@ -589,9 +589,9 @@
             },
             "wpgr_options": {
                 "Case": 0,
-                "Rows": "2,200",
-                "Size": "6.7MB",
-                "USize": 7028736
+                "Rows": "2,108",
+                "Size": "6.61MB",
+                "USize": 6930432
             },
             "wpgr_postmeta": {
                 "Case": 0,
@@ -733,7 +733,7 @@
             },
             "wpgr_swpm_members_tbl": {
                 "Case": 0,
-                "Rows": "6,556",
+                "Rows": "6,697",
                 "Size": "1.52MB",
                 "USize": 1589248
             },
@@ -793,13 +793,13 @@
             },
             "wpgr_wc_admin_note_actions": {
                 "Case": 0,
-                "Rows": "184",
-                "Size": "80KB",
-                "USize": 81920
+                "Rows": "185",
+                "Size": "96KB",
+                "USize": 98304
             },
             "wpgr_wc_admin_notes": {
                 "Case": 0,
-                "Rows": "150",
+                "Rows": "151",
                 "Size": "96KB",
                 "USize": 98304
             },
@@ -895,7 +895,7 @@
             },
             "wpgr_wfblockediplog": {
                 "Case": 0,
-                "Rows": "2,202",
+                "Rows": "1,995",
                 "Size": "144KB",
                 "USize": 147456
             },
@@ -908,8 +908,8 @@
             "wpgr_wfconfig": {
                 "Case": 0,
                 "Rows": "296",
-                "Size": "1.52MB",
-                "USize": 1589248
+                "Size": "1.5MB",
+                "USize": 1572864
             },
             "wpgr_wfcrawlers": {
                 "Case": 0,
@@ -931,7 +931,7 @@
             },
             "wpgr_wfhits": {
                 "Case": 0,
-                "Rows": "1,715",
+                "Rows": "1,716",
                 "Size": "1.77MB",
                 "USize": 1851392
             },
@@ -944,8 +944,8 @@
             "wpgr_wfissues": {
                 "Case": 0,
                 "Rows": "27",
-                "Size": "144KB",
-                "USize": 147456
+                "Size": "128KB",
+                "USize": 131072
             },
             "wpgr_wfknownfilelist": {
                 "Case": 0,
@@ -967,7 +967,7 @@
             },
             "wpgr_wflogins": {
                 "Case": 0,
-                "Rows": "1,957",
+                "Rows": "1,958",
                 "Size": "592KB",
                 "USize": 606208
             },
@@ -1021,9 +1021,9 @@
             },
             "wpgr_wfstatus": {
                 "Case": 0,
-                "Rows": "2,352",
-                "Size": "512KB",
-                "USize": 524288
+                "Rows": "100",
+                "Size": "48KB",
+                "USize": 49152
             },
             "wpgr_wftrafficrates": {
                 "Case": 0,
@@ -1087,9 +1087,9 @@
             },
             "wpgr_woocommerce_sessions": {
                 "Case": 0,
-                "Rows": "50",
-                "Size": "144KB",
-                "USize": 147456
+                "Rows": "8",
+                "Size": "48KB",
+                "USize": 49152
             },
             "wpgr_woocommerce_shipping_zone_locations": {
                 "Case": 0,
@@ -1141,33 +1141,33 @@
             },
             "wpgr_yoast_indexable": {
                 "Case": 0,
-                "Rows": "944",
-                "Size": "624KB",
-                "USize": 638976
+                "Rows": "940",
+                "Size": "864KB",
+                "USize": 884736
             },
             "wpgr_yoast_indexable_hierarchy": {
                 "Case": 0,
-                "Rows": "940",
+                "Rows": "939",
                 "Size": "144KB",
                 "USize": 147456
             },
             "wpgr_yoast_migrations": {
                 "Case": 0,
-                "Rows": "0",
+                "Rows": "25",
                 "Size": "32KB",
                 "USize": 32768
             },
             "wpgr_yoast_primary_term": {
                 "Case": 0,
-                "Rows": "0",
+                "Rows": "177",
                 "Size": "48KB",
                 "USize": 49152
             },
             "wpgr_yoast_seo_links": {
                 "Case": 0,
-                "Rows": "0",
-                "Size": "80KB",
-                "USize": 81920
+                "Rows": "2,208",
+                "Size": "1.02MB",
+                "USize": 1064960
             }
         },
         "FilteredTables": [],
@@ -1205,9 +1205,9 @@
         }
     },
     "RPT": {
-        "ScanCreated": "2026-04-16 06:43:51",
+        "ScanCreated": "2026-04-20 07:08:43",
         "ScanTime": "0.030 sec.",
-        "ScanPath": "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/duplicator-backups\/tmp\/20260416_megemit_315e5d45d6f715c83191_20260416063406_scan.json",
-        "ScanFile": "20260416_megemit_315e5d45d6f715c83191_20260416063406_scan.json"
+        "ScanPath": "\/Users\/il115\/Desktop\/webs\/megemit\/wp-site\/wp-content\/duplicator-backups\/tmp\/20260420_megemit_9880b6f8675aa2a43604_20260420070744_scan.json",
+        "ScanFile": "20260420_megemit_9880b6f8675aa2a43604_20260420070744_scan.json"
     }
 }

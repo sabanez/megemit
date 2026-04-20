@@ -67,7 +67,7 @@ El formulario de HubSpot en el paso 2 DEBE estar configurado para "Redirigir a o
 `https://dominio.com/registrierungsdetails/?hs_finish=1`
 
 ### 3. Pop-up de Aviso
-El Pop-up está definido en `hubspot_map.js` y utiliza estilos en línea para evitar dependencias de CSS externas, asegurando que se vea correctamente incluso si hay problemas con las hojas de estilo del tema.
+El Pop-up está definido en `inc/onboarding-enforcement.js` y utiliza estilos en línea para evitar dependencias de CSS externas, asegurando que se vea correctamente incluso si hay problemas con las hojas de estilo del tema.
 
 ---
 

@@ -3,7 +3,7 @@
  * @description Gestión de bloqueo de navegación, cookies de sesión y tokens de auto-login.
  */
 
-const OnboardingEnforcement = (function($) {
+const OnboardingEnforcement = (function ($) {
     'use strict';
 
     /**
@@ -18,8 +18,8 @@ const OnboardingEnforcement = (function($) {
                         <div style="font-size:50px; margin-bottom:20px;">📋</div>
                         <h2 style="margin-bottom:15px; color:#333; font-weight:700;">Profil vervollständigen</h2>
                         <p style="color:#666; font-size:16px; line-height:1.5; margin-bottom:25px;">
-                            Um vollen Zugriff auf den Fachkreisbereich und unsere Tools zu erhalten, füllen Sie bitte das Formular auf dieser Seite aus. 
-                            Dies ist für die Aktivierung Ihres Kontos erforderlich.
+                            Füllen Sie bitte das Formular auf dieser Seite aus, um Ihren Zugang zum Fachkreisbereich freizuschalten. 
+                            Nach der Aktivierung Ihres Kontos stehen Ihnen sämtliche hinterlegten Informationen zur Verfügung.
                         </p>
                         <button id="close-hs-modal" style="background:#f39910; color:white; border:none; padding:12px 30px; border-radius:30px; cursor:pointer; font-weight:bold; transition:all 0.3s ease;">
                             Verstanden
@@ -30,8 +30,8 @@ const OnboardingEnforcement = (function($) {
 
             $('body').append(noticeHtml);
 
-            $('#close-hs-modal').on('click', function() {
-                $('#hs-enforcement-modal').fadeOut(300, function() {
+            $('#close-hs-modal').on('click', function () {
+                $('#hs-enforcement-modal').fadeOut(300, function () {
                     $(this).remove();
                 });
             });
@@ -44,7 +44,7 @@ const OnboardingEnforcement = (function($) {
     const setupRegistrationInterceptor = () => {
         // Buscamos el formulario de registro (ID parcial o clase)
         const $regForm = $('#registro-profesional-13, #swpm-registration-form, .swpm-registration-form');
-        
+
         if ($regForm.length > 0) {
             console.log('[Onboarding] Interceptor de registro activado.');
 
@@ -55,11 +55,11 @@ const OnboardingEnforcement = (function($) {
             const setOnboardingMarkers = () => {
                 const token = generateToken();
                 console.log('[Onboarding] Estableciendo marcas de sesión...');
-                
+
                 // 1. Cookies (Legacy support / Client detection)
                 document.cookie = "mgmit_hs_pending=1; path=/; max-age=86400";
                 document.cookie = "mgmit_hs_login_token=" + token + "; path=/; max-age=86400";
-                
+
                 // 2. Campo oculto para el servidor (Prioritario para user_register hook)
                 if ($regForm.find('input[name="mgmit_hs_token"]').length === 0) {
                     $regForm.append('<input type="hidden" name="mgmit_hs_token" value="' + token + '">');
@@ -73,7 +73,7 @@ const OnboardingEnforcement = (function($) {
     };
 
     return {
-        init: function() {
+        init: function () {
             $(document).ready(() => {
                 // 1. Manejar avisos de redirección forzosa
                 handleEnforcedNavigation();

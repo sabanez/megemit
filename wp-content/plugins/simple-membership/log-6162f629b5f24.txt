@@ -7520,3 +7520,8 @@
 [2026/04/16 08:47:48] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 5962) updated with the latest WP user data.
 [2026/04/16 08:47:48] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
 [2026/04/16 08:47:48] - SUCCESS: This user has admin role. No role modification will be done.
+[2026/04/20 09:07:49] - FAILURE: Error! This member profile (Member ID: 6140) does not have a valid membership level assigned. The site admin needs to assign a valid membership level to this member profile.
+[2026/04/20 09:08:48] - FAILURE: Error! This member profile (Member ID: 6140) does not have a valid membership level assigned. The site admin needs to assign a valid membership level to this member profile.
+[2026/04/20 09:39:08] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8347) updated with the latest WP user data.
+[2026/04/20 09:39:08] - SUCCESS: Form builder addon - registration complete email sent to: santi_test_20@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/04/20 09:39:08] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
