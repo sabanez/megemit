@@ -37,8 +37,113 @@ function cncl_after_edit_callback ($member_info)
 }
 */
 
-// NOTA: El sistema de Onboarding y HubSpot Bridge se ha migrado al plugin "mgmit-hubspot-bridge".
-// La lógica previamente alojada aquí ha sido eliminada para evitar conflictos.
+add_action('user_register', 'mgmit_after_registration_mark_user', 5, 1);
+function mgmit_after_registration_mark_user($user_id) {
+    update_user_meta($user_id, 'mgmit_hs_details_pending', '1');
+    
+    // Guardamos en la SESIÓN del servidor (Bloqueo + ID)
+    if (!session_id()) { session_start(); }
+    $_SESSION['mgmit_hs_user_id'] = $user_id;
+    $_SESSION['mgmit_hs_pending'] = 1;
+
+    // Sincronizamos con el token por si acaso (redundancia)
+    $login_token = isset($_POST['mgmit_hs_token']) ? sanitize_text_field($_POST['mgmit_hs_token']) : (isset($_COOKIE['mgmit_hs_login_token']) ? $_COOKIE['mgmit_hs_login_token'] : '');
+    if (!empty($login_token)) {
+        update_user_meta($user_id, 'mgmit_hs_login_token', $login_token);
+    }
+}
+
+
+// 2. Redirección forzosa si el perfil está pendiente
+add_action('template_redirect', 'mgmit_enforce_hs_form_completion', 1);
+function mgmit_enforce_hs_form_completion() {
+    if (strstr($_SERVER['REQUEST_URI'], 'action=logout') || is_admin()) return;
+
+    $is_pending = false;
+
+    if (is_user_logged_in()) {
+        if (get_user_meta(get_current_user_id(), 'mgmit_hs_details_pending', true) === '1') {
+            $is_pending = true;
+        }
+    } 
+    
+    // Check session or cookie for guest users who just registered
+    if (!$is_pending) {
+        if (!session_id()) { session_start(); }
+        if ((isset($_SESSION['mgmit_hs_pending']) && $_SESSION['mgmit_hs_pending'] == 1) || 
+            (isset($_COOKIE['mgmit_hs_pending']) && $_COOKIE['mgmit_hs_pending'] === '1')) {
+            $is_pending = true;
+        }
+    }
+
+    if ($is_pending) {
+        $forced_page_id = 21568; 
+        if (!is_page($forced_page_id) && !is_page('registrierungsdetails') && !is_page('registrierung')) {
+            wp_redirect(get_permalink($forced_page_id) . '?enforced=1');
+            exit;
+        }
+    }
+}
+
+// 3. Intercepción del POST y limpieza final
+add_action('init', 'mgmit_clear_hs_pending_status');
+function mgmit_clear_hs_pending_status() {
+    // Asegurar cookie al detectar el envío del registro
+    $is_registration_post = isset($_POST['swpm_registration_submit']) || 
+                            isset($_POST['swpm-fb-submit']) || 
+                            (isset($_POST['swpm_registr_level_id']) && !empty($_POST['swpm_registr_level_id']));
+
+    // Inicializar sesión si no existe
+    if (!session_id()) { 
+        session_start(); 
+    }
+
+    if ($is_registration_post) {
+        $login_token = isset($_POST['mgmit_hs_token']) ? sanitize_text_field($_POST['mgmit_hs_token']) : wp_generate_password(32, false);
+        
+        setcookie('mgmit_hs_pending', '1', time() + 86400, '/', '', false, false);
+        $_COOKIE['mgmit_hs_pending'] = '1';
+        $_SESSION['mgmit_hs_pending'] = 1;
+    }
+
+    // El hook user_register se encargará de guardar el ID en la SESIÓN
+    
+    // Fase 2: Limpieza y Auto-login SEGURO por Sesión
+    if (isset($_GET['hs_finish']) || isset($_GET['hs_test'])) {
+        $user_id = isset($_SESSION['mgmit_hs_user_id']) ? absint($_SESSION['mgmit_hs_user_id']) : 0;
+        $user = null;
+
+        if ($user_id > 0) {
+            $user = get_userdata($user_id);
+        }
+        
+        if ($user) {
+            update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
+
+            // Auto-login WordPress
+            wp_set_current_user($user->ID, $user->user_login);
+            wp_set_auth_cookie($user->ID, true);
+            
+            // Auto-login Simple Membership
+            if (class_exists('SwpmMemberAuth')) {
+                $auth = SwpmMemberAuth::get_instance();
+                if (method_exists($auth, 'login')) {
+                    $auth->login($user->user_login, '', true);
+                }
+            }
+        }
+
+        // Limpiar
+        unset($_SESSION['mgmit_hs_user_id']);
+        unset($_SESSION['mgmit_hs_pending']);
+        setcookie('mgmit_hs_pending', '', time() - 3600, '/');
+        
+        wp_redirect(home_url('/fachkreisbereich/'));
+        exit;
+    }
+}
+
+// --- FIN SISTEMA DE ONBOARDING ---
 
 
 
@@ -839,4 +944,16 @@ add_filter('action_scheduler_queue_runner_concurrent_batches', function() {
     return 1; // nur ein Batch gleichzeitig
 });
 
-// Encolado de scripts modulares movido al plugin mgmit-hubspot-bridge.
+function mgmit_enqueue_onboarding_scripts_only() {
+    $enforce_js = '/inc/onboarding-enforcement.js';
+    
+    // Sistema de Bloqueo y Onboarding (Específico)
+    wp_enqueue_script(
+        'mgmit-onboarding-enforcement',
+        get_stylesheet_directory_uri() . $enforce_js,
+        array('jquery'),
+        filemtime(get_stylesheet_directory() . $enforce_js),
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'mgmit_enqueue_onboarding_scripts_only', 20);

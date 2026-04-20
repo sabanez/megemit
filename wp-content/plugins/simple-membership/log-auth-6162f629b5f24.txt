@@ -40009,3 +40009,47 @@
 [2026/04/20 09:07:52] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
 [2026/04/20 09:07:52] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
 [2026/04/20 09:07:52] - SUCCESS: Member has been logged in using WP User object.
+[2026/04/20 13:50:44] - SUCCESS: Authentication request - Username: kumbi
+[2026/04/20 13:50:44] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/04/20 13:50:44] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/04/20 13:50:44] - SUCCESS: Authentication successful for username: kumbi. Triggering swpm_after_login_authentication action hook.
+[2026/04/20 13:50:44] - SUCCESS: Static function handle_after_login_authentication(). User is logged in. WP Username: santi_test_34
+[2026/04/20 13:50:44] - SUCCESS: Trying wp_signon() with username: kumbi
+[2026/04/20 13:50:44] - SUCCESS: wp_authenticate action. User with username: kumbi is already logged in.
+[2026/04/20 13:50:44] - SUCCESS: wp_login hook triggered. Username: kumbi
+[2026/04/20 13:50:45] - SUCCESS: Setting current WP user to: kumbi
+[2026/04/20 13:50:45] - SUCCESS: Triggering swpm_login_auth_completed_filter hook.
+[2026/04/20 13:50:45] - SUCCESS: Triggering swpm_after_login hook.
+[2026/04/20 13:51:04] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
+[2026/04/20 13:51:04] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/04/20 13:51:05] - SUCCESS: synchronise_swpm_logout_for_wp_users() - Force wp user login sync is enabled. 
+[2026/04/20 13:51:05] - SUCCESS: WP user session is logged out for this user. So logging out of the swpm session also.
+[2026/04/20 13:51:05] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
+[2026/04/20 13:51:05] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/04/20 13:51:05] - SUCCESS: Silent logout completed. Redirecting to: http://megemit.loc?swpm_logged_out=1
+[2026/04/20 13:51:05] - SUCCESS: synchronise_swpm_logout_for_wp_users() - Force wp user login sync is enabled. 
+[2026/04/20 13:51:05] - SUCCESS: WP user session is logged out for this user. So logging out of the swpm session also.
+[2026/04/20 13:51:05] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
+[2026/04/20 13:51:05] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/04/20 13:51:05] - SUCCESS: Silent logout completed. Redirecting to: http://megemit.loc?swpm_logged_out=1
+[2026/04/20 13:51:05] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2026/04/20 13:52:34] - SUCCESS: synchronise_swpm_logout_for_wp_users() - Force wp user login sync is enabled. 
+[2026/04/20 13:52:34] - SUCCESS: WP user session is logged out for this user. So logging out of the swpm session also.
+[2026/04/20 13:52:34] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
+[2026/04/20 13:52:34] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/04/20 13:52:34] - SUCCESS: Silent logout completed. Redirecting to: http://megemit.loc?swpm_logged_out=1
+[2026/04/20 13:52:34] - SUCCESS: synchronise_swpm_logout_for_wp_users() - Force wp user login sync is enabled. 
+[2026/04/20 13:52:34] - SUCCESS: WP user session is logged out for this user. So logging out of the swpm session also.
+[2026/04/20 13:52:34] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
+[2026/04/20 13:52:34] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/04/20 13:52:34] - SUCCESS: Silent logout completed. Redirecting to: http://megemit.loc?swpm_logged_out=1
+[2026/04/20 13:52:34] - SUCCESS: synchronise_swpm_logout_for_wp_users() - Force wp user login sync is enabled. 
+[2026/04/20 13:52:34] - SUCCESS: WP user session is logged out for this user. So logging out of the swpm session also.
+[2026/04/20 13:52:34] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
+[2026/04/20 13:52:34] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/04/20 13:52:34] - SUCCESS: Silent logout completed. Redirecting to: http://megemit.loc?swpm_logged_out=1
+[2026/04/20 13:53:07] - SUCCESS: synchronise_swpm_logout_for_wp_users() - Force wp user login sync is enabled. 
+[2026/04/20 13:53:07] - SUCCESS: WP user session is logged out for this user. So logging out of the swpm session also.
+[2026/04/20 13:53:07] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
+[2026/04/20 13:53:07] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/04/20 13:53:07] - SUCCESS: Silent logout completed. Redirecting to: http://megemit.loc?swpm_logged_out=1
