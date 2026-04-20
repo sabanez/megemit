@@ -112,11 +112,11 @@ Según el archivo `wp-config.php`:
 
 ## 🛠 Desarrollo de Plugins Custom
 
-### 1. MeGeMIT HubSpot Bridge & Onboarding (En Desarrollo)
-- **Estado:** Fase 3 (Interfaz de Administración) completada.
+### 1. MeGeMIT HubSpot Bridge (En Desarrollo / Estable)
+- **Estado:** Fase 3 completada y arquitectura refactorizada.
 - **Boilerplate:** Estructura Singleton terminada.
-- **Assets:** JS migrado y eliminado del `basel-child`.
+- **Assets:** Mapeador `hubspot_map.js` aislado en plugin. (Reglas de Onboarding devueltas explícitamente al tema `basel-child`).
 - **Lógica Migrada:** Logs y encolados de `functions.php` limpios. 
-- **Panel UI:** Creado `MGMIT_Admin_UI` bajo "HubSpot Bridge" para gestionar JSON directamente en BD.
-- **Próximo Paso:** Fase 4 (Sistema Scraping - Opcional) o pase a producción (Q&A).
+- **Panel UI:** Creado `MGMIT_Admin_UI` bajo "HubSpot Bridge" para gestionar JSON de formularios directamente en BD.
+- **Próximo Paso:** Fase 4 (Sugerencias Visuales UI del Mapeador) o pase directo a pruebas de Producción (Q&A).
 
