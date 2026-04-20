@@ -107,3 +107,16 @@ Según el archivo `wp-config.php`:
 
 > [!TIP]
 > Los binarios de ServBay se encuentran en `/Applications/ServBay/package/bin/`. Se han configurado las versiones correctas en este documento.
+
+---
+
+## 🛠 Desarrollo de Plugins Custom
+
+### 1. MeGeMIT HubSpot Bridge & Onboarding (En Desarrollo)
+- **Estado:** Fase 3 (Interfaz de Administración) completada.
+- **Boilerplate:** Estructura Singleton terminada.
+- **Assets:** JS migrado y eliminado del `basel-child`.
+- **Lógica Migrada:** Logs y encolados de `functions.php` limpios. 
+- **Panel UI:** Creado `MGMIT_Admin_UI` bajo "HubSpot Bridge" para gestionar JSON directamente en BD.
+- **Próximo Paso:** Fase 4 (Sistema Scraping - Opcional) o pase a producción (Q&A).
+

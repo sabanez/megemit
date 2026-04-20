@@ -7,6 +7,7 @@ Todas las modificaciones técnicas realizadas en el entorno de WordPress y la in
 ### Añadido
 - **Mapeo de Formulario de Perfil:** Configuración de puente para el formulario `#profile-form-level-13-16` hacia HubSpot (`MeGeMIT_DE_Profile_Update`).
 - **Optimización de Action Scheduler:** Ajuste de intervalos de ejecución (120s) y lotes concurrentes (1) para mejorar el rendimiento en el entorno ServBay.
+- **Desarrollo de Plugin "MeGeMIT HubSpot Bridge":** Creación de la arquitectura base (Fase 1 y 2) para centralizar la lógica de integración fuera del tema hijo.
 
 ### Modificado
 - **Estandarización de Scripts:** Renombre de funciones y handles de `swpm-hubspot-mapper` a `mgmit-hubspot-mapper` para consistencia con el prefijo del proyecto.
