@@ -164,6 +164,7 @@ function mgmit_clear_hs_pending_status() {
 }
 
 // 4. Redirección suave post-login para usuarios legacy con formulario pendiente
+// WP native login (wp-login.php)
 add_filter('login_redirect', 'mgmit_legacy_login_redirect', 10, 3);
 function mgmit_legacy_login_redirect($redirect_to, $requested_redirect_to, $user) {
     if (is_wp_error($user)) return $redirect_to;
@@ -171,6 +172,16 @@ function mgmit_legacy_login_redirect($redirect_to, $requested_redirect_to, $user
         return get_permalink(21568) . '?legacy=1';
     }
     return $redirect_to;
+}
+
+// SWPM frontend login — prioridad 1 para ejecutar antes del addon ALR (prioridad 10)
+add_action('swpm_after_login', 'mgmit_legacy_swpm_after_login', 1);
+function mgmit_legacy_swpm_after_login() {
+    $user = wp_get_current_user();
+    if ($user && $user->ID && get_user_meta($user->ID, 'mgmit_hs_legacy_pending', true) === '1') {
+        wp_redirect(get_permalink(21568) . '?legacy=1');
+        exit;
+    }
 }
 
 // --- FIN SISTEMA DE ONBOARDING ---
