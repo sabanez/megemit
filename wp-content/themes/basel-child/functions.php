@@ -59,6 +59,7 @@ add_action('template_redirect', 'mgmit_enforce_hs_form_completion', 1);
 function mgmit_enforce_hs_form_completion() {
     if (strstr($_SERVER['REQUEST_URI'], 'action=logout') || is_admin()) return;
 
+
     $is_pending = false;
 
     if (is_user_logged_in()) {
@@ -89,9 +90,11 @@ function mgmit_enforce_hs_form_completion() {
 add_action('init', 'mgmit_clear_hs_pending_status');
 function mgmit_clear_hs_pending_status() {
     // Asegurar cookie al detectar el envío del registro
-    $is_registration_post = isset($_POST['swpm_registration_submit']) || 
-                            isset($_POST['swpm-fb-submit']) || 
-                            (isset($_POST['swpm_registr_level_id']) && !empty($_POST['swpm_registr_level_id']));
+    $is_registration_post = !is_user_logged_in() && (
+                            isset($_POST['swpm_registration_submit']) ||
+                            isset($_POST['swpm-fb-submit']) ||
+                            (isset($_POST['swpm_registr_level_id']) && !empty($_POST['swpm_registr_level_id']))
+                        );
 
     // Inicializar sesión si no existe
     if (!session_id()) { 
@@ -110,37 +113,64 @@ function mgmit_clear_hs_pending_status() {
     
     // Fase 2: Limpieza y Auto-login SEGURO por Sesión
     if (isset($_GET['hs_finish']) || isset($_GET['hs_test'])) {
+        // Flujo legacy: usuario ya autenticado (migración bulk)
+        if (is_user_logged_in()) {
+            $user = wp_get_current_user();
+            write_log('[MGMIT_HS] hs_finish/hs_test (legacy, usuario logueado): ' . $user->user_login . ' (ID: ' . $user->ID . ')');
+            update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
+            delete_user_meta($user->ID, 'mgmit_hs_legacy_pending');
+            wp_redirect(home_url('/fachkreisbereich-mitglied/'));
+            exit;
+        }
+
+        // Flujo nuevo registro: usuario identificado por sesión
         $user_id = isset($_SESSION['mgmit_hs_user_id']) ? absint($_SESSION['mgmit_hs_user_id']) : 0;
         $user = null;
+
+        write_log('[MGMIT_HS] hs_finish/hs_test activado. Session user_id: ' . $user_id);
 
         if ($user_id > 0) {
             $user = get_userdata($user_id);
         }
-        
-        if ($user) {
-            update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
 
-            // Auto-login WordPress
+        if ($user) {
+            write_log('[MGMIT_HS] Usuario encontrado: ' . $user->user_login . ' (ID: ' . $user->ID . ')');
+            update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
+            delete_user_meta($user->ID, 'mgmit_hs_legacy_pending');
+
+            // SWPM login usando WP user object (autentica al usuario en el sistema SWPM)
+            if (class_exists('SwpmAuth')) {
+                $swpm_auth = SwpmAuth::get_instance();
+                $swpm_auth->login_to_swpm_using_wp_user($user);
+                write_log('[MGMIT_HS] SWPM login_to_swpm_using_wp_user ejecutado para: ' . $user->user_login);
+            }
+
+            // WP auth cookie AL FINAL (tiene la última palabra)
             wp_set_current_user($user->ID, $user->user_login);
             wp_set_auth_cookie($user->ID, true);
-            
-            // Auto-login Simple Membership
-            if (class_exists('SwpmMemberAuth')) {
-                $auth = SwpmMemberAuth::get_instance();
-                if (method_exists($auth, 'login')) {
-                    $auth->login($user->user_login, '', true);
-                }
-            }
+            write_log('[MGMIT_HS] wp_set_auth_cookie ejecutado para user ID: ' . $user->ID);
+        } else {
+            write_log('[MGMIT_HS] ERROR: No se encontro usuario para session user_id: ' . $user_id);
         }
 
         // Limpiar
         unset($_SESSION['mgmit_hs_user_id']);
         unset($_SESSION['mgmit_hs_pending']);
         setcookie('mgmit_hs_pending', '', time() - 3600, '/');
-        
-        wp_redirect(home_url('/fachkreisbereich/'));
+
+        wp_redirect(home_url('/fachkreisbereich-mitglied/'));
         exit;
     }
+}
+
+// 4. Redirección suave post-login para usuarios legacy con formulario pendiente
+add_filter('login_redirect', 'mgmit_legacy_login_redirect', 10, 3);
+function mgmit_legacy_login_redirect($redirect_to, $requested_redirect_to, $user) {
+    if (is_wp_error($user)) return $redirect_to;
+    if (get_user_meta($user->ID, 'mgmit_hs_legacy_pending', true) === '1') {
+        return get_permalink(21568) . '?legacy=1';
+    }
+    return $redirect_to;
 }
 
 // --- FIN SISTEMA DE ONBOARDING ---
