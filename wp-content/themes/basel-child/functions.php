@@ -113,14 +113,30 @@ function mgmit_clear_hs_pending_status() {
     
     // Fase 2: Limpieza y Auto-login SEGURO por Sesión
     if (isset($_GET['hs_finish']) || isset($_GET['hs_test'])) {
-        // Flujo legacy: usuario ya autenticado (migración bulk)
+        // Flujo legacy: usuario ya autenticado vía cookie WP
         if (is_user_logged_in()) {
             $user = wp_get_current_user();
-            write_log('[MGMIT_HS] hs_finish/hs_test (legacy, usuario logueado): ' . $user->user_login . ' (ID: ' . $user->ID . ')');
+            write_log('[MGMIT_HS] hs_finish/hs_test (legacy, WP logueado): ' . $user->user_login . ' (ID: ' . $user->ID . ')');
             update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
             delete_user_meta($user->ID, 'mgmit_hs_legacy_pending');
             wp_redirect(home_url('/fachkreisbereich-mitglied/'));
             exit;
+        }
+
+        // Fallback: usuario autenticado solo vía SWPM (cookie WP ausente)
+        if (class_exists('SwpmAuth') && class_exists('SwpmMemberUtils')) {
+            $swpm_auth = SwpmAuth::get_instance();
+            if ($swpm_auth->is_logged_in()) {
+                $member_id = $swpm_auth->get('member_id');
+                $wp_user = SwpmMemberUtils::get_wp_user_from_swpm_user_id($member_id);
+                if ($wp_user && get_user_meta($wp_user->ID, 'mgmit_hs_legacy_pending', true) === '1') {
+                    write_log('[MGMIT_HS] hs_finish/hs_test (legacy, SWPM fallback): member_id=' . $member_id . ' wp_user=' . $wp_user->ID);
+                    update_user_meta($wp_user->ID, 'mgmit_hs_details_pending', '0');
+                    delete_user_meta($wp_user->ID, 'mgmit_hs_legacy_pending');
+                    wp_redirect(home_url('/fachkreisbereich-mitglied/'));
+                    exit;
+                }
+            }
         }
 
         // Flujo nuevo registro: usuario identificado por sesión
@@ -998,3 +1014,5 @@ function mgmit_enqueue_onboarding_scripts_only() {
     );
 }
 add_action('wp_enqueue_scripts', 'mgmit_enqueue_onboarding_scripts_only', 20);
+
+require_once get_stylesheet_directory() . '/inc/membership-woo-bridge.php';
