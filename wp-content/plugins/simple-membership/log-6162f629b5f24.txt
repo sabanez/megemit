@@ -7525,3 +7525,11 @@
 [2026/04/20 09:39:08] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8347) updated with the latest WP user data.
 [2026/04/20 09:39:08] - SUCCESS: Form builder addon - registration complete email sent to: santi_test_20@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
 [2026/04/20 09:39:08] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/04/20 11:50:24] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8348) updated with the latest WP user data.
+[2026/04/20 11:50:24] - SUCCESS: Form builder addon - registration complete email sent to: santi_test_21@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/04/20 11:50:24] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/04/20 12:59:15] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8349) updated with the latest WP user data.
+[2026/04/20 12:59:15] - SUCCESS: Form builder addon - registration complete email sent to: santi_test_34@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/04/20 12:59:15] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/04/20 13:50:45] - SUCCESS: After login redirection addon. Checking if member need to be redirected.
+[2026/04/20 13:50:45] - SUCCESS: After login redirection is configured in the membership level. Redirecting to: http://megemit.loc/fachkreisbereich-mitglied/

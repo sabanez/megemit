@@ -2,11 +2,37 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [1.3.0] - 2026-04-21
+
+### Añadido - Fase 4: Visual Mapper UI
+- **Vista Lista de Mapeos:** Tabla estilo WordPress nativa (`.wp-list-table`) que muestra todos los bridges configurados con columnas: Nombre, Selector CSS, Nombre HubSpot, Nº Campos y Acciones (Editar/Eliminar).
+- **Editor Visual de Mapeo:** Formulario add/edit con campos tipados para Nombre descriptivo, Selector CSS del formulario, Nombre en HubSpot y tabla dinámica de campos (`[name WP]` → `[propiedad HubSpot]`) con botones `+ Añadir Campo` y `✕ Eliminar fila`.
+- **AJAX `mgmit_save_mapping`:** Acción para crear o actualizar un mapeo individual con nonce y validación de permisos.
+- **AJAX `mgmit_delete_mapping`:** Acción para eliminar un mapeo por UUID con nonce y confirmación en cliente.
+- **`assets/js/admin-mapper.js`:** Módulo JS para la UI del panel: filas dinámicas, serialización de campos, llamadas AJAX y feedback visual inline.
+- **IDs UUID en entradas:** Cada mapeo nuevo recibe un UUID v4 generado en PHP (compatible PHP 7.4). Las entradas legacy sin `id` siguen funcionando sin cambios.
+- **Retrocompatibilidad total:** El handler `mgmit_save_hubspot_config` (Fase 3) se mantiene. El frontend `hubspot_map.js` no requiere ninguna modificación.
+
+### Corregido
+- **Mapeos no visibles al abrir el panel:** La opción `mgmit_hubspot_config` nunca se inicializaba en la DB porque `activate_plugin()` sólo corría en la primera activación del plugin. Añadido método privado `get_config()` en `MGMIT_Admin_UI` que detecta si la opción es `false` o no es array y, en ese caso, llama a `activate_plugin()` para persistir los defaults antes de renderizar.
+
+---
+
+## [1.2.2] - 2026-04-21
+
+### Corregido
+- **Auto-login tras onboarding HubSpot:** La causa raíz era que `mgmit_clear_hs_pending_status()` usaba `SwpmMemberAuth` (clase inexistente) en lugar de `SwpmAuth`. Ahora se llama a `SwpmAuth::get_instance()->login_to_swpm_using_wp_user($user)`, que autentica al usuario simultáneamente en WordPress (`wp_set_auth_cookie`) y en SWPM (cookie propia), permitiendo el acceso a páginas protegidas por SWPM.
+- **URL de redirección post-onboarding:** Corregido `home_url('/fachkreisbereich/')` → `home_url('/fachkreisbereich-mitglied/')` en el hook `init`.
+- **Logging de debug:** Añadidos mensajes `write_log()` en el bloque `hs_finish`/`hs_test` para diagnóstico del flujo (visibles con `WP_DEBUG=true`).
+
+---
+
 ## [1.2.1] - 2026-04-20
 
 ### Añadido
 - **Mapeo de Formulario de Perfil:** Configuración de puente para el formulario `#profile-form-level-13-16` hacia HubSpot (`MeGeMIT_DE_Profile_Update`).
 - **Optimización de Action Scheduler:** Ajuste de intervalos de ejecución (120s) y lotes concurrentes (1) para mejorar el rendimiento en el entorno ServBay.
+- **Desarrollo de Plugin "MeGeMIT HubSpot Bridge":** Creación de la arquitectura base (Fase 1 a 3) para centralizar la conexión a HubSpot fuera del tema hijo, respetando la estructura de reglas de negocio al mantener la lógica estricta de 'Onboarding' intacta dentro del tema padre/hijo.
 
 ### Modificado
 - **Estandarización de Scripts:** Renombre de funciones y handles de `swpm-hubspot-mapper` a `mgmit-hubspot-mapper` para consistencia con el prefijo del proyecto.
