@@ -15,7 +15,9 @@
 1. **Aprobación previa** antes de cualquier modificación de código.
 2. **Fases incrementales** — validar cada fase antes de continuar; registrar en `CHANGELOG.md`.
 3. **PHP 7.4 estricto** — prohibido: constructor promotion, union types, named arguments, match expressions, nullsafe operator.
-
+4. Trabaja ahorrando el máximo de tokens para optimizar el uso de los agentes.
+5. Compacta la conversación cuando lleve un 70%
+6. Trabaja como un desarrollador senior de WordPress con más de 15 años de experiencia
 ## Arquitectura
 
 ### Plugin `mgmit-hubspot-bridge` (v1.3.0, estable)

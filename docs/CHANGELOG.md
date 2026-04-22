@@ -2,6 +2,28 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [1.3.1] - 2026-04-22
+
+### Añadido - Sincronización de Formulario HubSpot → WordPress
+- **Módulo `/inc/hubspot-sync/`:** Sistema standalone de captura y sincronización de datos de formularios HubSpot embebidos.
+  - **`form-capture.js`:** Listener de eventos `postMessage` para capturar `onFormSubmit` del iframe HubSpot. Mapea campos HubSpot (`firstname`, `lastname`, `phone`, `zip`, `city`, `job_title_de`, `country_of_the_contact`, `address`) a estructura WordPress interna.
+  - **`handler.php`:** Clase `MGMIT_HubSpot_Sync` con REST endpoint POST `/wp-json/mgmit/v1/sync-hubspot-data`. Sincroniza datos a:
+    - `wpgr_usermeta`: Con prefijo `billing_` (WooCommerce): `billing_address_1`, `billing_address_2`, `billing_postcode`, `billing_city`, `billing_phone`, `billing_country`, más `first_name`, `last_name`, `job_title_de`.
+    - `wpgr_swpm_members_tbl`: Campos sin prefijo (SWPM) para usuarios registrados.
+    - Validación de email y búsqueda de usuario por email antes de sincronizar.
+  - **`loader.php`:** Enqueue condicional del script JS (solo en página ID 21568 `/registrierungsdetails/`) y carga del handler REST.
+- **Funcionalidad de división de direcciones:** Campo `address` se divide automáticamente por primera coma en `address` (principal) + `address2` (secundaria).
+- **Logging de operaciones:** Cada paso registra en `write_log()` para diagnóstico.
+- **Integración en `functions.php`:** Require de `loader.php` en línea 1019 del tema hijo.
+
+### Notas Técnicas
+- No utiliza llamadas server-side a la API de HubSpot. Captura y sincroniza datos 100% vía `postMessage` API.
+- Compatibilidad PHP 7.4 (sin constructor promotion, union types, named arguments).
+- Funcionalidad específica del tema hijo, no integrada en `mgmit-hubspot-bridge` (por regla de negocio).
+- Endpoint requiere email válido en la solicitud; no sincroniza si el usuario no existe.
+
+---
+
 ## [1.3.0] - 2026-04-21
 
 ### Añadido - Fase 4: Visual Mapper UI
