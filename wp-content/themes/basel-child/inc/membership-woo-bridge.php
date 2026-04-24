@@ -141,21 +141,18 @@ function swpm_show_membership_cart_warning() {
 }
 
 /**
- * 5. FILTRAR MÉTODOS DE PAGO: SEPA SOLO PARA MEMBRESÍA
+ * 5. FILTRAR MÉTODOS DE PAGO: SOLO SEPA PARA MEMBRESÍA
  */
 add_filter( 'woocommerce_available_payment_gateways', 'swpm_filter_payment_gateways' );
 function swpm_filter_payment_gateways( $gateways ) {
-    // Solo en checkout/carrito
     if ( is_admin() ) return $gateways;
 
     $tiene_membresia = false;
     $tiene_otros = false;
 
-    // Revisar carrito
     if ( WC() && WC()->cart ) {
         foreach ( WC()->cart->get_cart_contents() as $cart_item ) {
             $nivel = swpm_get_level_from_attribute( $cart_item['product_id'] );
-
             if ( $nivel ) {
                 $tiene_membresia = true;
             } else {
@@ -164,18 +161,10 @@ function swpm_filter_payment_gateways( $gateways ) {
         }
     }
 
-    // Lógica de métodos de pago
     if ( $tiene_membresia && ! $tiene_otros ) {
-        // Solo membresía: SOLO permitir SEPA, ocultar todos los demás
-        $gateways_permitidos = array( 'stripe_sepa_debit' );
-
-        foreach ( $gateways as $gateway_id => $gateway ) {
-            if ( ! in_array( $gateway_id, $gateways_permitidos ) ) {
-                unset( $gateways[ $gateway_id ] );
-            }
-        }
+        // Carrito con SOLO membresía: todos los métodos disponibles
     } else {
-        // Otros productos o carrito vacío: ocultar SEPA
+        // Otros casos: SEPA no disponible
         unset( $gateways['stripe_sepa_debit'] );
     }
 

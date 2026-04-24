@@ -2,6 +2,33 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [1.4.0] - 2026-04-24
+
+### Corregido - Onboarding HubSpot: Lógica de bloqueo rediseñada
+- **`functions.php` → `mgmit_enforce_hs_form_completion()`:** Reescritura completa de la lógica de bloqueo.
+  - **Antes:** Bloqueaba a cualquier usuario (logueado o no) con sesión/cookie activa, causando bloqueos incorrectos.
+  - **Ahora:** Bloquea **solo** durante el flujo de registro nuevo, verificando triple condición:
+    1. Usuario **no logueado** (SWPM no hace auto-login hasta `?hs_finish=1`)
+    2. Sesión PHP con `mgmit_hs_user_id` válido (creada en el hook `user_register`)
+    3. Metadato `mgmit_hs_details_pending = '1'` en BD para ese user_id
+  - **Login posterior:** No bloquea, navegación normal de WordPress.
+  - **Flujo completo:** Registro → bloqueo en `/registrierungsdetails/?enforced=1` → rellena HubSpot → `?hs_finish=1` → auto-login SWPM → sesión limpiada → libre.
+
+### Corregido - HubSpot Mapper: Nuevo enfoque de mapeo de campos (v7.0)
+- **`hubspot_map.js`:** Rediseño completo del sistema de mapeo de campos.
+  - **Antes (v6.0):** Creaba campos ocultos duplicados (`data-hs-bridge`) y sincronizaba valores en tiempo real. Los campos ocultos podían no recibir los valores correctamente.
+  - **Ahora (v7.0):** En el momento del `submit`, renombra directamente los `name` de los campos originales (`swpm-526` → `firstname`, etc.) para que HubSpot los lea nativamente.
+  - **Compatibilidad SWPM:** No interfiere con el procesamiento de SWPM porque el cambio de `name` ocurre en el evento `submit`, después de que SWPM ha validado el formulario internamente.
+  - Logs detallados en consola para diagnóstico: `[HS Mapper] ✓ Campo renombrado: swpm-526 → firstname`.
+
+### Modificado - Métodos de pago WooCommerce para membresías
+- **`membership-woo-bridge.php` → `swpm_filter_payment_gateways()`:** Ajuste de lógica de gateways.
+  - Carrito con **solo membresía** → **todos** los métodos de pago disponibles (incluyendo SEPA).
+  - Carrito con **otros productos** → SEPA (`stripe_sepa_debit`) **no disponible**.
+  - Carrito vacío → SEPA no disponible.
+
+---
+
 ## [1.3.1] - 2026-04-22
 
 ### Añadido - Sincronización de Formulario HubSpot → WordPress
