@@ -94,26 +94,7 @@ class MGMIT_HubSpot_Bridge {
      * Devuelve la configuración inicial por defecto
      */
     private function get_default_config() {
-        return [
-            [
-                'formId' => '#registro-profesional-13, #swpm-registration-form, .swpm-registration-form',
-                'hubspotFormName' => 'MeGeMIT_DE_Fachkreisbereich_Registration',
-                'mapping' => [
-                    'swpm-472' => 'firstname',
-                    'swpm-474' => 'lastname',
-                    'swpm-456' => 'email'
-                ]
-            ],
-            [
-                'formId' => '#profile-form-level-13-16',
-                'hubspotFormName' => 'MeGeMIT_DE_Profile_Update',
-                'mapping' => [
-                    'swpm-526' => 'firstname',
-                    'swpm-527' => 'lastname',
-                    'swpm-531' => 'email'
-                ]
-            ]
-        ];
+        return [];
     }
 
 }
