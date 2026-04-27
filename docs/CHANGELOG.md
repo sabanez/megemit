@@ -2,6 +2,22 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [1.4.1] - 2026-04-27
+
+### Investigado - Plugin mgmit-hubspot-bridge: HS_CONFIG vacío en producción externa
+- **Síntoma:** Al instalar el plugin en un WordPress externo (INT2020), `window.HS_CONFIG` llegaba como `[]` al navegador pese a tener la configuración correctamente guardada en BD.
+- **Diagnóstico:**
+  - La BD contenía el dato correcto (`mgmit_hubspot_config` serializado con una entrada de formulario).
+  - Los logs de debug confirmaron que PHP leía y pasaba el array correctamente hasta `wp_localize_script`.
+  - El problema era **triple capa de caché** (WordPress + servidor + navegador) que servía una versión antigua del HTML con `HS_CONFIG = []`.
+- **Resolución:** Limpiar las 3 capas de caché. El código del plugin es correcto y no requirió modificaciones.
+- **Añadido temporal (revertir):** Líneas `error_log` de debug en `enqueue_scripts()` → eliminar antes de deploy final.
+
+### Documentado - Comportamiento esperado del plugin en páginas sin formulario
+- El script `hubspot_map.js` se encola en **todas las páginas** sin restricción. En páginas donde el formulario no existe, el JS imprime `[HS Mapper] Formulario no encontrado` en consola. Esto es **comportamiento normal e inofensivo**.
+
+---
+
 ## [1.4.0] - 2026-04-24
 
 ### Corregido - Onboarding HubSpot: Lógica de bloqueo rediseñada

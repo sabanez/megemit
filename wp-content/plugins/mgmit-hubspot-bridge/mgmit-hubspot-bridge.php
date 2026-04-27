@@ -81,9 +81,10 @@ class MGMIT_HubSpot_Bridge {
             );
             
             // Configuración dinámica desde la base de datos
+            // Configuración dinámica desde la base de datos
             $config = get_option(MGMIT_HS_BRIDGE_OPTION, $this->get_default_config());
             $config = apply_filters('mgmit_hs_bridge_config', $config);
-            
+
             wp_localize_script('mgmit-hubspot-mapper', 'HS_CONFIG', $config);
         }
 
