@@ -34,12 +34,31 @@ const HubSpotMapper = (function($) {
             // Cambiar los names de los campos originales a los nombres que HubSpot espera
             Object.keys(mapping).forEach(sourceName => {
                 const targetName = mapping[sourceName];
-                const $field = $form.find(`[name="${sourceName}"]`).first();
+
+                // Coincidencia exacta (campos simples)
+                const $field = $form.find('input, select, textarea').filter(function() {
+                    return this.name === sourceName;
+                });
 
                 if ($field.length > 0) {
                     originalNames[sourceName] = $field.attr('name');
                     $field.attr('name', targetName);
                     console.log(`[HS Mapper] ✓ Campo renombrado: ${sourceName} → ${targetName} (valor: "${$field.val()}")`);
+                    return;
+                }
+
+                // Campo array (checkbox group): buscar checkboxes cuyo name empiece por sourceName[
+                const $checked = $form.find('input[type="checkbox"]').filter(function() {
+                    return this.name.indexOf(sourceName + '[') === 0 && $(this).is(':checked');
+                });
+
+                if ($checked.length > 0) {
+                    $checked.each(function() {
+                        console.log(`[HS Mapper] ✓ Checkbox array renombrado: ${this.name} → ${targetName} (valor: "${$(this).val()}")`);
+                        $(this).attr('name', targetName);
+                    });
+                } else {
+                    console.log(`[HS Mapper] ℹ Campo array sin selección: ${sourceName} (no se envía)`);
                 }
             });
 
