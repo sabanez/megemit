@@ -34,6 +34,13 @@ node_modules/
 # (Ignoramos solo los temas por defecto de WP para no ensuciar)
 /wp-content/themes/twenty*/
 
+# Carpetas con "backup" en el nombre (cualquier nivel)
+**/*backup*/
+
+# Plugins WooCommerce
+/wp-content/plugins/woocommerce/
+/wp-content/plugins/woocommerce-*/
+
 # --- CONFIGURACIÓN PARA TÉCNICOS ---
 # Creamos un archivo de ejemplo para que sepan qué configurar
 !wp-config-sample.php
