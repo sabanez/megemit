@@ -39,8 +39,10 @@ function cncl_after_edit_callback ($member_info)
 
 add_action('user_register', 'mgmit_after_registration_mark_user', 5, 1);
 function mgmit_after_registration_mark_user($user_id) {
+    // Marca solo para NUEVOS registros (será bloqueado)
     update_user_meta($user_id, 'mgmit_hs_details_pending', '1');
-    
+    // NO marcar mgmit_hs_legacy_pending aquí (solo para logins posteriores)
+
     // Guardamos en la SESIÓN del servidor (Bloqueo + ID)
     if (!session_id()) { session_start(); }
     $_SESSION['mgmit_hs_user_id'] = $user_id;
@@ -54,35 +56,26 @@ function mgmit_after_registration_mark_user($user_id) {
 }
 
 
-// 2. Redirección forzosa si el perfil está pendiente
+// 2. Bloqueo SOLO durante el flujo de registro nuevo
+// Condición: sesión activa del registro + usuario NO logueado + metadato pendiente en DB
 add_action('template_redirect', 'mgmit_enforce_hs_form_completion', 1);
 function mgmit_enforce_hs_form_completion() {
-    if (strstr($_SERVER['REQUEST_URI'], 'action=logout') || is_admin()) return;
+    if (is_admin() || strstr($_SERVER['REQUEST_URI'], 'action=logout')) return;
 
+    $forced_page_id = 21568; // /registrierungsdetails/
+    if (is_page($forced_page_id) || is_page('registrierungsdetails')) return;
 
-    $is_pending = false;
+    // Solo aplica a usuarios NO logueados (durante el registro, antes del auto-login)
+    if (is_user_logged_in()) return;
 
-    if (is_user_logged_in()) {
-        if (get_user_meta(get_current_user_id(), 'mgmit_hs_details_pending', true) === '1') {
-            $is_pending = true;
-        }
-    } 
-    
-    // Check session or cookie for guest users who just registered
-    if (!$is_pending) {
-        if (!session_id()) { session_start(); }
-        if ((isset($_SESSION['mgmit_hs_pending']) && $_SESSION['mgmit_hs_pending'] == 1) || 
-            (isset($_COOKIE['mgmit_hs_pending']) && $_COOKIE['mgmit_hs_pending'] === '1')) {
-            $is_pending = true;
-        }
-    }
+    if (!session_id()) { session_start(); }
 
-    if ($is_pending) {
-        $forced_page_id = 21568; 
-        if (!is_page($forced_page_id) && !is_page('registrierungsdetails') && !is_page('registrierung')) {
-            wp_redirect(get_permalink($forced_page_id) . '?enforced=1');
-            exit;
-        }
+    // Verificar que hay una sesión de registro activa con user_id válido
+    $session_user_id = isset($_SESSION['mgmit_hs_user_id']) ? absint($_SESSION['mgmit_hs_user_id']) : 0;
+
+    if ($session_user_id > 0 && get_user_meta($session_user_id, 'mgmit_hs_details_pending', true) === '1') {
+        wp_redirect(get_permalink($forced_page_id) . '?enforced=1');
+        exit;
     }
 }
 
@@ -1016,3 +1009,4 @@ function mgmit_enqueue_onboarding_scripts_only() {
 add_action('wp_enqueue_scripts', 'mgmit_enqueue_onboarding_scripts_only', 20);
 
 require_once get_stylesheet_directory() . '/inc/membership-woo-bridge.php';
+require_once get_stylesheet_directory() . '/inc/hubspot-sync/loader.php';

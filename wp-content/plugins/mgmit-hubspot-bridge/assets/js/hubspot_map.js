@@ -1,7 +1,7 @@
 /**
- * HubSpot Form Bridge - Field Mapper Module (v6.0)
+ * HubSpot Form Bridge - Field Mapper Module (v7.0)
  * @author Senior Developer
- * @description Modulo puro de mapeo de campos entre formularios locales y HubSpot.
+ * @description Mapeo directo de nombres de campo en el submit para compatibilidad SWPM + HubSpot
  */
 
 const HubSpotMapper = (function($) {
@@ -11,76 +11,65 @@ const HubSpotMapper = (function($) {
 
     const setupForm = ($form, config) => {
         console.log(`[HS Mapper] Configurando mapper para: ${config.hubspotFormName}`);
-        
-        // 1. Guardamos los datos originales
-        const originalId = $form.attr('id');
-        const originalClasses = $form.attr('class');
-        $form.attr('data-original-id', originalId);
-        $form.attr('data-original-classes', originalClasses);
 
-        // 2. Mutación inicial (ID y Name para que HubSpot identifique el form)
-        $form.attr('id', config.hubspotFormName); 
+        // 1. Guardar mapeo inverso (targetName → sourceName) para restaurar después
+        $form.data('hs-mapping', config.mapping);
+        $form.data('hs-form-name', config.hubspotFormName);
+
+        // 2. Establecer ID y name del formulario para HubSpot
+        $form.attr('id', config.hubspotFormName);
         $form.attr('name', config.hubspotFormName);
         $form.attr('data-hs-form-id', config.hubspotFormName);
 
-        // 3. Crear Shadow Fields y sincronizar
-        Object.keys(config.mapping).forEach(sourceName => {
-            const targetName = config.mapping[sourceName];
-
-            // Marcamos el campo original para que HubSpot lo ignore
-            $form.find(`[name="${sourceName}"]`).attr('data-hs-ignore', 'true');
-
-            // Creamos un campo oculto con el nombre que HubSpot reconoce (targetName)
-            if ($form.find(`input[name="${targetName}"]`).length === 0) {
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: targetName,
-                    'data-hs-bridge': targetName
-                }).appendTo($form);
-            }
-        });
-
+        // 3. Inyectar contexto de HubSpot
         injectHubSpotContext($form);
-        syncAllFields($form, config.mapping);
 
-        // 4. EVENTOS: Sincronización y Envio
-        $form.on('submit', function() {
-            syncAllFields($form, config.mapping);
-            // Limpieza de clases CSS del tema para no interferir con el selector de HubSpot
-            $form.attr('class', ''); 
-            return true;
-        });
+        // 4. SUBMIT: Cambiar names directamente antes de enviar
+        $form.on('submit', function(e) {
+            console.log('[HS Mapper] 📤 SUBMIT - Transformando nombres de campos...');
 
-        $form.on('input change', 'input, select, textarea', function() {
-            syncAllFields($form, config.mapping);
-        });
-    };
+            const mapping = $form.data('hs-mapping');
+            const originalNames = {}; // Guardar nombres originales para restaurar
 
-    const syncAllFields = ($form, mapping) => {
-        Object.keys(mapping).forEach(sourceName => {
-            const targetName = mapping[sourceName];
-            const value = getNormalizedValue($form, sourceName);
-            $form.find(`input[data-hs-bridge="${targetName}"]`).val(value);
-        });
-    };
+            // Cambiar los names de los campos originales a los nombres que HubSpot espera
+            Object.keys(mapping).forEach(sourceName => {
+                const targetName = mapping[sourceName];
 
-    const getNormalizedValue = ($form, sourceName) => {
-        const $fields = $form.find(`[name="${sourceName}"]`);
-        if ($fields.length === 0) return null;
-        const values = [];
-        $fields.each(function() {
-            const $el = $(this);
-            if (($el.is(':checkbox') || $el.is(':radio')) && $el.is(':checked')) {
-                values.push($el.val());
-            } else if ($el.is('select') && $el.prop('multiple')) {
-                const selectedOptions = $el.val();
-                if (selectedOptions) values.push(...selectedOptions);
-            } else if (!$el.is(':checkbox') && !$el.is(':radio')) {
-                const val = $el.val();
-                if (val !== undefined) values.push(val);
-            }
+                // Coincidencia exacta (campos simples)
+                const $field = $form.find('input, select, textarea').filter(function() {
+                    return this.name === sourceName;
+                });
+
+                if ($field.length > 0) {
+                    originalNames[sourceName] = $field.attr('name');
+                    $field.attr('name', targetName);
+                    console.log(`[HS Mapper] ✓ Campo renombrado: ${sourceName} → ${targetName} (valor: "${$field.val()}")`);
+                    return;
+                }
+
+                // Campo array (checkbox group): buscar checkboxes cuyo name empiece por sourceName[
+                const $checked = $form.find('input[type="checkbox"]').filter(function() {
+                    return this.name.indexOf(sourceName + '[') === 0 && $(this).is(':checked');
+                });
+
+                if ($checked.length > 0) {
+                    $checked.each(function() {
+                        console.log(`[HS Mapper] ✓ Checkbox array renombrado: ${this.name} → ${targetName} (valor: "${$(this).val()}")`);
+                        $(this).attr('name', targetName);
+                    });
+                } else {
+                    console.log(`[HS Mapper] ℹ Campo array sin selección: ${sourceName} (no se envía)`);
+                }
+            });
+
+            // Guardar nombres originales en el formulario (por si acaso necesitamos restaurar)
+            $form.data('hs-original-names', originalNames);
+
+            // Limpiar clases CSS del tema para no interferir con HubSpot
+            $form.attr('class', '');
+
+            return true; // Permitir submit
         });
-        return values.join(';');
     };
 
     const injectHubSpotContext = ($form) => {
@@ -90,10 +79,16 @@ const HubSpotMapper = (function($) {
             pageName: document.title,
             pageUrl: window.location.href
         };
+
         if ($form.find('input[name="hs_context"]').length === 0) {
-            $('<input>').attr({ type: 'hidden', name: 'hs_context' }).appendTo($form);
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'hs_context'
+            }).appendTo($form);
         }
+
         $form.find('input[name="hs_context"]').val(JSON.stringify(context));
+        console.log('[HS Mapper] Contexto HubSpot inyectado');
     };
 
     return {
@@ -103,6 +98,8 @@ const HubSpotMapper = (function($) {
                     const $form = $(config.formId);
                     if ($form.length > 0) {
                         setupForm($form, config);
+                    } else {
+                        console.warn(`[HS Mapper] Formulario no encontrado: ${config.formId}`);
                     }
                 });
             });

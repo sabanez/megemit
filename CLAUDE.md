@@ -18,6 +18,10 @@
 4. Trabaja ahorrando el máximo de tokens para optimizar el uso de los agentes.
 5. Compacta la conversación cuando lleve un 70%
 6. Trabaja como un desarrollador senior de WordPress con más de 15 años de experiencia
+7. No hagas commit hasta que yo te lo diga.
+8. Lee los archivos de código línea por línea cuando sea necesario, no solo mires los nombres.
+9. No escribas código, primero haz un plan y describe cada paso que vayas a hacer, una vez aprovado el plan, empieza a ejecutarlo.
+
 ## Arquitectura
 
 ### Plugin `mgmit-hubspot-bridge` (v1.3.0, estable)
