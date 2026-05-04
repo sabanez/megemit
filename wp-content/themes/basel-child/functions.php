@@ -37,139 +37,169 @@ function cncl_after_edit_callback ($member_info)
 }
 */
 
-add_action('user_register', 'mgmit_after_registration_mark_user', 5, 1);
-function mgmit_after_registration_mark_user($user_id) {
-    // Marca solo para NUEVOS registros (será bloqueado)
-    update_user_meta($user_id, 'mgmit_hs_details_pending', '1');
-    // NO marcar mgmit_hs_legacy_pending aquí (solo para logins posteriores)
-
-    // Guardamos en la SESIÓN del servidor (Bloqueo + ID)
-    if (!session_id()) { session_start(); }
-    $_SESSION['mgmit_hs_user_id'] = $user_id;
-    $_SESSION['mgmit_hs_pending'] = 1;
-
-    // Sincronizamos con el token por si acaso (redundancia)
-    $login_token = isset($_POST['mgmit_hs_token']) ? sanitize_text_field($_POST['mgmit_hs_token']) : (isset($_COOKIE['mgmit_hs_login_token']) ? $_COOKIE['mgmit_hs_login_token'] : '');
-    if (!empty($login_token)) {
-        update_user_meta($user_id, 'mgmit_hs_login_token', $login_token);
+// Helper: ID dinámico de la página de enforcement (evita hardcodear ID que cambia entre entornos)
+function mgmit_hs_forced_page_id() {
+    static $pid = null;
+    if ($pid === null) {
+        $page = get_page_by_path('registrierungsdetails');
+        $pid  = $page ? $page->ID : 21568;
     }
+    return $pid;
 }
 
+// Helper: obtiene user_id pendiente. Prioridad: cookie → rtoken URL → sesión PHP
+function mgmit_hs_get_pending_user_id() {
+    // 1. Cookie + transient
+    $token = isset($_COOKIE['mgmit_hs_reg_token']) ? sanitize_text_field($_COOKIE['mgmit_hs_reg_token']) : '';
+    if ($token) {
+        $uid = get_transient('mgmit_hs_reg_' . $token);
+        if ($uid) return absint($uid);
+    }
 
-// 2. Bloqueo SOLO durante el flujo de registro nuevo
-// Condición: sesión activa del registro + usuario NO logueado + metadato pendiente en DB
+    // 2. rtoken en URL + transient
+    $token = isset($_GET['rtoken']) ? sanitize_text_field($_GET['rtoken']) : '';
+    if ($token) {
+        $uid = get_transient('mgmit_hs_reg_' . $token);
+        if ($uid) return absint($uid);
+    }
+
+    // 3. Sesión PHP como último recurso
+    if (!session_id()) { session_start(); }
+    return isset($_SESSION['mgmit_hs_user_id']) ? absint($_SESSION['mgmit_hs_user_id']) : 0;
+}
+
+// 1. Marcar usuario tras registro
+add_action('user_register', 'mgmit_after_registration_mark_user', 5, 1);
+function mgmit_after_registration_mark_user($user_id) {
+    update_user_meta($user_id, 'mgmit_hs_details_pending', '1');
+
+    // Token para identificación sin login
+    $token = wp_generate_password(32, false);
+    set_transient('mgmit_hs_reg_' . $token, $user_id, HOUR_IN_SECONDS);
+    update_user_meta($user_id, 'mgmit_hs_reg_token', $token);
+
+    // WP option para pasar el token al filtro SWPM en el mismo request
+    update_option('mgmit_hs_current_reg', array('uid' => $user_id, 'token' => $token, 'ts' => time()), false);
+
+    // Sesión PHP como respaldo para hs_finish
+    if (!session_id()) { session_start(); }
+    $_SESSION['mgmit_hs_user_id'] = $user_id;
+    $_SESSION['mgmit_hs_pending']  = 1;
+}
+
+// 2. SWPM redirige a /registrierungsdetails/?enforced=1&rtoken=XXX tras el registro
+add_filter('swpm_after_registration_redirect_url', 'mgmit_append_reg_token_to_redirect');
+function mgmit_append_reg_token_to_redirect($url) {
+    $reg = get_option('mgmit_hs_current_reg');
+    if (empty($reg['token']) || empty($reg['uid'])) return $url;
+    if ((time() - intval($reg['ts'])) > 300) return $url; // caduca tras 5 min
+
+    return add_query_arg(
+        array('enforced' => '1', 'rtoken' => $reg['token']),
+        get_permalink(mgmit_hs_forced_page_id())
+    );
+}
+
+// 3. Gestión de redirecciones de enforcement
 add_action('template_redirect', 'mgmit_enforce_hs_form_completion', 1);
 function mgmit_enforce_hs_form_completion() {
     if (is_admin() || strstr($_SERVER['REQUEST_URI'], 'action=logout')) return;
-
-    $forced_page_id = 21568; // /registrierungsdetails/
-    if (is_page($forced_page_id) || is_page('registrierungsdetails')) return;
-
-    // Solo aplica a usuarios NO logueados (durante el registro, antes del auto-login)
     if (is_user_logged_in()) return;
 
-    if (!session_id()) { session_start(); }
+    $forced_page_id = mgmit_hs_forced_page_id();
 
-    // Verificar que hay una sesión de registro activa con user_id válido
-    $session_user_id = isset($_SESSION['mgmit_hs_user_id']) ? absint($_SESSION['mgmit_hs_user_id']) : 0;
+    // En la página de enforcement: establecer cookie desde rtoken para peticiones posteriores
+    if (is_page($forced_page_id) || is_page('registrierungsdetails')) {
+        if (!empty($_GET['rtoken'])) {
+            $token = sanitize_text_field($_GET['rtoken']);
+            if (get_transient('mgmit_hs_reg_' . $token)) {
+                setcookie('mgmit_hs_reg_token', $token, time() + HOUR_IN_SECONDS, '/', '', false, false);
+                $_COOKIE['mgmit_hs_reg_token'] = $token;
+            }
+        }
+        return;
+    }
 
-    if ($session_user_id > 0 && get_user_meta($session_user_id, 'mgmit_hs_details_pending', true) === '1') {
-        wp_redirect(get_permalink($forced_page_id) . '?enforced=1');
+    // En cualquier otra página: redirigir si hay registro pendiente activo
+    $user_id = mgmit_hs_get_pending_user_id();
+    if ($user_id > 0 && get_user_meta($user_id, 'mgmit_hs_details_pending', true) === '1') {
+        $token = get_user_meta($user_id, 'mgmit_hs_reg_token', true);
+        wp_redirect(add_query_arg(
+            array('enforced' => '1', 'rtoken' => $token),
+            get_permalink($forced_page_id)
+        ));
         exit;
     }
 }
 
-// 3. Intercepción del POST y limpieza final
+// 4. Auto-login y limpieza al volver de HubSpot con ?hs_finish=1
 add_action('init', 'mgmit_clear_hs_pending_status');
 function mgmit_clear_hs_pending_status() {
-    // Asegurar cookie al detectar el envío del registro
-    $is_registration_post = !is_user_logged_in() && (
-                            isset($_POST['swpm_registration_submit']) ||
-                            isset($_POST['swpm-fb-submit']) ||
-                            (isset($_POST['swpm_registr_level_id']) && !empty($_POST['swpm_registr_level_id']))
-                        );
+    if (!isset($_GET['hs_finish']) && !isset($_GET['hs_test'])) return;
 
-    // Inicializar sesión si no existe
-    if (!session_id()) { 
-        session_start(); 
-    }
-
-    if ($is_registration_post) {
-        $login_token = isset($_POST['mgmit_hs_token']) ? sanitize_text_field($_POST['mgmit_hs_token']) : wp_generate_password(32, false);
-        
-        setcookie('mgmit_hs_pending', '1', time() + 86400, '/', '', false, false);
-        $_COOKIE['mgmit_hs_pending'] = '1';
-        $_SESSION['mgmit_hs_pending'] = 1;
-    }
-
-    // El hook user_register se encargará de guardar el ID en la SESIÓN
-    
-    // Fase 2: Limpieza y Auto-login SEGURO por Sesión
-    if (isset($_GET['hs_finish']) || isset($_GET['hs_test'])) {
-        // Flujo legacy: usuario ya autenticado vía cookie WP
-        if (is_user_logged_in()) {
-            $user = wp_get_current_user();
-            write_log('[MGMIT_HS] hs_finish/hs_test (legacy, WP logueado): ' . $user->user_login . ' (ID: ' . $user->ID . ')');
-            update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
-            delete_user_meta($user->ID, 'mgmit_hs_legacy_pending');
-            wp_redirect(home_url('/fachkreisbereich-mitglied/'));
-            exit;
-        }
-
-        // Fallback: usuario autenticado solo vía SWPM (cookie WP ausente)
-        if (class_exists('SwpmAuth') && class_exists('SwpmMemberUtils')) {
-            $swpm_auth = SwpmAuth::get_instance();
-            if ($swpm_auth->is_logged_in()) {
-                $member_id = $swpm_auth->get('member_id');
-                $wp_user = SwpmMemberUtils::get_wp_user_from_swpm_user_id($member_id);
-                if ($wp_user && get_user_meta($wp_user->ID, 'mgmit_hs_legacy_pending', true) === '1') {
-                    write_log('[MGMIT_HS] hs_finish/hs_test (legacy, SWPM fallback): member_id=' . $member_id . ' wp_user=' . $wp_user->ID);
-                    update_user_meta($wp_user->ID, 'mgmit_hs_details_pending', '0');
-                    delete_user_meta($wp_user->ID, 'mgmit_hs_legacy_pending');
-                    wp_redirect(home_url('/fachkreisbereich-mitglied/'));
-                    exit;
-                }
-            }
-        }
-
-        // Flujo nuevo registro: usuario identificado por sesión
-        $user_id = isset($_SESSION['mgmit_hs_user_id']) ? absint($_SESSION['mgmit_hs_user_id']) : 0;
-        $user = null;
-
-        write_log('[MGMIT_HS] hs_finish/hs_test activado. Session user_id: ' . $user_id);
-
-        if ($user_id > 0) {
-            $user = get_userdata($user_id);
-        }
-
-        if ($user) {
-            write_log('[MGMIT_HS] Usuario encontrado: ' . $user->user_login . ' (ID: ' . $user->ID . ')');
-            update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
-            delete_user_meta($user->ID, 'mgmit_hs_legacy_pending');
-
-            // SWPM login usando WP user object (autentica al usuario en el sistema SWPM)
-            if (class_exists('SwpmAuth')) {
-                $swpm_auth = SwpmAuth::get_instance();
-                $swpm_auth->login_to_swpm_using_wp_user($user);
-                write_log('[MGMIT_HS] SWPM login_to_swpm_using_wp_user ejecutado para: ' . $user->user_login);
-            }
-
-            // WP auth cookie AL FINAL (tiene la última palabra)
-            wp_set_current_user($user->ID, $user->user_login);
-            wp_set_auth_cookie($user->ID, true);
-            write_log('[MGMIT_HS] wp_set_auth_cookie ejecutado para user ID: ' . $user->ID);
-        } else {
-            write_log('[MGMIT_HS] ERROR: No se encontro usuario para session user_id: ' . $user_id);
-        }
-
-        // Limpiar
-        unset($_SESSION['mgmit_hs_user_id']);
-        unset($_SESSION['mgmit_hs_pending']);
-        setcookie('mgmit_hs_pending', '', time() - 3600, '/');
-
+    // Legacy: usuario ya logueado vía cookie WP
+    if (is_user_logged_in()) {
+        $user = wp_get_current_user();
+        write_log('[MGMIT_HS] hs_finish (WP logueado): ' . $user->user_login);
+        update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
+        delete_user_meta($user->ID, 'mgmit_hs_legacy_pending');
         wp_redirect(home_url('/fachkreisbereich-mitglied/'));
         exit;
     }
+
+    // Legacy: autenticado solo vía SWPM
+    if (class_exists('SwpmAuth') && class_exists('SwpmMemberUtils')) {
+        $swpm_auth = SwpmAuth::get_instance();
+        if ($swpm_auth->is_logged_in()) {
+            $member_id = $swpm_auth->get('member_id');
+            $wp_user   = SwpmMemberUtils::get_wp_user_from_swpm_user_id($member_id);
+            if ($wp_user && get_user_meta($wp_user->ID, 'mgmit_hs_legacy_pending', true) === '1') {
+                write_log('[MGMIT_HS] hs_finish (SWPM fallback): member_id=' . $member_id);
+                update_user_meta($wp_user->ID, 'mgmit_hs_details_pending', '0');
+                delete_user_meta($wp_user->ID, 'mgmit_hs_legacy_pending');
+                wp_redirect(home_url('/fachkreisbereich-mitglied/'));
+                exit;
+            }
+        }
+    }
+
+    // Nuevo registro: identificar usuario (cookie → rtoken URL → sesión)
+    $user_id = mgmit_hs_get_pending_user_id();
+    write_log('[MGMIT_HS] hs_finish activado. user_id: ' . $user_id);
+
+    $user = $user_id > 0 ? get_userdata($user_id) : null;
+
+    if ($user) {
+        write_log('[MGMIT_HS] Usuario: ' . $user->user_login . ' (ID: ' . $user->ID . ')');
+        update_user_meta($user->ID, 'mgmit_hs_details_pending', '0');
+        delete_user_meta($user->ID, 'mgmit_hs_legacy_pending');
+
+        if (class_exists('SwpmAuth')) {
+            $swpm_auth = SwpmAuth::get_instance();
+            $swpm_auth->login_to_swpm_using_wp_user($user);
+            write_log('[MGMIT_HS] SWPM login para: ' . $user->user_login);
+        }
+
+        wp_set_current_user($user->ID, $user->user_login);
+        wp_set_auth_cookie($user->ID, true);
+        write_log('[MGMIT_HS] wp_set_auth_cookie para user ID: ' . $user->ID);
+    } else {
+        write_log('[MGMIT_HS] ERROR: No se encontro usuario.');
+    }
+
+    // Limpiar
+    $token = isset($_COOKIE['mgmit_hs_reg_token']) ? sanitize_text_field($_COOKIE['mgmit_hs_reg_token']) : '';
+    if (!$token) { $token = isset($_GET['rtoken']) ? sanitize_text_field($_GET['rtoken']) : ''; }
+    if ($token) { delete_transient('mgmit_hs_reg_' . $token); }
+
+    setcookie('mgmit_hs_reg_token', '', time() - 3600, '/');
+    delete_option('mgmit_hs_current_reg');
+
+    if (!session_id()) { session_start(); }
+    unset($_SESSION['mgmit_hs_user_id'], $_SESSION['mgmit_hs_pending']);
+
+    wp_redirect(home_url('/fachkreisbereich-mitglied/'));
+    exit;
 }
 
 // 4. Redirección suave post-login para usuarios legacy con formulario pendiente
@@ -446,14 +476,14 @@ if( ! function_exists( 'basel_header_block_widget_area' ) ) {
 //					echo $current_user->ID;
 					
 			echo '<div style="float: right;">
-                <h4 style="padding: 6px 0px; margin: 1px 10px 1px 0px; width: auto; text-align: center;"><a class="aep" style="font-weight: 400; color: #ffffff;" href="http://megemit.loc/profil-bearbeiten/"><i class="fa fa-user-md"></i></a></h4>
+                <h4 style="padding: 6px 0px; margin: 1px 10px 1px 0px; width: auto; text-align: center;"><a class="aep" style="font-weight: 400; color: #ffffff;" href="http://megemit.org/profil-bearbeiten/"><i class="fa fa-user-md"></i></a></h4>
             </div>';
 			
 				}
 					
 			?>
             <div style="float: right;">
-                <h4 style="padding: 6px 0px; margin: 1px 10px 1px 10px; width: 180px; text-align: center;"><a class="aep" style="font-weight: 400; color: #ffffff;" href="http://megemit.loc/fachkreisbereich/"><i class="fa fa-user-md"></i> Fachkreisbereich</a></h4>
+                <h4 style="padding: 6px 0px; margin: 1px 10px 1px 10px; width: 180px; text-align: center;"><a class="aep" style="font-weight: 400; color: #ffffff;" href="http://megemit.org/fachkreisbereich/"><i class="fa fa-user-md"></i> Fachkreisbereich</a></h4>
             </div>
             <div style="float: right" class="idiomas">
                 <a target="_blank" href="https://www.micro-immunotherapy.com/">EN</a> <a target="_blank" href="https://www.aemi.es/">ES</a> <a target="_blank" href="https://www.microimmuno.fr/">FR</a>
@@ -996,8 +1026,7 @@ add_filter('action_scheduler_queue_runner_concurrent_batches', function() {
 
 function mgmit_enqueue_onboarding_scripts_only() {
     $enforce_js = '/inc/onboarding-enforcement.js';
-    
-    // Sistema de Bloqueo y Onboarding (Específico)
+
     wp_enqueue_script(
         'mgmit-onboarding-enforcement',
         get_stylesheet_directory_uri() . $enforce_js,
@@ -1005,8 +1034,47 @@ function mgmit_enqueue_onboarding_scripts_only() {
         filemtime(get_stylesheet_directory() . $enforce_js),
         true
     );
+
+    $forced_pid      = mgmit_hs_forced_page_id();
+    $pending_user_id = mgmit_hs_get_pending_user_id();
+    $is_enforced     = $pending_user_id > 0 && get_user_meta($pending_user_id, 'mgmit_hs_details_pending', true) === '1';
+
+    wp_localize_script('mgmit-onboarding-enforcement', 'MGMIT_ONBOARDING', array(
+        'isEnforcedPage' => (is_page($forced_pid) || is_page('registrierungsdetails')) ? '1' : '0',
+        'isEnforced'     => $is_enforced ? '1' : '0',
+        'enforcedUrl'    => add_query_arg('enforced', '1', get_permalink($forced_pid)),
+    ));
 }
 add_action('wp_enqueue_scripts', 'mgmit_enqueue_onboarding_scripts_only', 20);
 
 require_once get_stylesheet_directory() . '/inc/membership-woo-bridge.php';
 require_once get_stylesheet_directory() . '/inc/hubspot-sync/loader.php';
+
+/**
+ * Guarda en el line item del pedido el precio regular, precio rebajado y
+ * fechas de la oferta activa en el momento de la compra.
+ */
+function mgmit_save_sale_price_on_order_item( $item, $cart_item_key, $values ) {
+    $product = $values['data'];
+
+    if ( ! ( $product instanceof WC_Product ) ) {
+        return;
+    }
+
+    $regular_price = $product->get_regular_price();
+    $sale_price    = $product->get_sale_price();
+    $is_on_sale    = $product->is_on_sale() ? 'yes' : 'no';
+
+    $date_from_raw = get_post_meta( $product->get_id(), '_sale_price_dates_from', true );
+    $date_to_raw   = get_post_meta( $product->get_id(), '_sale_price_dates_to', true );
+
+    $date_from = ( $date_from_raw ) ? date( 'Y-m-d', (int) $date_from_raw ) : '';
+    $date_to   = ( $date_to_raw )   ? date( 'Y-m-d', (int) $date_to_raw )   : '';
+
+    $item->add_meta_data( '_regular_price',        $regular_price, true );
+    $item->add_meta_data( '_sale_price',            $sale_price,    true );
+    $item->add_meta_data( '_is_on_sale',            $is_on_sale,    true );
+    $item->add_meta_data( '_sale_price_dates_from', $date_from,     true );
+    $item->add_meta_data( '_sale_price_dates_to',   $date_to,       true );
+}
+add_action( 'woocommerce_checkout_create_order_line_item', 'mgmit_save_sale_price_on_order_item', 10, 3 );
