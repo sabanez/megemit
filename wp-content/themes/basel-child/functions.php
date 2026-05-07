@@ -549,6 +549,13 @@ add_action('woocommerce_after_main_content', 'cncl_content_below', 5);
 // Hinzufügen eines benutzerdefinierten Feldes im Produkt-Bearbeitungsbildschirm
 add_action('woocommerce_product_options_general_product_data', 'add_custom_date_field');
 function add_custom_date_field() {
+    global $post;
+    woocommerce_wp_checkbox(array(
+        'id'          => '_mgmit_outside_fachkreis',
+        'label'       => __('Außerhalb des Fachkreisbereichs', 'woocommerce'),
+        'description' => __('Dieses Produkt kann ohne Registrierung im Fachkreisbereich bestellt werden.', 'woocommerce'),
+        'value'       => get_post_meta($post->ID, '_mgmit_outside_fachkreis', true),
+    ));
     woocommerce_wp_text_input(
         array(
             'id' => 'veranstaltungsdatum',
@@ -580,6 +587,9 @@ function save_custom_date_field($post_id) {
 	$veranstaltungsort = isset($_POST['veranstaltungsort']) ? sanitize_text_field($_POST['veranstaltungsort']) : '';
 
     update_post_meta($post_id, 'veranstaltungsort', $veranstaltungsort);
+
+    $outside = isset($_POST['_mgmit_outside_fachkreis']) ? 'yes' : 'no';
+    update_post_meta($post_id, '_mgmit_outside_fachkreis', $outside);
 }
 
 
@@ -1078,3 +1088,43 @@ function mgmit_save_sale_price_on_order_item( $item, $cart_item_key, $values ) {
     $item->add_meta_data( '_sale_price_dates_to',   $date_to,       true );
 }
 add_action( 'woocommerce_checkout_create_order_line_item', 'mgmit_save_sale_price_on_order_item', 10, 3 );
+
+// --- CHECKOUT-SPERRE FÜR NICHT EINGELOGGTE NUTZER ---
+
+// Devuelve true solo si TODOS los productos del carrito están marcados como "fuera del Fachkreisbereich"
+function mgmit_cart_all_outside_fachkreis() {
+    $cart = WC()->cart;
+    if ( ! $cart || $cart->is_empty() ) {
+        return true;
+    }
+    foreach ( $cart->get_cart() as $item ) {
+        $product_id = isset( $item['variation_id'] ) && $item['variation_id'] ? $item['variation_id'] : $item['product_id'];
+        $outside    = get_post_meta( $product_id, '_mgmit_outside_fachkreis', true );
+        if ( $outside !== 'yes' ) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Checkout-Seite blockieren: Weiterleitung zum Warenkorb
+add_action( 'template_redirect', 'mgmit_block_checkout_for_guests', 5 );
+function mgmit_block_checkout_for_guests() {
+    if ( is_checkout() && ! is_user_logged_in() && ! is_wc_endpoint_url() && ! mgmit_cart_all_outside_fachkreis() ) {
+        wp_redirect( wc_get_cart_url() );
+        exit;
+    }
+}
+
+// Weiter-zur-Kasse-Button ersetzen durch Hinweismeldung
+remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
+add_action( 'woocommerce_proceed_to_checkout', 'mgmit_guest_checkout_notice', 20 );
+function mgmit_guest_checkout_notice() {
+    if ( is_user_logged_in() || mgmit_cart_all_outside_fachkreis() ) {
+        woocommerce_button_proceed_to_checkout();
+        return;
+    }
+    echo '<div class="mgmit-guest-notice" style="background:#fff8e1;border-left:4px solid #f39c12;padding:16px 20px;margin:16px 0;border-radius:3px;font-size:0.97em;line-height:1.6;">';
+    echo 'Unsere Aus- und Fortbildungsangebote richten sich exklusiv an Angehörige aus dem Gesundheitsbereich. Bitte registrieren Sie sich vorab in unserem Fachkreisbereich um eine Bestellung abschließen zu können.';
+    echo '</div>';
+}

@@ -2,6 +2,21 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [Unreleased] - 2026-05-07
+
+### Añadido - `basel-child/functions.php`: Control de acceso al checkout por tipo de producto
+
+- **Meta `_mgmit_outside_fachkreis`**: nuevo checkbox en la pantalla de edición de producto WooCommerce. Marca productos que pueden comprarse sin necesidad de registro en el Fachkreisbereich.
+- **`mgmit_cart_all_outside_fachkreis()`**: helper que devuelve `true` solo si todos los productos del carrito tienen el meta activo.
+- **`mgmit_block_checkout_for_guests()`**: hook en `template_redirect` (prioridad 5) que redirige al carrito si el usuario no está logueado y hay al menos un producto que requiere registro.
+- **`mgmit_guest_checkout_notice()`**: reemplaza el botón "Ir a la caja" por un aviso explicativo en alemán cuando el usuario no está logueado y el carrito contiene productos del Fachkreisbereich.
+
+### Añadido - `basel-child/functions.php`: Guardar precio rebajado en line items de pedido
+
+- **`mgmit_save_sale_price_on_order_item()`**: hook en `woocommerce_checkout_create_order_line_item` que persiste `_regular_price`, `_sale_price`, `_is_on_sale`, `_sale_price_dates_from` y `_sale_price_dates_to` en el meta del line item en el momento de la compra.
+
+---
+
 ## [1.5.0] - 2026-05-06
 
 ### Rediseño completo - Plugin `mgmit-hubspot-bridge`: Envío a HubSpot tras validación server-side
