@@ -116,7 +116,7 @@ class MGMIT_Admin_UI {
                         <tr>
                             <th scope="col" class="manage-column column-primary" style="width:22%">Nombre del Mapeo</th>
                             <th scope="col" class="manage-column" style="width:28%">Selector del Formulario</th>
-                            <th scope="col" class="manage-column" style="width:28%">Nombre en HubSpot</th>
+                            <th scope="col" class="manage-column" style="width:28%">Form GUID HubSpot</th>
                             <th scope="col" class="manage-column" style="width:10%" title="Número de campos mapeados">Campos</th>
                             <th scope="col" class="manage-column" style="width:12%">Acciones</th>
                         </tr>
@@ -126,7 +126,7 @@ class MGMIT_Admin_UI {
                             $id          = isset($mapping['id']) ? $mapping['id'] : strval($index);
                             $name        = isset($mapping['name']) && $mapping['name'] !== '' ? $mapping['name'] : '(Sin nombre)';
                             $form_id     = isset($mapping['formId']) ? $mapping['formId'] : '';
-                            $hs_name     = isset($mapping['hubspotFormName']) ? $mapping['hubspotFormName'] : '';
+                            $hs_name     = isset($mapping['formGuid']) ? $mapping['formGuid'] : (isset($mapping['hubspotFormName']) ? $mapping['hubspotFormName'] : '');
                             $field_count = isset($mapping['mapping']) && is_array($mapping['mapping']) ? count($mapping['mapping']) : 0;
                             $edit_url    = admin_url('admin.php?page=mgmit-hubspot-bridge&view=edit&mapping_id=' . urlencode($id));
                         ?>
@@ -166,7 +166,7 @@ class MGMIT_Admin_UI {
                         <tr>
                             <th scope="col">Nombre del Mapeo</th>
                             <th scope="col">Selector del Formulario</th>
-                            <th scope="col">Nombre en HubSpot</th>
+                            <th scope="col">Form GUID HubSpot</th>
                             <th scope="col">Campos</th>
                             <th scope="col">Acciones</th>
                         </tr>
@@ -213,7 +213,7 @@ class MGMIT_Admin_UI {
 
         $name       = $is_new ? '' : (isset($mapping['name']) ? $mapping['name'] : '');
         $form_sel   = $is_new ? '' : (isset($mapping['formId']) ? $mapping['formId'] : '');
-        $hs_name    = $is_new ? '' : (isset($mapping['hubspotFormName']) ? $mapping['hubspotFormName'] : '');
+        $hs_name    = $is_new ? '' : (isset($mapping['formGuid']) ? $mapping['formGuid'] : (isset($mapping['hubspotFormName']) ? $mapping['hubspotFormName'] : ''));
         $fields     = $is_new ? [] : (isset($mapping['mapping']) && is_array($mapping['mapping']) ? $mapping['mapping'] : []);
         $current_id = $is_new ? '' : (isset($mapping['id']) ? $mapping['id'] : $mapping_id);
 
@@ -272,7 +272,7 @@ class MGMIT_Admin_UI {
 
                         <tr>
                             <th scope="row">
-                                <label for="mgmit-hs-name">Nombre en HubSpot <span style="color:#b32d2e;">*</span></label>
+                                <label for="mgmit-hs-name">Form GUID HubSpot <span style="color:#b32d2e;">*</span></label>
                             </th>
                             <td>
                                 <input
@@ -280,9 +280,9 @@ class MGMIT_Admin_UI {
                                     id="mgmit-hs-name"
                                     class="regular-text code"
                                     value="<?php echo esc_attr($hs_name); ?>"
-                                    placeholder="Ej: MeGeMIT_DE_Registration">
+                                    placeholder="Ej: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
                                 <p class="description">
-                                    Identificador exacto del formulario en HubSpot, tal como está definido en la cuenta.
+                                    GUID del formulario en HubSpot. Lo encuentras en: Marketing → Formularios → [formulario] → Acciones → Compartir.
                                 </p>
                             </td>
                         </tr>
@@ -369,11 +369,11 @@ class MGMIT_Admin_UI {
         $id           = isset($_POST['id'])              ? sanitize_text_field($_POST['id'])              : '';
         $name         = isset($_POST['name'])            ? sanitize_text_field($_POST['name'])            : '';
         $form_id      = isset($_POST['formId'])          ? sanitize_text_field($_POST['formId'])          : '';
-        $hs_form_name = isset($_POST['hubspotFormName']) ? sanitize_text_field($_POST['hubspotFormName']) : '';
-        $fields_raw   = isset($_POST['fields'])          ? (array) $_POST['fields']                       : [];
+        $form_guid  = isset($_POST['hubspotFormName']) ? sanitize_text_field($_POST['hubspotFormName']) : '';
+        $fields_raw = isset($_POST['fields'])          ? (array) $_POST['fields']                       : [];
 
-        if (empty($form_id) || empty($hs_form_name)) {
-            wp_send_json_error('El selector del formulario y el nombre en HubSpot son obligatorios.');
+        if (empty($form_id) || empty($form_guid)) {
+            wp_send_json_error('El selector del formulario y el Form GUID de HubSpot son obligatorios.');
         }
 
         $mapping = [];
@@ -385,13 +385,13 @@ class MGMIT_Admin_UI {
             }
         }
 
-        $new_entry = [
-            'id'              => $id !== '' ? $id : $this->generate_id(),
-            'name'            => $name,
-            'formId'          => $form_id,
-            'hubspotFormName' => $hs_form_name,
-            'mapping'         => $mapping,
-        ];
+        $new_entry = array(
+            'id'       => $id !== '' ? $id : $this->generate_id(),
+            'name'     => $name,
+            'formId'   => $form_id,
+            'formGuid' => $form_guid,
+            'mapping'  => $mapping,
+        );
 
         $config = $this->get_config();
         $found  = false;

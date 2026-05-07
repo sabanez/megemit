@@ -2,6 +2,50 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [1.5.0] - 2026-05-06
+
+### Rediseño completo - Plugin `mgmit-hubspot-bridge`: Envío a HubSpot tras validación server-side
+
+#### Problema resuelto
+El plugin anterior enviaba datos a HubSpot capturando el `submit` del formulario en el navegador (antes de que SWPM validara los campos). Esto producía registros incompletos o inválidos en HubSpot cuando el usuario enviaba el formulario con errores.
+
+#### Solución implementada
+
+**Bloqueo de captura automática de HubSpot (`hubspot_map.js`)**
+- El script inyecta el atributo `data-hs-do-not-collect="true"` en los formularios mapeados al cargarse la página. Esto usa la API oficial de HubSpot para impedir que el plugin `leadin` capture el formulario automáticamente.
+- Adicionalmente, inyecta un campo oculto `mgmit_hs_form_id` con el selector CSS del formulario. Este campo viaja en el POST y permite al servidor identificar qué regla de mapeo aplicar.
+
+**Envío a HubSpot Forms API v3 (server-side)**
+- Eliminado el sistema de renombrado de campos JS y cualquier lógica de captura en el navegador.
+- El envío a HubSpot ocurre ahora en PHP, **únicamente tras validación exitosa**, enganchado a los hooks de SWPM Form Builder:
+  - `swpm_front_end_registration_complete_fb` → registro de nuevo miembro
+  - `swpm_front_end_profile_edited_fb` → actualización de perfil
+- Endpoint utilizado: `POST https://api.hsforms.com/submissions/v3/integration/secure/submit/{portalId}/{formGuid}` con autenticación mediante App Privada de HubSpot (token Bearer). El scope requerido en la App Privada es `forms` (`form-submissions-write`).
+
+**Campo `formGuid` en la Admin UI**
+- Renombrado el campo "Nombre del formulario HubSpot" por "Form GUID HubSpot" en el panel de administración. El GUID es el identificador UUID del formulario en HubSpot (formato: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`), visible en la URL del editor de formularios de HubSpot.
+- Retrocompatibilidad mantenida: entradas existentes con `hubspotFormName` siguen funcionando.
+
+#### Compatibilidad con otros plugins de formularios
+
+> **Nota importante:** En su estado actual, el envío a HubSpot solo se activa con **SWPM Form Builder** (hooks `swpm_front_end_registration_complete_fb` y `swpm_front_end_profile_edited_fb`). El bloqueo de captura automática (JS) funciona con cualquier formulario HTML independientemente del plugin.
+>
+> Para soportar otros plugins de formularios basta con añadir su hook de éxito correspondiente en `init_hooks()` apuntando al mismo método `handle_swpm_submission()`:
+>
+> | Plugin | Hook de éxito |
+> |---|---|
+> | Contact Form 7 | `wpcf7_mail_sent` |
+> | Gravity Forms | `gform_after_submission` |
+> | WooCommerce | `woocommerce_checkout_order_processed` |
+> | WordPress nativo | `user_register` |
+
+#### Limpieza
+- Eliminados: carpeta `tests/`, `node_modules/`, `jest.config.js`, `package.json`, `package-lock.json` y backup PHP.
+- Eliminados todos los logs de debug temporales y transients de diagnóstico.
+- Versión del plugin actualizada de `1.4.0` a `1.5.0`.
+
+---
+
 ## [1.4.1] - 2026-04-27
 
 ### Investigado - Plugin mgmit-hubspot-bridge: HS_CONFIG vacío en producción externa

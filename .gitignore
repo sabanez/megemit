@@ -15,6 +15,7 @@ node_modules/
 # --- CONTENIDO MULTIMEDIA (No se sube a Git) ---
 # Las imágenes deben ir por copia de seguridad aparte, no en el repo
 /wp-content/uploads/
+/fonts/
 
 # --- CORE (Opcional) ---
 # Si quieres que el repo sea ligero y los técnicos instalen WP aparte, déjalo así.
