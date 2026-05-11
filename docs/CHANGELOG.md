@@ -2,6 +2,33 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [Unreleased] - 2026-05-11
+
+### Seguridad - Plugin `mgmit-hubspot-bridge`: Token de HubSpot movido a `wp-config.php`
+
+#### Problema resuelto
+El token de la App Privada de HubSpot (`MGMIT_HS_ACCESS_TOKEN`) estaba hardcodeado en `mgmit-hubspot-bridge.php`, lo que exponía el secreto en el repositorio git.
+
+#### Solución implementada
+- El plugin ya **no contiene el token** en su código fuente.
+- Las constantes se leen desde `wp-config.php`, que está excluido del repositorio vía `.gitignore`.
+
+#### Configuración requerida en `wp-config.php`
+Añadir las siguientes líneas **antes** de la línea `/* That's all, stop editing! */`:
+
+```php
+define('MGMIT_HS_ACCESS_TOKEN_SECRET', 'pat-eu1-XXXX...');  // Token de la App Privada HubSpot
+define('MGMIT_HS_PORTAL_ID_SECRET',    '144893874');          // Portal ID de HubSpot
+```
+
+> **Importante:** Sin estas constantes en `wp-config.php`, el envío a HubSpot fallará silenciosamente (el token llegará vacío). Esta configuración debe añadirse manualmente en cada entorno (local, staging, producción).
+
+#### Historial git
+- Se reescribió el historial de la rama `develop` para eliminar el token de commits anteriores mediante `git filter-branch`.
+- El force-push a `origin/develop` fue necesario como consecuencia de la reescritura.
+
+---
+
 ## [Unreleased] - 2026-05-07
 
 ### Añadido - `basel-child/functions.php`: Control de acceso al checkout por tipo de producto

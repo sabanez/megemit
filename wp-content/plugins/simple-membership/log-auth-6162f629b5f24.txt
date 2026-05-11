@@ -40053,3 +40053,111 @@
 [2026/04/20 13:53:07] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
 [2026/04/20 13:53:07] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
 [2026/04/20 13:53:07] - SUCCESS: Silent logout completed. Redirecting to: http://megemit.loc?swpm_logged_out=1
+[2026/05/04 15:35:19] - SUCCESS: Authentication request - Username: santi.labolife
+[2026/05/04 15:35:19] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/04 15:35:19] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/04 15:35:19] - SUCCESS: Authentication successful for username: santi.labolife. Triggering swpm_after_login_authentication action hook.
+[2026/05/04 15:35:19] - SUCCESS: Trying wp_signon() with username: santi.labolife
+[2026/05/04 15:35:19] - SUCCESS: wp_authenticate action. User with username: santi.labolife is already logged in.
+[2026/05/04 15:35:20] - SUCCESS: wp_login hook triggered. Username: santi.labolife
+[2026/05/04 15:35:20] - SUCCESS: Setting current WP user to: santi.labolife
+[2026/05/04 15:35:20] - SUCCESS: Triggering swpm_login_auth_completed_filter hook.
+[2026/05/04 15:35:20] - SUCCESS: Triggering swpm_after_login hook.
+[2026/05/05 08:18:08] - SUCCESS: Authentication request - Username: santi.labolife
+[2026/05/05 08:18:08] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/05 08:18:08] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/05 08:18:08] - SUCCESS: Authentication successful for username: santi.labolife. Triggering swpm_after_login_authentication action hook.
+[2026/05/05 08:18:08] - SUCCESS: Trying wp_signon() with username: santi.labolife
+[2026/05/05 08:18:08] - SUCCESS: wp_authenticate action. User with username: santi.labolife is already logged in.
+[2026/05/05 08:18:08] - SUCCESS: wp_login hook triggered. Username: santi.labolife
+[2026/05/05 08:18:08] - SUCCESS: Setting current WP user to: santi.labolife
+[2026/05/05 08:18:08] - SUCCESS: Triggering swpm_login_auth_completed_filter hook.
+[2026/05/05 08:18:08] - SUCCESS: Triggering swpm_after_login hook.
+[2026/05/05 08:35:58] - SUCCESS: SwpmAuth::logout() - Logout request received for username: santi.labolife
+[2026/05/05 08:35:58] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/05/05 08:36:44] - SUCCESS: Authentication request - Username: santi.labolife2
+[2026/05/05 08:36:44] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/05 08:36:44] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/05 08:36:44] - SUCCESS: Authentication successful for username: santi.labolife2. Triggering swpm_after_login_authentication action hook.
+[2026/05/05 08:36:44] - SUCCESS: Trying wp_signon() with username: santi.labolife2
+[2026/05/05 08:36:44] - SUCCESS: wp_authenticate action. User with username: santi.labolife2 is already logged in.
+[2026/05/05 08:36:44] - SUCCESS: wp_login hook triggered. Username: santi.labolife2
+[2026/05/05 08:36:44] - SUCCESS: Setting current WP user to: santi.labolife2
+[2026/05/05 08:36:44] - SUCCESS: Triggering swpm_login_auth_completed_filter hook.
+[2026/05/05 08:36:44] - SUCCESS: Triggering swpm_after_login hook.
+[2026/05/05 09:04:44] - SUCCESS: SwpmAuth::logout() - Logout request received for username: santi.labolife2
+[2026/05/05 09:04:44] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/05/06 08:28:17] - SUCCESS: synchronise_swpm_logout_for_wp_users() - Force wp user login sync is enabled. 
+[2026/05/06 08:28:17] - SUCCESS: WP user session is logged out for this user. So logging out of the swpm session also.
+[2026/05/06 08:28:17] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
+[2026/05/06 08:28:17] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/05/06 08:28:17] - SUCCESS: Silent logout completed. Redirecting to: https://megemit.loc?swpm_logged_out=1
+[2026/05/06 08:28:25] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2026/05/06 08:28:27] - SUCCESS: wp_authenticate action. Handling login for username: kumbi
+[2026/05/06 08:28:27] - SUCCESS: SwpmAuth::login()
+[2026/05/06 08:28:27] - SUCCESS: Authentication request - Username: kumbi
+[2026/05/06 08:28:27] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/06 08:28:27] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/06 08:28:27] - SUCCESS: Authentication successful for username: kumbi. Triggering swpm_after_login_authentication action hook.
+[2026/05/06 08:28:27] - SUCCESS: The 'swpm_user_name' query parameter is not set. This login action didn't originate from our plugin's login form.
+[2026/05/06 08:28:27] - SUCCESS: Exiting this function to skip wp_signon and after_login_redirection since the login was initiated by WP or another plugin.
+[2026/05/06 08:28:28] - SUCCESS: wp_login hook triggered. Username: kumbi
+[2026/05/06 08:28:28] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/06 08:28:28] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/06 08:28:28] - SUCCESS: Member has been logged in using WP User object.
+[2026/05/06 14:28:23] - SUCCESS: Authentication request - Username: kumbi
+[2026/05/06 14:28:23] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/06 14:28:23] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/06 14:28:23] - SUCCESS: Authentication successful for username: kumbi. Triggering swpm_after_login_authentication action hook.
+[2026/05/06 14:28:23] - SUCCESS: Trying wp_signon() with username: kumbi
+[2026/05/06 14:28:23] - SUCCESS: wp_authenticate action. User with username: kumbi is already logged in.
+[2026/05/06 14:28:23] - SUCCESS: wp_login hook triggered. Username: kumbi
+[2026/05/06 14:28:23] - SUCCESS: Setting current WP user to: kumbi
+[2026/05/06 14:28:23] - SUCCESS: Triggering swpm_login_auth_completed_filter hook.
+[2026/05/06 14:28:23] - SUCCESS: Triggering swpm_after_login hook.
+[2026/05/07 10:23:46] - SUCCESS: Authentication request - Username: santi.labolife
+[2026/05/07 10:23:46] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/07 10:23:46] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/07 10:23:46] - SUCCESS: Authentication successful for username: santi.labolife. Triggering swpm_after_login_authentication action hook.
+[2026/05/07 10:23:46] - SUCCESS: Trying wp_signon() with username: santi.labolife
+[2026/05/07 10:23:46] - SUCCESS: wp_authenticate action. User with username: santi.labolife is already logged in.
+[2026/05/07 10:23:47] - SUCCESS: wp_login hook triggered. Username: santi.labolife
+[2026/05/07 10:23:47] - SUCCESS: Setting current WP user to: santi.labolife
+[2026/05/07 10:23:47] - SUCCESS: Triggering swpm_login_auth_completed_filter hook.
+[2026/05/07 10:23:47] - SUCCESS: Triggering swpm_after_login hook.
+[2026/05/07 10:26:17] - SUCCESS: SwpmAuth::logout() - Logout request received for username: santi.labolife
+[2026/05/07 10:26:17] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/05/08 08:28:32] - SUCCESS: synchronise_swpm_logout_for_wp_users() - Force wp user login sync is enabled. 
+[2026/05/08 08:28:32] - SUCCESS: WP user session is logged out for this user. So logging out of the swpm session also.
+[2026/05/08 08:28:32] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
+[2026/05/08 08:28:32] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/05/08 08:28:32] - SUCCESS: Silent logout completed. Redirecting to: https://megemit.loc?swpm_logged_out=1
+[2026/05/08 08:30:05] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2026/05/11 08:24:16] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2026/05/11 08:24:20] - SUCCESS: wp_authenticate action. Handling login for username: kumbi
+[2026/05/11 08:24:20] - SUCCESS: SwpmAuth::login()
+[2026/05/11 08:24:20] - SUCCESS: Authentication request - Username: kumbi
+[2026/05/11 08:24:20] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/11 08:24:20] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/11 08:24:20] - SUCCESS: Authentication successful for username: kumbi. Triggering swpm_after_login_authentication action hook.
+[2026/05/11 08:24:20] - SUCCESS: The 'swpm_user_name' query parameter is not set. This login action didn't originate from our plugin's login form.
+[2026/05/11 08:24:20] - SUCCESS: Exiting this function to skip wp_signon and after_login_redirection since the login was initiated by WP or another plugin.
+[2026/05/11 08:24:20] - SUCCESS: wp_login hook triggered. Username: kumbi
+[2026/05/11 08:24:20] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/11 08:24:20] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/11 08:24:20] - SUCCESS: Member has been logged in using WP User object.
+[2026/05/11 11:53:36] - SUCCESS: SwpmAuth::logout() - Logout request received for username: kumbi
+[2026/05/11 11:53:36] - SUCCESS: SwpmAuth::logout() - Logout actions executed successfully.
+[2026/05/11 11:53:37] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2026/05/11 11:53:40] - SUCCESS: wp_authenticate action. Handling login for username: kumbi
+[2026/05/11 11:53:40] - SUCCESS: SwpmAuth::login()
+[2026/05/11 11:53:40] - SUCCESS: Authentication request - Username: kumbi
+[2026/05/11 11:53:40] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/11 11:53:40] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/11 11:53:40] - SUCCESS: Authentication successful for username: kumbi. Triggering swpm_after_login_authentication action hook.
+[2026/05/11 11:53:40] - SUCCESS: The 'swpm_user_name' query parameter is not set. This login action didn't originate from our plugin's login form.
+[2026/05/11 11:53:40] - SUCCESS: Exiting this function to skip wp_signon and after_login_redirection since the login was initiated by WP or another plugin.
+[2026/05/11 11:53:40] - SUCCESS: wp_login hook triggered. Username: kumbi
+[2026/05/11 11:53:40] - SUCCESS: SwpmAuth::set_cookie() - Value of 'remember me' parameter: 
+[2026/05/11 11:53:40] - SUCCESS: The 'Remember me' option is unchecked for this request, setting expiry to be a session cookie. The session cookie will expire when the browser is closed.
+[2026/05/11 11:53:40] - SUCCESS: Member has been logged in using WP User object.

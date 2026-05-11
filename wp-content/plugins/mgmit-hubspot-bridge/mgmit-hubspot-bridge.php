@@ -26,8 +26,8 @@ class MGMIT_HubSpot_Bridge {
         define('MGMIT_HS_BRIDGE_URL',     plugin_dir_url(__FILE__));
         define('MGMIT_HS_BRIDGE_VERSION', '1.5.0');
         define('MGMIT_HS_BRIDGE_OPTION',  'mgmit_hubspot_config');
-        define('MGMIT_HS_ACCESS_TOKEN',   'REDACTED_TOKEN');
-        define('MGMIT_HS_PORTAL_ID',      '144893874');
+        define('MGMIT_HS_ACCESS_TOKEN',   defined('MGMIT_HS_ACCESS_TOKEN_SECRET') ? MGMIT_HS_ACCESS_TOKEN_SECRET : '');
+        define('MGMIT_HS_PORTAL_ID',      defined('MGMIT_HS_PORTAL_ID_SECRET')    ? MGMIT_HS_PORTAL_ID_SECRET    : '144893874');
     }
 
     private function init_hooks() {

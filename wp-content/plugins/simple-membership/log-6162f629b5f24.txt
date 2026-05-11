@@ -7533,3 +7533,198 @@
 [2026/04/20 12:59:15] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
 [2026/04/20 13:50:45] - SUCCESS: After login redirection addon. Checking if member need to be redirected.
 [2026/04/20 13:50:45] - SUCCESS: After login redirection is configured in the membership level. Redirecting to: http://megemit.loc/fachkreisbereich-mitglied/
+[2026/05/04 14:30:38] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8367) updated with the latest WP user data.
+[2026/05/04 14:30:38] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme.labolife2@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/04 14:30:38] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/04 14:31:19] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/04 14:31:19] - SUCCESS: Cancelling all subscription of member id: 8367
+[2026/05/04 14:31:19] - SUCCESS: No active subscriptions found for member ID: 8367
+[2026/05/04 14:31:19] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/04 14:31:19] - SUCCESS: Cancelling all subscription of member id: 8366
+[2026/05/04 14:31:19] - SUCCESS: No active subscriptions found for member ID: 8366
+[2026/05/04 14:50:57] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8368) updated with the latest WP user data.
+[2026/05/04 14:50:57] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme.labolife@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/04 14:50:57] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/04 15:00:52] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/04 15:00:52] - SUCCESS: Cancelling all subscription of member id: 8368
+[2026/05/04 15:00:52] - SUCCESS: No active subscriptions found for member ID: 8368
+[2026/05/04 15:35:20] - SUCCESS: After login redirection addon. Checking if member need to be redirected.
+[2026/05/04 15:35:20] - SUCCESS: After login redirection is configured in the membership level. Redirecting to: https://megemit.loc/fachkreisbereich-mitglied/
+[2026/05/04 15:52:13] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8360) updated with the latest WP user data.
+[2026/05/04 15:52:13] - SUCCESS: swpm_membership_level_changed action triggered. Member ID: 8360, Old Level: 3, New Level: 2
+[2026/05/04 15:52:13] - SUCCESS: Retrieving user record for member ID: 8360
+[2026/05/04 15:52:13] - SUCCESS: Calling user role update function.
+[2026/05/04 15:52:13] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/04 15:52:13] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife@gmail.com
+[2026/05/04 15:52:28] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8360) updated with the latest WP user data.
+[2026/05/04 15:52:28] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/04 15:52:28] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife@gmail.com
+[2026/05/04 15:59:48] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8360) updated with the latest WP user data.
+[2026/05/04 15:59:48] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/04 15:59:48] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife@gmail.com
+[2026/05/04 16:00:25] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8360) updated with the latest WP user data.
+[2026/05/04 16:00:25] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/04 16:00:25] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife@gmail.com
+[2026/05/04 16:00:34] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8360) updated with the latest WP user data.
+[2026/05/04 16:00:34] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/04 16:00:34] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife@gmail.com
+[2026/05/04 17:34:46] - FAILURE: Error! This member profile (Member ID: 6140) does not have a valid membership level assigned. The site admin needs to assign a valid membership level to this member profile.
+[2026/05/05 08:10:01] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8360) updated with the latest WP user data.
+[2026/05/05 08:10:01] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 08:10:01] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife@gmail.com
+[2026/05/05 08:18:08] - SUCCESS: After login redirection addon. Checking if member need to be redirected.
+[2026/05/05 08:18:08] - SUCCESS: After login redirection is configured in the membership level. Redirecting to: https://megemit.loc/fachkreisbereich-mitglied/
+[2026/05/05 08:18:42] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8360) updated with the latest WP user data.
+[2026/05/05 08:18:42] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 08:18:42] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife@gmail.com
+[2026/05/05 08:21:21] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8360) updated with the latest WP user data.
+[2026/05/05 08:21:21] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 08:21:21] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife@gmail.com
+[2026/05/05 08:34:13] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8360) updated with the latest WP user data.
+[2026/05/05 08:34:13] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 08:34:13] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife@gmail.com
+[2026/05/05 08:36:44] - SUCCESS: After login redirection addon. Checking if member need to be redirected.
+[2026/05/05 08:36:44] - SUCCESS: After login redirection is configured in the membership level. Redirecting to: https://megemit.loc/fachkreisbereich-mitglied/
+[2026/05/05 08:37:05] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8361) updated with the latest WP user data.
+[2026/05/05 08:37:05] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 08:37:05] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife2@gmail.com
+[2026/05/05 08:38:48] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8361) updated with the latest WP user data.
+[2026/05/05 08:38:48] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 08:38:48] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife2@gmail.com
+[2026/05/05 08:56:19] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8361) updated with the latest WP user data.
+[2026/05/05 08:56:19] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 08:56:19] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife2@gmail.com
+[2026/05/05 09:00:03] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8361) updated with the latest WP user data.
+[2026/05/05 09:00:03] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 09:00:03] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife2@gmail.com
+[2026/05/05 09:00:37] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8361) updated with the latest WP user data.
+[2026/05/05 09:00:37] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 09:00:37] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife2@gmail.com
+[2026/05/05 09:00:40] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8361) updated with the latest WP user data.
+[2026/05/05 09:00:40] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 09:00:40] - SUCCESS: WP user role updated. Role: subscriber, User email: santi.labolife2@gmail.com
+[2026/05/05 09:49:06] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8369) updated with the latest WP user data.
+[2026/05/05 09:49:06] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme.labolife@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/05 09:49:06] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/05 09:50:05] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 09:50:06] - SUCCESS: Cancelling all subscription of member id: 8369
+[2026/05/05 09:50:06] - SUCCESS: No active subscriptions found for member ID: 8369
+[2026/05/05 10:01:40] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8370) updated with the latest WP user data.
+[2026/05/05 10:01:40] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme.labolife@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/05 10:01:40] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/05 10:18:39] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 10:18:39] - SUCCESS: Cancelling all subscription of member id: 8370
+[2026/05/05 10:18:39] - SUCCESS: No active subscriptions found for member ID: 8370
+[2026/05/05 10:18:52] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8371) updated with the latest WP user data.
+[2026/05/05 10:18:52] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme.labolife@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/05 10:18:52] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/05 13:02:12] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 13:02:12] - SUCCESS: Cancelling all subscription of member id: 8371
+[2026/05/05 13:02:12] - SUCCESS: No active subscriptions found for member ID: 8371
+[2026/05/05 13:02:29] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8372) updated with the latest WP user data.
+[2026/05/05 13:02:29] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme.labolife@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/05 13:02:29] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/05 13:47:25] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 13:47:25] - SUCCESS: Cancelling all subscription of member id: 8372
+[2026/05/05 13:47:25] - SUCCESS: No active subscriptions found for member ID: 8372
+[2026/05/05 14:39:11] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8373) updated with the latest WP user data.
+[2026/05/05 14:39:11] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/05 14:39:11] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/05 15:02:31] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/05 15:02:31] - SUCCESS: Cancelling all subscription of member id: 8373
+[2026/05/05 15:02:31] - SUCCESS: No active subscriptions found for member ID: 8373
+[2026/05/05 15:29:35] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8374) updated with the latest WP user data.
+[2026/05/05 15:29:35] - SUCCESS: Form builder addon - registration complete email sent to: santi.labolife.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/05 15:29:35] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 08:04:51] - FAILURE: Error! This member profile (Member ID: 6140) does not have a valid membership level assigned. The site admin needs to assign a valid membership level to this member profile.
+[2026/05/06 08:30:36] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 08:30:37] - SUCCESS: Cancelling all subscription of member id: 8374
+[2026/05/06 08:30:37] - SUCCESS: No active subscriptions found for member ID: 8374
+[2026/05/06 08:30:59] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8375) updated with the latest WP user data.
+[2026/05/06 08:30:59] - SUCCESS: Form builder addon - registration complete email sent to: santi.labolife.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 08:30:59] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 08:47:04] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 08:47:04] - SUCCESS: Cancelling all subscription of member id: 8375
+[2026/05/06 08:47:04] - SUCCESS: No active subscriptions found for member ID: 8375
+[2026/05/06 08:47:25] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8376) updated with the latest WP user data.
+[2026/05/06 08:47:25] - SUCCESS: Form builder addon - registration complete email sent to: santi.labolife.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 08:47:25] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 09:31:49] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 09:31:50] - SUCCESS: Cancelling all subscription of member id: 8376
+[2026/05/06 09:31:50] - SUCCESS: No active subscriptions found for member ID: 8376
+[2026/05/06 09:32:07] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8377) updated with the latest WP user data.
+[2026/05/06 09:32:07] - SUCCESS: Form builder addon - registration complete email sent to: santi.labolife.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 09:32:07] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 09:36:04] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 09:36:04] - SUCCESS: Cancelling all subscription of member id: 8377
+[2026/05/06 09:36:04] - SUCCESS: No active subscriptions found for member ID: 8377
+[2026/05/06 09:37:06] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8378) updated with the latest WP user data.
+[2026/05/06 09:37:06] - SUCCESS: Form builder addon - registration complete email sent to: santi.labolife.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 09:37:06] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 09:39:30] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8379) updated with the latest WP user data.
+[2026/05/06 09:39:30] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 09:39:30] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 09:40:27] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 09:40:28] - SUCCESS: Cancelling all subscription of member id: 8379
+[2026/05/06 09:40:28] - SUCCESS: No active subscriptions found for member ID: 8379
+[2026/05/06 09:40:28] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 09:40:28] - SUCCESS: Cancelling all subscription of member id: 8378
+[2026/05/06 09:40:28] - SUCCESS: No active subscriptions found for member ID: 8378
+[2026/05/06 09:50:56] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8380) updated with the latest WP user data.
+[2026/05/06 09:50:56] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 09:50:56] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 10:22:23] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 10:22:23] - SUCCESS: Cancelling all subscription of member id: 8380
+[2026/05/06 10:22:23] - SUCCESS: No active subscriptions found for member ID: 8380
+[2026/05/06 10:22:44] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8381) updated with the latest WP user data.
+[2026/05/06 10:22:44] - SUCCESS: Form builder addon - registration complete email sent to: santi.labolife.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 10:22:44] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 10:27:14] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8382) updated with the latest WP user data.
+[2026/05/06 10:27:14] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme2@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 10:27:14] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 10:34:10] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 10:34:10] - SUCCESS: Cancelling all subscription of member id: 8382
+[2026/05/06 10:34:10] - SUCCESS: No active subscriptions found for member ID: 8382
+[2026/05/06 10:34:10] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 10:34:11] - SUCCESS: Cancelling all subscription of member id: 8381
+[2026/05/06 10:34:11] - SUCCESS: No active subscriptions found for member ID: 8381
+[2026/05/06 10:34:32] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8383) updated with the latest WP user data.
+[2026/05/06 10:34:32] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 10:34:32] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 10:36:13] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 10:36:13] - SUCCESS: Cancelling all subscription of member id: 8383
+[2026/05/06 10:36:13] - SUCCESS: No active subscriptions found for member ID: 8383
+[2026/05/06 10:37:09] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8384) updated with the latest WP user data.
+[2026/05/06 10:37:09] - SUCCESS: Form builder addon - registration complete email sent to: santi.labolife.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 10:37:09] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 13:02:13] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8385) updated with the latest WP user data.
+[2026/05/06 13:02:13] - SUCCESS: Form builder addon - registration complete email sent to: santi.labolife.meme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 13:02:13] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 13:03:47] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 13:03:47] - SUCCESS: Cancelling all subscription of member id: 8385
+[2026/05/06 13:03:47] - SUCCESS: No active subscriptions found for member ID: 8385
+[2026/05/06 13:03:47] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 13:03:47] - SUCCESS: Cancelling all subscription of member id: 8384
+[2026/05/06 13:03:47] - SUCCESS: No active subscriptions found for member ID: 8384
+[2026/05/06 13:05:20] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8386) updated with the latest WP user data.
+[2026/05/06 13:05:20] - SUCCESS: Form builder addon - registration complete email sent to: santi.labolife.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 13:05:20] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 13:44:34] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8387) updated with the latest WP user data.
+[2026/05/06 13:44:34] - SUCCESS: Form builder addon - registration complete email sent to: santi.labolife.bm@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 13:44:34] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 13:46:43] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 13:46:43] - SUCCESS: Cancelling all subscription of member id: 8387
+[2026/05/06 13:46:43] - SUCCESS: No active subscriptions found for member ID: 8387
+[2026/05/06 13:46:43] - SUCCESS: Empty caps. Calling get_wp_user_roles_by_id() to retrieve role.
+[2026/05/06 13:46:44] - SUCCESS: Cancelling all subscription of member id: 8386
+[2026/05/06 13:46:44] - SUCCESS: No active subscriptions found for member ID: 8386
+[2026/05/06 13:47:24] - SUCCESS: Completed the profile_update hook handling - SWPM user profile (Member ID: 8388) updated with the latest WP user data.
+[2026/05/06 13:47:24] - SUCCESS: Form builder addon - registration complete email sent to: santi.beme@gmail.com. From Email Address value used: MeGeMIT <info@megemit.org>
+[2026/05/06 13:47:24] - SUCCESS: Form builder addon - admin notification email sent to: info@megemit.org
+[2026/05/06 14:28:23] - SUCCESS: After login redirection addon. Checking if member need to be redirected.
+[2026/05/06 14:28:23] - SUCCESS: After login redirection is configured in the membership level. Redirecting to: https://megemit.loc/fachkreisbereich-mitglied/
+[2026/05/07 08:12:03] - FAILURE: Error! This member profile (Member ID: 6140) does not have a valid membership level assigned. The site admin needs to assign a valid membership level to this member profile.
+[2026/05/07 10:23:47] - SUCCESS: After login redirection addon. Checking if member need to be redirected.
+[2026/05/07 10:23:47] - SUCCESS: After login redirection is configured in the membership level. Redirecting to: https://megemit.loc/fachkreisbereich-mitglied/
+[2026/05/07 20:08:11] - FAILURE: Error! This member profile (Member ID: 6140) does not have a valid membership level assigned. The site admin needs to assign a valid membership level to this member profile.
+[2026/05/11 08:24:19] - FAILURE: Error! This member profile (Member ID: 6140) does not have a valid membership level assigned. The site admin needs to assign a valid membership level to this member profile.
