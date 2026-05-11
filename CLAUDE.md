@@ -21,6 +21,10 @@
 7. No hagas commit hasta que yo te lo diga.
 8. Lee los archivos de código línea por línea cuando sea necesario, no solo mires los nombres.
 9. No escribas código, primero haz un plan y describe cada paso que vayas a hacer, una vez aprovado el plan, empieza a ejecutarlo.
+10. Cualquier prompt que te de, antes de contestar, debes mejorarlo usando a funcionalidad de prompt-improver optimizando al máximo el consumo de tokens.
+11. Antes de ejecutar el prompt mejorado, debes ejecutar el prompt de prompt-improver y permitirme aprobarlo.
+12. Los agentes que vayamos a usar son :  prompter, planner, code-editor, cli-tool, workflow-engine.  
+13. Después de cada ejecución debes mostrar el consumo de los tokens, tanto de entrada como de salida.
 
 ## Arquitectura
 

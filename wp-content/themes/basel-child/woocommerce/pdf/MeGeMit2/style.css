@@ -1,0 +1,295 @@
+/* MeGeMIT2 — valores extraídos del HTML de referencia
+   Base efectiva del PDF: 10pt
+   pdf24_07  Poppins Bold   0.96em  → 9.6pt   #000000  (etiquetas, banco)
+   pdf24_10  Poppins Reg    0.96em  → 9.6pt   #000000  (dirección, texto pago)
+   pdf24_11  Poppins Bold   0.96em  → 9.6pt   #0070C0  (valores factura/pedido)
+   pdf24_14  Poppins Bold   0.912em → 9.1pt   #000000  (cabeceras tabla)
+   pdf24_15  Poppins Reg    0.912em → 9.1pt   #000000  (filas producto)
+   pdf24_19  Poppins Reg    0.48em  → 4.8pt   #000000  (SKU/meta)
+   pdf24_21  Poppins Bold   0.768em → 7.7pt   #000000  (subtotales neto)
+   pdf24_22  Poppins Bold   0.576em → 5.8pt   #000000  (aviso legal)
+   pdf24_24  Roboto Reg     0.750em → 7.5pt   #0A78B8  (footer)
+*/
+
+@page {
+	margin-top: 0.5cm;
+	margin-bottom: 3cm;
+	margin-left: 2cm;
+	margin-right: 2cm;
+	footer: docFooter2;
+}
+
+body {
+	background: #fff;
+	color: #000000;
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+}
+
+p { margin: 0; padding: 0; }
+p + p { margin-top: 0; }
+h1, h2, h3, h4 { font-weight: bold; margin: 0; padding: 0; }
+ol, ul { list-style: none; margin: 0; padding: 0; }
+a { text-decoration: none; color: #000; }
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+th, td { vertical-align: top; text-align: left; }
+
+/* ── CABECERA ── */
+.header-wrap {
+	margin-bottom: 6mm;
+	text-align: center;
+}
+.header-img {
+	width: 100%;
+	max-width: 100%;
+	display: block;
+}
+
+/* ── DIRECCIÓN + FECHA ──
+   Posiciones HTML:
+   Nombre       top:11.24em  → primera línea
+   Calle        top:12.49em  → segunda línea
+   Ciudad       top:14.98em  → tercera línea
+   Fecha        top:14.98em  left:33.87em  → misma línea que ciudad, col derecha
+   Gap tras dirección hasta nº factura: ~14mm
+*/
+table.address-date-table {
+	width: 100%;
+	margin-bottom: 8mm;
+}
+td.billing-col {
+	width: 65%;
+	vertical-align: top;
+	font-size: 9.6pt;
+	line-height: 1.5;
+}
+td.billing-col .billing-name {
+	font-weight: bold;
+	display: block;
+}
+td.date-col {
+	width: 35%;
+	vertical-align: bottom;
+	text-align: right;
+	font-size: 9.6pt;
+	padding-bottom: 0;
+}
+
+/* ── NÚMEROS FACTURA / PEDIDO ──
+   pdf24_07 label bold #000 + pdf24_11 valor bold #0070C0
+   Gap entre líneas: ~1.5mm | gap hasta tabla: ~6mm
+*/
+.invoice-numbers {
+	margin-top: 6mm;
+	margin-bottom: 6mm;
+}
+.invoice-numbers p {
+	font-size: 9.6pt;
+	font-weight: bold;
+	margin-bottom: 1mm;
+}
+.inv-label {
+	font-weight: bold;
+	color: #000000;
+}
+.inv-value {
+	font-weight: bold;
+	color: #0070C0;
+}
+.inv-value a,
+.inv-value a:visited {
+	color: #0070C0;
+	text-decoration: none;
+}
+
+/* ── TABLA DE LÍNEAS ──
+   Cabecera pdf24_14: 9.1pt bold, borde inferior 1pt sólido negro
+   Filas pdf24_15: 9.1pt regular, borde inferior 0.5pt #ddd
+   Última fila: borde inferior 1pt #aaa
+   Sin bordes laterales ni superiores
+*/
+table.order-details {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: collapse;
+	margin-bottom: 0;
+	page-break-before: avoid;
+}
+
+table.order-details thead th {
+	background-color: #ffffff;
+	color: #000000;
+	font-size: 9.1pt;
+	font-weight: bold;
+	padding: 2mm 2.5mm 1.5mm 2.5mm;
+	border: 0;
+	white-space: nowrap;
+	overflow: hidden;
+}
+/* fila separadora: un único td colspan=5 con borde superior = línea continua fiable en dompdf */
+table.order-details thead tr.header-rule td {
+	border-top: 1pt solid #000000;
+	border-bottom: 0;
+	padding: 0;
+	height: 0;
+	font-size: 0;
+	line-height: 0;
+}
+
+table.order-details tbody td {
+	padding: 2mm 2.5mm;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	border-bottom: 0.5pt solid #dddddd;
+	font-size: 9.1pt;
+	font-weight: normal;
+	vertical-align: top;
+}
+table.order-details tbody tr:last-child td {
+	border-bottom: 1pt solid #aaaaaa;
+}
+
+.td-center { text-align: center; }
+.td-right  { text-align: right; }
+
+/* pdf24_15: nombre artículo 9.1pt regular */
+span.item-name {
+	display: block;
+	font-size: 9.1pt;
+	font-weight: normal;
+}
+/* pdf24_19: SKU/meta 4.8pt regular */
+.item-meta {
+	margin-top: 0.5mm;
+	font-size: 4.8pt;
+	font-weight: normal;
+	color: #000000;
+	line-height: 1.3;
+}
+.item-meta span.sku { display: block; }
+
+/* bundles */
+.order-details tr.bundled-item td { padding-left: 5mm; border: 0; }
+.order-details tr.product-bundle td { border: 0; }
+.order-details tr.bundled-item.hidden { display: none; }
+
+/* wc item meta */
+.wc-item-meta { margin: 0; }
+.wc-item-meta li { margin-top: 2px; margin-left: 0; }
+.wc-item-meta li p, .wc-item-meta li dd { display: inline; }
+
+/* ── TOTALES ── */
+table.totals-outer {
+	width: 100%;
+	margin-top: 2mm;
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+table.totals-outer th,
+table.totals-outer td {
+	padding: 2mm 3mm;
+	font-size: 9pt;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	border-bottom: 0.5pt solid #ddd;
+	vertical-align: middle;
+}
+table.totals-outer th {
+	font-weight: bold;
+	text-align: right;
+	width: 87%;
+}
+table.totals-outer td {
+	text-align: right;
+	width: 13%;
+	font-weight: bold;
+}
+/* fila total final */
+table.totals-outer tr.order_total th,
+table.totals-outer tr.order_total td {
+	font-weight: bold;
+	font-size: 10pt;
+	border-top: 1pt solid #333;
+	border-bottom: 1pt solid #333;
+}
+/* ocultar método de pago */
+table.totals-outer tr.payment_method { display: none; }
+
+/* notas */
+.order-notes { margin-top: 4mm; font-size: 9.1pt; }
+.order-notes h3 { font-size: 9.6pt; font-weight: bold; margin-bottom: 1mm; }
+
+/* ── INSTRUCCIÓN DE PAGO ──
+   pdf24_10: 9.6pt regular
+   Gap desde totales al texto: ~5mm | desde texto hasta banco: ~3mm
+*/
+p.payment-instruction {
+	margin-top: 5mm;
+	margin-bottom: 3mm;
+	font-size: 9.6pt;
+	font-weight: normal;
+}
+
+/* ── DATOS BANCARIOS ──
+   pdf24_07: 9.6pt bold, dos columnas iguales
+   Gap desde banco hasta aviso legal: ~8mm
+*/
+table.bank-table {
+	width: 100%;
+	border: 0;
+	margin-bottom: 8mm;
+}
+table.bank-table td.bank-col {
+	width: 50%;
+	vertical-align: top;
+	padding-right: 4mm;
+	font-size: 9.6pt;
+	font-weight: bold;
+	line-height: 1.6;
+}
+
+/* ── AVISO LEGAL ──
+   pdf24_22: 5.8pt bold, fondo #efefef
+*/
+.legal-box {
+	background-color: #efefef;
+	padding: 2mm 3.5mm;
+	font-size: 5.8pt;
+	font-weight: bold;
+	color: #000000;
+}
+
+/* ── FOOTER ──
+   pdf24_24: 7.5pt regular, #0A78B8, borde superior
+*/
+#footer {
+	position: absolute;
+	bottom: -2.8cm;
+	left: 0;
+	right: 0;
+	height: 2.8cm;
+	text-align: center;
+	border-top: 0.5pt solid #cccccc;
+	padding-top: 2mm;
+	font-size: 7.5pt;
+	font-weight: normal;
+	color: #0A78B8;
+	line-height: 1.7;
+}
+
+.pagenum:before { content: counter(page); }
+.pagenum, .pagecount { font-family: sans-serif; }
+.rtl { direction: rtl; }
+.pickup-location-details { font-size: 7pt; margin-top: 2mm; line-height: 1; }
