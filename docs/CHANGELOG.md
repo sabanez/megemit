@@ -2,6 +2,37 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [Unreleased] - 2026-05-13
+
+### Fix - `basel-child`: Bloqueo de webhook `order.updated` en confirmación de pago Stripe
+
+#### Problema resuelto
+Al crear un pedido via checkout + Stripe, WooCommerce dispara `woocommerce_update_order` inmediatamente después de `woocommerce_new_order` (dentro de los mismos segundos) porque la confirmación de pago provoca una segunda llamada al método `update()` del data store. Esto generaba una entrada duplicada en HubSpot: una de creación (`order.created`) y una de modificación (`order.updated`) para el mismo pedido nuevo.
+
+#### Causa raíz
+Flujo interno de WooCommerce durante checkout + Stripe:
+1. Pedido creado como `checkout-draft` → `create()` no dispara `woocommerce_new_order`
+2. Stripe confirma → estado pasa a `processing` → `update()` detecta transición desde draft → dispara `woocommerce_new_order` → webhook `order.created` (ID 1) ✓
+3. WooCommerce escribe `transaction_id` y `date_paid` → nueva llamada a `update()` → dispara `woocommerce_update_order` → webhook `order.updated` (ID 2) ✗ duplicado
+
+#### Solución implementada
+Filtro `woocommerce_webhook_should_deliver` que bloquea la entrega del webhook `order.updated` durante los primeros `MGMIT_WEBHOOK_NEW_ORDER_TTL` segundos (120s por defecto) tras la creación del pedido.
+
+#### Archivos añadidos
+- `wp-content/themes/basel-child/inc/woocommerce/loader.php` — orquestador del módulo WooCommerce (mismo patrón que `inc/hubspot-sync/loader.php`)
+- `wp-content/themes/basel-child/inc/woocommerce/webhook-filters.php` — implementación del filtro
+
+#### Archivos modificados
+- `wp-content/themes/basel-child/functions.php` — añadido `require_once` del nuevo loader (línea 1062)
+
+#### Configuración opcional
+Para ajustar la ventana de bloqueo sin tocar el código, añadir en `wp-config.php`:
+```php
+define( 'MGMIT_WEBHOOK_NEW_ORDER_TTL', 120 ); // segundos
+```
+
+---
+
 ## [Unreleased] - 2026-05-11
 
 ### Seguridad - Plugin `mgmit-hubspot-bridge`: Token de HubSpot movido a `wp-config.php`

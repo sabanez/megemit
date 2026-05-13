@@ -1059,6 +1059,7 @@ add_action('wp_enqueue_scripts', 'mgmit_enqueue_onboarding_scripts_only', 20);
 
 require_once get_stylesheet_directory() . '/inc/membership-woo-bridge.php';
 require_once get_stylesheet_directory() . '/inc/hubspot-sync/loader.php';
+require_once get_stylesheet_directory() . '/inc/woocommerce/loader.php';
 
 /**
  * Guarda en el line item del pedido el precio regular, precio rebajado y
