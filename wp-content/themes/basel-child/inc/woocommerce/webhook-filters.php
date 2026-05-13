@@ -22,22 +22,22 @@ if ( ! defined( 'MGMIT_WEBHOOK_NEW_ORDER_TTL' ) ) {
 
 add_filter( 'woocommerce_webhook_should_deliver', 'mgmit_block_order_updated_on_new_order', 10, 3 );
 
-function mgmit_block_order_updated_on_new_order( $should_deliver, $webhook, $arg ) {
+function mgmit_block_order_updated_on_new_order( $should_deliver, $webhook, $arg ) {    
     if ( 'order.updated' !== $webhook->get_topic() ) {
         return $should_deliver;
     }
 
-    $order = wc_get_order( absint( $arg ) );
+    $order = wc_get_order( absint( $arg ) );    
     if ( ! $order ) {
         return $should_deliver;
     }
 
-    $date_created = $order->get_date_created();
+    $date_created = $order->get_date_created();    
     if ( ! $date_created ) {
         return $should_deliver;
     }
 
-    $age = time() - $date_created->getTimestamp();
+    $age = time() - $date_created->getTimestamp();    
     if ( $age < MGMIT_WEBHOOK_NEW_ORDER_TTL ) {
         return false;
     }

@@ -1127,5 +1127,7 @@ function mgmit_guest_checkout_notice() {
     }
     echo '<div class="mgmit-guest-notice" style="background:#fff8e1;border-left:4px solid #f39c12;padding:16px 20px;margin:16px 0;border-radius:3px;font-size:0.97em;line-height:1.6;">';
     echo 'Unsere Aus- und Fortbildungsangebote richten sich exklusiv an Angehörige aus dem Gesundheitsbereich. Bitte registrieren Sie sich vorab in unserem Fachkreisbereich um eine Bestellung abschließen zu können.';
+    echo '<a href="/fachkreisbereich" class="btn btn-primary btn-color-alt" style="margin-top: 10px;border-radius:6px">Registrieren</a>';
     echo '</div>';
+    
 }
