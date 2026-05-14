@@ -16,6 +16,7 @@ class MGMIT_Admin_UI {
         add_action('wp_ajax_mgmit_delete_mapping', [$this, 'ajax_delete_mapping']);
         // Handler legacy para retrocompatibilidad (Fase 3)
         add_action('wp_ajax_mgmit_save_hubspot_config', [$this, 'ajax_save_config']);
+        add_action('wp_ajax_mgmit_save_credentials',    [$this, 'ajax_save_credentials']);
     }
 
     public function add_admin_menu() {
@@ -178,6 +179,8 @@ class MGMIT_Admin_UI {
                 <strong>Nota técnica:</strong> Los mapeos se transfieren automáticamente al frontend mediante la variable
                 <code>HS_CONFIG</code>, manteniendo retrocompatibilidad total con <code>hubspot_map.js</code>.
             </div>
+
+            <?php $this->render_credentials_section(); ?>
         </div>
         <?php
     }
@@ -480,6 +483,144 @@ class MGMIT_Admin_UI {
 
         update_option(MGMIT_HS_BRIDGE_OPTION, $config_array);
         wp_send_json_success('Configuración guardada y activa.');
+    }
+
+    // -------------------------------------------------------------------------
+    // Sección: Credenciales API HubSpot
+    // -------------------------------------------------------------------------
+
+    private function render_credentials_section() {
+        $creds         = get_option('mgmit_hubspot_credentials', array());
+        $has_token     = !empty($creds['access_token']);
+        $has_portal    = !empty($creds['portal_id']);
+        $token_display = $has_token ? str_repeat('•', 32) : '';
+        $portal_val    = $has_portal ? esc_attr($creds['portal_id']) : '';
+
+        // Si las constantes vienen de wp-config.php, indicarlo y no mostrar el form.
+        $from_config = defined('MGMIT_HS_ACCESS_TOKEN_SECRET');
+        ?>
+        <hr style="margin-top:32px;">
+        <h2 style="margin-top:24px;">Credenciales API HubSpot</h2>
+
+        <?php if ($from_config): ?>
+            <div class="notice notice-info inline" style="margin:0 0 16px;">
+                <p>Las credenciales están definidas en <code>wp-config.php</code> y tienen prioridad sobre los valores de este formulario.</p>
+            </div>
+        <?php endif; ?>
+
+        <div id="mgmit-creds-notice" style="display:none;margin-bottom:12px;"></div>
+
+        <form id="mgmit-credentials-form" novalidate>
+            <?php wp_nonce_field('mgmit-save-credentials', 'mgmit_creds_nonce'); ?>
+            <table class="form-table" role="presentation">
+                <tbody>
+                    <tr>
+                        <th scope="row"><label for="mgmit-access-token">Access Token</label></th>
+                        <td>
+                            <?php if ($has_token): ?>
+                                <span id="mgmit-token-mask" style="font-family:monospace;letter-spacing:2px;">
+                                    <?php echo esc_html($token_display); ?>
+                                </span>
+                                <button type="button" id="mgmit-token-change" class="button button-small" style="margin-left:8px;">Cambiar</button>
+                                <div id="mgmit-token-field" style="display:none;margin-top:6px;">
+                                    <input type="password" id="mgmit-access-token" class="regular-text" autocomplete="new-password" placeholder="pat-eu1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+                                    <p class="description">Introduce el nuevo token para reemplazar el actual.</p>
+                                </div>
+                            <?php else: ?>
+                                <input type="password" id="mgmit-access-token" class="regular-text" autocomplete="new-password" placeholder="pat-eu1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+                                <p class="description">Token de la App Privada de HubSpot. Se almacena cifrado y nunca se expone en el frontend.</p>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="mgmit-portal-id">Portal ID</label></th>
+                        <td>
+                            <input type="text" id="mgmit-portal-id" class="regular-text code" value="<?php echo $portal_val; ?>" placeholder="144893874">
+                            <p class="description">ID numérico del portal HubSpot. Lo encuentras en Configuración → Cuenta → ID de cuenta.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="submit">
+                <button type="submit" id="mgmit-save-creds-btn" class="button button-primary">Guardar Credenciales</button>
+            </p>
+        </form>
+
+        <script>
+        (function($){
+            $('#mgmit-token-change').on('click', function(){
+                $('#mgmit-token-mask').hide();
+                $(this).hide();
+                $('#mgmit-token-field').show();
+            });
+
+            $('#mgmit-credentials-form').on('submit', function(e){
+                e.preventDefault();
+                var $btn   = $('#mgmit-save-creds-btn');
+                var token  = $('#mgmit-access-token').val().trim();
+                var portal = $('#mgmit-portal-id').val().trim();
+
+                $btn.prop('disabled', true).text('Guardando...');
+
+                $.post(ajaxurl, {
+                    action:           'mgmit_save_credentials',
+                    security:         $('#mgmit_creds_nonce').val(),
+                    access_token:     token,
+                    portal_id:        portal,
+                })
+                .done(function(res){
+                    var cls = res.success ? 'notice-success' : 'notice-error';
+                    $('#mgmit-creds-notice')
+                        .attr('class', 'notice ' + cls)
+                        .html('<p>' + (res.data || 'Error inesperado.') + '</p>')
+                        .show();
+                    if (res.success) {
+                        setTimeout(function(){ location.reload(); }, 1000);
+                    }
+                })
+                .fail(function(){
+                    $('#mgmit-creds-notice')
+                        .attr('class', 'notice notice-error')
+                        .html('<p>Error de conexión. Inténtalo de nuevo.</p>')
+                        .show();
+                })
+                .always(function(){
+                    $btn.prop('disabled', false).text('Guardar Credenciales');
+                });
+            });
+        })(jQuery);
+        </script>
+        <?php
+    }
+
+    // -------------------------------------------------------------------------
+    // AJAX: Guardar credenciales API
+    // -------------------------------------------------------------------------
+
+    public function ajax_save_credentials() {
+        check_ajax_referer('mgmit-save-credentials', 'security');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Permisos insuficientes.');
+        }
+
+        $creds = get_option('mgmit_hubspot_credentials', array());
+
+        $new_token  = isset($_POST['access_token']) ? sanitize_text_field($_POST['access_token']) : '';
+        $new_portal = isset($_POST['portal_id'])    ? sanitize_text_field($_POST['portal_id'])    : '';
+
+        // Solo actualizar el token si se envió uno nuevo (campo no vacío)
+        if ($new_token !== '') {
+            $creds['access_token'] = $new_token;
+        }
+
+        if ($new_portal !== '') {
+            $creds['portal_id'] = $new_portal;
+        }
+
+        update_option('mgmit_hubspot_credentials', $creds);
+
+        wp_send_json_success('Credenciales guardadas correctamente.');
     }
 
     // -------------------------------------------------------------------------
