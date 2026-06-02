@@ -72,6 +72,41 @@ const OnboardingEnforcement = (function ($) {
         }
     };
 
+    /**
+     * Bloqueo de navegación para usuarios con registro pendiente.
+     * Intercepta enlaces estándar y elementos JS del header (carrito, buscador, login sidebar).
+     */
+    const blockNavigation = () => {
+        if (typeof MGMIT_ONBOARDING === 'undefined') return;
+        if (MGMIT_ONBOARDING.isEnforced !== '1') return;
+
+        const enforcedUrl = MGMIT_ONBOARDING.enforcedUrl;
+
+        const isAllowedHref = (href) => {
+            if (!href || href === '#' || href === '') return true;
+            if (href.indexOf('action=logout') !== -1) return true;
+            if (href.indexOf('customer-logout') !== -1) return true;
+            if (href.indexOf('hs_finish') !== -1) return true;
+            return false;
+        };
+
+        // Interceptar todos los enlaces que naveguen a otra URL
+        $(document).on('click', 'a', function (e) {
+            var href = $(this).attr('href');
+            if (isAllowedHref(href)) return;
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            window.location.href = enforcedUrl;
+        });
+
+        // Interceptar elementos JS del header que no generan recarga de página
+        $(document).on('click', '.login-side-opener, .search-button > a, .mobile-search-icon.search-button', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            window.location.href = enforcedUrl;
+        });
+    };
+
     return {
         init: function () {
             $(document).ready(() => {
@@ -81,7 +116,10 @@ const OnboardingEnforcement = (function ($) {
                 // 2. Preparar interceptor si estamos en página de registro
                 setupRegistrationInterceptor();
 
-                // 3. Log de modo test
+                // 3. Bloquear navegación si hay registro pendiente
+                blockNavigation();
+
+                // 4. Log de modo test
                 const params = new URLSearchParams(window.location.search);
                 if (params.has('hs_test')) {
                     console.log('[Onboarding] Modo simulación hs_test detectado.');
