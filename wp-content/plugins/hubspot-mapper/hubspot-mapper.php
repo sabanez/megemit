@@ -3,7 +3,7 @@
  * Plugin Name: HubSpot Mapper
  * Plugin URI: https://megemit.org
  * Description: Mapeo frontend de formularios a HubSpot mediante renombrado de campos en el submit (sin llamadas server-side).
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: MeGeMIT Technical Team
  * Text Domain: hubspot-mapper
  * Requires PHP: 7.4
@@ -32,7 +32,7 @@ class MGMIT_HubSpot_Mapper {
     private function define_constants() {
         define('MGMIT_MAPPER_PATH', plugin_dir_path(__FILE__));
         define('MGMIT_MAPPER_URL', plugin_dir_url(__FILE__));
-        define('MGMIT_MAPPER_VERSION', '1.0.0');
+        define('MGMIT_MAPPER_VERSION', '1.1.0');
         define('MGMIT_MAPPER_OPTION', 'mgmit_mapper_config');
     }
 

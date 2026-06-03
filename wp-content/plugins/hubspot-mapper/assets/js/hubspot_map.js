@@ -4,12 +4,32 @@
  * Sin llamadas server-side — integración 100% frontend.
  */
 
+// Aplicar do_not_collect en DOMContentLoaded nativo (antes de que LeadIn escanee los forms)
+document.addEventListener('DOMContentLoaded', function () {
+    var registry = (window.MGMIT_MAPPER_CONFIG && Array.isArray(window.MGMIT_MAPPER_CONFIG))
+        ? window.MGMIT_MAPPER_CONFIG : [];
+
+    registry.forEach(function (config) {
+        if (!config.do_not_collect) return;
+        var el = document.querySelector(config.formId);
+        if (!el) return;
+        var form = (el.tagName === 'FORM') ? el : el.querySelector('form');
+        if (form) {
+            form.setAttribute('data-hs-do-not-collect', 'true');
+        }
+    });
+});
+
 var HubSpotMapper = (function($) {
     'use strict';
 
     var registry = window.MGMIT_MAPPER_CONFIG || [];
 
     var setupForm = function($form, config) {
+        if (config.do_not_collect) {
+            return; // bloqueado en DOMContentLoaded nativo, no hacer nada más
+        }
+
         $form.data('hs-mapping', config.mapping);
         $form.data('hs-form-name', config.hubspotFormName);
 

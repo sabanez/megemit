@@ -5,20 +5,39 @@
 (function ($) {
     'use strict';
 
+    // Toggle sección HubSpot según checkbox do-not-collect
+    function toggleCollectSection() {
+        var checked  = $('#mgmit-do-not-collect').is(':checked');
+        var $section = $('#mgmit-hs-collect-section');
+        if (checked) {
+            $section.css({ opacity: '0.4', 'pointer-events': 'none' });
+            $section.find('input, button').prop('disabled', true);
+        } else {
+            $section.css({ opacity: '', 'pointer-events': '' });
+            $section.find('input, button').prop('disabled', false);
+        }
+    }
+
+    $('#mgmit-do-not-collect').on('change', toggleCollectSection);
+    toggleCollectSection();
+
     $('#mgmit-mapping-form').on('submit', function (e) {
         e.preventDefault();
 
-        var $btn = $('#mgmit-save-btn');
+        var $btn         = $('#mgmit-save-btn');
+        var doNotCollect = $('#mgmit-do-not-collect').is(':checked');
         $btn.prop('disabled', true).text(MGMIT_Admin.strings.saving);
 
         var fields = [];
-        $('#mgmit-fields-body .mgmit-field-row').each(function () {
-            var wp = $(this).find('.mgmit-wp-field').val().trim();
-            var hs = $(this).find('.mgmit-hs-prop').val().trim();
-            if (wp && hs) {
-                fields.push({ wp_field: wp, hs_prop: hs });
-            }
-        });
+        if (!doNotCollect) {
+            $('#mgmit-fields-body .mgmit-field-row').each(function () {
+                var wp = $(this).find('.mgmit-wp-field').val().trim();
+                var hs = $(this).find('.mgmit-hs-prop').val().trim();
+                if (wp && hs) {
+                    fields.push({ wp_field: wp, hs_prop: hs });
+                }
+            });
+        }
 
         $.post(MGMIT_Admin.ajaxurl, {
             action:          'mgmit_mapper_save_mapping',
@@ -26,8 +45,9 @@
             id:              $('#mgmit-mapping-id').val(),
             name:            $('#mgmit-name').val().trim(),
             formId:          $('#mgmit-form-selector').val().trim(),
-            hubspotFormName: $('#mgmit-hs-name').val().trim(),
+            hubspotFormName: doNotCollect ? '' : $('#mgmit-hs-name').val().trim(),
             fields:          fields,
+            do_not_collect:  doNotCollect ? 1 : 0,
         })
         .done(function (res) {
             if (res.success) {

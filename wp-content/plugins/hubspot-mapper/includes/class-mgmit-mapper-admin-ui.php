@@ -109,12 +109,13 @@ class MGMIT_Mapper_Admin_UI {
                     </thead>
                     <tbody id="the-list">
                         <?php foreach ($config as $index => $mapping):
-                            $id          = isset($mapping['id']) ? $mapping['id'] : strval($index);
-                            $name        = (isset($mapping['name']) && $mapping['name'] !== '') ? $mapping['name'] : '(Sin nombre)';
-                            $form_id     = isset($mapping['formId']) ? $mapping['formId'] : '';
-                            $hs_name     = isset($mapping['hubspotFormName']) ? $mapping['hubspotFormName'] : '';
-                            $field_count = (isset($mapping['mapping']) && is_array($mapping['mapping'])) ? count($mapping['mapping']) : 0;
-                            $edit_url    = admin_url('admin.php?page=hubspot-mapper&view=edit&mapping_id=' . urlencode($id));
+                            $id             = isset($mapping['id']) ? $mapping['id'] : strval($index);
+                            $name           = (isset($mapping['name']) && $mapping['name'] !== '') ? $mapping['name'] : '(Sin nombre)';
+                            $form_id        = isset($mapping['formId']) ? $mapping['formId'] : '';
+                            $hs_name        = isset($mapping['hubspotFormName']) ? $mapping['hubspotFormName'] : '';
+                            $field_count    = (isset($mapping['mapping']) && is_array($mapping['mapping'])) ? count($mapping['mapping']) : 0;
+                            $dnc            = !empty($mapping['do_not_collect']);
+                            $edit_url       = admin_url('admin.php?page=hubspot-mapper&view=edit&mapping_id=' . urlencode($id));
                         ?>
                         <tr>
                             <td class="column-primary" data-colname="Nombre">
@@ -124,7 +125,11 @@ class MGMIT_Mapper_Admin_UI {
                                 <code style="font-size:12px;word-break:break-all;"><?php echo esc_html($form_id); ?></code>
                             </td>
                             <td data-colname="HubSpot">
-                                <code style="font-size:12px;"><?php echo esc_html($hs_name); ?></code>
+                                <?php if ($dnc): ?>
+                                    <span style="background:#ffeeba;color:#856404;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;">&#128683; No recoger</span>
+                                <?php else: ?>
+                                    <code style="font-size:12px;"><?php echo esc_html($hs_name); ?></code>
+                                <?php endif; ?>
                             </td>
                             <td data-colname="Campos">
                                 <span style="background:#e5f5fa;color:#00607a;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;">
@@ -180,11 +185,12 @@ class MGMIT_Mapper_Admin_UI {
             }
         }
 
-        $name       = $is_new ? '' : (isset($mapping['name']) ? $mapping['name'] : '');
-        $form_sel   = $is_new ? '' : (isset($mapping['formId']) ? $mapping['formId'] : '');
-        $hs_name    = $is_new ? '' : (isset($mapping['hubspotFormName']) ? $mapping['hubspotFormName'] : '');
-        $fields     = $is_new ? array() : (isset($mapping['mapping']) && is_array($mapping['mapping']) ? $mapping['mapping'] : array());
-        $current_id = $is_new ? '' : (isset($mapping['id']) ? $mapping['id'] : $mapping_id);
+        $name           = $is_new ? '' : (isset($mapping['name']) ? $mapping['name'] : '');
+        $form_sel       = $is_new ? '' : (isset($mapping['formId']) ? $mapping['formId'] : '');
+        $hs_name        = $is_new ? '' : (isset($mapping['hubspotFormName']) ? $mapping['hubspotFormName'] : '');
+        $fields         = $is_new ? array() : (isset($mapping['mapping']) && is_array($mapping['mapping']) ? $mapping['mapping'] : array());
+        $current_id     = $is_new ? '' : (isset($mapping['id']) ? $mapping['id'] : $mapping_id);
+        $do_not_collect = !$is_new && !empty($mapping['do_not_collect']);
 
         $list_url   = admin_url('admin.php?page=hubspot-mapper');
         $page_title = $is_new ? 'Añadir Nuevo Mapeo' : 'Editar Mapeo';
@@ -227,6 +233,22 @@ class MGMIT_Mapper_Admin_UI {
                                 </p>
                             </td>
                         </tr>
+                        <tr>
+                            <th scope="row">Solo bloquear recogida</th>
+                            <td>
+                                <label>
+                                    <input type="checkbox" id="mgmit-do-not-collect" value="1" <?php checked($do_not_collect); ?>>
+                                    <strong>No recoger datos en HubSpot</strong>
+                                </label>
+                                <p class="description">
+                                    Cuando está activo, HubSpot no recogerá los datos de este formulario.
+                                    Los campos de nombre HubSpot y mapeo no son necesarios y se desactivan.
+                                </p>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <tbody id="mgmit-hs-collect-section" <?php if ($do_not_collect) echo 'style="opacity:0.4;pointer-events:none;"'; ?>>
                         <tr>
                             <th scope="row"><label for="mgmit-hs-name">Nombre en HubSpot <span style="color:#b32d2e;">*</span></label></th>
                             <td>
@@ -281,7 +303,7 @@ class MGMIT_Mapper_Admin_UI {
                                 </table>
                             </td>
                         </tr>
-                    </tbody>
+                    </tbody><!-- /mgmit-hs-collect-section -->
                 </table>
 
                 <p class="submit">
@@ -302,14 +324,18 @@ class MGMIT_Mapper_Admin_UI {
             wp_send_json_error('Permisos insuficientes.');
         }
 
-        $id           = isset($_POST['id'])              ? sanitize_text_field($_POST['id'])              : '';
-        $name         = isset($_POST['name'])            ? sanitize_text_field($_POST['name'])            : '';
-        $form_id      = isset($_POST['formId'])          ? sanitize_text_field($_POST['formId'])          : '';
-        $hs_form_name = isset($_POST['hubspotFormName']) ? sanitize_text_field($_POST['hubspotFormName']) : '';
-        $fields_raw   = isset($_POST['fields'])          ? (array) $_POST['fields']                       : array();
+        $id             = isset($_POST['id'])              ? sanitize_text_field($_POST['id'])              : '';
+        $name           = isset($_POST['name'])            ? sanitize_text_field($_POST['name'])            : '';
+        $form_id        = isset($_POST['formId'])          ? sanitize_text_field($_POST['formId'])          : '';
+        $hs_form_name   = isset($_POST['hubspotFormName']) ? sanitize_text_field($_POST['hubspotFormName']) : '';
+        $fields_raw     = isset($_POST['fields'])          ? (array) $_POST['fields']                       : array();
+        $do_not_collect = !empty($_POST['do_not_collect']);
 
-        if (empty($form_id) || empty($hs_form_name)) {
-            wp_send_json_error('El selector del formulario y el nombre en HubSpot son obligatorios.');
+        if (empty($form_id)) {
+            wp_send_json_error('El selector del formulario es obligatorio.');
+        }
+        if (!$do_not_collect && empty($hs_form_name)) {
+            wp_send_json_error('El nombre en HubSpot es obligatorio cuando no está activo el modo "No recoger datos".');
         }
 
         $mapping = array();
@@ -325,8 +351,9 @@ class MGMIT_Mapper_Admin_UI {
             'id'              => $id !== '' ? $id : $this->generate_id(),
             'name'            => $name,
             'formId'          => $form_id,
-            'hubspotFormName' => $hs_form_name,
-            'mapping'         => $mapping,
+            'hubspotFormName' => $do_not_collect ? '' : $hs_form_name,
+            'mapping'         => $do_not_collect ? array() : $mapping,
+            'do_not_collect'  => $do_not_collect,
         );
 
         $config = $this->get_config();
