@@ -56,6 +56,7 @@ function mgmit_bridge_send_membership_email( $ipn_data, $gender ) {
 
     $header_img_path     = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
     $logo_watermark_path = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
+    $header_img_url      = get_stylesheet_directory_uri() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
 
     // Generar los 2 PDFs dinámicos
     $tmp_dir = wp_upload_dir();
@@ -96,7 +97,7 @@ function mgmit_bridge_send_membership_email( $ipn_data, $gender ) {
 
     // Cuerpo HTML del email
     $body_html = mgmit_bridge_render_template( 'body', compact(
-        'greeting_line', 'header_img_path'
+        'greeting_line', 'header_img_url'
     ) );
 
     // Cabeceras del email

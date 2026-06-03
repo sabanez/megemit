@@ -1,6 +1,11 @@
 # Changelog
 
-## [Unreleased] — 2026-06-02
+## [Unreleased] — 2026-06-03
+
+### Fixed
+- **`email-membership.php` / `email-templates/body.php`** — imagen de cabecera del
+  email de membresía ahora usa URL pública (`get_stylesheet_directory_uri`) en lugar
+  de ruta de sistema, corrigiendo la visualización en clientes de correo.
 
 ### Added
 - **`inc/hubspot-swpm-stripe-bridge/`** — nuevo módulo que centraliza la integración

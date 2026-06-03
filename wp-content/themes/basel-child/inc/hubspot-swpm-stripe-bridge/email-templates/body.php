@@ -63,8 +63,8 @@ ul li {
 <body>
 <div class="email-wrap">
 
-<?php if ( $header_img_path && file_exists( $header_img_path ) ) : ?>
-<img class="header-img" src="<?php echo esc_attr( $header_img_path ); ?>" alt="MeGeMIT" />
+<?php if ( ! empty( $header_img_url ) ) : ?>
+<img class="header-img" src="<?php echo esc_url( $header_img_url ); ?>" alt="MeGeMIT" />
 <?php endif; ?>
 
 <p><?php echo esc_html( $greeting_line ); ?>,</p>
