@@ -29,6 +29,7 @@
         $btn.prop('disabled', true).text(MGMIT_Admin.strings.saving);
 
         var fields = [];
+        var staticFields = [];
         if (!doNotCollect) {
             $('#mgmit-fields-body .mgmit-field-row').each(function () {
                 var wp = $(this).find('.mgmit-wp-field').val().trim();
@@ -37,17 +38,28 @@
                     fields.push({ wp_field: wp, hs_prop: hs });
                 }
             });
+            $('#mgmit-static-fields-body .mgmit-static-field-row').each(function () {
+                var prop   = $(this).find('.mgmit-sf-prop').val().trim();
+                var val    = $(this).find('.mgmit-sf-value').val().trim();
+                var append = $(this).find('.mgmit-sf-append').is(':checked') ? 1 : 0;
+                if (prop) {
+                    staticFields.push({ hs_prop: prop, value: val, append: append });
+                }
+            });
         }
 
         $.post(MGMIT_Admin.ajaxurl, {
-            action:          'mgmit_mapper_save_mapping',
-            security:        MGMIT_Admin.nonce_save,
-            id:              $('#mgmit-mapping-id').val(),
-            name:            $('#mgmit-name').val().trim(),
-            formId:          $('#mgmit-form-selector').val().trim(),
-            hubspotFormName: doNotCollect ? '' : $('#mgmit-hs-name').val().trim(),
-            fields:          fields,
-            do_not_collect:  doNotCollect ? 1 : 0,
+            action:           'mgmit_mapper_save_mapping',
+            security:         MGMIT_Admin.nonce_save,
+            id:               $('#mgmit-mapping-id').val(),
+            name:             $('#mgmit-name').val().trim(),
+            formId:           $('#mgmit-form-selector').val().trim(),
+            hubspotFormName:  doNotCollect ? '' : $('#mgmit-hs-form-name').val().trim(),
+            source:           doNotCollect ? '' : $('#mgmit-source').val(),
+            email_field:      doNotCollect ? '' : $('#mgmit-email-field').val().trim(),
+            fields:           fields,
+            static_fields:    staticFields,
+            do_not_collect:   doNotCollect ? 1 : 0,
         })
         .done(function (res) {
             if (res.success) {
@@ -74,6 +86,21 @@
     });
 
     $('#mgmit-fields-body').on('click', '.mgmit-remove-row', function () {
+        $(this).closest('tr').remove();
+    });
+
+    $('#mgmit-add-static-row').on('click', function () {
+        var row = '<tr class="mgmit-static-field-row">' +
+            '<td><input type="text" class="mgmit-sf-prop widefat code" placeholder="hs_lead_source"></td>' +
+            '<td><input type="text" class="mgmit-sf-value widefat code" placeholder="SWPM"></td>' +
+            '<td style="text-align:center;"><input type="checkbox" class="mgmit-sf-append" value="1" title="Añadir al valor existente en lugar de sobreescribir"></td>' +
+            '<td style="text-align:center;">' +
+            '<button type="button" class="button button-small mgmit-remove-static-row" style="color:#b32d2e;border-color:#b32d2e;">&#10005;</button>' +
+            '</td></tr>';
+        $('#mgmit-static-fields-body').append(row);
+    });
+
+    $('#mgmit-static-fields-body').on('click', '.mgmit-remove-static-row', function () {
         $(this).closest('tr').remove();
     });
 
@@ -106,6 +133,49 @@
     function showNotice(type, msg) {
         var cls = type === 'error' ? 'notice-error' : 'notice-success';
         $('#mgmit-save-notice')
+            .removeClass('notice-error notice-success')
+            .addClass('notice ' + cls)
+            .html('<p>' + msg + '</p>')
+            .show();
+    }
+
+    // --- Credenciales HubSpot (vista de lista) ---
+    $('#mgmit-save-creds').on('click', function () {
+        var $btn      = $(this);
+        var token     = $('#mgmit-access-token').val().trim();
+        var portalId  = $('#mgmit-portal-id').val().trim();
+
+        if (!token && !portalId) {
+            showCredsNotice('error', 'Introduce el Portal ID y/o el Access Token.');
+            return;
+        }
+
+        $btn.prop('disabled', true).text(MGMIT_Admin.strings.saving);
+
+        $.post(MGMIT_Admin.ajaxurl, {
+            action:       'mgmit_mapper_save_credentials',
+            security:     MGMIT_Admin.nonce_creds,
+            access_token: token,
+            portal_id:    portalId,
+        })
+        .done(function (res) {
+            if (res.success) {
+                showCredsNotice('success', (res.data && res.data.message) || 'Guardado.');
+                $('#mgmit-access-token').val('');
+            } else {
+                showCredsNotice('error', res.data || MGMIT_Admin.strings.error);
+            }
+            $btn.prop('disabled', false).text('Guardar Credenciales');
+        })
+        .fail(function () {
+            showCredsNotice('error', MGMIT_Admin.strings.error);
+            $btn.prop('disabled', false).text('Guardar Credenciales');
+        });
+    });
+
+    function showCredsNotice(type, msg) {
+        var cls = type === 'error' ? 'notice-error' : 'notice-success';
+        $('#mgmit-creds-notice')
             .removeClass('notice-error notice-success')
             .addClass('notice ' + cls)
             .html('<p>' + msg + '</p>')
