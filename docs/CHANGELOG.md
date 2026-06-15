@@ -2,6 +2,47 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [wc-moodle-sync 1.2.0] — 2026-06-10
+
+### Added — Plugin `wc-moodle-sync`
+
+- **Webhook `course_completed`** — nuevo endpoint REST `POST /wp-json/wc-moodle-sync/v1/course-complete`. Cuando Moodle notifica la finalización de un curso, genera un cupón WooCommerce único (`MeGeMIT-XXXXXXXX`) al 100% de descuento, de un solo uso, restringido por email del usuario y por la categoría de producto `MDL-Coupon`. Envía email de felicitación en alemán con el código.
+- **Webhook `exam_passed`** — el mismo endpoint acepta `event_type: exam_passed`: genera un certificado PDF dinámico con el nombre del alumno y la fecha en alemán superpuestos sobre la plantilla PNG del plugin; envía el PDF adjunto por email.
+- **`class-wcms-completion-handler.php`** — clase singleton que registra el endpoint REST, autentica via `Authorization: Bearer`, despacha al flujo correcto según `event_type` y deduplica llamadas repetidas mediante `user_meta`.
+- **`class-wcms-certificate.php`** — generador de certificados con GD. Carga `certificate-template.png`, superpone nombre (BrushScript.ttf, 46 pt, color `#2D2D4B`, centrado al 46 % del alto) y fecha en alemán (TimesItalic.ttf, 26 pt, color `#1D5FA5`, centrado al 72 % del alto), ensambla PDF 1.4 sin dependencias externas.
+- **`assets/certificate-template.png`** — plantilla de certificado limpia (1684×1192 px, sin texto preexistente).
+- **`assets/fonts/BrushScript.ttf`** y **`assets/fonts/TimesItalic.ttf`** — fuentes TTF para el certificado.
+- **`class-wcms-mailer.php`** — añadidos `send_course_completion()` y `send_certificate()` con sus respectivas plantillas HTML en alemán.
+- **Constantes nuevas** en `wc-moodle-sync.php`: `WCMS_COMPLETION_SECRET` y `WCMS_COUPON_SHOP_URL`.
+
+### Changed — Plugin `wc-moodle-sync`
+
+- Descripción del cupón sigue el patrón `Akademie-Coupon für Nombre Apellido`.
+- El código del cupón mantiene el formato `MeGeMIT-XXXXXXXX` (8 caracteres aleatorios en mayúsculas).
+- Certificados almacenados en `wp-content/uploads/wcms-certificates/`.
+
+---
+
+## [Unreleased] — 2026-06-03
+
+### Fixed
+- **`email-membership.php` / `email-templates/body.php`** — imagen de cabecera del email de membresía ahora usa URL pública (`get_stylesheet_directory_uri`) en lugar de ruta de sistema, corrigiendo la visualización en clientes de correo.
+
+### Added
+- **`inc/hubspot-swpm-stripe-bridge/`** — nuevo módulo que centraliza la integración entre HubSpot, SWPM, WooCommerce y Stripe: webhook sender, flujos de pago/desactivación, emails de membresía con plantillas.
+- **`membership-woo-bridge.php`** — campo meta `_swpm_membership_level` en el admin de producto WooCommerce; guarda nivel previo al crear la orden para poder revertirlo.
+- **`onboarding-enforcement.js`** — función `blockNavigation()`: bloquea todos los enlaces y elementos JS del header (carrito, buscador, sidebar) para usuarios con registro pendiente.
+
+### Changed
+- **`membership-woo-bridge.php`** — `swpm_update_level_after_payment` ahora usa la API nativa de SWPM (`SwpmMemberUtils`, `SwpmTransactions`) disparando hooks y email de confirmación; fallback a actualización directa en BD si SWPM no está disponible.
+- **`membership-woo-bridge.php`** — nueva función `swpm_revert_level_on_order_status_change`: revierte el nivel de membresía al anterior cuando el pago se cancela, falla o reembolsa.
+- **`functions.php`** — URLs absolutas del header convertidas a rutas relativas; carga `hubspot-swpm-stripe-bridge/loader.php`.
+
+### Removed
+- Plantilla PDF `MeGeMit2` (obsoleta): `invoice.php`, `style.css`, `html-document-wrapper.php`, `template-functions.php`, `facebook_icon.png`.
+
+---
+
 ## [Unreleased] - 2026-05-26
 
 ### Feat — Nuevo plugin `hubspot-mapper` (frontend-only HubSpot field mapper)
