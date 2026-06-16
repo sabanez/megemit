@@ -1,8 +1,8 @@
-# 📚 Documentación del Proyecto MeGeMIT WordPress
+# Documentación del Proyecto MeGeMIT WordPress
 
 Índice centralizado de toda la documentación técnica del proyecto MeGeMIT WordPress con integración HubSpot.
 
-## 📖 Documentos Principales
+## Documentos Principales
 
 ### **1. [ARCHITECTURE.md](ARCHITECTURE.md)**
 Especificación completa de la arquitectura del proyecto incluyendo:
@@ -13,39 +13,22 @@ Especificación completa de la arquitectura del proyecto incluyendo:
 - Herramientas auxiliares (migración, etc.)
 
 ### **2. [CHANGELOG.md](CHANGELOG.md)**
-Registro histórico de todos los cambios y versiones:
-- v1.3.1 — Sincronización de formularios HubSpot → WordPress
-- v1.3.0 — Visual Mapper UI para el plugin HubSpot Bridge
-- v1.2.2 — Auto-login post-onboarding
-- v1.2.1 — Mapeo de formulario de perfil
-- v1.2.0 — Módulo independiente de onboarding
-- v1.1.0 — Blindaje de onboarding (triple seguro)
+Registro histórico de todos los cambios y versiones del proyecto.
 
 ### **3. [HUBSPOT_INTEGRATION.md](HUBSPOT_INTEGRATION.md)**
 Guía técnica completa de integración con HubSpot:
 - **WordPress → HubSpot Bridge:** Mapeo de formularios nativos a propiedades HubSpot
-  - Sistema de "Shadow Fields"
-  - Atributo `data-hs-ignore` para evitar duplicidad
-  - Mutación de IDs de formulario
 - **HubSpot → WordPress:** Sincronización automática de formularios embebidos
-  - Módulo `/inc/hubspot-sync/` (captura, handler, loader)
-  - Sincronización a `wpgr_usermeta` y `wpgr_swpm_members_tbl`
-  - Mapeo de campos y división de direcciones
 - **Onboarding obligatorio:** Flujo de registro en 2 pasos con bloqueo de navegación
+- **Login Identify:** Asociación automática de sesión HubSpot tras el login
 - **Debugging:** Guías para diagnosticar problemas
 
 ### **4. [HUBSPOT_BRIDGE_PLUGIN_PLAN.md](HUBSPOT_BRIDGE_PLUGIN_PLAN.md)**
-Blueprint y especificación técnica del plugin `mgmit-hubspot-bridge`:
-- Arquitectura del sistema (patrón Singleton)
-- Módulos: Core Engine, Admin UI, Field Mapper
-- Persistencia de datos en `wp_options`
-- Experiencia de usuario (Admin UI/UX)
-- Implementación por fases
-- Ventajas para el negocio
+Blueprint y especificación técnica del plugin `mgmit-hubspot-bridge`.
 
 ---
 
-## 🔧 Stack Tecnológico
+## Stack Tecnológico
 
 | Componente | Versión | Notas |
 |---|---|---|
@@ -57,59 +40,73 @@ Blueprint y especificación técnica del plugin `mgmit-hubspot-bridge`:
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 wp-site/
-├── docs/                          # Esta carpeta de documentación
-│   ├── README.md                  # Este archivo
-│   ├── ARCHITECTURE.md            # Especificación técnica completa
-│   ├── CHANGELOG.md               # Historial de versiones
-│   ├── HUBSPOT_INTEGRATION.md     # Guía de integración HubSpot
-│   └── HUBSPOT_BRIDGE_PLUGIN_PLAN.md # Especificación del plugin
-├── CLAUDE.md                      # Instrucciones para agentes (raíz)
-├── agent.md                       # Documentación de agentes (raíz)
-├── CHANGELOG.md                   # Changelog master (raíz)
+├── docs/                              # Esta carpeta de documentación
+│   ├── README.md                      # Este archivo
+│   ├── ARCHITECTURE.md                # Especificación técnica completa
+│   ├── CHANGELOG.md                   # Historial de versiones
+│   ├── HUBSPOT_INTEGRATION.md         # Guía de integración HubSpot
+│   └── HUBSPOT_BRIDGE_PLUGIN_PLAN.md  # Especificación del plugin bridge
+├── CLAUDE.md                          # Instrucciones para agentes (raíz)
 ├── wp-content/
 │   ├── plugins/
-│   │   └── mgmit-hubspot-bridge/  # Plugin de integración HubSpot
-│   │       ├── mgmit-hubspot-bridge.php
-│   │       ├── includes/
-│   │       │   └── class-mgmit-admin-ui.php
-│   │       └── assets/
-│   │           └── js/
-│   │               ├── hubspot_map.js (mapeo WP → HubSpot)
-│   │               └── admin-mapper.js (UI panel admin)
+│   │   ├── mgmit-hubspot-bridge/      # Plugin mapeo formularios → HubSpot
+│   │   ├── hs-login-identify/         # Plugin identificación HubSpot tras login
+│   │   └── hubspot-mapper/            # Plugin mapper campos HubSpot
 │   └── themes/
 │       └── basel-child/
-│           ├── functions.php      # Entry point
-│           ├── HUBSPOT_INTEGRATION.md
+│           ├── functions.php          # Entry point
 │           └── inc/
-│               ├── onboarding-enforcement.js (seguridad onboarding)
-│               └── hubspot-sync/   # Módulo de sincronización HubSpot → WP
-│                   ├── loader.php
-│                   ├── handler.php (REST endpoint)
-│                   └── form-capture.js (captura de eventos)
-└── hs-migration.php               # Herramienta de migración (raíz)
+│               ├── onboarding-enforcement.js
+│               └── hubspot-sync/      # Módulo sincronización HubSpot → WP
+└── hs-migration.php                   # Herramienta de migración (raíz)
 ```
 
 ---
 
-## 🚀 Componentes Principales
+## Componentes Principales
 
-### **Plugin: `mgmit-hubspot-bridge` (v1.3.0 — Estable)**
+### Plugin: `mgmit-hubspot-bridge` (v1.3.0 — Estable)
 Centraliza la integración de formularios WordPress → HubSpot mediante sistema de mapeos configurables.
 
-**Características:**
-- Panel admin "HubSpot Bridge" para CRUD de mapeos (sin tocar código)
-- Mapeo visual de campos con UUID v4 para cada configuración
+- Panel admin para CRUD de mapeos sin tocar código
 - Sistema de "Shadow Fields" para evitar conflictos con HubSpot
 - Persistencia en `wp_options['mgmit_hubspot_config']`
 - Frontend agnóstico: funciona con cualquier plugin de formularios
+- Sin llamadas server-side a la API de HubSpot
 
 **Ubicación:** `wp-content/plugins/mgmit-hubspot-bridge/`
 
-### **Tema Hijo: `basel-child` (Lógica de Negocio)**
+---
+
+### Plugin: `hs-login-identify` (v3.5.0 — Estable)
+Asocia automáticamente la sesión de tracking de HubSpot (cookie `hubspotutk`) con el contacto correspondiente tras cada login, sin depender del navegador ni de JavaScript.
+
+**Problema que resuelve:** HubSpot trackea la actividad anónima por cookie, pero no puede relacionarla con un contacto si el formulario de login no contiene un campo email. Este plugin lo resuelve enviando el email del usuario a la HubSpot Forms Submission API desde el servidor en el momento del login.
+
+**Características:**
+- Envío server-side vía `wp_remote_post` → inmune a bloqueadores, caché y conflictos JS
+- Usa la HubSpot Forms Submission API (sin API key, solo Portal ID + Form GUID)
+- Incluye la cookie `hubspotutk` en el contexto → HubSpot retroactivamente asocia toda la actividad del visitante
+- Integraciones configurables desde el panel de administración:
+  - SWPM (Simple WP Membership)
+  - Ultimate Membership Pro
+  - WordPress nativo
+  - WooCommerce
+- Página de diagnóstico con dos tests: conexión y simulación de login real
+
+**Panel de ajustes:** Ajustes → HubSpot Login ID
+
+**Ubicación:** `wp-content/plugins/hs-login-identify/`
+
+**Detalle técnico importante:** el hook `swpm_after_login_authentication` (SWPM) y el hook `ihc_login_success` (Ultimate Membership Pro) se registran en tiempo de carga del plugin, fuera de `init`, para evitar condiciones de carrera con los hooks propios de estos plugins.
+
+---
+
+### Tema Hijo: `basel-child` (Lógica de Negocio)
 Contiene la lógica de onboarding obligatorio y sincronización de formularios HubSpot embebidos.
 
 **Módulos:**
@@ -120,108 +117,69 @@ Contiene la lógica de onboarding obligatorio y sincronización de formularios H
 
 2. **HubSpot Sync** (`inc/hubspot-sync/`)
    - Captura eventos `postMessage` de formularios HubSpot embebidos
-   - Sincroniza datos a `wpgr_usermeta` (con prefijo `billing_` de WooCommerce)
-   - Actualiza `wpgr_swpm_members_tbl` para miembros SWPM
+   - Sincroniza datos a `wpgr_usermeta` y `wpgr_swpm_members_tbl`
    - REST endpoint: `/wp-json/mgmit/v1/sync-hubspot-data`
 
 **Ubicación:** `wp-content/themes/basel-child/`
 
-### **Herramienta de Migración: `hs-migration.php`**
-Importación bulk de datos HubSpot a WordPress.
+---
 
-**Características:**
-- CSV uploader integrado
-- Mapeo por email (cross-linking HubSpot ↔ WordPress)
-- Actualización bulk de metadatos de usuario
-- Solo accesible para administradores
+### Herramienta de Migración: `hs-migration.php`
+Importación bulk de datos HubSpot a WordPress vía CSV. Solo accesible para administradores.
 
 **Ubicación:** Raíz del proyecto (`/hs-migration.php`)
 
 ---
 
-## 🔐 Reglas de Conducta
-
-1. **Aprobación Previa** — Cualquier modificación de código requiere aprobación del usuario antes de proceder.
-2. **Fases Incrementales** — Los cambios se organizan por fases; se valida cada fase antes de continuar.
-3. **Registro en Changelog** — Todo cambio se documenta en `CHANGELOG.md` con versión y descripción.
-4. **PHP 7.4 Estricto** — ❌ Prohibido: constructor promotion, union types, named arguments, match expressions, nullsafe operator.
-5. **Optimización de Tokens** — Reducir contexto para maximizar eficiencia en agentes.
-6. **Arquitectura Senior** — Desarrollar con criterio de 15+ años en WordPress.
-
----
-
-## 🔗 Metadatos de Control de Usuario
+## Metadatos de Control de Usuario
 
 ### Tabla `wpgr_usermeta`
-- `mgmit_hs_details_pending` = `'1'` → Bloqueo total (nuevo registro)
-- `mgmit_hs_details_pending` = `'0'` → Onboarding completado
-- `mgmit_hs_legacy_pending` = `'1'` → Pendiente suave (usuario existente, sin bloqueo)
-- Campos WooCommerce: `billing_address_1`, `billing_address_2`, `billing_postcode`, `billing_city`, `billing_country`, `billing_phone`
+- `mgmit_hs_details_pending = '1'` → Bloqueo total (nuevo registro pendiente)
+- `mgmit_hs_details_pending = '0'` → Onboarding completado
+- `mgmit_hs_legacy_pending = '1'` → Pendiente suave (usuario preexistente, sin bloqueo)
 
-### Página de Control
-- **ID:** `21568`
-- **Slug:** `/registrierungsdetails/`
-- **Parámetros:**
-  - `?hs_finish=1` → Desbloqueo de onboarding
-  - `?legacy=1` → Formulario para usuarios legacy pending
-  - `?enforced=1` → Activa pop-up de aviso
+### Página de Control de Onboarding
+- **ID:** `21568` — Slug: `/registrierungsdetails/`
+- `?hs_finish=1` → Desbloqueo de onboarding
+- `?legacy=1` → Formulario para usuarios legacy pending
+- `?enforced=1` → Activa pop-up de aviso
 
 ---
 
-## 📞 Endpoints REST
+## Endpoints REST
 
 ### Sincronización HubSpot → WordPress
 - **Ruta:** `POST /wp-json/mgmit/v1/sync-hubspot-data`
 - **Autenticación:** Email válido en payload
-- **Payload:**
-  ```json
-  {
-    "email": "usuario@example.com",
-    "data": {
-      "first_name": "Juan",
-      "last_name": "Pérez",
-      "phone": "+34601234567",
-      "address": "Calle Principal 123",
-      "address2": "Apt 4",
-      "zip": "28001",
-      "city": "Madrid",
-      "country": "ES",
-      "job_title": "Ingeniero"
-    }
-  }
-  ```
-- **Respuesta exitosa:** `{"success":true,"message":"Datos sincronizados correctamente","user_id":123,"email":"usuario@example.com"}`
-- **Respuesta fallida:** `{"success":false,"message":"...","user_id":123|"email":"..."}`
+- **Respuesta exitosa:** `{"success":true,"message":"Datos sincronizados correctamente","user_id":123}`
 
 ---
 
-## 🛠️ Herramientas de Debugging
+## Herramientas de Debugging
 
-### En Navegador (F12 Console)
-- `[HS Mapper]` — Mensajes del mapeo WP → HubSpot
-- `[HS Sync]` — Mensajes de sincronización HubSpot → WP
-- `[MGMIT_HS]` — Logs generales del módulo
+### Navegador (DevTools Console)
+- `[HS Mapper]` — Mapeo WP → HubSpot
+- `[HS Sync]` — Sincronización HubSpot → WP
 
-### En Servidor
-- Habilitar `WP_DEBUG=true` en `wp-config.php`
-- Revisar `wp-content/debug.log` para mensajes con prefijo `[MGMIT_HS_SYNC]`
+### Servidor
+- Activar `WP_DEBUG=true` en `wp-config.php`
+- Revisar `wp-content/debug.log` → líneas con prefijo `HSLI` (login identify) o `[MGMIT_HS_SYNC]`
 
-### En Base de Datos
-- Verificar `wpgr_usermeta` para campos `billing_*`
-- Verificar `wpgr_swpm_members_tbl` para sincronización SWPM
-- Revisar metadatos de control (`mgmit_hs_*`)
-
----
-
-## 📝 Notas Importantes
-
-- **Sin API calls server-side a HubSpot:** Toda la integración es 100% frontend o de sincronización interna (no consulta HubSpot desde PHP).
-- **Cross-origin compatible:** Usa `postMessage` API estándar (funciona con iframes de diferentes orígenes).
-- **Filosofía de separación:** Onboarding (negocio) en tema hijo, Bridge (técnica) en plugin.
-- **Actualización automática:** La sincronización HubSpot → WordPress es asincrónica y no bloquea el envío a HubSpot.
+### Panel de diagnóstico
+- **Ajustes → HubSpot Login ID → Diagnóstico**
+  - Test 1: verifica conectividad del servidor con `api.hsforms.com`
+  - Test 2: simula un envío real con email de un contacto existente en HubSpot
 
 ---
 
-**Última actualización:** 2026-04-22 (v1.3.1)
+## Reglas de Trabajo
 
-Para consultas o cambios, revisar `CLAUDE.md` (instrucciones para agentes) en la raíz del proyecto.
+1. **Aprobación previa** — cualquier modificación requiere aprobación antes de ejecutar
+2. **Fases incrementales** — validar cada fase antes de continuar; registrar en `CHANGELOG.md`
+3. **PHP 7.4 estricto** — prohibido: constructor promotion, union types, named arguments, match expressions, nullsafe operator
+4. **Sin commits sin autorización**
+5. **Arquitectura senior** — desarrollar con criterio de 15+ años en WordPress
+
+---
+
+**Última actualización:** 2026-06-16 (plugin hs-login-identify v3.5.0)
