@@ -452,7 +452,7 @@ if( ! function_exists( 'basel_header_block_widget_area' ) ) {
                     <div class="basel-search-wrapper">
                         <div class="basel-search-inner">
                             <span class="basel-close-search">Schließen</span>
-                            <form role="search" method="get" id="searchform" class="searchform " action="https://www.megemit.org/">
+                            <form role="search" method="get" id="searchform" class="searchform " action="https://www.dev.megemit.org/">
                                 <div>
                                     <label class="screen-reader-text">Suche:</label>
                                     <input type="text" class="search-field" placeholder="Suche…" value="" name="s" id="s">
@@ -476,14 +476,14 @@ if( ! function_exists( 'basel_header_block_widget_area' ) ) {
 //					echo $current_user->ID;
 					
 			echo '<div style="float: right;">
-                <h4 style="padding: 6px 0px; margin: 1px 10px 1px 0px; width: auto; text-align: center;"><a class="aep" style="font-weight: 400; color: #ffffff;" href="http://megemit.org/profil-bearbeiten/"><i class="fa fa-user-md"></i></a></h4>
+                <h4 style="padding: 6px 0px; margin: 1px 10px 1px 0px; width: auto; text-align: center;"><a class="aep" style="font-weight: 400; color: #ffffff;" href="/profil-bearbeiten/"><i class="fa fa-user-md"></i></a></h4>
             </div>';
 			
 				}
 					
 			?>
             <div style="float: right;">
-                <h4 style="padding: 6px 0px; margin: 1px 10px 1px 10px; width: 180px; text-align: center;"><a class="aep" style="font-weight: 400; color: #ffffff;" href="http://megemit.org/fachkreisbereich/"><i class="fa fa-user-md"></i> Fachkreisbereich</a></h4>
+                <h4 style="padding: 6px 0px; margin: 1px 10px 1px 10px; width: 180px; text-align: center;"><a class="aep" style="font-weight: 400; color: #ffffff;" href="/fachkreisbereich/"><i class="fa fa-user-md"></i> Fachkreisbereich</a></h4>
             </div>
             <div style="float: right" class="idiomas">
                 <a target="_blank" href="https://www.micro-immunotherapy.com/">EN</a> <a target="_blank" href="https://www.aemi.es/">ES</a> <a target="_blank" href="https://www.microimmuno.fr/">FR</a>
@@ -1059,6 +1059,8 @@ add_action('wp_enqueue_scripts', 'mgmit_enqueue_onboarding_scripts_only', 20);
 
 require_once get_stylesheet_directory() . '/inc/membership-woo-bridge.php';
 require_once get_stylesheet_directory() . '/inc/hubspot-sync/loader.php';
+require_once get_stylesheet_directory() . '/inc/woocommerce/loader.php';
+require_once get_stylesheet_directory() . '/inc/hubspot-swpm-stripe-bridge/loader.php';
 
 /**
  * Guarda en el line item del pedido el precio regular, precio rebajado y
@@ -1126,5 +1128,7 @@ function mgmit_guest_checkout_notice() {
     }
     echo '<div class="mgmit-guest-notice" style="background:#fff8e1;border-left:4px solid #f39c12;padding:16px 20px;margin:16px 0;border-radius:3px;font-size:0.97em;line-height:1.6;">';
     echo 'Unsere Aus- und Fortbildungsangebote richten sich exklusiv an Angehörige aus dem Gesundheitsbereich. Bitte registrieren Sie sich vorab in unserem Fachkreisbereich um eine Bestellung abschließen zu können.';
+    echo '<a href="/fachkreisbereich" class="btn btn-primary btn-color-alt" style="margin-top: 10px;border-radius:6px">Registrieren</a>';
     echo '</div>';
+    
 }

@@ -1,16 +1,29 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit; ?>
 
-<?php do_action( 'wpo_wcpdf_before_document', $this->get_type(), $this->order ); ?>
-
-<!-- CABECERA -->
 <?php
 $header_img_path = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
-if ( file_exists( $header_img_path ) ) :
+$fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebook_icon.png';
 ?>
-<div class="header-wrap">
-	<img src="<?php echo esc_attr( $header_img_path ); ?>" class="header-img" alt="MeGeMIT" />
+
+<!-- HEADER: position:fixed en mPDF repite en todas las páginas -->
+<?php if ( file_exists( $header_img_path ) ) : ?>
+<div id="page-header">
+	<img src="<?php echo esc_attr( $header_img_path ); ?>" alt="MeGeMIT" />
 </div>
 <?php endif; ?>
+
+<!-- FOOTER: position:fixed en mPDF repite en todas las páginas -->
+<div id="footer">
+	Medizinische Gesellschaft für Mikroimmuntherapie (MeGeMIT)<br/>
+	SPACES/Gertrude-Fröhlich-Sandner-Str. 2, Tower 9 &middot; 1100 Wien &middot; T. 0043-(0)-1- 9 30 27 30 40 &middot; Fax: 0043-(0)-1- 391 000 4<br/>
+	UID: ATU68398067 &middot; Steuernummer (DE): 182/123/21261<br/>
+	www.megemit.org &middot; www.mikroimmuntherapie.com &middot; info@megemit.org<br/>
+	<?php if ( file_exists( $fb_icon_path ) ) : ?>
+	<img src="<?php echo esc_attr( $fb_icon_path ); ?>" style="width:9pt;height:9pt;vertical-align:middle;" alt="Facebook" />
+	<?php endif; ?> @mikroimmuntherapie
+</div>
+
+<?php do_action( 'wpo_wcpdf_before_document', $this->get_type(), $this->order ); ?>
 
 <?php do_action( 'wpo_wcpdf_before_document_label', $this->get_type(), $this->order ); ?>
 <?php do_action( 'wpo_wcpdf_after_document_label', $this->get_type(), $this->order ); ?>
@@ -199,19 +212,5 @@ $total_display = ! empty( $totals_data['order_total']['value'] ) ? $totals_data[
 <div class="legal-box">
 	<p>Beachten Sie bitte zum Widerrufsrecht und Stornobedingungen unseren angefügten Allgemeinen Geschäftsbedingungen.</p>
 </div>
-
-<!-- FOOTER: pdf24_24 → 7.5pt regular, #0A78B8 -->
-<htmlpagefooter name="docFooter2">
-	<div id="footer">
-		Medizinische Gesellschaft für Mikroimmuntherapie (MeGeMIT)<br/>
-		SPACES/Gertrude-Fröhlich-Sandner-Str. 2, Tower 9 &middot; 1100 Wien &middot; T. 0043-(0)-1- 9 30 27 30 40 &middot; Fax: 0043-(0)-1- 391 000 4<br/>
-		UID: ATU68398067 &middot; Steuernummer (DE): 182/123/21261<br/>
-		www.megemit.org &middot; www.mikroimmuntherapie.com &middot; info@megemit.org<br/>
-		<?php
-		$fb_icon = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit2/facebook_icon.png';
-		if ( file_exists( $fb_icon ) ) :
-		?><img src="<?php echo esc_attr( $fb_icon ); ?>" style="width:9pt;height:9pt;vertical-align:middle;" alt="Facebook" /><?php endif; ?> @mikroimmuntherapie
-	</div>
-</htmlpagefooter>
 
 <?php do_action( 'wpo_wcpdf_after_document', $this->get_type(), $this->order ); ?>

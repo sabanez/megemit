@@ -2,6 +2,145 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [wc-moodle-sync 1.2.0] — 2026-06-10
+
+### Added — Plugin `wc-moodle-sync`
+
+- **Webhook `course_completed`** — nuevo endpoint REST `POST /wp-json/wc-moodle-sync/v1/course-complete`. Cuando Moodle notifica la finalización de un curso, genera un cupón WooCommerce único (`MeGeMIT-XXXXXXXX`) al 100% de descuento, de un solo uso, restringido por email del usuario y por la categoría de producto `MDL-Coupon`. Envía email de felicitación en alemán con el código.
+- **Webhook `exam_passed`** — el mismo endpoint acepta `event_type: exam_passed`: genera un certificado PDF dinámico con el nombre del alumno y la fecha en alemán superpuestos sobre la plantilla PNG del plugin; envía el PDF adjunto por email.
+- **`class-wcms-completion-handler.php`** — clase singleton que registra el endpoint REST, autentica via `Authorization: Bearer`, despacha al flujo correcto según `event_type` y deduplica llamadas repetidas mediante `user_meta`.
+- **`class-wcms-certificate.php`** — generador de certificados con GD. Carga `certificate-template.png`, superpone nombre (BrushScript.ttf, 46 pt, color `#2D2D4B`, centrado al 46 % del alto) y fecha en alemán (TimesItalic.ttf, 26 pt, color `#1D5FA5`, centrado al 72 % del alto), ensambla PDF 1.4 sin dependencias externas.
+- **`assets/certificate-template.png`** — plantilla de certificado limpia (1684×1192 px, sin texto preexistente).
+- **`assets/fonts/BrushScript.ttf`** y **`assets/fonts/TimesItalic.ttf`** — fuentes TTF para el certificado.
+- **`class-wcms-mailer.php`** — añadidos `send_course_completion()` y `send_certificate()` con sus respectivas plantillas HTML en alemán.
+- **Constantes nuevas** en `wc-moodle-sync.php`: `WCMS_COMPLETION_SECRET` y `WCMS_COUPON_SHOP_URL`.
+
+### Changed — Plugin `wc-moodle-sync`
+
+- Descripción del cupón sigue el patrón `Akademie-Coupon für Nombre Apellido`.
+- El código del cupón mantiene el formato `MeGeMIT-XXXXXXXX` (8 caracteres aleatorios en mayúsculas).
+- Certificados almacenados en `wp-content/uploads/wcms-certificates/`.
+
+---
+
+## [Unreleased] — 2026-06-03
+
+### Fixed
+- **`email-membership.php` / `email-templates/body.php`** — imagen de cabecera del email de membresía ahora usa URL pública (`get_stylesheet_directory_uri`) en lugar de ruta de sistema, corrigiendo la visualización en clientes de correo.
+
+### Added
+- **`inc/hubspot-swpm-stripe-bridge/`** — nuevo módulo que centraliza la integración entre HubSpot, SWPM, WooCommerce y Stripe: webhook sender, flujos de pago/desactivación, emails de membresía con plantillas.
+- **`membership-woo-bridge.php`** — campo meta `_swpm_membership_level` en el admin de producto WooCommerce; guarda nivel previo al crear la orden para poder revertirlo.
+- **`onboarding-enforcement.js`** — función `blockNavigation()`: bloquea todos los enlaces y elementos JS del header (carrito, buscador, sidebar) para usuarios con registro pendiente.
+
+### Changed
+- **`membership-woo-bridge.php`** — `swpm_update_level_after_payment` ahora usa la API nativa de SWPM (`SwpmMemberUtils`, `SwpmTransactions`) disparando hooks y email de confirmación; fallback a actualización directa en BD si SWPM no está disponible.
+- **`membership-woo-bridge.php`** — nueva función `swpm_revert_level_on_order_status_change`: revierte el nivel de membresía al anterior cuando el pago se cancela, falla o reembolsa.
+- **`functions.php`** — URLs absolutas del header convertidas a rutas relativas; carga `hubspot-swpm-stripe-bridge/loader.php`.
+
+### Removed
+- Plantilla PDF `MeGeMit2` (obsoleta): `invoice.php`, `style.css`, `html-document-wrapper.php`, `template-functions.php`, `facebook_icon.png`.
+
+---
+
+## [Unreleased] - 2026-05-26
+
+### Feat — Nuevo plugin `hubspot-mapper` (frontend-only HubSpot field mapper)
+
+Plugin independiente de mapeo 100% frontend de formularios SWPM y Ultimate Member → HubSpot, sin llamadas server-side a la API. Coexiste con `mgmit-hubspot-bridge` (v1.5.0, server-side) sin conflictos.
+
+#### Características
+- Mapea campos de formularios WP a propiedades HubSpot renombrando los campos en el submit (JS).
+- Soporte para formularios SWPM (selector `#form-id`) y Ultimate Member (selector `.um-{id}`).
+- Soporte para campos radio/checkbox: solo se renombran los inputs `:checked`.
+- Inyecta `hs_context` con cookie hutk, pageName y pageUrl en cada submit.
+- Admin UI con CRUD de mapeos: nombre, selector de formulario, nombre de formulario HubSpot, listado de pares campo WP → propiedad HS.
+- Config almacenada en `wp_options['mgmit_mapper_config']`.
+
+#### Archivos añadidos
+- `wp-content/plugins/hubspot-mapper/hubspot-mapper.php` — main plugin file (clase `MGMIT_HubSpot_Mapper`)
+- `wp-content/plugins/hubspot-mapper/includes/class-mgmit-mapper-admin-ui.php` — admin UI con AJAX
+- `wp-content/plugins/hubspot-mapper/assets/js/hubspot_map.js` — lógica frontend de mapeo
+- `wp-content/plugins/hubspot-mapper/assets/js/admin-mapper.js` — JS del panel admin
+
+---
+
+## [Unreleased] - 2026-05-21
+
+### Feat - `basel-child`: Nuevo módulo `hubspot-swpm-stripe-bridge`
+
+Integración directa SWPM + Stripe → webhook externo HubSpot Bridge, independiente del plugin WooCommerce.
+
+#### Flujos implementados
+
+**Flujo 1 — Pago de membresía completado:**
+Hook `swpm_payment_ipn_processed` → `POST /webhook/woocommerce/de` con topic `order.created`.
+
+**Flujo 2 — Desactivación de membresía:**
+Hook `swpm_account_status_updated` → `POST /webhook/woocommerce/de` con topic `customer.updated`.
+Se activa tanto por cancelación via Stripe como por desactivación manual desde el panel SWPM (transiciones a `inactive`, `expired` o `cancelled`).
+
+#### Estructura del payload enviado
+
+Ambos flujos envían estructura compatible con WooCommerce webhook handler:
+- `id` + `external_id` — WP user ID del cliente
+- `billing{}` — email, first_name, last_name (formato estándar que espera el handler)
+- `meta_data[]` — membership_level_id, membership_level_name, source=swpm y campos específicos de cada flujo
+- Flujo 1 añade: `status`, `total`, `currency`, `transaction_id`, `payment_method`, `number`
+
+#### Firma HMAC-SHA256
+
+Todas las peticiones incluyen `X-WC-Webhook-Signature: base64(HMAC-SHA256(body, secret))` compatible con la verificación del servidor webhook. El secret se configura desde el admin de WordPress.
+
+#### Archivos añadidos
+- `wp-content/themes/basel-child/inc/hubspot-swpm-stripe-bridge/loader.php` — orquestador del módulo
+- `wp-content/themes/basel-child/inc/hubspot-swpm-stripe-bridge/class-webhook-sender.php` — envío HTTP con firma, logging y manejo de errores
+- `wp-content/themes/basel-child/inc/hubspot-swpm-stripe-bridge/flow-payment.php` — listener Flujo 1
+- `wp-content/themes/basel-child/inc/hubspot-swpm-stripe-bridge/flow-deactivation.php` — listener Flujo 2
+- `wp-content/themes/basel-child/inc/hubspot-swpm-stripe-bridge/admin-settings.php` — página **Ajustes → SWPM Bridge** para configurar el secret y consultar el log de errores
+
+#### Archivos modificados
+- `wp-content/themes/basel-child/functions.php` — añadido `require_once` del nuevo loader (línea 1063)
+
+#### Configuración requerida
+Ir a **Ajustes → SWPM Bridge** en el admin de WordPress e introducir el valor de `WOO_WEBHOOK_SECRET_DE` del servidor webhook.
+
+#### Log de errores
+Errores HTTP y de conexión se guardan en `wp-content/uploads/mgmit-bridge-log.txt`. El visor del log está integrado en la misma página de ajustes.
+
+---
+
+## [Unreleased] - 2026-05-13
+
+### Fix - `basel-child`: Bloqueo de webhook `order.updated` en confirmación de pago Stripe
+
+#### Problema resuelto
+Al crear un pedido via checkout + Stripe, WooCommerce dispara `woocommerce_update_order` inmediatamente después de `woocommerce_new_order` (dentro de los mismos segundos) porque la confirmación de pago provoca una segunda llamada al método `update()` del data store. Esto generaba una entrada duplicada en HubSpot: una de creación (`order.created`) y una de modificación (`order.updated`) para el mismo pedido nuevo.
+
+#### Causa raíz
+Flujo interno de WooCommerce durante checkout + Stripe:
+1. Pedido creado como `checkout-draft` → `create()` no dispara `woocommerce_new_order`
+2. Stripe confirma → estado pasa a `processing` → `update()` detecta transición desde draft → dispara `woocommerce_new_order` → webhook `order.created` (ID 1) ✓
+3. WooCommerce escribe `transaction_id` y `date_paid` → nueva llamada a `update()` → dispara `woocommerce_update_order` → webhook `order.updated` (ID 2) ✗ duplicado
+
+#### Solución implementada
+Filtro `woocommerce_webhook_should_deliver` que bloquea la entrega del webhook `order.updated` durante los primeros `MGMIT_WEBHOOK_NEW_ORDER_TTL` segundos (120s por defecto) tras la creación del pedido.
+
+#### Archivos añadidos
+- `wp-content/themes/basel-child/inc/woocommerce/loader.php` — orquestador del módulo WooCommerce (mismo patrón que `inc/hubspot-sync/loader.php`)
+- `wp-content/themes/basel-child/inc/woocommerce/webhook-filters.php` — implementación del filtro
+
+#### Archivos modificados
+- `wp-content/themes/basel-child/functions.php` — añadido `require_once` del nuevo loader (línea 1062)
+
+#### Configuración opcional
+Para ajustar la ventana de bloqueo sin tocar el código, añadir en `wp-config.php`:
+```php
+define( 'MGMIT_WEBHOOK_NEW_ORDER_TTL', 120 ); // segundos
+```
+
+---
+
 ## [Unreleased] - 2026-05-11
 
 ### Seguridad - Plugin `mgmit-hubspot-bridge`: Token de HubSpot movido a `wp-config.php`

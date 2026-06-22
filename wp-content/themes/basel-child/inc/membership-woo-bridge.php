@@ -6,16 +6,123 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Seguridad
 
 /**
- * Función auxiliar para obtener el nivel desde el atributo 'nivel_swpm'
+ * Función auxiliar para obtener el nivel de membresía de un producto.
+ * Lee primero el meta _swpm_membership_level; fallback al atributo nivel_swpm.
  */
 function swpm_get_level_from_attribute( $product_id ) {
+    $meta = get_post_meta( $product_id, '_swpm_membership_level', true );
+    if ( ! empty( $meta ) ) {
+        return intval( $meta );
+    }
+
     $product = wc_get_product( $product_id );
     if ( ! $product ) return false;
 
-    // Buscamos el valor del atributo 'nivel_swpm'
     $nivel = $product->get_attribute( 'nivel_swpm' );
+    return ! empty( $nivel ) ? intval( $nivel ) : false;
+}
 
-    return !empty( $nivel ) ? intval( $nivel ) : false;
+/**
+ * A. CAMPO META DE PRODUCTO: _swpm_membership_level
+ * Muestra un campo numérico en la pestaña General del producto WooCommerce.
+ */
+add_action( 'woocommerce_product_options_general_product_data', 'swpm_add_membership_level_field' );
+function swpm_add_membership_level_field() {
+    woocommerce_wp_text_input( array(
+        'id'          => '_swpm_membership_level',
+        'label'       => __( 'Nivel de membresía SWPM', 'woocommerce' ),
+        'description' => __( 'ID del nivel de membresía en Simple WP Membership. Déjalo vacío si no es un producto de membresía.', 'woocommerce' ),
+        'desc_tip'    => true,
+        'type'        => 'number',
+        'custom_attributes' => array( 'min' => '0', 'step' => '1' ),
+    ) );
+}
+
+add_action( 'woocommerce_process_product_meta', 'swpm_save_membership_level_field' );
+function swpm_save_membership_level_field( $post_id ) {
+    $value = isset( $_POST['_swpm_membership_level'] ) ? intval( $_POST['_swpm_membership_level'] ) : '';
+    if ( $value > 0 ) {
+        update_post_meta( $post_id, '_swpm_membership_level', $value );
+    } else {
+        delete_post_meta( $post_id, '_swpm_membership_level' );
+    }
+}
+
+/**
+ * B. GUARDAR NIVEL PREVIO AL CREAR LA ORDEN
+ * Persiste el nivel SWPM actual del usuario en la orden para poder revertirlo si falla el pago.
+ */
+add_action( 'woocommerce_checkout_order_created', 'swpm_save_previous_level_on_order_created' );
+function swpm_save_previous_level_on_order_created( $order ) {
+    if ( ! class_exists( 'SwpmMemberUtils' ) ) return;
+
+    $user_id = $order->get_user_id();
+    if ( ! $user_id ) return;
+
+    $wp_user = get_userdata( $user_id );
+    if ( ! $wp_user ) return;
+
+    $swpm_member = SwpmMemberUtils::get_user_by_email( $wp_user->user_email );
+    if ( ! $swpm_member || ! isset( $swpm_member->membership_level ) ) return;
+
+    $order->update_meta_data( '_swpm_previous_level', intval( $swpm_member->membership_level ) );
+    $order->save();
+}
+
+/**
+ * C. REVERTIR NIVEL AL CANCELAR / FALLAR / REEMBOLSAR
+ * Devuelve al usuario su nivel de membresía anterior cuando el pago no se completa.
+ */
+add_action( 'woocommerce_order_status_changed', 'swpm_revert_level_on_order_status_change', 10, 3 );
+function swpm_revert_level_on_order_status_change( $order_id, $old_status, $new_status ) {
+    // "completed" lo gestiona swpm_update_level_after_payment; no actuar aquí.
+    if ( $new_status === 'completed' ) return;
+
+    $order   = wc_get_order( $order_id );
+    $user_id = $order->get_user_id();
+    if ( ! $user_id ) return;
+
+    $tiene_membresia = false;
+    foreach ( $order->get_items() as $item ) {
+        if ( swpm_get_level_from_attribute( $item->get_product_id() ) ) {
+            $tiene_membresia = true;
+            break;
+        }
+    }
+    if ( ! $tiene_membresia ) return;
+
+    // Actualizar estado de la transacción SWPM usando los valores nativos del plugin.
+    if ( class_exists( 'SwpmTransactions' ) ) {
+        $order_key     = $order->get_order_key();
+        $txn_existente = SwpmTransactions::get_transaction_row_by_subscr_id( $order_key );
+        if ( $txn_existente ) {
+            if ( $new_status === 'refunded' ) {
+                SwpmTransactions::update_transaction_status( $txn_existente->ID, 'Refunded' );
+            } elseif ( $new_status === 'cancelled' ) {
+                update_post_meta( $txn_existente->ID, 'subscr_status', 'cancelled' );
+            } else {
+                // Estados sin equivalente SWPM: eliminar el registro para evitar confusión.
+                $db_row_id = get_post_meta( $txn_existente->ID, 'db_row_id', true );
+                if ( $db_row_id ) {
+                    global $wpdb;
+                    $wpdb->delete( $wpdb->prefix . 'swpm_payments_tbl', array( 'id' => intval( $db_row_id ) ) );
+                }
+                wp_delete_post( $txn_existente->ID, true );
+            }
+        }
+    }
+
+    // Revertir nivel de membresía al anterior a la compra en cualquier estado no-completado.
+    if ( ! class_exists( 'SwpmMemberUtils' ) ) return;
+
+    $wp_user     = get_userdata( $user_id );
+    $swpm_member = $wp_user ? SwpmMemberUtils::get_user_by_email( $wp_user->user_email ) : false;
+    if ( ! $swpm_member || ! isset( $swpm_member->member_id ) ) return;
+
+    $nivel_previo = intval( $order->get_meta( '_swpm_previous_level' ) );
+    if ( $nivel_previo > 0 ) {
+        SwpmMemberUtils::update_membership_level_and_role( $swpm_member->member_id, $nivel_previo );
+    }
 }
 
 /**
@@ -41,30 +148,133 @@ function swpm_conditional_checkout_redirect( $url ) {
  */
 add_action( 'woocommerce_order_status_completed', 'swpm_update_level_after_payment', 10, 1 );
 function swpm_update_level_after_payment( $order_id ) {
-    $order = wc_get_order( $order_id );
+    $order   = wc_get_order( $order_id );
     $user_id = $order->get_user_id();
 
     if ( ! $user_id ) return;
 
+    $nuevo_nivel = false;
+    $product_id  = false;
+
     foreach ( $order->get_items() as $item ) {
-        $product_id = $item->get_product_id();
-        $nuevo_nivel = swpm_get_level_from_attribute( $product_id );
-
-        if ( $nuevo_nivel ) {
-            global $wpdb;
-            $tabla = $wpdb->prefix . "swpm_members_tbl";
-
-            $wpdb->update(
-                $tabla,
-                array( 
-                    'membership_level' => $nuevo_nivel, 
-                    'account_state'    => 'active' 
-                ),
-                array( 'user_id' => $user_id )
-            );
-            break; // Solo procesar la primera membresía encontrada
+        $pid   = $item->get_product_id();
+        $nivel = swpm_get_level_from_attribute( $pid );
+        if ( $nivel ) {
+            $nuevo_nivel = $nivel;
+            $product_id  = $pid;
+            break;
         }
     }
+
+    if ( ! $nuevo_nivel ) return;
+
+    // Intentar actualizar mediante la API de SWPM para activar hooks y emails.
+    if ( class_exists( 'SwpmMemberUtils' ) && class_exists( 'SwpmTransactions' ) ) {
+        $wp_user    = get_userdata( $user_id );
+        $swpm_member = $wp_user ? SwpmMemberUtils::get_user_by_email( $wp_user->user_email ) : false;
+
+        if ( $swpm_member && isset( $swpm_member->member_id ) ) {
+            $member_id         = $swpm_member->member_id;
+            $old_level         = $swpm_member->membership_level;
+            $old_account_state = $swpm_member->account_state;
+
+            // a) Actualizar nivel y disparar hook swpm_membership_level_changed.
+            SwpmMemberUtils::update_membership_level_and_role( $member_id, $nuevo_nivel );
+
+            // b) Activar cuenta.
+            SwpmMemberUtils::update_account_state( $member_id, 'active' );
+
+            // c) Calcular fecha de inicio considerando renovación vs upgrade.
+            $access_starts = SwpmMemberUtils::calculate_access_start_date_for_account_update( array(
+                'swpm_id'           => $member_id,
+                'membership_level'  => $nuevo_nivel,
+                'old_membership_level' => $old_level,
+                'old_account_state' => $old_account_state,
+            ) );
+            SwpmMemberUtils::update_access_starts_date( $member_id, $access_starts );
+
+            // d) Registrar o actualizar transacción en SWPM.
+            $txn_id    = $order->get_transaction_id();
+            $order_key = $order->get_order_key();
+            if ( empty( $txn_id ) ) {
+                $txn_id = 'woo-' . $order_id;
+            }
+
+            $txn_existente = SwpmTransactions::get_transaction_row_by_subscr_id( $order_key );
+            if ( $txn_existente ) {
+                SwpmTransactions::update_transaction_status( $txn_existente->ID, 'Completed' );
+            } else {
+                $ipn_data = array(
+                    'txn_id'      => $txn_id,
+                    'subscr_id'   => $order_key,
+                    'payer_email' => $order->get_billing_email(),
+                    'first_name'  => $order->get_billing_first_name(),
+                    'last_name'   => $order->get_billing_last_name(),
+                    'mc_gross'    => $order->get_total(),
+                    'gateway'     => 'woocommerce',
+                    'status'      => 'Completed',
+                    'custom'      => 'swpm_id=' . $member_id . '&subsc_ref=' . $nuevo_nivel,
+                );
+                SwpmTransactions::save_txn_record( $ipn_data );
+            }
+
+            // e) Enviar email de confirmación usando configuración del admin de SWPM.
+            $level_update_type = ( $old_level == $nuevo_nivel ) ? 'renewal' : 'upgrade';
+            swpm_send_woo_payment_email( $member_id, $order, $level_update_type );
+
+            return;
+        }
+    }
+
+    // Fallback: actualización directa si SWPM no está disponible o no hay registro.
+    global $wpdb;
+    $tabla = $wpdb->prefix . 'swpm_members_tbl';
+    $wpdb->update(
+        $tabla,
+        array(
+            'membership_level' => $nuevo_nivel,
+            'account_state'    => 'active',
+        ),
+        array( 'user_id' => $user_id )
+    );
+}
+
+/**
+ * Envía el email de confirmación de pago usando la configuración del admin de SWPM.
+ *
+ * @param int      $member_id         ID de miembro SWPM.
+ * @param WC_Order $order             Orden de WooCommerce.
+ * @param string   $level_update_type 'renewal' o 'upgrade'.
+ */
+function swpm_send_woo_payment_email( $member_id, $order, $level_update_type ) {
+    if ( ! class_exists( 'SwpmSettings' ) || ! class_exists( 'SwpmMiscUtils' ) ) return;
+
+    $settings     = SwpmSettings::get_instance();
+    $from_address = $settings->get_value( 'email-from' );
+    $headers      = 'From: ' . $from_address . "\r\n";
+    $email        = $order->get_billing_email();
+
+    if ( $level_update_type === 'upgrade' ) {
+        if ( $settings->get_value( 'disable-email-after-upgrade' ) ) return;
+        $subject = $settings->get_value( 'upgrade-complete-mail-subject' );
+        $body    = $settings->get_value( 'upgrade-complete-mail-body' );
+        if ( empty( $subject ) ) $subject = 'Member Account Upgraded';
+        if ( empty( $body ) )    $body    = 'Your account has been upgraded successfully';
+        $body    = SwpmMiscUtils::replace_dynamic_tags( $body, $member_id, array() );
+        $subject = apply_filters( 'swpm_email_upgrade_complete_subject', $subject );
+        $body    = apply_filters( 'swpm_email_upgrade_complete_body', $body );
+    } else {
+        if ( $settings->get_value( 'disable-email-after-renew' ) ) return;
+        $subject = $settings->get_value( 'renew-complete-mail-subject' );
+        $body    = $settings->get_value( 'renew-complete-mail-body' );
+        if ( empty( $subject ) ) $subject = 'Member Account Renewed';
+        if ( empty( $body ) )    $body    = 'Your account has been renewed successfully';
+        $body    = SwpmMiscUtils::replace_dynamic_tags( $body, $member_id, array() );
+        $subject = apply_filters( 'swpm_email_renew_complete_subject', $subject );
+        $body    = apply_filters( 'swpm_email_renew_complete_body', $body );
+    }
+
+    SwpmMiscUtils::mail( $email, $subject, $body, $headers );
 }
 
 /**
