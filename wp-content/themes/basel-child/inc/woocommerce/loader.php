@@ -10,4 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/invoice-endpoint.php';
 require_once __DIR__ . '/webhook-filters.php';
