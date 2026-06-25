@@ -106,6 +106,11 @@ class WCMS_Completion_Handler {
 		}
 
 		// Flujo course_completed: cupón descuento + email de felicitación.
+		if ( ! WCMS_SEND_COUPON ) {
+			$this->logger->info( "course-complete: WCMS_SEND_COUPON desactivado. Ignorado para user #{$wp_user->ID}.", self::$log_context );
+			return rest_ensure_response( array( 'status' => 'disabled' ) );
+		}
+
 		$meta_key = '_wcms_coupon_course_' . $moodle_course_id;
 
 		$existing = get_user_meta( $wp_user->ID, $meta_key, true );
@@ -135,6 +140,11 @@ class WCMS_Completion_Handler {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	private function handle_exam_passed( $wp_user, $moodle_course_id ) {
+		if ( ! WCMS_SEND_CERTIFICATE ) {
+			$this->logger->info( "exam_passed: WCMS_SEND_CERTIFICATE desactivado. Ignorado para user #{$wp_user->ID}.", self::$log_context );
+			return rest_ensure_response( array( 'status' => 'disabled' ) );
+		}
+
 		$meta_key = '_wcms_cert_course_' . $moodle_course_id;
 
 		$existing = get_user_meta( $wp_user->ID, $meta_key, true );

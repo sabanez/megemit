@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WooCommerce & Moodle Sync
  * Description: Valida y crea usuarios en Moodle antes del pago. Matricula en cursos tras confirmar la compra. Asíncrono y compatible con packs multicurso.
- * Version:     1.2.0
+ * Version:     1.3.0
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author:      MeGeMIT
@@ -13,49 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WCMS_VERSION', '1.2.0' );
+define( 'WCMS_VERSION', '1.3.0' );
 define( 'WCMS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WCMS_URL', plugin_dir_url( __FILE__ ) );
 
 /**
- * Constantes de conexión Moodle.
- * Definir en wp-config.php:
- *   define( 'WCMS_MOODLE_API_URL', 'https://tu-moodle.com/webservice/rest/server.php' );
- *   define( 'WCMS_MOODLE_TOKEN',   'tu_token_aqui' );
+ * Configuración propia del plugin (conexión Moodle, secretos, CC de emails,
+ * activar/desactivar certificado y cupón). Ver wc-moodle-sync/config.php.
  */
-if ( ! defined( 'WCMS_MOODLE_API_URL' ) ) {
-	define( 'WCMS_MOODLE_API_URL', '' );
-}
-if ( ! defined( 'WCMS_MOODLE_TOKEN' ) ) {
-	define( 'WCMS_MOODLE_TOKEN', '' );
-}
-
-/**
- * URL de login de Moodle (puede diferir del subdominio de la API).
- * Definir en wp-config.php:
- *   define( 'WCMS_MOODLE_LOGIN_URL', 'https://onlineakademie.megemit.org/login/?lang=de' );
- */
-if ( ! defined( 'WCMS_MOODLE_LOGIN_URL' ) ) {
-	define( 'WCMS_MOODLE_LOGIN_URL', '' );
-}
-
-/**
- * Token secreto para el webhook de finalización de curso.
- * Definir en wp-config.php:
- *   define( 'WCMS_COMPLETION_SECRET', 'un_token_aleatorio_seguro' );
- */
-if ( ! defined( 'WCMS_COMPLETION_SECRET' ) ) {
-	define( 'WCMS_COMPLETION_SECRET', '' );
-}
-
-/**
- * URL del Prämienshop para el botón en el email de felicitación.
- * Definir en wp-config.php o dejar el valor por defecto.
- *   define( 'WCMS_COUPON_SHOP_URL', 'https://megemit.org/produktkategorie/mdlc/' );
- */
-if ( ! defined( 'WCMS_COUPON_SHOP_URL' ) ) {
-	define( 'WCMS_COUPON_SHOP_URL', 'https://megemit.org/produktkategorie/mdlc/' );
-}
+require_once __DIR__ . '/config.php';
 
 final class WC_Moodle_Sync {
 

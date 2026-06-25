@@ -2,6 +2,59 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [basel-child webhook-filters] — 2026-06-25
+
+### Changed — Tema `basel-child` (`inc/woocommerce/`)
+
+- **URL de factura PDF en el payload del webhook de pedidos** — nuevo filtro `woocommerce_webhook_payload` (`webhook-filters.php`) que añade la clave `invoice_pdf_url` al payload enviado al webhook de pedidos (`vpsbridge.dimint.com/webhook/woocommerce/de`). Solo aplica a `resource = order`.
+- **Endpoint propio de factura** (`invoice-endpoint.php`, nuevo) — sirve el PDF vía `admin-ajax.php?action=mgmit_invoice_pdf&order_id=X&token=Y`. El `token` es un HMAC-SHA256 firmado con la constante `INVOICE_SECRET` (nuevo `inc/woocommerce/config.php`, junto con `WEBHOOK_NEW_ORDER_TTL`), independiente de sesión/login. Se descartó usar el sistema nativo de `access_key` del plugin "PDF Invoices & Packing Slips" porque en modo `logged_in` (ajuste activo en el sitio) el enlace solo es válido para la misma sesión que lo generó — no sirve para un payload reenviado a terceros (HubSpot vía vpsbridge).
+
+---
+
+## [swpm-expiry-reminders 1.1.0] — 2026-06-18
+
+### Changed — Plugin `swpm-expiry-reminders`
+
+- **Cálculo de días normalizado a medianoche** — se comparan `$today_midnight` y `$expiry_midnight` (usando `strtotime( date('Y-m-d', ...) . ' 00:00:00' )`) en lugar de timestamps brutos, eliminando desfases de ±1 día especialmente en niveles de tipo Annual Fixed Date.
+- **Scope por nivel de membresía** — nueva opción `swpm_expiry_reminder_scope` (`all` / `specific`). Cuando se selecciona `specific`, la opción `swpm_expiry_reminder_level_ids` almacena los IDs de los niveles a procesar. En el cron se aplica intersección entre los niveles con expiración configurada y los seleccionados.
+- **Admin UI actualizada** — sección "Apply To" con radio buttons y lista de checkboxes de los niveles SWPM (obtenidos de `swpm_membership_tbl`), con toggle JS vanilla sin dependencia de jQuery.
+
+---
+
+## [swpm-expiry-reminders 1.0.0] — 2026-06-17
+
+### Added — Nuevo plugin `swpm-expiry-reminders`
+
+Plugin standalone que extiende Simple WP Membership con recordatorios de caducidad de membresía enviados por email.
+
+- Días de antelación configurables (por defecto: 45, 30, 15). Se pueden especificar múltiples valores separados por coma.
+- Plantilla de email editable con `wp_editor` (Visual + Text). Plantilla por defecto en alemán.
+- Variables dinámicas: `{first_name}`, `{last_name}`, `{email}`, `{membership_level}`, `{expiry_date}`, `{days_remaining}`, `{renewal_url}`.
+- URL de página de renovación configurable desde el admin.
+- Remitente (nombre + email) personalizable.
+- Anti-duplicado por usuario: flag `swpm_expiry_reminder_{N}` en `wp_usermeta`; se limpia automáticamente al renovar vía hook `swpm_payment_ipn_processed`.
+- Enganchado al cron diario nativo de SWPM (`swpm_daily_cron_event`); procesa miembros activos en lotes de 100.
+- La fecha de expiración se obtiene de la configuración de recurrencia del nivel de membresía via `SwpmUtils::get_expiration_timestamp()` (soporta DAYS, WEEKS, MONTHS, YEARS, FIXED_DATE, ANNUAL_FIXED_DATE).
+- Panel de configuración en **WP Membership → Expiry Reminders** (submenu bajo `simple_wp_membership`).
+- Rutas: `wp-content/plugins/swpm-expiry-reminders/swpm-expiry-reminders.php`, `views/admin-settings.php`.
+
+---
+
+## [wc-moodle-sync 1.3.0] — 2026-06-25
+
+### Added — Plugin `wc-moodle-sync`
+
+- **`config.php`** — nuevo archivo de configuración local del plugin (fuera de `wp-config.php`): centraliza `WCMS_MOODLE_API_URL`, `WCMS_MOODLE_TOKEN`, `WCMS_MOODLE_LOGIN_URL`, `WCMS_COMPLETION_SECRET`, `WCMS_COUPON_SHOP_URL`, y las nuevas `WCMS_WELCOME_EMAIL_CC`, `WCMS_SEND_CERTIFICATE`, `WCMS_SEND_COUPON`.
+- **CC en emails al alumno** — los tres emails (`send_welcome`, `send_certificate`, `send_course_completion`) añaden cabeceras `Cc:` por cada dirección válida en `WCMS_WELCOME_EMAIL_CC`.
+- **Toggles de envío** — `WCMS_SEND_CERTIFICATE` y `WCMS_SEND_COUPON` permiten desactivar la generación/envío de certificado PDF y cupón descuento sin tocar código.
+
+### Changed — Plugin `wc-moodle-sync`
+
+- **Email de bienvenida/matriculación traducido al alemán** — `build_html()` en `class-wcms-mailer.php` estaba en español; ahora coherente en idioma con los otros dos emails del plugin (certificado y cupón, que ya estaban en alemán).
+- Documentado en `README.md` que el endpoint `course-complete` está operativo en WordPress pero pendiente de implementar el lado Moodle (event observer / plugin de webhooks) que lo invoque automáticamente.
+
+---
+
 ## [wc-moodle-sync 1.2.0] — 2026-06-10
 
 ### Added — Plugin `wc-moodle-sync`

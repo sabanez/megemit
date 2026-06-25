@@ -1,6 +1,6 @@
 # WooCommerce & Moodle Sync
 
-Versión: 1.2.0 — PHP 7.4+, WooCommerce 5+
+Versión: 1.3.0 — PHP 7.4+, WooCommerce 5+
 
 Matricula automáticamente a compradores de WooCommerce en cursos Moodle de forma asíncrona. Genera cupones de descuento al finalizar un curso y certificados PDF al aprobar un examen.
 
@@ -16,7 +16,9 @@ Matricula automáticamente a compradores de WooCommerce en cursos Moodle de form
 3. Generar un **Token** para un usuario administrador.
 4. Asegurarse de que los cursos tienen habilitado **Matriculación Manual**.
 
-### 2. WordPress (`wp-config.php`)
+### 2. WordPress (`wc-moodle-sync/config.php`)
+
+Toda la configuración del plugin vive en `config.php`, en la raíz del propio plugin (no en `wp-config.php`):
 
 ```php
 define( 'WCMS_MOODLE_API_URL', 'https://tu-moodle.com/webservice/rest/server.php' );
@@ -28,6 +30,13 @@ define( 'WCMS_COMPLETION_SECRET', 'un_token_aleatorio_seguro' );
 
 // URL del Prämienshop para el botón del email de felicitación (opcional)
 define( 'WCMS_COUPON_SHOP_URL', 'https://megemit.org/produktkategorie/mdlc/' );
+
+// Direcciones en copia (CC) para los emails al alumno (vacío = sin copia)
+define( 'WCMS_WELCOME_EMAIL_CC', 'persona1@megemit.org,persona2@megemit.org' );
+
+// Activar/desactivar certificado PDF (exam_passed) y cupón (course_completed)
+define( 'WCMS_SEND_CERTIFICATE', true );
+define( 'WCMS_SEND_COUPON', true );
 ```
 
 ### 3. Productos en WooCommerce
@@ -47,6 +56,8 @@ Crear en **WooCommerce > Productos > Categorías** una categoría con nombre exa
 ---
 
 ## Webhook de Moodle
+
+> ⚠️ **PENDIENTE DE PROGRAMAR (lado Moodle):** todo lo descrito en esta sección está implementado y operativo en WordPress — el endpoint REST, la generación de cupón/certificado y el envío de los emails funcionan ya si se les hace una llamada válida (probado manualmente con `curl`, ver más abajo). **Lo que falta es la pieza en Moodle** que detecte los eventos `course_completed` y `exam_passed` (aprobar el quiz) y haga el POST automático hacia este endpoint con el `WCMS_COMPLETION_SECRET` correspondiente. Sin esa pieza, nadie llama al endpoint y no se envía ningún cupón ni certificado de forma automática. Posibles vías a evaluar cuando se aborde: plugin de Moodle de tipo "Webhooks/Event Observer" de terceros, o un observer de eventos personalizado (`course_completed`, `mod_quiz\event\attempt_submitted`) que dispare el `curl`/HTTP POST.
 
 El plugin expone un endpoint REST que Moodle debe llamar en dos eventos:
 
@@ -113,7 +124,8 @@ curl -X POST https://tu-sitio.com/wp-json/wc-moodle-sync/v1/course-complete \
 
 ```
 wc-moodle-sync/
-├── wc-moodle-sync.php                  Bootstrap, constantes, singleton principal
+├── wc-moodle-sync.php                  Bootstrap, carga config.php, singleton principal
+├── config.php                          Configuración local: Moodle, secretos, CC emails, toggles
 ├── includes/
 │   ├── class-wcms-scheduler.php        Encola y ejecuta la tarea asíncrona de matriculación
 │   ├── class-wcms-moodle-api.php       Wrapper HTTP para la API REST de Moodle
@@ -132,6 +144,6 @@ wc-moodle-sync/
 ## Notas
 
 - El rol asignado en Moodle es `5` (Estudiante). Modificar `roleid` en `class-wcms-moodle-api.php` si difiere.
-- Las credenciales y el token del webhook **no se almacenan en BD** — van en `wp-config.php`.
+- Las credenciales y el token del webhook **no se almacenan en BD** — van en `config.php`, dentro de la carpeta del plugin.
 - Los certificados PDF se generan sin dependencias externas (sin Ghostscript ni ImageMagick).
 - Compatible con PHP 7.4 y superior.
