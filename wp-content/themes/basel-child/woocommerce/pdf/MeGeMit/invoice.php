@@ -38,7 +38,8 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 			<?php
 			$billing_first   = $this->order->get_billing_first_name();
 			$billing_last    = $this->order->get_billing_last_name();
-			$billing_name    = trim( $billing_first . ' ' . $billing_last );
+			$billing_anrede  = $this->order->get_meta( '_anrede' );
+			$billing_name    = trim( ( $billing_anrede ? $billing_anrede . ' ' : '' ) . $billing_first . ' ' . $billing_last );
 			$billing_company = $this->order->get_billing_company();
 
 			$address_fields = array(
@@ -162,7 +163,20 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 		<?php foreach ( $this->get_woocommerce_totals() as $key => $total ) : ?>
 		<tr class="<?php echo esc_attr( $key ); ?>">
 			<th><?php echo esc_html( $total['label'] ); ?></th>
-			<td><?php echo esc_html( $total['value'] ); ?></td>
+			<td><?php
+			if ( 'order_total' === $key ) {
+				echo wp_kses_post( wc_price( $this->order->get_total(), array( 'currency' => $this->order->get_currency() ) ) );
+			} else {
+				echo esc_html( $total['value'] );
+			}
+			?></td>
+		</tr>
+		<?php endforeach; ?>
+		<?php foreach ( $this->order->get_tax_totals() as $tax ) : ?>
+		<?php $tax_percent = WC_Tax::get_rate_percent_value( $tax->rate_id ); ?>
+		<tr class="tax-rate-row">
+			<th>Impuesto</th>
+			<td><?php echo esc_html( $tax_percent . ' %' ); ?></td>
 		</tr>
 		<?php endforeach; ?>
 	</tfoot>
@@ -187,10 +201,9 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 
 <!-- INSTRUCCIÓN DE PAGO: pdf24_10 → 9.6pt regular -->
 <?php
-$totals_data   = $this->get_woocommerce_totals();
-$total_display = ! empty( $totals_data['order_total']['value'] ) ? $totals_data['order_total']['value'] : '';
+$total_display = wc_price( $this->order->get_total(), array( 'currency' => $this->order->get_currency() ) );
 ?>
-<p class="payment-instruction">Bitte überweisen sie den Betrag von <?php echo esc_html( $total_display ); ?> unter Angabe der Rechnungsnummer auf eines der unten angegeben Konten.</p>
+<p class="payment-instruction">Bitte überweisen sie den Betrag von <?php echo wp_kses_post( $total_display ); ?> unter Angabe der Rechnungsnummer auf eines der unten angegeben Konten.</p>
 
 <!-- DATOS BANCARIOS: pdf24_07 → 9.6pt bold, dos columnas -->
 <table class="bank-table">
