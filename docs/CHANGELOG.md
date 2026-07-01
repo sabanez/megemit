@@ -2,6 +2,17 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [basel-child pdf-invoice] — 2026-07-01
+
+### Changed — Tema `basel-child` (`woocommerce/pdf/MeGeMit/invoice.php`)
+
+- **Tratamiento del cliente** — se muestra el campo `_anrede` (Dr., Dra., etc.) delante del nombre del comprador en el bloque de dirección de factura. Se recupera via `$this->order->get_meta('_anrede')`.
+- **Tipo de impuesto en totales** — se añade una fila "Impuesto X %" al final de la tabla de totales usando `$this->order->get_tax_totals()` y `WC_Tax::get_rate_percent_value( $tax->rate_id )`. Necesario porque con `woocommerce_tax_display_cart = incl` WooCommerce no genera filas de impuesto separadas en `get_order_item_totals()`.
+- **Eliminación de nota de impuesto en el total** — la fila `order_total` ahora usa `wc_price( $this->order->get_total() )` en lugar de `get_formatted_order_total()`, evitando que aparezca el texto `(includes MwSt. XX,XX €)` entre paréntesis.
+- **Instrucción de pago sin importe de impuesto** — la línea "Bitte überweisen…" usa también `wc_price()` directo, eliminando la misma nota parentética.
+
+---
+
 ## [basel-child webhook-filters] — 2026-06-25
 
 ### Changed — Tema `basel-child` (`inc/woocommerce/`)
