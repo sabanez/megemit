@@ -2,6 +2,17 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [basel-child swpm-woo-sync] — 2026-07-02
+
+### Added — Tema `basel-child` (`functions.php`)
+
+Permite que clientes WooCommerce (email existente en `wp_users` pero sin cuenta SWPM) se registren en Simple WP Membership vía el Form Builder de SWPM.
+
+- **Validación de email duplicado en SWPM** (`mgmit_swpm_validate_email_not_in_swpm`) — filter en `swpm_validate_registration_form_submission`. Corrige el bug del form builder (`AND user_name != ''`) haciendo una query directa a `wpgr_swpm_members_tbl` sin esa condición. Bloquea el registro si el email ya existe en SWPM; permite el registro si solo existe en `wp_users`.
+- **Sincronización del WP user existente** (`mgmit_swpm_sync_wp_user_on_registration`) — action en `swpm_front_end_registration_complete_fb` (form builder) y `swpm_front_end_registration_complete_user_data` (formulario estándar). Tras el registro SWPM exitoso actualiza en el WP user: `user_login` y `user_nicename` (via `$wpdb->update` directo + `clean_user_cache`), `user_pass`, `first_name`, `last_name` y `display_name`. No modifica administradores.
+
+---
+
 ## [basel-child pdf-invoice] — 2026-07-01
 
 ### Changed — Tema `basel-child` (`woocommerce/pdf/MeGeMit/invoice.php`)

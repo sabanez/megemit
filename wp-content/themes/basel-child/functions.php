@@ -1118,6 +1118,7 @@ function mgmit_block_checkout_for_guests() {
     }
 }
 
+
 // Weiter-zur-Kasse-Button ersetzen durch Hinweismeldung
 remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
 add_action( 'woocommerce_proceed_to_checkout', 'mgmit_guest_checkout_notice', 20 );
@@ -1130,5 +1131,99 @@ function mgmit_guest_checkout_notice() {
     echo 'Unsere Aus- und Fortbildungsangebote richten sich exklusiv an Angehörige aus dem Gesundheitsbereich. Bitte registrieren Sie sich vorab in unserem Fachkreisbereich um eine Bestellung abschließen zu können.';
     echo '<a href="/fachkreisbereich" class="btn btn-primary btn-color-alt" style="margin-top: 10px;border-radius:6px">Registrieren</a>';
     echo '</div>';
-    
 }
+
+// =============================================================================
+// SWPM: registro para clientes WooCommerce (email existe en WP pero no en SWPM)
+// 1. Bloquea emails ya registrados en SWPM (corrige bug del form builder).
+// 2. Actualiza el WP user existente con los datos del formulario SWPM.
+// =============================================================================
+
+// Validación: bloquea si el email ya existe en SWPM
+function mgmit_swpm_validate_email_not_in_swpm( $error ) {
+    if ( ! empty( $error ) ) {
+        return $error; // ya hay otro error, no pisar
+    }
+
+    // El form builder usa name="swpm-{id}" — buscamos el campo email por type
+    $email = '';
+    foreach ( $_POST as $key => $value ) {
+        if ( strpos( $key, 'swpm-' ) === 0 && is_email( sanitize_email( $value ) ) ) {
+            $email = sanitize_email( $value );
+            break;
+        }
+    }
+
+    if ( empty( $email ) ) {
+        return $error;
+    }
+
+    global $wpdb;
+    $exists = $wpdb->get_var( $wpdb->prepare(
+        "SELECT COUNT(member_id) FROM {$wpdb->prefix}swpm_members_tbl WHERE email = %s",
+        $email
+    ) );
+
+    if ( $exists > 0 ) {
+        return SwpmUtils::_( 'Email is already used.' ) . ' (' . $email . ')';
+    }
+
+    return $error;
+}
+add_filter( 'swpm_validate_registration_form_submission', 'mgmit_swpm_validate_email_not_in_swpm' );
+
+// Post-registro: actualiza WP user existente con los datos del formulario
+function mgmit_swpm_sync_wp_user_on_registration( $data ) {
+    if ( empty( $data['email'] ) ) {
+        return;
+    }
+
+    $wp_user = get_user_by( 'email', sanitize_email( $data['email'] ) );
+    if ( ! $wp_user ) {
+        return;
+    }
+
+    if ( in_array( 'administrator', (array) $wp_user->roles, true ) ) {
+        return;
+    }
+
+    global $wpdb;
+
+    // user_login no se puede cambiar con wp_update_user, requiere update directo
+    if ( ! empty( $data['user_name'] ) ) {
+        $new_login = sanitize_user( $data['user_name'], true );
+        if ( $new_login !== $wp_user->user_login ) {
+            $wpdb->update(
+                $wpdb->users,
+                array( 'user_login' => $new_login, 'user_nicename' => sanitize_title( $new_login ) ),
+                array( 'ID' => $wp_user->ID )
+            );
+            clean_user_cache( $wp_user->ID );
+        }
+    }
+
+    $update = array( 'ID' => $wp_user->ID );
+
+    if ( ! empty( $data['plain_password'] ) ) {
+        $update['user_pass'] = $data['plain_password'];
+    }
+    if ( ! empty( $data['first_name'] ) ) {
+        $update['first_name'] = sanitize_text_field( $data['first_name'] );
+    }
+    if ( ! empty( $data['last_name'] ) ) {
+        $update['last_name'] = sanitize_text_field( $data['last_name'] );
+    }
+    if ( ! empty( $data['first_name'] ) || ! empty( $data['last_name'] ) ) {
+        $update['display_name'] = trim(
+            ( ! empty( $data['first_name'] ) ? $data['first_name'] : '' ) .
+            ' ' .
+            ( ! empty( $data['last_name'] ) ? $data['last_name'] : '' )
+        );
+    }
+
+    if ( count( $update ) > 1 ) {
+        wp_update_user( $update );
+    }
+}
+add_action( 'swpm_front_end_registration_complete_fb', 'mgmit_swpm_sync_wp_user_on_registration' );
+add_action( 'swpm_front_end_registration_complete_user_data', 'mgmit_swpm_sync_wp_user_on_registration' );
