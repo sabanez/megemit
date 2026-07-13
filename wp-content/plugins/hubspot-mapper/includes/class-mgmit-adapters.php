@@ -150,7 +150,8 @@ class MGMIT_Mapper_Adapters {
             }
             $props[$hs_prop] = $value;
 
-            if (($email_field !== '' && $wp_field === $email_field) || $hs_prop === 'email') {
+            $parsed_prop = class_exists('MGMIT_HS_Forms') ? MGMIT_HS_Forms::parse_prop_key($hs_prop) : array('name' => $hs_prop);
+            if (($email_field !== '' && $wp_field === $email_field) || $parsed_prop['name'] === 'email') {
                 $email = $value;
             }
         }
@@ -172,7 +173,8 @@ class MGMIT_Mapper_Adapters {
                 continue;
             }
             if ($sf_append) {
-                $append_fields[] = array('hs_prop' => $sf_prop, 'value' => $sf_value);
+                $parsed_sf = class_exists('MGMIT_HS_Forms') ? MGMIT_HS_Forms::parse_prop_key($sf_prop) : array('name' => $sf_prop);
+                $append_fields[] = array('hs_prop' => $parsed_sf['name'], 'value' => $sf_value);
             } else {
                 $props[$sf_prop] = $sf_value;
             }

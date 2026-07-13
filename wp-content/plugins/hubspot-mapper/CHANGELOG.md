@@ -1,5 +1,31 @@
 # Changelog — HubSpot Mapper
 
+## [2.4.0] — 2026-07-13
+
+### Añadido
+- **Soporte multi-objeto en el mapeo de propiedades HubSpot:** las propiedades ahora admiten el formato `{objeto}-{propiedad}` (ej: `contact-email`, `company-name`, `deal-dealname`). Objetos soportados: `contact` (0-1), `company` (0-2), `deal` (0-3), `ticket` (0-5).
+- Helper público `MGMIT_HS_Forms::parse_prop_key($key)`: descompone la clave en `objectTypeId` y `name`; si no hay prefijo de objeto reconocido, aplica fallback a `contact` para retrocompatibilidad total con mapeos existentes.
+
+### Corregido
+- **`submit()` enviaba todos los campos al objeto `contact` (`0-1`) de forma hardcodeada:** ahora cada campo lleva su `objectTypeId` correcto derivado del prefijo del nombre de propiedad.
+- `process()`: la clasificación enum y la resolución de valores (`resolve_enum_value`) ahora usan el nombre de propiedad sin prefijo para consultar la API de HubSpot.
+- `handle()` en adaptadores: la detección del campo email ahora reconoce tanto `email` como `contact-email`.
+- `append_property` para campos estáticos con `append=true`: el nombre de propiedad se limpia de prefijo antes de enviarse a la CRM API.
+- Validación `has_email` en `ajax_save_mapping`: acepta `contact-email` además de `email`.
+
+### UI
+- Placeholder de la columna "Propiedad HubSpot" actualizado a `contact-firstname` para ilustrar el nuevo formato.
+- Cabecera de la columna muestra el formato esperado: `objeto-propiedad`.
+
+---
+
+## [2.3.3] — 2026-06-11
+
+### Corregido
+- **Creación de formulario fallaba si algún campo no existía como propiedad en HubSpot:** `create_form()` ahora crea el formulario únicamente con el campo `email` (siempre existe en HubSpot) y a continuación llama a `update_form_fields()` para añadir el resto de campos de forma incremental. Los campos que no existan en HubSpot fallan solo en esa llamada sin bloquear la creación del formulario. Elimina la necesidad de mapear primero solo campos válidos y volver a guardar.
+
+---
+
 ## [2.3.2] — 2026-06-05
 
 ### Añadido

@@ -382,7 +382,7 @@ class MGMIT_Mapper_Admin_UI {
                                     <thead>
                                         <tr>
                                             <th style="width:46%;">Campo WordPress <small style="font-weight:400;display:block;color:#666;">(atributo <code>name</code>)</small></th>
-                                            <th style="width:46%;">Propiedad HubSpot <small style="font-weight:400;display:block;color:#666;">(nombre de la propiedad)</small></th>
+                                            <th style="width:46%;">Propiedad HubSpot <small style="font-weight:400;display:block;color:#666;">(formato: <code>objeto-propiedad</code>, ej: <code>contact-email</code>)</small></th>
                                             <th style="width:8%;"></th>
                                         </tr>
                                     </thead>
@@ -391,7 +391,7 @@ class MGMIT_Mapper_Admin_UI {
                                             <?php foreach ($fields as $wp_field => $hs_prop): ?>
                                             <tr class="mgmit-field-row">
                                                 <td><input type="text" class="mgmit-wp-field widefat code" value="<?php echo esc_attr($wp_field); ?>" placeholder="swpm-472"></td>
-                                                <td><input type="text" class="mgmit-hs-prop widefat code" value="<?php echo esc_attr($hs_prop); ?>" placeholder="firstname"></td>
+                                                <td><input type="text" class="mgmit-hs-prop widefat code" value="<?php echo esc_attr($hs_prop); ?>" placeholder="contact-firstname"></td>
                                                 <td style="text-align:center;">
                                                     <button type="button" class="button button-small mgmit-remove-row" title="Eliminar fila" style="color:#b32d2e;border-color:#b32d2e;">&#10005;</button>
                                                 </td>
@@ -525,8 +525,13 @@ class MGMIT_Mapper_Admin_UI {
                 wp_send_json_error('El campo "Nombre en HubSpot" es obligatorio para que aparezca en Marketing → Formularios.');
             }
 
+            $hs_props_bare = array();
+            foreach (array_values($mapping) as $hs_prop_val) {
+                $parsed_val = class_exists('MGMIT_HS_Forms') ? MGMIT_HS_Forms::parse_prop_key($hs_prop_val) : array('name' => $hs_prop_val);
+                $hs_props_bare[] = $parsed_val['name'];
+            }
             $has_email = ($email_field !== '' && isset($mapping[$email_field]))
-                || in_array('email', array_values($mapping), true);
+                || in_array('email', $hs_props_bare, true);
             if (!$has_email) {
                 wp_send_json_error('Falta el email: indica el "Campo Email" (debe existir en el mapeo) o mapea un campo a la propiedad HubSpot "email".');
             }

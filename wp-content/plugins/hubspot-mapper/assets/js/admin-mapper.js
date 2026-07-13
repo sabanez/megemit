@@ -78,7 +78,7 @@
     $('#mgmit-add-row').on('click', function () {
         var row = '<tr class="mgmit-field-row">' +
             '<td><input type="text" class="mgmit-wp-field widefat code" placeholder="swpm-472"></td>' +
-            '<td><input type="text" class="mgmit-hs-prop widefat code" placeholder="firstname"></td>' +
+            '<td><input type="text" class="mgmit-hs-prop widefat code" placeholder="contact-firstname"></td>' +
             '<td style="text-align:center;">' +
             '<button type="button" class="button button-small mgmit-remove-row" style="color:#b32d2e;border-color:#b32d2e;">&#10005;</button>' +
             '</td></tr>';
