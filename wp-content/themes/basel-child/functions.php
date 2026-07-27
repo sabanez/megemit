@@ -1,5 +1,15 @@
 <?php
 
+// Oculta el header de Basel en la página con slug "wiederkehrende-infektionen"
+if ( ! function_exists( 'basel_needs_header' ) ) {
+	function basel_needs_header() {
+		if ( is_page( 'wiederkehrende-infektionen' ) ) {
+			return false;
+		}
+		return ( ! basel_maintenance_page() );
+	}
+}
+
 if (!function_exists('write_log')) {
 
     function write_log($log) {
