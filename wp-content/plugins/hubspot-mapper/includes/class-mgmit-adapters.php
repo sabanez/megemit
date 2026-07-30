@@ -86,6 +86,17 @@ class MGMIT_Mapper_Adapters {
                 'args'     => 2,
                 'resolver' => array('MGMIT_Mapper_Adapters', 'resolve_um'),
             ),
+            'profile_builder' => array(
+                'label'    => 'Profile Builder',
+                'hook'     => 'wppb_register_success',
+                // Prioridad baja a propósito: el tema (functions.php) engancha
+                // 'pb_force_redirect_after_registration' en prioridad 10 y hace
+                // wp_redirect()+exit, lo que corta la ejecución de callbacks
+                // posteriores. Debemos ir antes que ese exit.
+                'priority' => 5,
+                'args'     => 3,
+                'resolver' => array('MGMIT_Mapper_Adapters', 'resolve_profile_builder'),
+            ),
         );
 
         return apply_filters('mgmit_mapper_adapters', $defaults);
@@ -218,7 +229,10 @@ class MGMIT_Mapper_Adapters {
      */
     private static function flatten($value) {
         if (is_array($value)) {
-            $value = implode(', ', array_map('strval', $value));
+            // HubSpot espera ';' como separador de valores múltiples en
+            // propiedades tipo checkbox/select (ver resolve_enum_value()
+            // en class-mgmit-hs-forms.php, que separa por ';').
+            $value = implode(';', array_map('strval', $value));
         }
         return sanitize_text_field((string) $value);
     }
@@ -286,6 +300,20 @@ class MGMIT_Mapper_Adapters {
     public static function resolve_um($hook_args) {
         if (isset($hook_args[1]) && is_array($hook_args[1])) {
             return $hook_args[1];
+        }
+        return self::post_data();
+    }
+
+    /**
+     * Profile Builder: wppb_register_success($_REQUEST, $form_name, $user_id).
+     * Los datos enviados llegan en el primer argumento ($_REQUEST, sin unslash).
+     *
+     * @param array $hook_args
+     * @return array
+     */
+    public static function resolve_profile_builder($hook_args) {
+        if (isset($hook_args[0]) && is_array($hook_args[0])) {
+            return wp_unslash($hook_args[0]);
         }
         return self::post_data();
     }

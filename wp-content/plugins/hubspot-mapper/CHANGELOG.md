@@ -1,5 +1,16 @@
 # Changelog — HubSpot Mapper
 
+## [Sin publicar] — 2026-07-30
+
+### Añadido
+- **Adaptador para Profile Builder** (`wppb_register_success`): permite mapear registros creados con el plugin Profile Builder. Se registra con `priority => 5` intencionadamente baja, ya que el tema engancha `pb_force_redirect_after_registration` en prioridad 10 con `wp_redirect()+exit`, cortando cualquier callback posterior si no se ejecuta antes.
+- `MGMIT_Mapper_Adapters::resolve_profile_builder()`: resuelve los datos desde `$_REQUEST` (vía `wp_unslash()`), con fallback a `post_data()`.
+
+### Corregido
+- **`flatten()` usaba `, ` como separador para valores múltiples:** ahora usa `;`, alineado con `resolve_enum_value()` en `class-mgmit-hs-forms.php`, que espera ese separador en propiedades checkbox/select de HubSpot.
+
+---
+
 ## [2.4.0] — 2026-07-13
 
 ### Añadido
