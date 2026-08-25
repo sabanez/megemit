@@ -184,7 +184,11 @@ class MGMIT_Mapper_Adapters {
                 continue;
             }
             if ($sf_append) {
-                $parsed_sf = class_exists('MGMIT_HS_Forms') ? MGMIT_HS_Forms::parse_prop_key($sf_prop) : array('name' => $sf_prop);
+                $parsed_sf = class_exists('MGMIT_HS_Forms') ? MGMIT_HS_Forms::parse_prop_key($sf_prop) : array('name' => $sf_prop, 'objectTypeId' => '0-1');
+                if ($parsed_sf['objectTypeId'] !== '0-1') {
+                    error_log('[hubspot-mapper] Campo estático "' . $sf_prop . '" con append=true omitido: "Concatenar" solo soporta el objeto contact.');
+                    continue;
+                }
                 $append_fields[] = array('hs_prop' => $parsed_sf['name'], 'value' => $sf_value);
             } else {
                 $props[$sf_prop] = $sf_value;

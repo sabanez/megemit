@@ -3,7 +3,7 @@
  * Plugin Name: HubSpot Mapper
  * Plugin URI: https://megemit.org
  * Description: Envío validado de formularios a HubSpot (CRM Contacts) desde el hook de éxito server-side del plugin de formularios. Bloquea LeadIn; solo envía envíos confirmados. No requiere crear un formulario en HubSpot.
- * Version: 2.4.0
+ * Version: 2.4.5
  * Author: MeGeMIT Technical Team
  * Text Domain: hubspot-mapper
  * Requires PHP: 7.4

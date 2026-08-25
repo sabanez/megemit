@@ -427,9 +427,9 @@ class MGMIT_Mapper_Admin_UI {
                                 <table class="widefat striped" id="mgmit-static-fields-table" style="max-width:640px;">
                                     <thead>
                                         <tr>
-                                            <th style="width:40%;">Propiedad HubSpot <small style="font-weight:400;display:block;color:#666;">(nombre de la propiedad)</small></th>
+                                            <th style="width:40%;">Propiedad HubSpot <small style="font-weight:400;display:block;color:#666;">(formato: <code>objeto-propiedad</code>, ej: <code>deal-dealname</code>; sin prefijo = contact)</small></th>
                                             <th style="width:40%;">Valor fijo</th>
-                                            <th style="width:12%;text-align:center;">Concatenar <small style="font-weight:400;display:block;color:#666;">checkbox múltiple</small></th>
+                                            <th style="width:12%;text-align:center;">Concatenar <small style="font-weight:400;display:block;color:#666;">checkbox múltiple, solo objeto contact</small></th>
                                             <th style="width:8%;"></th>
                                         </tr>
                                     </thead>
@@ -437,7 +437,7 @@ class MGMIT_Mapper_Admin_UI {
                                         <?php if (!empty($static_fields)): ?>
                                             <?php foreach ($static_fields as $sf): ?>
                                             <tr class="mgmit-static-field-row">
-                                                <td><input type="text" class="mgmit-sf-prop widefat code" value="<?php echo esc_attr(isset($sf['hs_prop']) ? $sf['hs_prop'] : ''); ?>" placeholder="hs_lead_source"></td>
+                                                <td><input type="text" class="mgmit-sf-prop widefat code" value="<?php echo esc_attr(isset($sf['hs_prop']) ? $sf['hs_prop'] : ''); ?>" placeholder="deal-dealname"></td>
                                                 <td><input type="text" class="mgmit-sf-value widefat code" value="<?php echo esc_attr(isset($sf['value']) ? $sf['value'] : ''); ?>" placeholder="SWPM"></td>
                                                 <td style="text-align:center;"><input type="checkbox" class="mgmit-sf-append" value="1" <?php checked(!empty($sf['append'])); ?> title="Añadir al valor existente en lugar de sobreescribir"></td>
                                                 <td style="text-align:center;">

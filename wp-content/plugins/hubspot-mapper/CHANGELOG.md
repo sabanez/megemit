@@ -1,5 +1,48 @@
 # Changelog — HubSpot Mapper
 
+## [2.4.5] — 2026-08-14
+
+### Corregido
+- **Fallo en cascada al registrar varios campos nuevos a la vez (fase de fallback uno-a-uno de `update_form_fields()`):** al añadir un campo con éxito, el código seguía usando la copia local (desactualizada) del formulario para el siguiente POST, provocando `412 CONCURRENT_UPDATE_BY_USER` en los campos siguientes de la misma tanda. Esto explicaba por qué, al guardar varios campos estáticos nuevos a la vez, solo el primero llegaba a registrarse. Ahora se usa la respuesta de cada POST exitoso como base para el siguiente, y si aun así llega un 412 (p.ej. por otro envío concurrente real), se refresca el formulario y se reintenta una vez antes de descartar el campo.
+
+### Documentado
+- `hubspot_owner_id` (y cualquier propiedad que HubSpot marque `PROPERTY_DISABLED_IN_FORMS`) no puede enviarse vía Forms API bajo ningún formato: es una restricción de HubSpot, no un bug del plugin. Queda registrado en `hubspot-mapper.log` con el detalle devuelto por HubSpot.
+
+---
+
+## [2.4.4] — 2026-08-14
+
+### Añadido
+- **Log propio del plugin**, independiente de `WP_DEBUG_LOG`: `wp-content/plugins/hubspot-mapper/hubspot-mapper.log`. Necesario porque en el entorno de pruebas actual `WP_DEBUG_LOG` no está activo y no había forma de diagnosticar por qué algunos campos estáticos no llegaban a HubSpot.
+- Logging explícito en `process()` de las props recibidas, los campos finalmente incluidos en el submit y el resultado, y en `ensure_form()` de qué campos se detectan como nuevos a sincronizar.
+
+---
+
+## [2.4.3] — 2026-08-14
+
+### Corregido
+- **Propiedades de objetos no-contact (`company-`, `deal-`, `ticket-`) nunca se registraban de verdad en HubSpot:** al añadir un campo al formulario de HubSpot (`update_form_fields()`/`create_form()`), el `propertyObjectType` se enviaba siempre como `CONTACT` y la resolución de tipos/enum (`get_property_types()`, `resolve_enum_value()`) solo consultaba `crm/v3/properties/contacts`. Para una propiedad que solo existe en Company/Deal/Ticket (p.ej. `company-country_code`), HubSpot rechazaba el registro del campo (visible como `update_form_fields fallback HTTP 400` en el log) y el campo quedaba fuera de la definición del formulario, así que la submission lo enviaba pero HubSpot lo ignoraba.
+- Ahora cada campo (mapeado o estático) se registra con el `propertyObjectType` correcto (`CONTACT`/`COMPANY`/`DEAL`/`TICKET`) según su prefijo, y los tipos/opciones de propiedad se resuelven contra el objeto correspondiente. Mapeos existentes se autoresincronizan en el primer envío tras la actualización.
+
+---
+
+## [2.4.2] — 2026-08-14
+
+### Corregido
+- **Campos estáticos nuevos no llegaban a HubSpot en mapeos ya existentes:** `MGMIT_HS_Forms::ensure_form()` devolvía el `hs_form_guid` cacheado sin volver a llamar a `update_form_fields()`, así que un campo estático (p.ej. `company-country_code`) añadido a un mapeo que ya tenía formulario creado nunca se registraba en la definición del formulario en HubSpot; la submission lo incluía pero HubSpot lo descartaba por no reconocerlo. Ahora se persiste `hs_form_fields_synced` por mapeo y solo se llama a `update_form_fields()` cuando hay campos nuevos respecto a la última sincronización, evitando además una llamada extra a la API en cada envío normal.
+
+---
+
+## [2.4.1] — 2026-08-14
+
+### Añadido
+- **Soporte de prefijo de objeto (`objeto-propiedad`) en campos estáticos:** la UI de "Campos Estáticos" ahora documenta y permite el mismo formato ya soportado en campos mapeados (`contact-`, `company-`, `deal-`, `ticket-`). Ya funcionaba en backend para el modo overwrite; ahora queda expuesto y explicado en el formulario de mapeo.
+
+### Corregido
+- **`append_property()` (checkbox "Concatenar") ignoraba el objeto:** solo soporta la API de Contacts, ya que requiere lookup por email. Ahora `class-mgmit-adapters.php` detecta si un campo estático con `append=true` apunta a un objeto distinto de `contact` y lo omite con log, en vez de concatenar silenciosamente contra el contacto equivocado. La UI avisa de esta limitación al guardar.
+
+---
+
 ## [Sin publicar] — 2026-07-30
 
 ### Añadido

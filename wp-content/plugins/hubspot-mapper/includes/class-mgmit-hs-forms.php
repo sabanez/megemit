@@ -57,19 +57,35 @@ class MGMIT_HS_Forms {
     }
 
     /**
-     * Devuelve un array de nombres de propiedad sin prefijo de objeto.
-     * Elimina duplicados tras el strip.
+     * Etiqueta "propertyObjectType" que exige la Forms API v2 al registrar un campo.
      *
-     * @param array $field_names Lista de claves posiblemente prefijadas.
-     * @return array
+     * @param string $object_type_id
+     * @return string
      */
-    private static function strip_prop_names($field_names) {
-        $result = array();
-        foreach ($field_names as $name) {
-            $parsed   = self::parse_prop_key($name);
-            $result[] = $parsed['name'];
-        }
-        return array_values(array_unique($result));
+    private static function object_type_label($object_type_id) {
+        static $map = array(
+            '0-1' => 'CONTACT',
+            '0-2' => 'COMPANY',
+            '0-3' => 'DEAL',
+            '0-5' => 'TICKET',
+        );
+        return isset($map[$object_type_id]) ? $map[$object_type_id] : 'CONTACT';
+    }
+
+    /**
+     * Segmento de la Properties API (crm/v3/properties/{slug}) para cada objeto.
+     *
+     * @param string $object_type_id
+     * @return string
+     */
+    private static function object_type_slug($object_type_id) {
+        static $map = array(
+            '0-1' => 'contacts',
+            '0-2' => 'companies',
+            '0-3' => 'deals',
+            '0-5' => 'tickets',
+        );
+        return isset($map[$object_type_id]) ? $map[$object_type_id] : 'contacts';
     }
 
     /**
@@ -95,7 +111,9 @@ class MGMIT_HS_Forms {
 
         $mapping_id = isset($mapping['id']) ? $mapping['id'] : '';
 
-        $form_guid = self::ensure_form($mapping_id, $form_name, self::strip_prop_names(array_keys($props)));
+        self::log('process: props recibidas = ' . wp_json_encode($props));
+
+        $form_guid = self::ensure_form($mapping_id, $form_name, array_keys($props));
         if ($form_guid === '') {
             self::log('No se pudo obtener formGuid para "' . $form_name . '".');
             return false;
@@ -113,12 +131,13 @@ class MGMIT_HS_Forms {
         $enum_unsafe = array();    // props enum sin match válido (potencialmente inválidas)
 
         if ($token !== '') {
-            $prop_types = self::get_property_types($token);
             foreach ($props as $prop_name => $value) {
-                $bare = self::parse_prop_key($prop_name);
-                $bare_name = $bare['name'];
+                $bare       = self::parse_prop_key($prop_name);
+                $bare_name  = $bare['name'];
+                $object_id  = $bare['objectTypeId'];
+                $prop_types = self::get_property_types($token, $object_id);
                 if (isset($prop_types[$bare_name]) && in_array($prop_types[$bare_name], array('select', 'checkbox', 'radio'), true) && $value !== '') {
-                    $corrected = self::resolve_enum_value($token, $bare_name, (string) $value);
+                    $corrected = self::resolve_enum_value($token, $bare_name, (string) $value, $object_id);
                     if ($corrected !== false) {
                         $enum_props[$prop_name] = $corrected;
                     } else {
@@ -137,7 +156,9 @@ class MGMIT_HS_Forms {
 
         // Primer intento: safe_props primero, enum al final.
         $ordered_props = array_merge($safe_props, $enum_props);
+        self::log('process: enviando submit con campos = ' . implode(', ', array_keys($ordered_props)));
         $result = self::submit($portal_id, $form_guid, $ordered_props, $hutk, $page_uri);
+        self::log('process: resultado primer submit = ' . ($result ? 'OK' : 'FALLO'));
 
         // Si falló y hay enums potencialmente inválidos: reintentar solo con safe + enums válidos.
         if (!$result && !empty($enum_unsafe)) {
@@ -168,7 +189,20 @@ class MGMIT_HS_Forms {
         foreach ($config as $idx => $m) {
             if (isset($m['id']) && $m['id'] === $mapping_id) {
                 if (!empty($m['hs_form_guid'])) {
-                    return (string) $m['hs_form_guid'];
+                    $guid   = (string) $m['hs_form_guid'];
+                    $synced = (isset($m['hs_form_fields_synced']) && is_array($m['hs_form_fields_synced'])) ? $m['hs_form_fields_synced'] : array();
+                    $new_fields = array_values(array_diff($field_names, $synced));
+
+                    // Solo llamar a HubSpot si hay campos nuevos desde la última sincronización
+                    // (p.ej. un campo estático añadido al mapeo), evitando una llamada extra en cada envío normal.
+                    if (!empty($new_fields)) {
+                        self::log('ensure_form: campos nuevos a sincronizar = ' . implode(', ', $new_fields));
+                        self::update_form_fields($guid, $field_names);
+                        $config[$idx]['hs_form_fields_synced'] = array_values(array_unique(array_merge($synced, $field_names)));
+                        update_option(MGMIT_MAPPER_OPTION, $config);
+                    }
+
+                    return $guid;
                 }
                 break;
             }
@@ -190,7 +224,8 @@ class MGMIT_HS_Forms {
         // Persistir guid en la config del mapeo.
         foreach ($config as $idx => $m) {
             if (isset($m['id']) && $m['id'] === $mapping_id) {
-                $config[$idx]['hs_form_guid'] = $guid;
+                $config[$idx]['hs_form_guid']          = $guid;
+                $config[$idx]['hs_form_fields_synced'] = $field_names;
                 break;
             }
         }
@@ -214,8 +249,6 @@ class MGMIT_HS_Forms {
         if ($token === '') {
             return;
         }
-
-        $prop_types = self::get_property_types($token);
 
         $base = self::get_api_base();
         $response = wp_remote_get(
@@ -249,8 +282,18 @@ class MGMIT_HS_Forms {
             }
         }
 
-        $missing = array_values(array_diff($field_names, $existing));
-        if (empty($missing)) {
+        // Deduplicar por nombre "bare" (un mismo campo de form solo puede tener un nombre),
+        // conservando la primera clave con prefijo de objeto para saber a qué objeto pertenece.
+        $requested = array();
+        foreach ($field_names as $full_name) {
+            $parsed = self::parse_prop_key($full_name);
+            if (!isset($requested[$parsed['name']])) {
+                $requested[$parsed['name']] = $full_name;
+            }
+        }
+
+        $missing_bare = array_values(array_diff(array_keys($requested), $existing));
+        if (empty($missing_bare)) {
             return;
         }
 
@@ -261,12 +304,14 @@ class MGMIT_HS_Forms {
         if (!isset($batch['formFieldGroups']) || !is_array($batch['formFieldGroups'])) {
             $batch['formFieldGroups'] = array();
         }
-        foreach ($missing as $name) {
+        foreach ($missing_bare as $name) {
+            $parsed     = self::parse_prop_key($requested[$name]);
+            $prop_types = self::get_property_types($token, $parsed['objectTypeId']);
             $batch['formFieldGroups'][0]['fields'][] = array(
                 'name'               => $name,
                 'label'              => ucfirst(str_replace('_', ' ', $name)),
                 'fieldType'          => isset($prop_types[$name]) ? $prop_types[$name] : 'text',
-                'propertyObjectType' => 'CONTACT',
+                'propertyObjectType' => self::object_type_label($parsed['objectTypeId']),
                 'required'           => false,
             );
         }
@@ -284,7 +329,7 @@ class MGMIT_HS_Forms {
         );
 
         $batch_code = is_wp_error($batch_response) ? 0 : (int) wp_remote_retrieve_response_code($batch_response);
-        self::log('update_form_fields batch HTTP ' . $batch_code . ' campos: ' . implode(', ', $missing));
+        self::log('update_form_fields batch HTTP ' . $batch_code . ' campos: ' . implode(', ', $missing_bare));
 
         if ($batch_code >= 200 && $batch_code < 300) {
             return; // Todos los campos añadidos en una sola llamada.
@@ -310,32 +355,64 @@ class MGMIT_HS_Forms {
             $form['formFieldGroups'] = array();
         }
 
-        foreach ($missing as $name) {
-            $ft = isset($prop_types[$name]) ? $prop_types[$name] : 'text';
+        foreach ($missing_bare as $name) {
+            $parsed     = self::parse_prop_key($requested[$name]);
+            $prop_types = self::get_property_types($token, $parsed['objectTypeId']);
+            $ft         = isset($prop_types[$name]) ? $prop_types[$name] : 'text';
             $form['formFieldGroups'][0]['fields'][] = array(
                 'name'               => $name,
                 'label'              => ucfirst(str_replace('_', ' ', $name)),
                 'fieldType'          => $ft,
-                'propertyObjectType' => 'CONTACT',
+                'propertyObjectType' => self::object_type_label($parsed['objectTypeId']),
                 'required'           => false,
             );
 
-            $res  = wp_remote_post(
-                $url,
-                array(
-                    'headers' => array(
-                        'Authorization' => 'Bearer ' . $token,
-                        'Content-Type'  => 'application/json',
-                    ),
-                    'body'    => wp_json_encode($form),
-                    'timeout' => 15,
-                )
+            $post_args = array(
+                'headers' => array(
+                    'Authorization' => 'Bearer ' . $token,
+                    'Content-Type'  => 'application/json',
+                ),
+                'body'    => wp_json_encode($form),
+                'timeout' => 15,
             );
+            $res  = wp_remote_post($url, $post_args);
             $code = is_wp_error($res) ? 0 : (int) wp_remote_retrieve_response_code($res);
+
+            // 412: otro proceso modificó el formulario entre nuestro GET y este POST. Refrescar y reintentar una vez.
+            if ($code === 412) {
+                $refresh = wp_remote_get($url, array('headers' => array('Authorization' => 'Bearer ' . $token), 'timeout' => 15));
+                if (!is_wp_error($refresh) && (int) wp_remote_retrieve_response_code($refresh) === 200) {
+                    $refreshed = json_decode(wp_remote_retrieve_body($refresh), true);
+                    if (is_array($refreshed) && isset($refreshed['formFieldGroups'])) {
+                        $refreshed['formFieldGroups'][0]['fields'][] = array(
+                            'name'               => $name,
+                            'label'              => ucfirst(str_replace('_', ' ', $name)),
+                            'fieldType'          => $ft,
+                            'propertyObjectType' => self::object_type_label($parsed['objectTypeId']),
+                            'required'           => false,
+                        );
+                        $post_args['body'] = wp_json_encode($refreshed);
+                        $res  = wp_remote_post($url, $post_args);
+                        $code = is_wp_error($res) ? 0 : (int) wp_remote_retrieve_response_code($res);
+                        if ($code >= 200 && $code < 300) {
+                            $form = $refreshed;
+                        }
+                        self::log('update_form_fields fallback (reintento tras 412) HTTP ' . $code . ' campo: ' . $name);
+                    }
+                }
+            }
+
             self::log('update_form_fields fallback HTTP ' . $code . ' campo: ' . $name . ' fieldType=' . $ft . ($code >= 300 ? ' body=' . wp_remote_retrieve_body($res) : ''));
 
-            if ($code < 200 || $code >= 300) {
-                // Campo inexistente en HubSpot: descartar de $form y continuar con el siguiente.
+            if ($code >= 200 && $code < 300) {
+                // Usar la respuesta (formulario ya actualizado) como base para el siguiente campo,
+                // para no enviar una versión desactualizada y provocar 412 CONCURRENT_UPDATE_BY_USER.
+                $updated_form = json_decode(wp_remote_retrieve_body($res), true);
+                if (is_array($updated_form) && isset($updated_form['formFieldGroups'])) {
+                    $form = $updated_form;
+                }
+            } else {
+                // Campo rechazado por HubSpot (inexistente o no permitido en formularios): descartar y continuar.
                 array_pop($form['formFieldGroups'][0]['fields']);
             }
         }
@@ -456,7 +533,8 @@ class MGMIT_HS_Forms {
         // Añadir el resto de campos (excluir email, ya incluido en la creación).
         if ($guid !== '') {
             $extra = array_values(array_filter($field_names, function ($n) {
-                return $n !== 'email';
+                $parsed = MGMIT_HS_Forms::parse_prop_key($n);
+                return $parsed['name'] !== 'email';
             }));
             if (!empty($extra)) {
                 self::update_form_fields($guid, $extra);
@@ -538,21 +616,22 @@ class MGMIT_HS_Forms {
      *   datetime    → date
      *   bool        → booleancheckbox
      *
-     * @param string $token Access token de HubSpot.
+     * @param string $token          Access token de HubSpot.
+     * @param string $object_type_id Objeto HubSpot (0-1 contact, 0-2 company, 0-3 deal, 0-5 ticket).
      * @return array [prop_name => fieldType]
      */
-    private static function get_property_types($token) {
-        static $cache = null;
-        if ($cache !== null) {
-            return $cache;
+    private static function get_property_types($token, $object_type_id = '0-1') {
+        static $cache = array();
+        if (isset($cache[$object_type_id])) {
+            return $cache[$object_type_id];
         }
         if ($token === '') {
-            $cache = array();
-            return $cache;
+            $cache[$object_type_id] = array();
+            return $cache[$object_type_id];
         }
 
         $response = wp_remote_get(
-            self::get_api_base() . '/crm/v3/properties/contacts',
+            self::get_api_base() . '/crm/v3/properties/' . self::object_type_slug($object_type_id),
             array(
                 'headers' => array('Authorization' => 'Bearer ' . $token),
                 'timeout' => 15,
@@ -560,9 +639,9 @@ class MGMIT_HS_Forms {
         );
 
         if (is_wp_error($response) || (int) wp_remote_retrieve_response_code($response) !== 200) {
-            self::log('get_property_types: no se pudo obtener propiedades. Usando fieldType=text como fallback.');
-            $cache = array();
-            return $cache;
+            self::log('get_property_types: no se pudo obtener propiedades de "' . self::object_type_slug($object_type_id) . '". Usando fieldType=text como fallback.');
+            $cache[$object_type_id] = array();
+            return $cache[$object_type_id];
         }
 
         $data = json_decode(wp_remote_retrieve_body($response), true);
@@ -576,8 +655,8 @@ class MGMIT_HS_Forms {
             }
         }
 
-        $cache = $map;
-        return $cache;
+        $cache[$object_type_id] = $map;
+        return $cache[$object_type_id];
     }
 
     /**
@@ -585,21 +664,24 @@ class MGMIT_HS_Forms {
      * Primero comparación exacta; si no hay match, búsqueda case-insensitive.
      * Para valores múltiples ";" separados, corrige cada parte por separado.
      *
-     * @param string $token     Access token de HubSpot.
-     * @param string $prop_name Nombre de la propiedad HubSpot (enumeration).
-     * @param string $value     Valor o valores ";" separados a resolver.
+     * @param string $token          Access token de HubSpot.
+     * @param string $prop_name      Nombre de la propiedad HubSpot (enumeration).
+     * @param string $value          Valor o valores ";" separados a resolver.
+     * @param string $object_type_id Objeto HubSpot (0-1 contact, 0-2 company, 0-3 deal, 0-5 ticket).
      * @return string|false Valor corregido listo para enviar, o false si ninguna parte tiene match.
      */
-    private static function resolve_enum_value($token, $prop_name, $value) {
+    private static function resolve_enum_value($token, $prop_name, $value, $object_type_id = '0-1') {
         static $options_cache = array();
 
         if ($token === '' || $prop_name === '' || $value === '') {
             return false;
         }
 
-        // Obtener opciones (cacheadas por prop).
-        if (!isset($options_cache[$prop_name])) {
-            $url      = self::get_api_base() . '/crm/v3/properties/contacts/' . rawurlencode($prop_name);
+        $cache_key = $object_type_id . ':' . $prop_name;
+
+        // Obtener opciones (cacheadas por objeto+prop).
+        if (!isset($options_cache[$cache_key])) {
+            $url      = self::get_api_base() . '/crm/v3/properties/' . self::object_type_slug($object_type_id) . '/' . rawurlencode($prop_name);
             $response = wp_remote_get(
                 $url,
                 array(
@@ -608,8 +690,8 @@ class MGMIT_HS_Forms {
                 )
             );
             if (is_wp_error($response) || (int) wp_remote_retrieve_response_code($response) !== 200) {
-                self::log('resolve_enum_value: no se pudo leer propiedad "' . $prop_name . '".');
-                $options_cache[$prop_name] = array();
+                self::log('resolve_enum_value: no se pudo leer propiedad "' . $prop_name . '" de "' . self::object_type_slug($object_type_id) . '".');
+                $options_cache[$cache_key] = array();
             } else {
                 $data = json_decode(wp_remote_retrieve_body($response), true);
                 $opts = array();
@@ -620,11 +702,11 @@ class MGMIT_HS_Forms {
                         }
                     }
                 }
-                $options_cache[$prop_name] = $opts;
+                $options_cache[$cache_key] = $opts;
             }
         }
 
-        $existing = $options_cache[$prop_name];
+        $existing = $options_cache[$cache_key];
         if (empty($existing)) {
             return false;
         }
@@ -685,5 +767,8 @@ class MGMIT_HS_Forms {
 
     private static function log($message) {
         error_log('[hubspot-mapper] ' . $message);
+
+        $line = '[' . gmdate('Y-m-d H:i:s') . ' UTC] ' . $message . "\n";
+        error_log($line, 3, dirname(__DIR__) . '/hubspot-mapper.log');
     }
 }

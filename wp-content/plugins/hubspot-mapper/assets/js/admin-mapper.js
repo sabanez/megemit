@@ -38,14 +38,21 @@
                     fields.push({ wp_field: wp, hs_prop: hs });
                 }
             });
+            var appendNonContactWarned = false;
             $('#mgmit-static-fields-body .mgmit-static-field-row').each(function () {
                 var prop   = $(this).find('.mgmit-sf-prop').val().trim();
                 var val    = $(this).find('.mgmit-sf-value').val().trim();
                 var append = $(this).find('.mgmit-sf-append').is(':checked') ? 1 : 0;
                 if (prop) {
+                    if (append && prop.indexOf('-') !== -1 && prop.split('-')[0] !== 'contact') {
+                        appendNonContactWarned = true;
+                    }
                     staticFields.push({ hs_prop: prop, value: val, append: append });
                 }
             });
+            if (appendNonContactWarned) {
+                showNotice('error', 'La opción "Concatenar" solo funciona con propiedades de contact. Los campos estáticos de otros objetos con "Concatenar" marcado se ignorarán.');
+            }
         }
 
         $.post(MGMIT_Admin.ajaxurl, {
@@ -91,7 +98,7 @@
 
     $('#mgmit-add-static-row').on('click', function () {
         var row = '<tr class="mgmit-static-field-row">' +
-            '<td><input type="text" class="mgmit-sf-prop widefat code" placeholder="hs_lead_source"></td>' +
+            '<td><input type="text" class="mgmit-sf-prop widefat code" placeholder="deal-dealname"></td>' +
             '<td><input type="text" class="mgmit-sf-value widefat code" placeholder="SWPM"></td>' +
             '<td style="text-align:center;"><input type="checkbox" class="mgmit-sf-append" value="1" title="Añadir al valor existente en lugar de sobreescribir"></td>' +
             '<td style="text-align:center;">' +
