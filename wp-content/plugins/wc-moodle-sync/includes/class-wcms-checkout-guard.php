@@ -63,9 +63,9 @@ class WCMS_Checkout_Guard {
 			$moodle_user_id = $api->create_user( $wp_user, $username, $password );
 
 			if ( ! $moodle_user_id ) {
-				$this->logger->error( "Checkout bloqueado: no se pudo crear el usuario {$username} en Moodle. Revisa los logs de la API para más detalle.", self::$log_context );
+				$this->logger->error( "Checkout gesperrt: Der Benutzer {$username} konnte in Moodle nicht angelegt werden. Weitere Informationen findest du in den API-Protokollen.", self::$log_context );
 				wc_add_notice(
-					__( 'No ha sido posible preparar tu acceso a la plataforma de cursos. Por favor, inténtalo de nuevo o contacta con soporte.', 'wc-moodle-sync' ),
+					__( 'Dein Zugang zur Kursplattform konnte nicht eingerichtet werden. Bitte versuche es erneut oder wende dich an den Support.', 'wc-moodle-sync' ),
 					'error'
 				);
 				return;

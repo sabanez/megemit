@@ -12,10 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Conexión a la API REST de Moodle.
  */
 if ( ! defined( 'WCMS_MOODLE_API_URL' ) ) {
-	define( 'WCMS_MOODLE_API_URL', 'https://testakademie.megemit.org/webservice/rest/server.php' );
+	define( 'WCMS_MOODLE_API_URL', 'https://onlineakademie.megemit.org/webservice/rest/server.php' );
 }
 if ( ! defined( 'WCMS_MOODLE_TOKEN' ) ) {
-	define( 'WCMS_MOODLE_TOKEN', '4f6c8ea5e1413527c143e602be3f000c' );
+	define( 'WCMS_MOODLE_TOKEN', '4ec6738ce885483d45b64a26d2ee58ff' );
 }
 
 /**
@@ -30,7 +30,7 @@ if ( ! defined( 'WCMS_MOODLE_LOGIN_URL' ) ) {
  * (POST /wp-json/wc-moodle-sync/v1/course-complete).
  */
 if ( ! defined( 'WCMS_COMPLETION_SECRET' ) ) {
-	define( 'WCMS_COMPLETION_SECRET', '' );
+	define( 'WCMS_COMPLETION_SECRET', 'Qxg898layDlEYEdNaWnrh1NZEjb7bM30i3bFPR5Zq4krUPGiuvHcE0eN0LO9HpCF' );
 }
 
 /**

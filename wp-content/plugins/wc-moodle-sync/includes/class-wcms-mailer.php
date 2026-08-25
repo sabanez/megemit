@@ -134,7 +134,8 @@ class WCMS_Mailer {
 	}
 
 	/**
-	 * Construye cabeceras Cc: a partir de una lista de emails separados por comas.
+	 * Construye cabeceras Bcc: a partir de una lista de emails separados por comas.
+	 * Se usa Bcc en lugar de Cc para que el alumno no vea que hay copias.
 	 *
 	 * @param string $emails_csv
 	 * @return array
@@ -145,7 +146,7 @@ class WCMS_Mailer {
 		foreach ( explode( ',', (string) $emails_csv ) as $email ) {
 			$email = trim( $email );
 			if ( is_email( $email ) ) {
-				$headers[] = 'Cc: ' . $email;
+				$headers[] = 'Bcc: ' . $email;
 			}
 		}
 

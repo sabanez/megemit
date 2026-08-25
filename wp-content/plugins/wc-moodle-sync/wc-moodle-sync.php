@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WooCommerce & Moodle Sync
  * Description: Valida y crea usuarios en Moodle antes del pago. Matricula en cursos tras confirmar la compra. Asíncrono y compatible con packs multicurso.
- * Version:     1.3.0
+ * Version:     1.4.0
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author:      MeGeMIT

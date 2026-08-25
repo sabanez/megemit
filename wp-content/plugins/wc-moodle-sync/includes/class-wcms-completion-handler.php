@@ -25,6 +25,22 @@ class WCMS_Completion_Handler {
 
 	private static $log_context = array( 'source' => 'wc-moodle-sync' );
 
+	/**
+	 * Mapeo estático moodle_course_id => valor a guardar en la meta
+	 * 'exams_and_certificates' del usuario WP al completar ese curso.
+	 */
+	/**
+	 * Mapeo: moodle_section_id (sección dentro del curso "Examen", ID 5)
+	 * => valor a guardar en 'exams_and_certificates'.
+	 * Se recibe como 'moodle_course_id' en el payload del webhook.
+	 *
+	 * Sección 6 = Grundkurs | Sección 7 = Aufbaukurs
+	 */
+	private static $course_exam_map = array(
+		6 => 'Grundkurs (Basic course)',
+		7 => 'Aufbaukurs (Advanced course)',
+	);
+
 	public static function get_instance() {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
@@ -105,6 +121,8 @@ class WCMS_Completion_Handler {
 			return $this->handle_exam_passed( $wp_user, $moodle_course_id );
 		}
 
+		$this->update_exams_and_certificates_meta( $wp_user, $moodle_course_id );
+
 		// Flujo course_completed: cupón descuento + email de felicitación.
 		if ( ! WCMS_SEND_COUPON ) {
 			$this->logger->info( "course-complete: WCMS_SEND_COUPON desactivado. Ignorado para user #{$wp_user->ID}.", self::$log_context );
@@ -130,6 +148,37 @@ class WCMS_Completion_Handler {
 		$this->logger->info( "course-complete: cupón {$coupon_code} emitido y email enviado a {$wp_user->user_email}.", self::$log_context );
 
 		return rest_ensure_response( array( 'status' => 'ok', 'coupon' => $coupon_code ) );
+	}
+
+	/**
+	 * Añade el valor mapeado del curso a la meta 'exams_and_certificates'
+	 * del usuario, sin duplicados. No-op si el curso no está en el mapeo.
+	 *
+	 * @param WP_User $wp_user
+	 * @param int     $moodle_course_id
+	 * @return void
+	 */
+	private function update_exams_and_certificates_meta( $wp_user, $moodle_course_id ) {
+		if ( ! isset( self::$course_exam_map[ $moodle_course_id ] ) ) {
+			$this->logger->info( "exams_and_certificates: curso #{$moodle_course_id} no mapeado. Ignorado para user #{$wp_user->ID}.", self::$log_context );
+			return;
+		}
+
+		$value = self::$course_exam_map[ $moodle_course_id ];
+
+		$current = get_user_meta( $wp_user->ID, 'exams_and_certificates', true );
+		if ( ! is_array( $current ) ) {
+			$current = array();
+		}
+
+		if ( in_array( $value, $current, true ) ) {
+			$this->logger->info( "exams_and_certificates: '{$value}' ya presente para user #{$wp_user->ID}. Ignorado.", self::$log_context );
+			return;
+		}
+
+		$current[] = $value;
+		update_user_meta( $wp_user->ID, 'exams_and_certificates', $current );
+		$this->logger->info( "exams_and_certificates: '{$value}' añadido para user #{$wp_user->ID}.", self::$log_context );
 	}
 
 	/**

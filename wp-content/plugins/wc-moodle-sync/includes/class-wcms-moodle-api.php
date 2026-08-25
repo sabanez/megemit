@@ -97,6 +97,15 @@ class WCMS_Moodle_Api {
 		if ( isset( $res['exception'] ) ) {
 			$debuginfo = isset( $res['debuginfo'] ) ? $res['debuginfo'] : 'sin debuginfo';
 			$this->logger->error( "create_user({$username}): excepción Moodle — {$res['message']} (errorcode: {$res['errorcode']}) | debuginfo: {$debuginfo}", self::$log_context );
+
+			// Moodle rechaza la creación porque el username o el email ya existen (cuenta creada
+			// previamente fuera de este plugin). find_user() no lo había localizado, pero Moodle
+			// acaba de confirmar que sí existe: recuperar su ID en lugar de bloquear el checkout.
+			if ( false !== stripos( $debuginfo, 'already' ) || false !== stripos( $res['message'], 'already' ) ) {
+				$this->logger->warning( "create_user({$username}): usuario ya existente según Moodle, reintentando búsqueda.", self::$log_context );
+				return $this->find_user( $username, $wp_user->user_email );
+			}
+
 			return false;
 		}
 
