@@ -41,7 +41,7 @@ class WCMS_Checkout_Guard {
 		$user_id = get_current_user_id();
 		if ( ! $user_id ) {
 			wc_add_notice(
-				__( 'Debes iniciar sesión para comprar cursos.', 'wc-moodle-sync' ),
+				__( 'Du musst dich anmelden, um Kurse zu kaufen.', 'wc-moodle-sync' ),
 				'error'
 			);
 			return;
@@ -79,7 +79,7 @@ class WCMS_Checkout_Guard {
 	}
 
 	/**
-	 * Comprueba si algún producto del carrito tiene moodle_course_ids definido.
+	 * Comprueba si algún producto del carrito tiene moodle_cohort_ids definido.
 	 *
 	 * @return bool
 	 */
@@ -90,7 +90,7 @@ class WCMS_Checkout_Guard {
 
 		foreach ( WC()->cart->get_cart() as $item ) {
 			$product_id = $item['product_id'];
-			if ( get_post_meta( $product_id, 'moodle_course_ids', true ) ) {
+			if ( get_post_meta( $product_id, 'moodle_cohort_ids', true ) ) {
 				return true;
 			}
 		}

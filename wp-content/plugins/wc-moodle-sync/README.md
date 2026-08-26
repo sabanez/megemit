@@ -45,7 +45,17 @@ En cada producto tipo curso, añadir el campo personalizado:
 
 | Campo | Valor |
 |---|---|
-| `moodle_course_ids` | `14` (curso único) o `14,25,31` (pack) |
+| `moodle_cohort_ids` | `3` (cohort único) o `3,7` (pack, varios cohorts) |
+
+El valor es el **ID del cohort en Moodle**, no de un curso. La matriculación ya no se hace
+directamente a un curso: el usuario se añade al cohort indicado (`core_cohort_add_cohort_members`),
+y es el propio Moodle el que matricula automáticamente a todos los cursos/módulos que tengan
+configurado ese cohort como método de matriculación ("Sincronización de cohortes"). Esto evita
+tener que enumerar cada módulo del curso desde WordPress.
+
+Requisito en Moodle: cada curso/módulo que deba desbloquearse para este producto necesita el
+método de matriculación **Sincronización de cohortes** activado y apuntando al cohort
+correspondiente (Administración del curso > Usuarios > Métodos de matriculación).
 
 Activar **Opciones de pantalla > Campos personalizados** si no son visibles.
 
@@ -104,7 +114,7 @@ Content-Type: application/json
 
 ## Cómo verificar
 
-1. Crear un pedido de prueba con un producto que tenga `moodle_course_ids`.
+1. Crear un pedido de prueba con un producto que tenga `moodle_cohort_ids`.
 2. Ir a **WooCommerce > Estado > Acciones Programadas**.
 3. Filtrar por hook `wcms_process_order`.
 4. Si falla, revisar **WooCommerce > Estado > Registros** — los errores llevan el prefijo `[wc-moodle-sync]`.

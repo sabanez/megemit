@@ -119,34 +119,44 @@ class WCMS_Moodle_Api {
 	}
 
 	/**
-	 * Matricula a un usuario en uno o varios cursos Moodle (roleid=5 Estudiante).
+	 * Añade a un usuario a uno o varios cohorts de Moodle.
+	 *
+	 * La matriculación real a los cursos/módulos la resuelve Moodle mediante el método
+	 * de matriculación "Sincronización de cohortes" configurado en cada curso — este
+	 * método no matricula directamente a ningún curso, solo gestiona la pertenencia al cohort.
+	 * Añadir a un usuario a un cohort del que ya es miembro no da error en Moodle (operación idempotente).
 	 *
 	 * @param int   $moodle_user_id
-	 * @param array $course_ids  Array de IDs (enteros) de cursos Moodle.
+	 * @param array $cohort_ids  Array de IDs (enteros) de cohorts de Moodle.
 	 * @return bool
 	 */
-	public function enrol_users( $moodle_user_id, $course_ids ) {
-		$this->logger->info( "Matriculando usuario Moodle #{$moodle_user_id} en cursos: " . implode( ', ', $course_ids ), self::$log_context );
+	public function add_to_cohort( $moodle_user_id, $cohort_ids ) {
+		$this->logger->info( "Añadiendo usuario Moodle #{$moodle_user_id} a cohorts: " . implode( ', ', $cohort_ids ), self::$log_context );
 
-		$enrolments = array();
-		foreach ( $course_ids as $course_id ) {
-			$enrolments[] = array(
-				'roleid'   => 5,
-				'userid'   => $moodle_user_id,
-				'courseid' => (int) $course_id,
+		$members = array();
+		foreach ( $cohort_ids as $cohort_id ) {
+			$members[] = array(
+				'cohorttype' => array(
+					'type'  => 'id',
+					'value' => (string) (int) $cohort_id,
+				),
+				'usertype' => array(
+					'type'  => 'id',
+					'value' => (string) (int) $moodle_user_id,
+				),
 			);
 		}
 
-		$res = $this->request( 'enrol_manual_enrol_users', array(
-			'enrolments' => $enrolments,
+		$res = $this->request( 'core_cohort_add_cohort_members', array(
+			'members' => $members,
 		) );
 
 		if ( is_array( $res ) && isset( $res['exception'] ) ) {
-			$this->logger->error( "enrol_users(#{$moodle_user_id}): excepción Moodle — {$res['message']} (errorcode: {$res['errorcode']})", self::$log_context );
+			$this->logger->error( "add_to_cohort(#{$moodle_user_id}): excepción Moodle — {$res['message']} (errorcode: {$res['errorcode']})", self::$log_context );
 			return false;
 		}
 
-		$this->logger->info( "enrol_users(#{$moodle_user_id}): matriculación completada.", self::$log_context );
+		$this->logger->info( "add_to_cohort(#{$moodle_user_id}): añadido a cohort(s) correctamente.", self::$log_context );
 		return true;
 	}
 

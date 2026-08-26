@@ -60,11 +60,11 @@ class WCMS_Scheduler {
 			return;
 		}
 
-		$course_data = $this->collect_course_data( $order );
+		$course_data = $this->collect_cohort_data( $order );
 		if ( empty( $course_data['ids'] ) ) {
 			return;
 		}
-		$course_ids   = $course_data['ids'];
+		$cohort_ids   = $course_data['ids'];
 		$course_names = $course_data['names'];
 
 		$user_id = $order->get_user_id();
@@ -83,7 +83,7 @@ class WCMS_Scheduler {
 		}
 
 		$api      = WCMS_Moodle_Api::get_instance();
-		$enrolled = $api->enrol_users( $moodle_user_id, $course_ids );
+		$enrolled = $api->add_to_cohort( $moodle_user_id, $cohort_ids );
 
 		if ( ! $enrolled ) {
 			return;
@@ -138,18 +138,18 @@ class WCMS_Scheduler {
 	}
 
 	/**
-	 * Extrae IDs y nombres de cursos Moodle de los items del pedido.
+	 * Extrae IDs de cohort Moodle y nombres de curso de los items del pedido.
 	 *
 	 * @param WC_Order $order
 	 * @return array { ids: int[], names: string[] }
 	 */
-	private function collect_course_data( $order ) {
+	private function collect_cohort_data( $order ) {
 		$ids   = array();
 		$names = array();
 
 		foreach ( $order->get_items() as $item ) {
 			$product_id = $item->get_product_id();
-			$raw        = get_post_meta( $product_id, 'moodle_course_ids', true );
+			$raw        = get_post_meta( $product_id, 'moodle_cohort_ids', true );
 
 			if ( empty( $raw ) ) {
 				continue;
