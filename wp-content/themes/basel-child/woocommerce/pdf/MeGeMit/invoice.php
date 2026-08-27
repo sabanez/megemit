@@ -175,8 +175,8 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 		<?php foreach ( $this->order->get_tax_totals() as $tax ) : ?>
 		<?php $tax_percent = WC_Tax::get_rate_percent_value( $tax->rate_id ); ?>
 		<tr class="tax-rate-row">
-			<th>Impuesto</th>
-			<td><?php echo esc_html( $tax_percent . ' %' ); ?></td>
+			<th>VAX <?php echo esc_html( $tax_percent . ' %' ); ?></th>
+			<td><?php echo wp_kses_post( $tax->formatted_amount ); ?></td>
 		</tr>
 		<?php endforeach; ?>
 	</tfoot>
