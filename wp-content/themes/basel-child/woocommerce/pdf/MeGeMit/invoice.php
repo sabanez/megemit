@@ -162,7 +162,13 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 	<tfoot>
 		<?php foreach ( $this->get_woocommerce_totals() as $key => $total ) : ?>
 		<tr class="<?php echo esc_attr( $key ); ?>">
-			<th><?php echo esc_html( $total['label'] ); ?></th>
+			<th><?php
+			echo esc_html( $total['label'] );
+			if ( 'order_total' === $key ) {
+				$net_total = $this->order->get_total() - $this->order->get_total_tax();
+				echo ' (netto ' . wp_kses_post( wc_price( $net_total, array( 'currency' => $this->order->get_currency() ) ) ) . ')';
+			}
+			?></th>
 			<td><?php
 			if ( 'order_total' === $key ) {
 				echo wp_kses_post( wc_price( $this->order->get_total(), array( 'currency' => $this->order->get_currency() ) ) );
@@ -175,7 +181,7 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 		<?php foreach ( $this->order->get_tax_totals() as $tax ) : ?>
 		<?php $tax_percent = WC_Tax::get_rate_percent_value( $tax->rate_id ); ?>
 		<tr class="tax-rate-row">
-			<th>VAX <?php echo esc_html( $tax_percent . ' %' ); ?></th>
+			<th>enthaltene Mehrwertsteuer zum Satz von <?php echo esc_html( $tax_percent . ' %' ); ?></th>
 			<td><?php echo wp_kses_post( $tax->formatted_amount ); ?></td>
 		</tr>
 		<?php endforeach; ?>
@@ -199,7 +205,18 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 
 <?php do_action( 'wpo_wcpdf_after_order_details', $this->get_type(), $this->order ); ?>
 
-<!-- INSTRUCCIÓN DE PAGO: pdf24_10 → 9.6pt regular -->
+<!-- INSTRUCCIÓN DE PAGO / DATOS BANCARIOS: varía según método de pago y país de facturación.
+     - stripe / ppcp-gateway / ppcp-card-button-gateway (Klarna, PayPal, tarjeta): ya pagado, sin datos bancarios.
+     - bacs (transferencia) desde Suiza (CH): solo cuenta Raiffeisenbank Oberaudorf eG.
+     - bacs desde el resto de países: las dos cuentas (Bank Austria + Raiffeisenbank Oberaudorf eG). -->
+<?php
+$already_paid_methods = array( 'stripe', 'ppcp-gateway', 'ppcp-card-button-gateway' );
+$payment_method       = $this->order->get_payment_method();
+$is_swiss             = 'CH' === $this->order->get_billing_country();
+?>
+<?php if ( in_array( $payment_method, $already_paid_methods, true ) ) : ?>
+<p class="payment-instruction">Die Bezahlung ist bereits per Klarna, PayPal oder Kredit-/Debitkarte erfolgt.</p>
+<?php else : ?>
 <?php
 $total_display = wc_price( $this->order->get_total(), array( 'currency' => $this->order->get_currency() ) );
 ?>
@@ -208,11 +225,13 @@ $total_display = wc_price( $this->order->get_total(), array( 'currency' => $this
 <!-- DATOS BANCARIOS: pdf24_07 → 9.6pt bold, dos columnas -->
 <table class="bank-table">
 	<tr>
+		<?php if ( ! $is_swiss ) : ?>
 		<td class="bank-col">
 			<p>Bank Austria:</p>
 			<p>IBAN:AT19 1200 0100 0563 5676</p>
 			<p>BIC:BKAUATWW</p>
 		</td>
+		<?php endif; ?>
 		<td class="bank-col">
 			<p>Raiffeisenbank Oberaudorf eG:</p>
 			<p>IBAN:DE47 7116 2355 0000 0600 62</p>
@@ -220,6 +239,7 @@ $total_display = wc_price( $this->order->get_total(), array( 'currency' => $this
 		</td>
 	</tr>
 </table>
+<?php endif; ?>
 
 <!-- AVISO LEGAL: pdf24_22 → 5.8pt bold, fondo #efefef -->
 <div class="legal-box">
