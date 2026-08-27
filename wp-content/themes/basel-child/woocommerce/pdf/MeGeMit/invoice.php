@@ -133,13 +133,17 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 			<td>
 				<span class="item-name"><?php echo esc_html( $item['name'] ); ?></span>
 				<?php do_action( 'wpo_wcpdf_before_item_meta', $this->get_type(), $item, $this->order ); ?>
-				<?php if ( ! empty( $item['sku'] ) || ! empty( $item['meta'] ) ) : ?>
+				<?php $invoice_extra_info = trim( (string) get_post_meta( $item['product_id'], 'invoice_extra_info', true ) ); ?>
+				<?php if ( ! empty( $item['sku'] ) || ! empty( $item['meta'] ) || '' !== $invoice_extra_info ) : ?>
 				<div class="item-meta">
 					<?php if ( ! empty( $item['sku'] ) ) : ?>
-						<span class="sku">Artikel-Nr.:<?php echo esc_html( $item['sku'] ); ?><?php if ( ! empty( $item['meta'] ) ) : ?> | <?php endif; ?></span>
+						<span class="sku">Artikel-Nr.:<?php echo esc_html( $item['sku'] ); ?><?php if ( ! empty( $item['meta'] ) || '' !== $invoice_extra_info ) : ?> | <?php endif; ?></span>
 					<?php endif; ?>
 					<?php if ( ! empty( $item['meta'] ) ) : ?>
-						<?php echo wp_kses_post( $item['meta'] ); ?>
+						<?php echo wp_kses_post( $item['meta'] ); ?><?php if ( '' !== $invoice_extra_info ) : ?> | <?php endif; ?>
+					<?php endif; ?>
+					<?php if ( '' !== $invoice_extra_info ) : ?>
+						<?php echo esc_html( $invoice_extra_info ); ?>
 					<?php endif; ?>
 				</div>
 				<?php endif; ?>
