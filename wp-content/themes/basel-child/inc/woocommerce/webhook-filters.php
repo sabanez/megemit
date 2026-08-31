@@ -63,5 +63,17 @@ function mgmit_add_invoice_url_to_webhook_payload( $payload, $resource, $resourc
         $payload['invoice_pdf_url'] = $invoice_url;
     }
 
+    // Fase 3 (docs/CREDIT_NOTE_STORNO_PLUGIN_PLAN.md): al cancelarse el pedido,
+    // reemplazar el enlace por el de la nota de abono (Storno), generada
+    // on-demand igual que la factura. Se reutiliza el mismo campo
+    // "invoice_pdf_url" que HubSpot/vpsbridge ya procesa hoy -> no hace
+    // falta coordinar ningún campo nuevo en destino.
+    if ( 'cancelled' === $order->get_status() && function_exists( 'mgmit_get_storno_pdf_url' ) ) {
+        $storno_url = mgmit_get_storno_pdf_url( $order->get_id() );
+        if ( $storno_url ) {
+            $payload['invoice_pdf_url'] = $storno_url;
+        }
+    }
+
     return $payload;
 }
