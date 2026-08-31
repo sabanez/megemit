@@ -1,18 +1,67 @@
 <?php
 /**
- * Envío de email al cliente con la nota de abono (Storno) cuando un pedido
- * se cancela. WooCommerce no tiene un email nativo al cliente para pedidos
- * cancelados (solo 'cancelled_order', que es admin-only) — ver
- * docs/CREDIT_NOTE_STORNO_PLUGIN_PLAN.md, Fase 4.
+ * Email al cliente con la nota de abono (Storno) al cancelar o reembolsar
+ * un pedido, con copia oculta (BCC) interna. Ver docs/CREDIT_NOTE_STORNO_PLUGIN_PLAN.md.
  *
- * El caso de reembolso ('refunded') NO necesita este archivo: WooCommerce sí
- * tiene un email nativo al cliente ('customer_refunded_order'), y ya puede
- * adjuntarse la nota de abono desde wp-admin → Facturas PDF → Documentos →
- * Credit Note → Attach to: → Pedido reembolsado, sin código adicional.
+ * Cancelación ('cancelled'): WooCommerce no tiene email nativo al cliente
+ * (solo 'cancelled_order', que es admin-only), así que se construye y envía
+ * el email entero aquí, con la nota de abono adjunta.
+ *
+ * Reembolso ('refunded'): WooCommerce SÍ tiene email nativo al cliente
+ * ('customer_refunded_order'). Ese email ya puede llevar la nota de abono
+ * adjunta activando wp-admin → Facturas PDF → Documentos → Credit Note →
+ * Attach to: → Pedido reembolsado (sin código). Lo que SÍ hace falta aquí es
+ * añadirle el BCC interno, porque WooCommerce no lo soporta de forma nativa
+ * en este sitio: el campo "BCC" por email individual solo existe si el
+ * feature flag "email_improvements" de WooCommerce está activado, y aquí
+ * está desactivado. Se añade vía el filtro woocommerce_email_headers,
+ * scoped únicamente al email 'customer_refunded_order'.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+/**
+ * Lista de direcciones en BCC para las comunicaciones de nota de abono.
+ * Compartida entre el envío propio (cancelación) y el hook de headers
+ * (reembolso), para no duplicar la lista en dos sitios.
+ *
+ * @return string[]
+ */
+function mgmit_credit_note_bcc_recipients() {
+	return array_unique( array_filter( array(
+		get_option( 'admin_email' ),
+		'doris.hagleitner@megemit.org',
+		// Copia de respaldo (2026-08-31): a Doris no le llegaban las copias
+		// (dominio megemit.org, mismo servidor de envío) — pendiente de
+		// investigar del lado del servidor de correo / buzón de Doris.
+		'santi.bartolome.martinez@labolife.com',
+	) ) );
+}
+
+add_filter( 'woocommerce_email_headers', 'mgmit_add_bcc_to_refunded_order_email', 10, 4 );
+
+/**
+ * Añade el BCC interno al email nativo de WooCommerce "Pedido reembolsado",
+ * ya que ese email no soporta BCC por defecto en este sitio (ver docblock).
+ *
+ * @param string   $header
+ * @param string   $email_id
+ * @param mixed    $object
+ * @param WC_Email $email
+ * @return string
+ */
+function mgmit_add_bcc_to_refunded_order_email( $header, $email_id, $object, $email ) {
+	if ( 'customer_refunded_order' !== $email_id ) {
+		return $header;
+	}
+
+	foreach ( mgmit_credit_note_bcc_recipients() as $bcc_recipient ) {
+		$header .= 'Bcc: ' . $bcc_recipient . "\r\n";
+	}
+
+	return $header;
 }
 
 add_action( 'woocommerce_order_status_cancelled', 'mgmit_send_credit_note_email_on_cancel' );
@@ -57,16 +106,10 @@ function mgmit_send_credit_note_email_on_cancel( $order_id ) {
 	$body .= 'Die zugehörige Stornorechnung finden Sie im Anhang dieser E-Mail.</p>';
 	$body .= '<p>Mit freundlichen Grüßen<br>MeGeMIT</p>';
 
-	// BCC: admin_email de WordPress + Doris (equivalente a "Storno-Rechnung an" de Solve).
-	$bcc_recipients = array_unique( array_filter( array(
-		get_option( 'admin_email' ),
-		'doris.hagleitner@megemit.org',
-	) ) );
-
 	$headers = array(
 		'Content-Type: text/html; charset=UTF-8',
 	);
-	foreach ( $bcc_recipients as $bcc_recipient ) {
+	foreach ( mgmit_credit_note_bcc_recipients() as $bcc_recipient ) {
 		$headers[] = 'Bcc: ' . $bcc_recipient;
 	}
 
