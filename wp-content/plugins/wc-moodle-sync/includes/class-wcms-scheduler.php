@@ -27,6 +27,71 @@ class WCMS_Scheduler {
 	private function __construct() {
 		$this->logger = wc_get_logger();
 		add_action( 'wcms_process_order', array( $this, 'run' ), 10, 1 );
+		add_action( 'wcms_process_unenroll', array( $this, 'run_unenroll' ), 10, 1 );
+	}
+
+	/**
+	 * Encola la tarea de desmatriculación para el pedido. Solo actúa si el pedido
+	 * llegó a matricularse (guardia de idempotencia vía '_wcms_job_queued') y si
+	 * todavía no se ha desmatriculado.
+	 *
+	 * @param int $order_id
+	 */
+	public function enqueue_unenroll( $order_id ) {
+		if ( ! get_post_meta( $order_id, '_wcms_job_queued', true ) ) {
+			return; // Nunca se matriculó: nada que revertir.
+		}
+
+		if ( get_post_meta( $order_id, '_wcms_unenroll_done', true ) ) {
+			return; // Ya desmatriculado.
+		}
+
+		if ( function_exists( 'as_enqueue_async_action' ) ) {
+			as_enqueue_async_action( 'wcms_process_unenroll', array( $order_id ), 'wcms_group' );
+		} else {
+			$this->run_unenroll( $order_id );
+		}
+	}
+
+	/**
+	 * Worker ejecutado en segundo plano: elimina de los cohorts de Moodle
+	 * correspondientes a los cursos del pedido cancelado/reembolsado/fallido.
+	 *
+	 * @param int $order_id
+	 */
+	public function run_unenroll( $order_id ) {
+		if ( get_post_meta( $order_id, '_wcms_unenroll_done', true ) ) {
+			return;
+		}
+
+		$order = wc_get_order( $order_id );
+		if ( ! $order ) {
+			$this->logger->error( "Unenroll: pedido #{$order_id} no encontrado.", self::$log_context );
+			return;
+		}
+
+		$course_data = $this->collect_cohort_data( $order );
+		if ( empty( $course_data['ids'] ) ) {
+			return;
+		}
+
+		$user_id = $order->get_user_id();
+		if ( ! $user_id ) {
+			return;
+		}
+
+		$moodle_user_id = (int) get_user_meta( $user_id, '_wcms_moodle_user_id', true );
+		if ( ! $moodle_user_id ) {
+			return;
+		}
+
+		$api = WCMS_Moodle_Api::get_instance();
+		$ok  = $api->remove_from_cohort( $moodle_user_id, $course_data['ids'] );
+
+		if ( $ok ) {
+			update_post_meta( $order_id, '_wcms_unenroll_done', 'yes' );
+			$this->logger->info( "Pedido #{$order_id}: usuario Moodle #{$moodle_user_id} desmatriculado (estado: {$order->get_status()}).", self::$log_context );
+		}
 	}
 
 	/**

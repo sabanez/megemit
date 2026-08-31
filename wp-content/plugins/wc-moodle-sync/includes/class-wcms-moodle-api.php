@@ -161,6 +161,92 @@ class WCMS_Moodle_Api {
 	}
 
 	/**
+	 * Devuelve los cursos en los que el usuario está matriculado en Moodle.
+	 *
+	 * @param int $moodle_user_id
+	 * @return array[]  Cada elemento con al menos 'id' (course id). Array vacío si falla.
+	 */
+	public function get_user_courses( $moodle_user_id ) {
+		$this->logger->debug( "Obteniendo cursos matriculados del usuario Moodle #{$moodle_user_id}.", self::$log_context );
+
+		$res = $this->request( 'core_enrol_get_users_courses', array(
+			'userid' => (int) $moodle_user_id,
+		) );
+
+		if ( ! is_array( $res ) || isset( $res['exception'] ) ) {
+			$msg = isset( $res['message'] ) ? $res['message'] : 'respuesta inválida';
+			$this->logger->error( "get_user_courses(#{$moodle_user_id}): {$msg}", self::$log_context );
+			return array();
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Devuelve los grade items (módulos calificables) de un curso para un usuario,
+	 * vía la función WS 'gradereport_user_get_grade_items'.
+	 *
+	 * @param int $moodle_user_id
+	 * @param int $moodle_course_id
+	 * @return array[]  Cada elemento con 'graderaw' (nota obtenida) y 'grademax' (nota máxima).
+	 *                  Array vacío si falla o no hay items calificables.
+	 */
+	public function get_course_grade_items( $moodle_user_id, $moodle_course_id ) {
+		$this->logger->debug( "Obteniendo grade items del curso #{$moodle_course_id} para usuario Moodle #{$moodle_user_id}.", self::$log_context );
+
+		$res = $this->request( 'gradereport_user_get_grade_items', array(
+			'courseid' => (int) $moodle_course_id,
+			'userid'   => (int) $moodle_user_id,
+		) );
+
+		if ( ! is_array( $res ) || isset( $res['exception'] ) ) {
+			$msg = isset( $res['message'] ) ? $res['message'] : 'respuesta inválida';
+			$this->logger->error( "get_course_grade_items(#{$moodle_course_id}, #{$moodle_user_id}): {$msg}", self::$log_context );
+			return array();
+		}
+
+		if ( empty( $res['usergrades'][0]['gradeitems'] ) ) {
+			return array();
+		}
+
+		return $res['usergrades'][0]['gradeitems'];
+	}
+
+	/**
+	 * Elimina a un usuario de uno o varios cohorts de Moodle.
+	 * Al perder la pertenencia al cohort, la matriculación sincronizada
+	 * en los cursos correspondientes también se retira (según la config.
+	 * "Sincronización de cohortes" de cada curso).
+	 *
+	 * @param int   $moodle_user_id
+	 * @param array $cohort_ids  Array de IDs (enteros) de cohorts de Moodle.
+	 * @return bool
+	 */
+	public function remove_from_cohort( $moodle_user_id, $cohort_ids ) {
+		$this->logger->info( "Eliminando usuario Moodle #{$moodle_user_id} de cohorts: " . implode( ', ', $cohort_ids ), self::$log_context );
+
+		$members = array();
+		foreach ( $cohort_ids as $cohort_id ) {
+			$members[] = array(
+				'cohortid' => (int) $cohort_id,
+				'userid'   => (int) $moodle_user_id,
+			);
+		}
+
+		$res = $this->request( 'core_cohort_delete_cohort_members', array(
+			'members' => $members,
+		) );
+
+		if ( is_array( $res ) && isset( $res['exception'] ) ) {
+			$this->logger->error( "remove_from_cohort(#{$moodle_user_id}): excepción Moodle — {$res['message']} (errorcode: {$res['errorcode']})", self::$log_context );
+			return false;
+		}
+
+		$this->logger->info( "remove_from_cohort(#{$moodle_user_id}): eliminado de cohort(s) correctamente.", self::$log_context );
+		return true;
+	}
+
+	/**
 	 * Realiza una petición POST a la API REST de Moodle.
 	 *
 	 * @param string $function

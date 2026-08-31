@@ -181,7 +181,44 @@ class WCMS_Mailer {
 		remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 	}
 
-	private function build_completion_html( $coupon_code ) {
+	/**
+	 * Envía email de felicitación con cupón de bonificación al alcanzar
+	 * el 40% o el 80% de progreso (nota combinada) en la Online-Akademie.
+	 *
+	 * @param WP_User $wp_user
+	 * @param string  $coupon_code
+	 * @param int     $threshold  40 u 80.
+	 */
+	public function send_bonus_coupon( $wp_user, $coupon_code, $threshold ) {
+		$subject = 'Ihr Prämien-Gutschein von der MeGeMIT Online-Akademie';
+		$subtitle = sprintf(
+			'SIE HABEN %d%% IHRES FORTSCHRITTS IN DER ONLINE-AKADEMIE ERREICHT, UM SICH <strong>EINE</strong> PR&Auml;MIE AUSZUSUCHEN!',
+			(int) $threshold
+		);
+		$body = $this->build_completion_html( $coupon_code, $subtitle );
+
+		$headers = array(
+			'Content-Type: text/html; charset=UTF-8',
+			'From: MeGeMIT Online-Akademie <akademie@megemit.org>',
+		);
+		$headers = array_merge( $headers, $this->build_cc_headers( WCMS_WELCOME_EMAIL_CC ) );
+
+		add_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
+
+		wp_mail(
+			$wp_user->user_email,
+			$subject,
+			$body,
+			$headers
+		);
+
+		remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
+	}
+
+	private function build_completion_html( $coupon_code, $subtitle = null ) {
+		if ( null === $subtitle ) {
+			$subtitle = 'SIE HABEN GEN&Uuml;GEND PUNKTE IN DER ONLINE-AKADEMIE ERREICHT, UM SICH <strong>EINE</strong> PR&Auml;MIE AUSZUSUCHEN!';
+		}
 		$shop_url    = defined( 'WCMS_COUPON_SHOP_URL' ) ? WCMS_COUPON_SHOP_URL : 'https://megemit.org/produktkategorie/mdlc/';
 		$logo_url    = 'https://megemit.org/wp-content/uploads/2025/06/CNCL_Logo.png';
 		$mascot_url  = 'https://megemit.org/wp-content/uploads/2025/07/Oh-Meggy.jpg';
@@ -214,8 +251,7 @@ class WCMS_Mailer {
         HERZLICHEN GL&Uuml;CKWUNSCH
       </h1>
       <p style="margin:12pt 0 0;font-family:Arial,sans-serif;font-size:12pt;color:#006ab4;text-align:center;line-height:1.5;">
-        SIE HABEN GEN&Uuml;GEND PUNKTE IN DER ONLINE-AKADEMIE ERREICHT, UM SICH
-        <strong>EINE</strong> PR&Auml;MIE AUSZUSUCHEN!
+        <?php echo $subtitle; ?>
       </p>
     </td>
   </tr>

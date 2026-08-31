@@ -1,8 +1,8 @@
 # WooCommerce & Moodle Sync
 
-Versión: 1.3.0 — PHP 7.4+, WooCommerce 5+
+Versión: 1.6.0 — PHP 7.4+, WooCommerce 5+
 
-Matricula automáticamente a compradores de WooCommerce en cursos Moodle de forma asíncrona. Genera cupones de descuento al finalizar un curso y certificados PDF al aprobar un examen.
+Matricula automáticamente a compradores de WooCommerce en cursos Moodle de forma asíncrona (vía cohorts). Genera cupones de descuento al finalizar un curso, cupones de bonificación al alcanzar el 40%/80% de progreso combinado, y certificados PDF al aprobar un examen.
 
 ## Configuración
 
@@ -12,9 +12,11 @@ Matricula automáticamente a compradores de WooCommerce en cursos Moodle de form
 2. Crear un **Servicio externo** y añadir las funciones:
    - `core_user_get_users_by_field`
    - `core_user_create_users`
-   - `enrol_manual_enrol_users`
+   - `core_cohort_add_cohort_members`
+   - `core_enrol_get_users_courses`
+   - `gradereport_user_get_grade_items`
 3. Generar un **Token** para un usuario administrador.
-4. Asegurarse de que los cursos tienen habilitado **Matriculación Manual**.
+4. Asegurarse de que los cursos tienen habilitado el método de matriculación **Sincronización de cohortes**.
 
 ### 2. WordPress (`wc-moodle-sync/config.php`)
 
@@ -95,6 +97,38 @@ Content-Type: application/json
 - Envía email de felicitación con el código al alumno.
 - Deduplicación: si el cupón ya fue emitido para ese usuario/curso, devuelve `already_issued` sin crear duplicado.
 
+### Evento: nota actualizada → cupón de bonificación por progreso
+
+```json
+{
+  "event_type": "grade_updated",
+  "moodle_user_id": 123,
+  "moodle_course_id": 456
+}
+```
+
+Cada curso está formado por varios módulos y cada módulo tiene un grade (nota). Al recibir este
+evento, el plugin recalcula el **% de nota combinado** del alumno: suma de las notas obtenidas
+entre suma de las notas máximas, de todos los módulos (`itemtype=mod`, se excluye el total
+agregado del curso) de **todos los cursos en los que está matriculado** en Moodle
+(`core_enrol_get_users_courses` + `gradereport_user_get_grade_items`).
+
+- Al alcanzar el **40%** combinado se emite un cupón de bonificación (mismo esquema que el de
+  finalización de curso: `MeGeMIT-XXXXXXXX`, 100%, un solo uso, restringido por email y categoría
+  `MDL-Coupon`).
+- Al alcanzar el **80%** combinado se emite un segundo cupón de bonificación.
+- **Límite de 2 cupones activos (sin usar) por cliente**, contando conjuntamente los cupones de
+  finalización de curso y de bonificación. Si el cliente ya tiene 2 cupones sin usar, el nuevo
+  umbral alcanzado no genera cupón (se pierde, no se encola).
+- Deduplicación por umbral: cada umbral (40%/80%) solo genera cupón una vez por alumno
+  (meta `_wcms_bonus_40_coupon` / `_wcms_bonus_80_coupon`).
+- Envía email de felicitación (mismo diseño que el de finalización de curso, con el texto
+  adaptado al % de progreso alcanzado).
+
+> ⚠️ **PENDIENTE DE PROGRAMAR (lado Moodle):** al igual que `course_completed` y `exam_passed`,
+> falta el observer de eventos en Moodle que dispare este evento cada vez que se actualiza una
+> nota de un módulo (`\core\event\user_graded` o similar) y haga el POST hacia este endpoint.
+
 ### Evento: examen aprobado → certificado PDF
 
 ```json
@@ -153,7 +187,7 @@ wc-moodle-sync/
 
 ## Notas
 
-- El rol asignado en Moodle es `5` (Estudiante). Modificar `roleid` en `class-wcms-moodle-api.php` si difiere.
+- La matriculación a curso/módulo la resuelve el propio Moodle vía "Sincronización de cohortes"; el plugin solo añade al usuario al cohort (`core_cohort_add_cohort_members`).
 - Las credenciales y el token del webhook **no se almacenan en BD** — van en `config.php`, dentro de la carpeta del plugin.
 - Los certificados PDF se generan sin dependencias externas (sin Ghostscript ni ImageMagick).
 - Compatible con PHP 7.4 y superior.
