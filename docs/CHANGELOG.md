@@ -19,10 +19,6 @@ Registra en el timeline del contacto de HubSpot los correos que WooCommerce env�
 - El payload completo (incluyendo el HTML renderizado del email) se pasaba directo como argumento de la acción de Action Scheduler; al superar los 8000 caracteres, Action Scheduler rechazaba la acción en silencio (excepción `ActionScheduler_Action::$args zu lang`) y no quedaba ningún rastro ni en logs ni en HubSpot. Ahora el payload se guarda en un transient y solo se pasa su clave a la acción.
 - Bug de despliegue: el código usaba una constante inexistente (`MEGEMIT_HUBSPOT_TOKEN`) en las llamadas a la API en vez de `MGMIT_HS_ACCESS_TOKEN_SECRET`.
 
-### Herramienta de diagnóstico
-
-- `hs-diagnose.php` (root del sitio, mismo patrón que `hs-migration.php`: standalone, solo accesible a administradores autenticados) — comprueba carga del mu-plugin, resolución del token, estado de OPcache y últimas acciones programadas de Action Scheduler para este hook. Uso puntual; borrar del servidor tras el diagnóstico.
-
 ---
 
 ## [basel-child swpm-woo-sync] — 2026-07-02
