@@ -2,6 +2,29 @@
 
 Todas las modificaciones técnicas realizadas en el entorno de WordPress y la integración con HubSpot.
 
+## [mu-plugin hubspot-email-logger] — 2026-09-03
+
+### Added — `wp-content/mu-plugins/hubspot-email-logger.php`
+
+Registra en el timeline del contacto de HubSpot los correos que WooCommerce envía al cliente (confirmación de pedido, factura, notas, reembolsos), incluyendo la factura/nota de abono PDF adjunta. Estos correos salen directamente vía SMTP y HubSpot no los ve salvo que aterricen en un buzón conectado a Conversations.
+
+- Hook en `woocommerce_email_sent`, filtrado a los IDs de email de cliente (`wc_hs_email_logger_customer_email_ids`, extensible por filtro).
+- Envío a HubSpot diferido vía Action Scheduler (`wc_hs_email_logger_log_email`) para no retrasar el checkout.
+- Resolución del Access Token en cascada (`wc_hs_email_logger_get_token`): constante `MGMIT_HS_ACCESS_TOKEN_SECRET` → opción `mgmit_mapper_credentials` (plugin `hubspot-mapper`) → opción `mgmit_hubspot_credentials` (bridge). Reutiliza `MGMIT_HS_Contacts::get_token()` si el plugin `hubspot-mapper` está activo.
+- Adjuntos (PDF de factura/nota de abono) subidos a HubSpot Files API (`/files/v3/files`, carpeta `/wc-hs-email-logger`) de forma síncrona en el momento de la captura — antes de encolar, porque son archivos temporales que WooCommerce puede borrar antes de que corra la tarea diferida — y asociados al engagement vía `hs_attachment_ids`. Requiere el scope `files` en la Private App de HubSpot.
+- Nombres de función con prefijo genérico `wc_hs_email_logger_` (sin referencias al sitio) para poder reutilizar el snippet en otros proyectos.
+
+### Fixed
+
+- El payload completo (incluyendo el HTML renderizado del email) se pasaba directo como argumento de la acción de Action Scheduler; al superar los 8000 caracteres, Action Scheduler rechazaba la acción en silencio (excepción `ActionScheduler_Action::$args zu lang`) y no quedaba ningún rastro ni en logs ni en HubSpot. Ahora el payload se guarda en un transient y solo se pasa su clave a la acción.
+- Bug de despliegue: el código usaba una constante inexistente (`MEGEMIT_HUBSPOT_TOKEN`) en las llamadas a la API en vez de `MGMIT_HS_ACCESS_TOKEN_SECRET`.
+
+### Herramienta de diagnóstico
+
+- `hs-diagnose.php` (root del sitio, mismo patrón que `hs-migration.php`: standalone, solo accesible a administradores autenticados) — comprueba carga del mu-plugin, resolución del token, estado de OPcache y últimas acciones programadas de Action Scheduler para este hook. Uso puntual; borrar del servidor tras el diagnóstico.
+
+---
+
 ## [basel-child swpm-woo-sync] — 2026-07-02
 
 ### Added — Tema `basel-child` (`functions.php`)
