@@ -82,7 +82,7 @@ function mgmit_bridge_payment_completed( $ipn_data ) {
                 'total'      => $amount,
                 'subtotal'   => $amount,
                 'price'      => floatval( $amount ),
-                'sku'        => $woo_product_sku ? $woo_product_sku : '',
+                'sku'        => $woo_product_sku ? $woo_product_sku : 'MeGeMIT-Mitglied-' . $level_id,
             ),
         ),
         'meta_data'      => array(
