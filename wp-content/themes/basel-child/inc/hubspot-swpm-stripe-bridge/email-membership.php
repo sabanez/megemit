@@ -6,57 +6,66 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Envía el email de bienvenida/confirmación de membresía con los 5 documentos adjuntos.
  *
- * @param array  $ipn_data  Datos del hook swpm_payment_ipn_processed.
- * @param string $gender    'male', 'female' o '' (no especificado).
+ * @param array $ipn_data Datos del hook swpm_payment_ipn_processed.
  */
-function mgmit_bridge_send_membership_email( $ipn_data, $gender ) {
+function mgmit_bridge_send_membership_email( $ipn_data ) {
 
     $email      = isset( $ipn_data['payer_email'] ) ? sanitize_email( $ipn_data['payer_email'] ) : '';
     $first_name = isset( $ipn_data['first_name'] )  ? sanitize_text_field( $ipn_data['first_name'] ) : '';
     $last_name  = isset( $ipn_data['last_name'] )   ? sanitize_text_field( $ipn_data['last_name'] )  : '';
     $amount     = isset( $ipn_data['mc_gross'] )    ? sanitize_text_field( $ipn_data['mc_gross'] )   : '0.00';
+    $txn_id     = isset( $ipn_data['txn_id'] )      ? sanitize_file_name( $ipn_data['txn_id'] )      : 'sinref';
 
     if ( empty( $email ) ) {
         MGMIT_Webhook_Sender::debug_log( 'send_membership_email: email vacío, omitiendo envío' );
         return;
     }
 
-    // Datos de facturación del usuario WP
-    $wp_user_id       = email_exists( $email );
-    $billing_address  = '';
-    $billing_city     = '';
-    $billing_postcode = '';
-    $billing_state    = '';
-    $billing_country  = '';
-    if ( $wp_user_id ) {
-        $billing_address  = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_address_1', true ) );
-        $billing_city     = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_city',      true ) );
-        $billing_postcode = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_postcode',  true ) );
-        $billing_state    = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_state',     true ) );
-        $billing_country  = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_country',   true ) );
+    // Datos de facturación del usuario WP (primero por el email de registro del socio,
+    // que puede diferir del email escrito en Stripe Checkout).
+    $swpm_member      = mgmit_bridge_get_swpm_member_from_ipn( $ipn_data );
+    $wp_user_id       = ( $swpm_member && ! empty( $swpm_member->email ) ) ? email_exists( $swpm_member->email ) : false;
+    if ( ! $wp_user_id ) {
+        $wp_user_id = email_exists( $email );
     }
+    $member_address   = mgmit_bridge_get_member_address( $swpm_member, $wp_user_id );
+    $billing_address  = $member_address['address'];
+    $billing_city     = $member_address['city'];
+    $billing_postcode = $member_address['postcode'];
+    $billing_state    = $member_address['state'];
+    $billing_country  = $member_address['country'];
 
-    // Saludo según género
-    if ( 'female' === $gender ) {
-        $salutation_label = 'Sehr geehrte Frau';
-        $salutation_full  = 'Frau';
-        $greeting_line    = 'Sehr geehrte Frau ' . $last_name;
-    } elseif ( 'male' === $gender ) {
-        $salutation_label = 'Sehr geehrter Herr';
-        $salutation_full  = 'Herr';
-        $greeting_line    = 'Sehr geehrter Herr ' . $last_name;
-    } else {
-        $salutation_label = 'Herr/Frau';
-        $salutation_full  = '';
-        $greeting_line    = 'Sehr geehrte/r ' . $last_name;
+    // Confirmación de membresía: dirección del perfil del socio en SWPM (la que coincide con HubSpot).
+    $profile_address  = mgmit_bridge_get_swpm_profile_address( $swpm_member );
+    $member_street    = $profile_address['street'];
+    $member_postcode  = $profile_address['postcode'];
+    $member_city      = $profile_address['city'];
+    $member_country   = $profile_address['country'];
+
+    // Saludo formal vía HubSpot (courtesy_de + job_title_de), con fallback seguro si falla la consulta.
+    $salutation       = mgmit_bridge_build_salutation_for_ipn( $ipn_data, $first_name, $last_name );
+    $first_name       = $salutation['first_name'];
+    $last_name        = $salutation['last_name'];
+    $greeting_line    = $salutation['greeting'];
+    $salutation_full  = $salutation['courtesy_de']; // valor de HubSpot tal cual, para los PDFs
+    $salutation_label = $salutation_full;
+    $job_title        = $salutation['job_title_de'];
+
+    // Dirección de HubSpot (con el mismo email del socio que el saludo): respaldo de la
+    // confirmación (si el perfil SWPM no tiene dirección) y de la factura (tras Stripe).
+    $hubspot_address  = mgmit_bridge_get_hubspot_address( $salutation['lookup_email'] );
+    if ( '' === $member_street && '' === $member_postcode && '' === $member_city ) {
+        $member_street   = $hubspot_address['address'];
+        $member_postcode = $hubspot_address['postcode'];
+        $member_city     = $hubspot_address['city'];
+        $member_country  = $hubspot_address['country'];
     }
 
     $year           = gmdate( 'Y' );
     $date_formatted = gmdate( 'd.m.Y' );
 
-    $header_img_path     = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
-    $logo_watermark_path = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
-    $header_img_url      = get_stylesheet_directory_uri() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
+    $header_img_path = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
+    $header_img_url  = get_stylesheet_directory_uri() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
 
     // Generar los 2 PDFs dinámicos
     $tmp_dir = wp_upload_dir();
@@ -67,19 +76,21 @@ function mgmit_bridge_send_membership_email( $ipn_data, $gender ) {
     }
 
     $pdf_mitglied    = trailingslashit( $tmp_dir ) . 'Mitgliedschaftbestaetigung_' . time() . '.pdf';
-    $pdf_vorschreib  = trailingslashit( $tmp_dir ) . 'Vorschreibung_' . time() . '.pdf';
+    $pdf_vorschreib  = trailingslashit( $tmp_dir ) . 'rechnung_' . $txn_id . '.pdf';
 
     $ok_mitglied   = mgmit_bridge_generate_pdf( 'mitgliedschaft-pdf', $pdf_mitglied, compact(
-        'first_name', 'last_name', 'billing_postcode', 'billing_city',
-        'amount', 'year', 'date_formatted', 'salutation_label',
-        'header_img_path', 'logo_watermark_path'
+        'first_name', 'last_name', 'member_street', 'member_postcode', 'member_city', 'member_country',
+        'amount', 'year', 'date_formatted', 'salutation_label', 'job_title',
+        'header_img_path'
     ) );
 
+    $invoice_vars = mgmit_bridge_build_invoice_vars( $ipn_data );
+
     $ok_vorschreib = mgmit_bridge_generate_pdf( 'vorschreibung-pdf', $pdf_vorschreib, compact(
-        'first_name', 'last_name', 'salutation_full', 'greeting_line',
+        'first_name', 'last_name', 'salutation_full', 'job_title', 'hubspot_address',
         'billing_address', 'billing_city', 'billing_postcode', 'billing_state', 'billing_country',
-        'amount', 'year', 'date_formatted', 'header_img_path'
-    ) );
+        'amount', 'date_formatted', 'header_img_path'
+    ) + $invoice_vars );
 
     // Construir lista de adjuntos
     $static_dir  = __DIR__ . '/email-attachments/static/';

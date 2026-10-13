@@ -38,9 +38,24 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 			<?php
 			$billing_first   = $this->order->get_billing_first_name();
 			$billing_last    = $this->order->get_billing_last_name();
-			$billing_anrede  = $this->order->get_meta( '_anrede' );
-			$billing_name    = trim( ( $billing_anrede ? $billing_anrede . ' ' : '' ) . $billing_first . ' ' . $billing_last );
+			$billing_email   = $this->order->get_billing_email();
 			$billing_company = $this->order->get_billing_company();
+
+			// Tratamiento y título resueltos vía HubSpot (courtesy_de, job_title_de),
+			// con fallback seguro si la consulta falla. Sustituye al antiguo meta _anrede del checkout.
+			// Email de la cuenta del cliente (el de WordPress, que está en HubSpot); en pedidos de invitado, el de facturación.
+			$hs_customer   = $this->order->get_customer_id() ? get_userdata( $this->order->get_customer_id() ) : false;
+			$hs_email      = $hs_customer ? $hs_customer->user_email : $billing_email;
+			$hs_salutation = function_exists( 'mgmit_bridge_build_salutation_logged' )
+				? mgmit_bridge_build_salutation_logged( $hs_email, $billing_first, $billing_last )
+				: array( 'courtesy_label' => '', 'job_title_de' => '' );
+
+			$billing_name = trim( implode( ' ', array_filter( array(
+				$hs_salutation['courtesy_label'],
+				$hs_salutation['job_title_de'],
+				$billing_first,
+				$billing_last,
+			) ) ) );
 
 			$address_fields = array(
 				'first_name' => '',

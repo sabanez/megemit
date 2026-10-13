@@ -4,10 +4,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 /**
  * Variables esperadas (pasadas como extract() desde email-membership.php):
- * $first_name, $last_name, $billing_postcode, $billing_city,
- * $amount, $year, $date_formatted, $header_img_path, $logo_watermark_path
+ * $first_name, $last_name,
+ * $member_street, $member_postcode, $member_city, $member_country (dirección del perfil del socio en SWPM),
+ * $amount, $year, $date_formatted, $header_img_path
+ * $salutation_label — courtesy_de de HubSpot ("Sehr geehrte Frau"...; aquí se muestra sin "Sehr geehrte(r)"),
+ * $job_title — job_title_de (puede venir vacío)
  */
-$salutation_label = isset( $salutation_label ) ? $salutation_label : 'Herr/Frau';
+$salutation_label = isset( $salutation_label ) ? $salutation_label : '';
+$job_title        = isset( $job_title ) ? $job_title : '';
+$member_name      = trim( implode( ' ', array_filter( array( $job_title, $first_name, $last_name ) ) ) );
+
+// Tratamiento sin la fórmula de saludo: "Sehr geehrte Frau" -> "Frau".
+$treatment = trim( preg_replace( '/^\s*sehr\s+geehrte[rs]?\s+/iu', '', $salutation_label ) );
+
+// Dirección del perfil SWPM (cada parte solo si tiene dato).
+$member_street  = isset( $member_street ) ? trim( $member_street ) : '';
+$member_country = isset( $member_country ) ? trim( $member_country ) : '';
+$member_place   = trim( ( isset( $member_postcode ) ? $member_postcode : '' ) . ' ' . ( isset( $member_city ) ? $member_city : '' ) );
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,14 +72,6 @@ body {
     position: relative;
     min-height: 540pt;
 }
-.watermark {
-    position: absolute;
-    left: -10pt;
-    top: 20pt;
-    width: 160pt;
-    opacity: 0.12;
-    z-index: 0;
-}
 .content {
     position: relative;
     z-index: 1;
@@ -75,10 +80,11 @@ body {
 .title-block {
     margin-top: 40pt;
     text-align: center;
+    font-family: "DejaVu Sans", Arial, Helvetica, sans-serif;
     font-size: 14pt;
     font-weight: bold;
     line-height: 1.5;
-    color: #000;
+    color: #195CA8;
 }
 .member-block {
     margin-top: 36pt;
@@ -104,9 +110,6 @@ body {
     margin-top: 20pt;
     text-align: right;
 }
-.signature-block img {
-    width: 90pt;
-}
 .signature-block .sig-name {
     font-size: 9.5pt;
     margin-top: 4pt;
@@ -131,10 +134,6 @@ body {
 
 <div class="watermark-wrap">
 
-    <?php if ( $logo_watermark_path && file_exists( $logo_watermark_path ) ) : ?>
-    <img class="watermark" src="<?php echo esc_attr( $logo_watermark_path ); ?>" alt="" />
-    <?php endif; ?>
-
     <div class="content">
 
         <div class="title-block">
@@ -144,10 +143,19 @@ body {
         </div>
 
         <div class="member-block">
-            <span class="label"><?php echo esc_html( $salutation_label ); ?>:&nbsp;</span>
-            <span class="value"><?php echo esc_html( $first_name . ' ' . $last_name ); ?></span><br/>
-            <span class="label">Ort:&nbsp;</span>
-            <span class="value"><?php echo esc_html( trim( $billing_postcode . ' ' . $billing_city ) ); ?></span>
+            <?php if ( $treatment ) : ?>
+            <span class="label"><?php echo esc_html( $treatment ); ?>&nbsp;</span>
+            <?php endif; ?>
+            <span class="value"><?php echo esc_html( $member_name ); ?></span>
+            <?php if ( '' !== $member_street ) : ?>
+            <br/><span class="value"><?php echo esc_html( $member_street ); ?></span>
+            <?php endif; ?>
+            <?php if ( '' !== $member_place ) : ?>
+            <br/><span class="value"><?php echo esc_html( $member_place ); ?></span>
+            <?php endif; ?>
+            <?php if ( '' !== $member_country ) : ?>
+            <br/><span class="value"><?php echo esc_html( $member_country ); ?></span>
+            <?php endif; ?>
         </div>
 
         <div class="body-text">
@@ -162,9 +170,6 @@ body {
         </div>
 
         <div class="signature-block">
-            <?php if ( $header_img_path && file_exists( $header_img_path ) ) : ?>
-            <img src="<?php echo esc_attr( $header_img_path ); ?>" alt="MeGeMIT" />
-            <?php endif; ?>
             <div class="sig-name">Hagleitner Doris</div>
         </div>
 

@@ -69,53 +69,62 @@ ul li {
 
 <p><?php echo esc_html( $greeting_line ); ?>,</p>
 
-<p>hiermit m&ouml;chten wir Ihnen die Best&auml;tigung Ihrer Mitgliedschaft bei der Medizinischen
-Gesellschaft f&uuml;r Mikroimmuntherapie zukommen lassen und uns gleichzeitig f&uuml;r Ihre
-Unterst&uuml;tzung bedanken.</p>
+<p>Wir freuen uns sehr, Sie als Mitglied der MeGeMIT begr&uuml;&szlig;en zu d&uuml;rfen.</p>
 
-<p>Wir freuen uns, dass Sie weiterhin von den Leistungen der MeGeMIT profitieren k&ouml;nnen.<br/>
-Wie Sie wissen, steht Ihnen die Therapeuten-Beratung als Mitglied kostenlos zur Verf&uuml;gung.</p>
-
-<p>Genie&szlig;en Sie als Mitglied weiterhin unseren Service der MeGeMIT:</p>
+<p>Genie&szlig;en Sie als Mitglied folgende exklusive Vorz&uuml;ge:</p>
 
 <ul>
-    <li>10% Erm&auml;&szlig;igung bei allen Pr&auml;senzseminaren, Workshops und Webinaren, sowie
-    Online-Aufzeichnungen, welche zum Kauf zur Verf&uuml;gung stehen</li>
-    <li>Kostenlose Nutzung der telefonischen Therapeutenberatung (siehe Anhang)</li>
+    <li>10% Erm&auml;&szlig;igung auf unsere Aus- und Weiterbildungsangebote</li>
+    <li>Kostenlose telefonische Therapeutenberatung</li>
     <li>Aufnahme in die Therapeutenliste auf Wunsch &ndash; Voraussetzung: Sie sind in der
     Mikroimmuntherapie komplett ausgebildet und wenden diese aktiv in Ihrer Behandlungsstrategie an</li>
     <li>Verg&uuml;nstigtes Jahresabo des Fachmagazins f&uuml;r angewandte Komplement&auml;rmedizin AKOM</li>
-    <li>Exklusiv als Mitglied erhalten Sie auf Wunsch die Aufzeichnung zum Wintersymposium Ihrer
-    Wahl* zugesendet (kontaktieren Sie uns hierf&uuml;r unter:
-    <a href="mailto:info@megemit.org">info@megemit.org</a>)</li>
+    <li>Kostenlose Aufzeichnung unserer Wintersymposien &ndash; bitte fordern Sie diese an unter
+    <a href="mailto:info@megemit.org">info@megemit.org</a></li>
 </ul>
 
-<p>*Hierbei handelt es sich um mind. 4 Stunden Videomaterial mit Top-Referenten zu einem spannenden,
-stets aktuellen Thema.</p>
+<p>&nbsp;</p>
+
+<p>Diese Mitgliedschaft erneuert sich nach Ablauf von 12 Monaten automatisch. Sie erhalten kurz vor
+Ablauf der 12 Monate eine E-Mail mit dem Hinweis, dass der Mitgliedsbeitrag in K&uuml;rze von Ihrem
+Konto abgebucht wird. Falls Sie Ihre Mitgliedschaft nicht erneuern m&ouml;chten, sagen Sie uns einfach
+vor Ablauf der aktuellen Mitgliedschaft schriftlich Bescheid. Eine r&uuml;ckwirkende Stornierung ist
+nicht m&ouml;glich.</p>
 
 <p>&nbsp;</p>
 
-<p>Im Anhang dieser Nachricht finden Sie die Best&auml;tigung Ihrer Mitgliedschaft sowie den
-Zahlungsnachweis. Diese Unterlagen sind f&uuml;r Ihre Buchhaltung bestimmt.</p>
+<p>Anliegend finden Sie Hinweise zur Nutzung der Therapeutenberatung, Ihre Rechnung als Vorlage f&uuml;r
+Ihre Buchhaltung und einen Bestellschein f&uuml;r Informationsmaterialien. Sie k&ouml;nnen den
+ausgef&uuml;llten Bestellschein per E-Mail an <a href="mailto:info@megemit.org">info@megemit.org</a>
+schicken.</p>
 
 <p>&nbsp;</p>
 
-<p>Mit den besten Gr&uuml;&szlig;en</p>
-<p>Doris Hagleitner</p>
+<p>Wir w&uuml;nschen Ihnen viele positive Behandlungserfolge bei der Anwendung der
+Mikroimmuntherapie.</p>
+
+<p>&nbsp;</p>
+
+<p>Herzliche Gr&uuml;&szlig;e</p>
+<p>Ihr MeGeMIT-Team</p>
 
 <div class="signature-block">
-    <img src="https://megemit.org/wp-content/uploads/2021/12/sig_megemit.jpg" alt="MeGeMIT" />
+    <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/inc/hubspot-swpm-stripe-bridge/email-templates/img/doris_signature.png' ); ?>" alt="MeGeMIT" />
 </div>
 
 <div class="footer-info">
-    Abt. Finanzen und Administration<br/>
-    Vertretung Koordination Therapeuten-Beratung<br/>
-    ATU 68 39 80 67<br/>
-    Unterer Aubachweg 8 &middot; 6300 W&ouml;rgl &middot; AUSTRIA<br/>
-    Tel.: 0043 (0)1 930 27 30 40 &middot; Fax: 0043 (0)1 391 00 04<br/>
-    <a href="mailto:doris.hagleitner@megemit.org">doris.hagleitner@megemit.org</a><br/>
-    <a href="http://www.megemit.org/">www.megemit.org</a> &middot;
-    <a href="http://www.mikroimmuntherapie.com">www.mikroimmuntherapie.com</a>
+    Postadresse:<br/>
+    Unterer Aubachweg 8<br/>
+    A-6300 W&ouml;rgl<br/>
+    <br/>
+    Adresse:<br/>
+    SPACES/Gertrude-Fr&ouml;hlich-Sandner-Str. 2, Tower 9<br/>
+    A-1100 Wien<br/>
+    <br/>
+    FOLGEN SIE UNS:<br/>
+    Instagram: <a href="https://www.instagram.com/mikro.immuntherapie">www.instagram.com/mikro.immuntherapie</a><br/>
+    Facebook: <a href="https://www.facebook.com/Mikroimmuntherapie">www.facebook.com/Mikroimmuntherapie</a><br/>
+    LinkedIn: <a href="https://www.linkedin.com/company/megemit-medizinische-gesellschaft-f">www.linkedin.com/company/megemit-medizinische-gesellschaft-f</a>
 </div>
 
 </div>
