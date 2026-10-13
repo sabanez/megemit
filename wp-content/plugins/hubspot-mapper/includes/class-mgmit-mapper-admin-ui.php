@@ -10,12 +10,13 @@ class MGMIT_Mapper_Admin_UI {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('wp_ajax_mgmit_mapper_save_mapping', array($this, 'ajax_save_mapping'));
         add_action('wp_ajax_mgmit_mapper_delete_mapping', array($this, 'ajax_delete_mapping'));
+        add_action('wp_ajax_mgmit_mapper_duplicate_mapping', array($this, 'ajax_duplicate_mapping'));
         add_action('wp_ajax_mgmit_mapper_save_credentials', array($this, 'ajax_save_credentials'));
     }
 
     public function add_admin_menu() {
         add_menu_page(
-            'MeGeMIT HubSpot Mapper',
+            'HubSpot Mapper',
             'HubSpot Mapper',
             'manage_options',
             'hubspot-mapper',
@@ -40,6 +41,7 @@ class MGMIT_Mapper_Admin_UI {
             'ajaxurl'      => admin_url('admin-ajax.php'),
             'nonce_save'   => wp_create_nonce('mgmit-mapper-save'),
             'nonce_delete' => wp_create_nonce('mgmit-mapper-delete'),
+            'nonce_duplicate' => wp_create_nonce('mgmit-mapper-duplicate'),
             'nonce_creds'  => wp_create_nonce('mgmit-mapper-creds'),
             'list_url'     => admin_url('admin.php?page=hubspot-mapper'),
             'strings'      => array(
@@ -95,7 +97,7 @@ class MGMIT_Mapper_Admin_UI {
         <div class="wrap">
             <h1 class="wp-heading-inline">
                 <span class="dashicons dashicons-share-alt2" style="font-size:28px;width:28px;height:28px;vertical-align:middle;margin-right:6px;"></span>
-                MeGeMIT: HubSpot Mapper (Frontend)
+                HubSpot Mapper (Frontend)
             </h1>
             <a href="<?php echo esc_url($add_url); ?>" class="page-title-action">&#43; Añadir Mapeo</a>
             <hr class="wp-header-end">
@@ -105,6 +107,9 @@ class MGMIT_Mapper_Admin_UI {
             <?php endif; ?>
             <?php if (isset($_GET['deleted'])): ?>
             <div class="notice notice-success is-dismissible"><p><strong>Mapeo eliminado correctamente.</strong></p></div>
+            <?php endif; ?>
+            <?php if (isset($_GET['duplicated'])): ?>
+            <div class="notice notice-success is-dismissible"><p><strong>Mapeo duplicado. Revisa y guarda los cambios (p. ej. idioma o selector) antes de continuar.</strong></p></div>
             <?php endif; ?>
 
             <div style="margin-bottom:16px;background:#e5f5fa;padding:10px 14px;border-left:4px solid #00a0d2;font-size:13px;">
@@ -126,7 +131,7 @@ class MGMIT_Mapper_Admin_UI {
             $source_text       = array(
                 'constant' => 'constante <code>MGMIT_HS_ACCESS_TOKEN_SECRET</code> (wp-config.php)',
                 'own'      => 'este plugin',
-                'bridge'   => 'plugin MeGeMIT HubSpot Bridge (respaldo)',
+                'bridge'   => 'plugin HubSpot Bridge (respaldo)',
             );
             ?>
             <div style="margin:16px 0;padding:14px 16px;background:#fff;border:1px solid #c3c4c7;border-radius:4px;max-width:760px;">
@@ -216,6 +221,11 @@ class MGMIT_Mapper_Admin_UI {
                             </td>
                             <td data-colname="Acciones">
                                 <a href="<?php echo esc_url($edit_url); ?>" class="button button-small">Editar</a>
+                                <button type="button" class="button button-small mgmit-duplicate-mapping"
+                                    data-id="<?php echo esc_attr($id); ?>"
+                                    style="margin-left:4px;">
+                                    Duplicar
+                                </button>
                                 <button type="button" class="button button-small mgmit-delete-mapping"
                                     data-id="<?php echo esc_attr($id); ?>"
                                     style="color:#b32d2e;border-color:#b32d2e;margin-left:4px;">
@@ -337,10 +347,10 @@ class MGMIT_Mapper_Admin_UI {
                             <td>
                                 <input type="text" id="mgmit-hs-form-name" class="regular-text code"
                                     value="<?php echo esc_attr($hs_form_name); ?>"
-                                    placeholder="Ej: registro-profesional-nivel-13">
+                                    placeholder="Ej: LLBE - Second registration form LL [France] Pharmacies">
                                 <p class="description">
-                                    Identificador del formulario en HubSpot. Aparecerá como nombre en
-                                    <em>Marketing &rarr; Formularios</em>. Usa solo letras, números y guiones (sin espacios).
+                                    Nombre del formulario en HubSpot. Aparecerá tal cual en
+                                    <em>Marketing &rarr; Formularios</em>. Admite espacios, guiones y corchetes.
                                 </p>
                             </td>
                         </tr>
@@ -607,6 +617,59 @@ class MGMIT_Mapper_Admin_UI {
 
         wp_send_json_success(array(
             'redirect' => admin_url('admin.php?page=hubspot-mapper&deleted=1'),
+        ));
+    }
+
+    public function ajax_duplicate_mapping() {
+        check_ajax_referer('mgmit-mapper-duplicate', 'security');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Permisos insuficientes.');
+        }
+
+        $id = isset($_POST['id']) ? sanitize_text_field($_POST['id']) : '';
+
+        if ($id === '') {
+            wp_send_json_error('ID no válido.');
+        }
+
+        $config  = $this->get_config();
+        $source  = null;
+
+        foreach ($config as $index => $m) {
+            $current_id = isset($m['id']) ? $m['id'] : strval($index);
+            if ($current_id === $id) {
+                $source = $m;
+                break;
+            }
+        }
+
+        if ($source === null) {
+            wp_send_json_error('Mapeo no encontrado.');
+        }
+
+        $existing_names = array();
+        foreach ($config as $m) {
+            $existing_names[] = isset($m['name']) ? $m['name'] : '';
+        }
+
+        $base_name = isset($source['name']) && $source['name'] !== '' ? $source['name'] : 'Mapeo';
+        $new_name  = $base_name . ' (copia)';
+        $suffix    = 2;
+        while (in_array($new_name, $existing_names, true)) {
+            $new_name = $base_name . ' (copia ' . $suffix . ')';
+            $suffix++;
+        }
+
+        $duplicate         = $source;
+        $duplicate['id']   = $this->generate_id();
+        $duplicate['name'] = $new_name;
+
+        $config[] = $duplicate;
+        update_option(MGMIT_MAPPER_OPTION, $config);
+
+        wp_send_json_success(array(
+            'redirect' => admin_url('admin.php?page=hubspot-mapper&view=edit&mapping_id=' . urlencode($duplicate['id']) . '&duplicated=1'),
         ));
     }
 

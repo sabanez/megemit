@@ -137,6 +137,31 @@
         });
     });
 
+    $(document).on('click', '.mgmit-duplicate-mapping', function () {
+        var $btn = $(this);
+        var id   = $btn.data('id');
+        var originalText = $btn.text();
+        $btn.prop('disabled', true).text('Duplicando...');
+
+        $.post(MGMIT_Admin.ajaxurl, {
+            action:   'mgmit_mapper_duplicate_mapping',
+            security: MGMIT_Admin.nonce_duplicate,
+            id:       id,
+        })
+        .done(function (res) {
+            if (res.success) {
+                window.location.href = res.data.redirect;
+            } else {
+                alert(res.data || MGMIT_Admin.strings.error);
+                $btn.prop('disabled', false).text(originalText);
+            }
+        })
+        .fail(function () {
+            alert(MGMIT_Admin.strings.error);
+            $btn.prop('disabled', false).text(originalText);
+        });
+    });
+
     function showNotice(type, msg) {
         var cls = type === 'error' ? 'notice-error' : 'notice-success';
         $('#mgmit-save-notice')

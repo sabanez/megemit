@@ -212,6 +212,63 @@ class MGMIT_HS_Contacts {
     }
 
     /**
+     * Lee un conjunto de propiedades de un contacto por email.
+     *
+     * @param string $email Email del contacto a consultar.
+     * @param array  $props Nombres internos de las propiedades HubSpot a leer.
+     * @return array{values: array, http_code: int, error: string} Resultado detallado para diagnóstico.
+     */
+    public static function get_properties($email, array $props) {
+        $result = array('values' => array(), 'http_code' => 0, 'error' => '');
+
+        $email = is_string($email) ? sanitize_email($email) : '';
+        if ($email === '' || !is_email($email)) {
+            $result['error'] = 'Email inválido o vacío.';
+            return $result;
+        }
+
+        $token = self::get_token();
+        if ($token === '') {
+            $result['error'] = 'Sin access token configurado.';
+            return $result;
+        }
+
+        $get_url = self::API_BASE . '/' . rawurlencode($email)
+            . '?idProperty=email&properties=' . rawurlencode(implode(',', $props));
+
+        $response = wp_remote_get(
+            $get_url,
+            array(
+                'headers' => array('Authorization' => 'Bearer ' . $token),
+                'timeout' => 15,
+            )
+        );
+
+        if (is_wp_error($response)) {
+            $result['error'] = $response->get_error_message();
+            self::log('get_properties error de red: ' . $result['error']);
+            return $result;
+        }
+
+        $result['http_code'] = (int) wp_remote_retrieve_response_code($response);
+
+        if ($result['http_code'] !== 200) {
+            $result['error'] = 'HTTP ' . $result['http_code'] . ': ' . wp_remote_retrieve_body($response);
+            self::log('get_properties ' . $result['error']);
+            return $result;
+        }
+
+        $data = json_decode(wp_remote_retrieve_body($response), true);
+        foreach ($props as $prop) {
+            $result['values'][$prop] = (isset($data['properties'][$prop]) && $data['properties'][$prop] !== null)
+                ? (string) $data['properties'][$prop]
+                : '';
+        }
+
+        return $result;
+    }
+
+    /**
      * Ejecuta una petición HTTP autenticada contra la API de HubSpot.
      *
      * @param string $method Método HTTP (PATCH|POST).

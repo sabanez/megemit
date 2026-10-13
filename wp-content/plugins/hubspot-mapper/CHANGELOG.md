@@ -1,5 +1,15 @@
 # Changelog — HubSpot Mapper
 
+## [2.5.0] — 2026-09-16
+
+### Cambiado
+- Eliminadas las referencias visibles a "MeGeMIT" en cabecera del plugin, menú admin y textos de la UI. Los identificadores internos (`MGMIT_*`, textdomain, option keys) se mantienen sin cambios para no romper la configuración ya guardada.
+
+### Añadido
+- **Duplicar mapeo**: nuevo botón "Duplicar" en el listado que clona un mapeo existente (útil para formularios idénticos en distintos idiomas). El nombre del duplicado se genera automáticamente evitando colisiones con nombres ya existentes (sufijo `(copia)`, `(copia 2)`, etc.), y redirige directamente a la edición del nuevo mapeo.
+
+---
+
 ## [2.4.5] — 2026-08-14
 
 ### Corregido
