@@ -38,7 +38,8 @@ class WCMS_Scheduler {
 	 * @param int $order_id
 	 */
 	public function enqueue_unenroll( $order_id ) {
-		if ( ! get_post_meta( $order_id, '_wcms_job_queued', true ) ) {
+		// '_wcms_job_queued' es el flag heredado (<1.7.1) de pedidos ya procesados.
+		if ( ! get_post_meta( $order_id, '_wcms_enrolled', true ) && ! get_post_meta( $order_id, '_wcms_job_queued', true ) ) {
 			return; // Nunca se matriculó: nada que revertir.
 		}
 
@@ -90,27 +91,36 @@ class WCMS_Scheduler {
 
 		if ( $ok ) {
 			update_post_meta( $order_id, '_wcms_unenroll_done', 'yes' );
+			delete_post_meta( $order_id, '_wcms_enrolled' );
+			delete_post_meta( $order_id, '_wcms_job_queued' );
 			$this->logger->info( "Pedido #{$order_id}: usuario Moodle #{$moodle_user_id} desmatriculado (estado: {$order->get_status()}).", self::$log_context );
+			$order->add_order_note( sprintf( 'Moodle: usuario #%d eliminado de los cohorts %s.', $moodle_user_id, implode( ', ', $course_data['ids'] ) ) );
+		} else {
+			$order->add_order_note( 'Moodle: no se pudo desmatricular al usuario (ver registro wc-moodle-sync; ¿permiso del token para core_cohort_delete_cohort_members?).' );
 		}
 	}
 
 	/**
 	 * Encola la tarea de matriculación para el pedido, evitando duplicados.
+	 * Solo se considera procesado ('_wcms_enrolled') si Moodle confirmó el alta;
+	 * si falló, un nuevo cambio de estado (p. ej. a Completado) vuelve a intentarlo.
 	 *
 	 * @param int $order_id
 	 */
 	public function enqueue( $order_id ) {
-		if ( get_post_meta( $order_id, '_wcms_job_queued', true ) ) {
+		if ( get_post_meta( $order_id, '_wcms_enrolled', true ) ) {
 			return;
 		}
 
 		if ( function_exists( 'as_enqueue_async_action' ) ) {
+			// Evita duplicar el job cuando processing y completed se disparan seguidos.
+			if ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( 'wcms_process_order', array( $order_id ), 'wcms_group' ) ) {
+				return;
+			}
 			as_enqueue_async_action( 'wcms_process_order', array( $order_id ), 'wcms_group' );
 		} else {
 			$this->run( $order_id );
 		}
-
-		update_post_meta( $order_id, '_wcms_job_queued', 'yes' );
 	}
 
 	/**
@@ -119,6 +129,10 @@ class WCMS_Scheduler {
 	 * @param int $order_id
 	 */
 	public function run( $order_id ) {
+		if ( get_post_meta( $order_id, '_wcms_enrolled', true ) ) {
+			return;
+		}
+
 		$order = wc_get_order( $order_id );
 		if ( ! $order ) {
 			$this->logger->error( "Pedido #{$order_id} no encontrado.", self::$log_context );
@@ -135,6 +149,7 @@ class WCMS_Scheduler {
 		$user_id = $order->get_user_id();
 		if ( ! $user_id ) {
 			$this->logger->warning( "Pedido #{$order_id} realizado por invitado. Ignorado.", self::$log_context );
+			$order->add_order_note( 'Moodle: pedido sin cliente registrado (invitado), no se matriculó. Asigna un cliente al pedido y vuelve a ponerlo en Completado.' );
 			return;
 		}
 
@@ -151,8 +166,13 @@ class WCMS_Scheduler {
 		$enrolled = $api->add_to_cohort( $moodle_user_id, $cohort_ids );
 
 		if ( ! $enrolled ) {
+			$order->add_order_note( 'Moodle: falló el alta en los cohorts ' . implode( ', ', $cohort_ids ) . ' (ver registro wc-moodle-sync). Se reintentará al volver a cambiar el estado del pedido.' );
 			return;
 		}
+
+		update_post_meta( $order_id, '_wcms_enrolled', 'yes' );
+		delete_post_meta( $order_id, '_wcms_unenroll_done' );
+		$order->add_order_note( sprintf( 'Moodle: usuario #%d añadido a los cohorts %s.', $moodle_user_id, implode( ', ', $cohort_ids ) ) );
 
 		$wp_user  = get_userdata( $user_id );
 		$username = strtolower( $wp_user->user_login );
@@ -190,6 +210,15 @@ class WCMS_Scheduler {
 
 			if ( ! $moodle_user_id ) {
 				$this->logger->error( "Pedido #{$order_id}: no se pudo crear el usuario {$username} en Moodle desde el admin.", self::$log_context );
+
+				$note = "Moodle: no se pudo crear/localizar al usuario {$username} ({$wp_user->user_email}), no se matriculó.";
+				if ( $api->is_lookup_denied() ) {
+					$note .= ' El token de Moodle no tiene permiso para core_user_get_users_by_field: si el usuario ya existe en Moodle (otro username o mismo email), añádelo al cohort a mano y corrige el permiso del servicio web.';
+				}
+				$order = wc_get_order( $order_id );
+				if ( $order ) {
+					$order->add_order_note( $note );
+				}
 				return 0;
 			}
 

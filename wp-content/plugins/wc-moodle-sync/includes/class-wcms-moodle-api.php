@@ -13,6 +13,9 @@ class WCMS_Moodle_Api {
 
 	private static $log_context = array( 'source' => 'wc-moodle-sync' );
 
+	/** @var bool Última búsqueda de usuario rechazada por permisos del token. */
+	private $lookup_denied = false;
+
 	public static function get_instance() {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
@@ -31,6 +34,7 @@ class WCMS_Moodle_Api {
 	 * @return int|false  ID de usuario Moodle o false si no existe.
 	 */
 	public function find_user( $username, $email = '' ) {
+		$this->lookup_denied = false;
 		$this->logger->debug( "Buscando usuario en Moodle por username: {$username}", self::$log_context );
 
 		$res = $this->request( 'core_user_get_users_by_field', array(
@@ -42,6 +46,8 @@ class WCMS_Moodle_Api {
 			$this->logger->info( "find_user: encontrado por username '{$username}' con ID {$res[0]['id']}.", self::$log_context );
 			return (int) $res[0]['id'];
 		}
+
+		$this->check_lookup_denied( $res );
 
 		// Fallback: buscar por email si se proporcionó.
 		if ( ! empty( $email ) ) {
@@ -56,10 +62,33 @@ class WCMS_Moodle_Api {
 				$this->logger->info( "find_user: encontrado por email '{$email}' con ID {$res_email[0]['id']} (username en Moodle: {$res_email[0]['username']}).", self::$log_context );
 				return (int) $res_email[0]['id'];
 			}
+
+			$this->check_lookup_denied( $res_email );
+		}
+
+		if ( $this->lookup_denied ) {
+			$this->logger->error( "find_user({$username}): el token de Moodle no tiene permiso para core_user_get_users_by_field; no se puede saber si el usuario existe.", self::$log_context );
+			return false;
 		}
 
 		$this->logger->debug( "find_user({$username}): usuario no existe en Moodle.", self::$log_context );
 		return false;
+	}
+
+	/**
+	 * Indica si la última búsqueda de find_user() falló por falta de permiso del token
+	 * (en ese caso "no encontrado" no significa "no existe").
+	 *
+	 * @return bool
+	 */
+	public function is_lookup_denied() {
+		return $this->lookup_denied;
+	}
+
+	private function check_lookup_denied( $res ) {
+		if ( is_array( $res ) && isset( $res['errorcode'] ) && 'accessexception' === $res['errorcode'] ) {
+			$this->lookup_denied = true;
+		}
 	}
 
 	/**
