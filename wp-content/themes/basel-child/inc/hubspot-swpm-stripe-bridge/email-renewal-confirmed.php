@@ -13,6 +13,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'swpm_recurring_payment_received', 'mgmit_bridge_send_renewal_confirmed_email', 10, 1 );
 
 function mgmit_bridge_send_renewal_confirmed_email( $ipn_data ) {
+    MGMIT_Webhook_Sender::debug_log(
+        'send_renewal_confirmed_email: iniciado (payer_email=' . ( isset( $ipn_data['payer_email'] ) ? sanitize_email( $ipn_data['payer_email'] ) : '' ) .
+        ', subscr_id=' . ( isset( $ipn_data['subscr_id'] ) ? $ipn_data['subscr_id'] : '' ) . ')'
+    );
+
+    // Un error de PHP aquí no debe pasar en silencio ni interrumpir el procesado de SWPM.
+    try {
+        mgmit_bridge_send_renewal_confirmed_email_run( $ipn_data );
+    } catch ( \Throwable $e ) {
+        MGMIT_Webhook_Sender::debug_log(
+            'send_renewal_confirmed_email: ERROR ' . get_class( $e ) . ': ' . $e->getMessage() . ' en ' . basename( $e->getFile() ) . ':' . $e->getLine()
+        );
+    }
+}
+
+function mgmit_bridge_send_renewal_confirmed_email_run( $ipn_data ) {
 
     $email      = isset( $ipn_data['payer_email'] ) ? sanitize_email( $ipn_data['payer_email'] ) : '';
     $first_name = isset( $ipn_data['first_name'] )  ? sanitize_text_field( $ipn_data['first_name'] ) : '';

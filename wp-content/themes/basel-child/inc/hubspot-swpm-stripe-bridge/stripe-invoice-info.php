@@ -258,6 +258,24 @@ function mgmit_bridge_get_swpm_profile_address( $swpm_member ) {
 }
 
 /**
+ * Fecha del pago a la que se refieren los documentos. En un envío normal es hoy; en un
+ * reenvío manual el IPN trae 'mgmit_pay_date' (Y-m-d, la fecha del pago original).
+ *
+ * @param array $ipn_data Datos IPN de SWPM.
+ * @return DateTime
+ */
+function mgmit_bridge_payment_datetime( $ipn_data ) {
+    if ( ! empty( $ipn_data['mgmit_pay_date'] ) && preg_match( '/^\d{4}-\d{2}-\d{2}$/', $ipn_data['mgmit_pay_date'] ) ) {
+        try {
+            return new DateTime( $ipn_data['mgmit_pay_date'], wp_timezone() );
+        } catch ( \Exception $e ) {
+            // Fecha no válida: se usa hoy.
+        }
+    }
+    return new DateTime( 'now', wp_timezone() );
+}
+
+/**
  * Tipo de método de pago de Stripe → texto para la factura.
  */
 function mgmit_bridge_payment_method_label( $type ) {
@@ -288,7 +306,7 @@ function mgmit_bridge_payment_method_label( $type ) {
 function mgmit_bridge_build_invoice_vars( $ipn_data ) {
     $info = mgmit_bridge_get_stripe_invoice_info( $ipn_data );
 
-    $start = new DateTime( 'now', wp_timezone() );
+    $start = mgmit_bridge_payment_datetime( $ipn_data );
     $end   = clone $start;
     $end->modify( '+1 year -1 day' );
 

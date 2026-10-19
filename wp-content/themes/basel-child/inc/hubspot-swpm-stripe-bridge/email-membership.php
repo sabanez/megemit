@@ -6,9 +6,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Envía el email de bienvenida/confirmación de membresía con los 5 documentos adjuntos.
  *
+ * Deja traza al inicio y captura cualquier error de PHP para que un fallo no pase en silencio.
+ *
  * @param array $ipn_data Datos del hook swpm_payment_ipn_processed.
  */
 function mgmit_bridge_send_membership_email( $ipn_data ) {
+    MGMIT_Webhook_Sender::debug_log(
+        'send_membership_email: iniciado (payer_email=' . ( isset( $ipn_data['payer_email'] ) ? sanitize_email( $ipn_data['payer_email'] ) : '' ) .
+        ', swpm_id=' . ( isset( $ipn_data['swpm_id'] ) ? $ipn_data['swpm_id'] : '' ) .
+        ', subscr_id=' . ( isset( $ipn_data['subscr_id'] ) ? $ipn_data['subscr_id'] : '' ) . ')'
+    );
+
+    try {
+        mgmit_bridge_send_membership_email_run( $ipn_data );
+    } catch ( \Throwable $e ) {
+        MGMIT_Webhook_Sender::debug_log(
+            'send_membership_email: ERROR ' . get_class( $e ) . ': ' . $e->getMessage() . ' en ' . basename( $e->getFile() ) . ':' . $e->getLine()
+        );
+    }
+}
+
+function mgmit_bridge_send_membership_email_run( $ipn_data ) {
 
     $email      = isset( $ipn_data['payer_email'] ) ? sanitize_email( $ipn_data['payer_email'] ) : '';
     $first_name = isset( $ipn_data['first_name'] )  ? sanitize_text_field( $ipn_data['first_name'] ) : '';
@@ -18,7 +36,7 @@ function mgmit_bridge_send_membership_email( $ipn_data ) {
 
     if ( empty( $email ) ) {
         MGMIT_Webhook_Sender::debug_log( 'send_membership_email: email vacío, omitiendo envío' );
-        return;
+        return false;
     }
 
     // Datos de facturación del usuario WP (primero por el email de registro del socio,
@@ -61,8 +79,10 @@ function mgmit_bridge_send_membership_email( $ipn_data ) {
         $member_country  = $hubspot_address['country'];
     }
 
-    $year           = gmdate( 'Y' );
-    $date_formatted = gmdate( 'd.m.Y' );
+    // Fecha del pago: hoy en un envío normal; la del pago original en un reenvío manual.
+    $pay_date       = mgmit_bridge_payment_datetime( $ipn_data );
+    $year           = $pay_date->format( 'Y' );
+    $date_formatted = $pay_date->format( 'd.m.Y' );
 
     $header_img_path = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
     $header_img_url  = get_stylesheet_directory_uri() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
@@ -121,12 +141,15 @@ function mgmit_bridge_send_membership_email( $ipn_data ) {
 
     $subject = 'Herzlich Willkommen als Mitglied bei der MeGeMIT';
 
-    $sent = wp_mail( $email, $subject, $body_html, $headers, $attachments );
+    // Destinatario: el email del pago; en un envío de prueba manual, el indicado en 'mgmit_send_to'.
+    $to = ( ! empty( $ipn_data['mgmit_send_to'] ) && is_email( $ipn_data['mgmit_send_to'] ) ) ? $ipn_data['mgmit_send_to'] : $email;
+
+    $sent = wp_mail( $to, $subject, $body_html, $headers, $attachments );
 
     if ( $sent ) {
-        MGMIT_Webhook_Sender::debug_log( 'send_membership_email: enviado OK a ' . $email );
+        MGMIT_Webhook_Sender::debug_log( 'send_membership_email: enviado OK a ' . $to );
     } else {
-        MGMIT_Webhook_Sender::debug_log( 'send_membership_email: wp_mail() devolvió false para ' . $email );
+        MGMIT_Webhook_Sender::debug_log( 'send_membership_email: wp_mail() devolvió false para ' . $to );
     }
 
     // Borrar PDFs temporales
@@ -137,6 +160,46 @@ function mgmit_bridge_send_membership_email( $ipn_data ) {
     if ( $ok_vorschreib && file_exists( $pdf_vorschreib ) ) {
         // phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink
         unlink( $pdf_vorschreib );
+    }
+
+    return (bool) $sent;
+}
+
+/**
+ * Reenvío manual del email de bienvenida (con factura y confirmación) de un pago ya
+ * registrado en swpm_payments_tbl. Los documentos llevan la fecha del pago original.
+ *
+ * @param object $payment Fila de swpm_payments_tbl (email, first_name, last_name, member_id,
+ *                        txn_date, txn_id, subscr_id, payment_amount, gateway).
+ * @param string $send_to Si se indica, el email se envía a esta dirección en vez de a la del pago (prueba).
+ * @return bool true si wp_mail() lo aceptó.
+ */
+function mgmit_bridge_resend_membership_email( $payment, $send_to = '' ) {
+    $ipn_data = array(
+        'payer_email'    => $payment->email,
+        'first_name'     => $payment->first_name,
+        'last_name'      => $payment->last_name,
+        'mc_gross'       => $payment->payment_amount,
+        'txn_id'         => $payment->txn_id,
+        'subscr_id'      => $payment->subscr_id,
+        'swpm_id'        => $payment->member_id,
+        'gateway'        => $payment->gateway,
+        'mgmit_pay_date' => $payment->txn_date,
+        'mgmit_send_to'  => $send_to,
+    );
+
+    MGMIT_Webhook_Sender::debug_log(
+        'send_membership_email: REENVÍO manual (payer_email=' . sanitize_email( $payment->email ) . ', swpm_id=' . $payment->member_id .
+        ', fecha del pago=' . $payment->txn_date . ( $send_to ? ', enviado a ' . sanitize_email( $send_to ) . ' en vez de al cliente' : '' ) . ')'
+    );
+
+    try {
+        return mgmit_bridge_send_membership_email_run( $ipn_data );
+    } catch ( \Throwable $e ) {
+        MGMIT_Webhook_Sender::debug_log(
+            'send_membership_email: ERROR en reenvío ' . get_class( $e ) . ': ' . $e->getMessage() . ' en ' . basename( $e->getFile() ) . ':' . $e->getLine()
+        );
+        return false;
     }
 }
 
