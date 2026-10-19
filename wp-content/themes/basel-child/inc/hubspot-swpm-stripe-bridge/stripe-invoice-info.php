@@ -17,6 +17,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function mgmit_bridge_get_stripe_invoice_info( $ipn_data ) {
+    // Caché por petición: el email al cliente y el aviso al administrador consultan lo mismo.
+    static $cache = array();
+    $key = isset( $ipn_data['subscr_id'] ) ? (string) $ipn_data['subscr_id'] : '';
+    if ( '' !== $key && isset( $cache[ $key ] ) ) {
+        return $cache[ $key ];
+    }
+
+    $info = mgmit_bridge_fetch_stripe_invoice_info( $ipn_data );
+    if ( '' !== $key ) {
+        $cache[ $key ] = $info;
+    }
+    return $info;
+}
+
+function mgmit_bridge_fetch_stripe_invoice_info( $ipn_data ) {
     $info = array(
         'invoice_number' => '',
         'payment_label'  => '',
