@@ -40,6 +40,40 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 
 ---
 
+## 2026-10-19
+
+### Corregido
+- `basel-child/woocommerce/pdf/MeGeMit/invoice.php`: la factura de WooCommerce ya no muestra los datos bancarios en pedidos pagados con Klarna (no es una transferencia). Se añade `stripe_klarna` (ID real de la pasarela de Stripe para Klarna) a `$already_paid_methods`; el valor `'Klarna'` no coincidía por la comparación estricta y la distinción de mayúsculas. Comentario de cabecera actualizado con los ID por método de pago.
+
+---
+
+## 2026-10-14
+
+### wc-moodle-sync 1.7.1
+*Origen: wc-moodle-sync/CHANGELOG.md*
+
+Corrección: pedidos creados desde el admin que no matriculaban en Moodle.
+
+- `WCMS_Scheduler::enqueue()` ya no marca el pedido como procesado al encolarlo
+  (`_wcms_job_queued`). Ahora solo se marca `_wcms_enrolled` cuando `add_to_cohort()`
+  confirma el alta; si el primer intento (p. ej. en Procesando) falla, el siguiente
+  cambio de estado (Completado) lo reintenta. Evita jobs duplicados con
+  `as_has_scheduled_action()`.
+- `_wcms_job_queued` se mantiene solo como flag heredado para la desmatriculación de
+  pedidos anteriores. Al desmatricular se borra `_wcms_enrolled` (permite re-matricular
+  si el pedido vuelve a Completado).
+- Notas en el pedido en cada salida silenciosa: pedido de invitado, usuario Moodle no
+  creado/localizado, fallo de `add_to_cohort`, y resultado de la desmatriculación.
+- `WCMS_Moodle_Api::find_user()` detecta `accessexception` (token sin permiso para
+  `core_user_get_users_by_field`), lo registra como error y lo expone con
+  `is_lookup_denied()`; la nota del pedido avisa de que el usuario puede existir ya en Moodle.
+- Requisito en Moodle: añadir `core_user_get_users_by_field` y
+  `core_cohort_delete_cohort_members` al servicio externo del token.
+- Nota: pedidos antiguos con `_wcms_job_queued` pero sin `_wcms_enrolled` se reintentarán
+  si vuelven a pasar a Procesando/Completado (puede reenviarse el email de bienvenida).
+
+---
+
 ## 2026-10-12
 
 ### Eliminado

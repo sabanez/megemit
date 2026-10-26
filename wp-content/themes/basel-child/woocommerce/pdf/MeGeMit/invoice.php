@@ -225,11 +225,11 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 <?php do_action( 'wpo_wcpdf_after_order_details', $this->get_type(), $this->order ); ?>
 
 <!-- INSTRUCCIÓN DE PAGO / DATOS BANCARIOS: varía según método de pago y país de facturación.
-     - stripe / ppcp-gateway / ppcp-card-button-gateway (Klarna, PayPal, tarjeta): ya pagado, sin datos bancarios.
+     - stripe (tarjeta) / stripe_klarna (Klarna) / ppcp-gateway / ppcp-card-button-gateway (PayPal): ya pagado, sin datos bancarios.
      - bacs (transferencia) desde Suiza (CH): solo cuenta Raiffeisenbank Oberaudorf eG.
      - bacs desde el resto de países: las dos cuentas (Bank Austria + Raiffeisenbank Oberaudorf eG). -->
 <?php
-$already_paid_methods = array( 'stripe', 'ppcp-gateway', 'ppcp-card-button-gateway' );
+$already_paid_methods = array( 'stripe', 'stripe_klarna', 'ppcp-gateway', 'ppcp-card-button-gateway' );
 $payment_method       = $this->order->get_payment_method();
 $is_swiss             = 'CH' === $this->order->get_billing_country();
 ?>
