@@ -19,7 +19,7 @@
 👉 **[ARCHITECTURE.md](ARCHITECTURE.md)** → Arquitectura completa
 
 ### Opción 5: "¿Qué cambió recientemente?"
-👉 **[CHANGELOG.md](CHANGELOG.md)** → Historial versiones
+👉 **[CHANGELOG.md](../CHANGELOG.md)** → Historial versiones
 
 ---
 
@@ -32,7 +32,7 @@ docs/
 ├── GETTING_STARTED.md               ← Guía rápida para nuevos devs (9 KB)
 ├── INDEX.md                         ← Mapa de navegación completo (10 KB)
 ├── ARCHITECTURE.md                  ← Especificación técnica definitiva (17 KB)
-├── CHANGELOG.md                     ← Historial de cambios (8 KB)
+├── ../CHANGELOG.md                  ← Historial de cambios (único, en la raíz del proyecto)
 ├── HUBSPOT_INTEGRATION.md           ← Guía de integración HubSpot (9 KB)
 └── HUBSPOT_BRIDGE_PLUGIN_PLAN.md    ← Blueprint del plugin (4.5 KB)
 
@@ -134,7 +134,7 @@ R: [ARCHITECTURE.md](ARCHITECTURE.md) — es la fuente de verdad técnica.
 R: [GETTING_STARTED.md](GETTING_STARTED.md) — diseñado para nuevos devs.
 
 **P: ¿Dónde veo qué cambió?**  
-R: [CHANGELOG.md](CHANGELOG.md) — historial completo de versiones.
+R: [CHANGELOG.md](../CHANGELOG.md) — historial completo de versiones.
 
 **P: ¿Necesito leerlo TODO?**  
 R: No. Usa [INDEX.md](INDEX.md) (matriz) para leer solo lo relevante.
@@ -153,7 +153,7 @@ R: Crea un issue o pregunta. La documentación se actualiza constantemente.
 | **Especificación técnica** | [ARCHITECTURE.md](ARCHITECTURE.md) |
 | **Cómo funciona HubSpot** | [HUBSPOT_INTEGRATION.md](HUBSPOT_INTEGRATION.md) |
 | **Plugin especificación** | [HUBSPOT_BRIDGE_PLUGIN_PLAN.md](HUBSPOT_BRIDGE_PLUGIN_PLAN.md) |
-| **Historial de cambios** | [CHANGELOG.md](CHANGELOG.md) |
+| **Historial de cambios** | [CHANGELOG.md](../CHANGELOG.md) |
 | **Mapa de navegación** | [INDEX.md](INDEX.md) |
 
 ---

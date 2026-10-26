@@ -75,7 +75,7 @@ PHP 7.4  ← NO 8.0+ features (union types, constructor promotion, etc.)
 
 1. **Leer:** [README.md](README.md) — visión general
 2. **Flujos:** [HUBSPOT_INTEGRATION.md#flujo-completo-de-sincronización](HUBSPOT_INTEGRATION.md) — cómo el usuario experimenta el sistema
-3. **Cambios:** [CHANGELOG.md](CHANGELOG.md) — qué se implementó y cuándo
+3. **Cambios:** [CHANGELOG.md](../CHANGELOG.md) — qué se implementó y cuándo
 
 ---
 
@@ -280,7 +280,7 @@ Testing: "Completado, sincroniza correctamente"
 
 | Necesidad | Ubicación |
 |---|---|
-| Ver todas las versiones | [CHANGELOG.md](CHANGELOG.md) |
+| Ver todas las versiones | [CHANGELOG.md](../CHANGELOG.md) |
 | Estructura completa | [ARCHITECTURE.md](ARCHITECTURE.md) |
 | Endpoints REST | [HUBSPOT_INTEGRATION.md](HUBSPOT_INTEGRATION.md) |
 | Especificación del plugin | [HUBSPOT_BRIDGE_PLUGIN_PLAN.md](HUBSPOT_BRIDGE_PLUGIN_PLAN.md) |

@@ -12,7 +12,7 @@ Especificación completa de la arquitectura del proyecto incluyendo:
 - Lógica de onboarding en tema hijo `basel-child`
 - Herramientas auxiliares (migración, etc.)
 
-### **2. [CHANGELOG.md](CHANGELOG.md)**
+### **2. [CHANGELOG.md](../CHANGELOG.md)**
 Registro histórico de todos los cambios y versiones del proyecto.
 
 ### **3. [HUBSPOT_INTEGRATION.md](HUBSPOT_INTEGRATION.md)**
@@ -47,9 +47,9 @@ wp-site/
 ├── docs/                              # Esta carpeta de documentación
 │   ├── README.md                      # Este archivo
 │   ├── ARCHITECTURE.md                # Especificación técnica completa
-│   ├── CHANGELOG.md                   # Historial de versiones
 │   ├── HUBSPOT_INTEGRATION.md         # Guía de integración HubSpot
 │   └── HUBSPOT_BRIDGE_PLUGIN_PLAN.md  # Especificación del plugin bridge
+├── CHANGELOG.md                       # ÚNICO changelog del proyecto (historial de cambios)
 ├── CLAUDE.md                          # Instrucciones para agentes (raíz)
 ├── wp-content/
 │   ├── plugins/
