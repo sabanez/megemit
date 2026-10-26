@@ -236,7 +236,7 @@ class WCMS_Completion_Handler {
 	 *
 	 * @param WP_User $wp_user
 	 * @param int     $moodle_course_id
-	 * @return string  disabled | not_applicable | already_issued | no_data | pending | error | ok
+	 * @return string  disabled | not_applicable | already_issued | no_data | pending | error | ok | ok_test
 	 */
 	private function handle_degree_check( $wp_user, $moodle_course_id ) {
 		if ( ! WCMS_SEND_DEGREE ) {
@@ -297,6 +297,13 @@ class WCMS_Completion_Handler {
 		}
 
 		update_user_meta( $wp_user->ID, $meta_key, basename( $pdf_path ) );
+
+		if ( WCMS_DEGREE_TEST_MODE ) {
+			WCMS_Mailer::get_instance()->send_certificate_test( $wp_user, $pdf_path, WCMS_DEGREE_TEST_EMAIL );
+			$this->logger->info( "degree: [PRUEBA] certificado de {$wp_user->user_email} generado y enviado a los administradores; alumno marcado.", self::$log_context );
+			return 'ok_test';
+		}
+
 		WCMS_Mailer::get_instance()->send_certificate( $wp_user, $pdf_path );
 		$this->logger->info( "degree: certificado generado y email enviado a {$wp_user->user_email}.", self::$log_context );
 

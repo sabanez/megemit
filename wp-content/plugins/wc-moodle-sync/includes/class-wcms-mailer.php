@@ -40,6 +40,36 @@ class WCMS_Mailer {
 		remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 	}
 
+	/**
+	 * Modo de prueba: envía el email del certificado a los administradores en lugar de al alumno.
+	 * Mismo cuerpo y mismo PDF; el asunto lleva [PRUEBA] y un aviso indica el alumno real.
+	 *
+	 * @param WP_User $wp_user
+	 * @param string  $pdf_path
+	 * @param string  $recipients  Emails separados por comas ('' = admin_email).
+	 */
+	public function send_certificate_test( $wp_user, $pdf_path, $recipients = '' ) {
+		$to = array_filter( array_map( 'sanitize_email', array_map( 'trim', explode( ',', (string) $recipients ) ) ) );
+		if ( empty( $to ) ) {
+			$to = array( get_option( 'admin_email' ) );
+		}
+
+		$name   = trim( $wp_user->first_name . ' ' . $wp_user->last_name );
+		$notice = '<div style="max-width:600px;margin:10px auto;padding:10px 14px;background:#fff4e0;border:1px solid #e0b060;font-family:Arial,sans-serif;font-size:13px;color:#1d1c1d;">'
+			. '<strong>PRUEBA</strong> &mdash; este email no se ha enviado al alumno.<br>'
+			. 'Alumno: ' . esc_html( $name ) . ' &lt;' . esc_html( $wp_user->user_email ) . '&gt; (usuario #' . (int) $wp_user->ID . ')'
+			. '</div>';
+
+		$headers = array(
+			'Content-Type: text/html; charset=UTF-8',
+			'From: MeGeMIT Online-Akademie <akademie@megemit.org>',
+		);
+
+		add_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
+		wp_mail( $to, '[PRUEBA] Ihr MeGeMIT-Zertifikat', $notice . $this->build_certificate_html(), $headers, array( $pdf_path ) );
+		remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
+	}
+
 	private function build_certificate_html() {
 		ob_start();
 		?>

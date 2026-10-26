@@ -1,6 +1,6 @@
 # WooCommerce & Moodle Sync
 
-Versión: 1.8.0 — PHP 7.4+, WooCommerce 5+
+Versión: 1.8.1 — PHP 7.4+, WooCommerce 5+
 
 Matricula automáticamente a compradores de WooCommerce en cursos Moodle de forma asíncrona (vía cohorts). Genera cupones de descuento al finalizar un curso, cupones de bonificación al alcanzar el 40%/80% de progreso combinado (en pausa), certificados PDF al aprobar un examen, y la titulación (certificado único) al superar el 80% en los dos exámenes.
 
@@ -133,6 +133,8 @@ agregado del curso) de **todos los cursos en los que está matriculado** en Mood
 > en pausa** hasta definir las reglas de asignación (los umbrales 40%/80% actuales son provisionales).
 
 ### Titulación (certificado único) — evento `grade_updated`
+
+> **Modo de prueba (1.8.1)** — `WCMS_DEGREE_TEST_MODE` (por defecto `true`): el flujo es el real (evalúa, genera el PDF y marca al alumno con `_wcms_degree_certificate`), pero el email va con asunto `[PRUEBA]` a `WCMS_DEGREE_TEST_EMAIL` (vacío = email de administración de WordPress) y no al alumno. El webhook devuelve `ok_test`. Como el alumno queda marcado, **no recibirá el certificado real al desactivar el modo**: reenvíale el PDF de `uploads/wcms-certificates/`. Poner `WCMS_DEGREE_TEST_MODE` en `false` para el envío real.
 
 No es un evento nuevo: se evalúa dentro de `grade_updated`, antes y de forma independiente de las
 bonificaciones, y solo si `WCMS_SEND_DEGREE` está activo y el curso del evento es uno de los exámenes.

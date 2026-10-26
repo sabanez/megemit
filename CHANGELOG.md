@@ -41,6 +41,13 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 
 ---
 
+## 2026-10-26 (wc-moodle-sync)
+
+### wc-moodle-sync 1.8.1
+- Modo de prueba de titulaciones: `WCMS_DEGREE_TEST_MODE` (por defecto `true`) y `WCMS_DEGREE_TEST_EMAIL`. El email del certificado va con asunto `[PRUEBA]` a los administradores (vacío = `admin_email`) en lugar de al alumno; el alumno se marca igualmente con `_wcms_degree_certificate`. Nuevo estado `ok_test` y `WCMS_Mailer::send_certificate_test()`.
+
+---
+
 ## 2026-10-22
 
 ### wc-moodle-sync 1.8.0

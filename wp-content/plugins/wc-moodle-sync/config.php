@@ -74,6 +74,23 @@ if ( ! defined( 'WCMS_SEND_DEGREE' ) ) {
 }
 
 /**
+ * Modo de prueba de titulaciones. Con WCMS_SEND_DEGREE activo, el flujo es el real
+ * (evalúa notas, genera el PDF y marca al alumno con _wcms_degree_certificate), pero el
+ * email con el certificado NO se envía al alumno: va a WCMS_DEGREE_TEST_EMAIL.
+ * Poner a false para enviar los certificados a los alumnos.
+ */
+if ( ! defined( 'WCMS_DEGREE_TEST_MODE' ) ) {
+	define( 'WCMS_DEGREE_TEST_MODE', true );
+}
+
+/**
+ * Destinatarios del modo de prueba, separados por comas. Vacío = email de administración de WordPress.
+ */
+if ( ! defined( 'WCMS_DEGREE_TEST_EMAIL' ) ) {
+	define( 'WCMS_DEGREE_TEST_EMAIL', '' );
+}
+
+/**
  * Titulación: un único certificado que se entrega cuando el alumno cumple TODOS
  * los requisitos de nota mínima de la lista (evento grade_updated).
  *
