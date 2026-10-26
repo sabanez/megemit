@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-10-26
+
+### Añadido
+- Aviso excepcional de normalización de pagos (`inc/hubspot-swpm-stripe-bridge/flow-exceptional-renewal.php`, plantilla `email-templates/body-exceptional-renewal.php`, cargado desde `loader.php`). Email único, en alemán, a los socios del nivel de pago cuya membresía se gestionó manualmente hasta el 13/10/2026: les informa de que deben suscribirse ellos desde la web (URL configurable). **Apagado por defecto y sin URL no envía nada.**
+  - Destinatarios: nivel 3 con `subscription_starts` anterior al 13/10/2026 (la fecha de corte y el resto son configurables). Quedan fuera quienes tengan alta desde el 13/10 (flujo normal de SWPM) y, como red de seguridad, quien tenga un pago en `swpm_payments_tbl` o un `subscr_id` `sub_`. No exige estado activo (a la fecha de envío estarán `expired`).
+  - Envío: **una única fecha para todos, 31/01/2027, sin excepciones** y sin depender de la fecha de alta ni de «alta + 1 año» (la fecha es configurable). Cron cada 15 min por lotes (50 por defecto) con bloqueo, un único envío por socio (option `mgmit_exc_renewal_sent`). El email no menciona fecha de fin de la membresía anterior.
+  - Ajustes → «Aviso excepcional»: configuración, estado, vista previa de destinatarios, envío de prueba y ejecución manual de un lote.
+- Cron: el envío usa WP-Cron (`mgmit_exc_renewal_cron`, cada 15 min). En producción `DISABLE_WP_CRON` es `false`, así que se dispara con las visitas a la web; no requiere actualizar nada. Para asegurar la hora, se usará un agente externo (servicio tipo cron-job.org / UptimeRobot) que haga un `GET` a `https://megemit.org/wp-cron.php` cada 15 minutos. El 31/01/2027 es domingo: no depender de un equipo local encendido.
+- Pendiente (para poder seguir más adelante):
+  1. Facilitar la URL de suscripción y guardarla en Ajustes → «Aviso excepcional» (sin URL el interruptor no se puede activar).
+  2. Aprobar el texto del email (alemán, `email-templates/body-exceptional-renewal.php`).
+  3. Subir a producción `flow-exceptional-renewal.php`, `loader.php` y `email-templates/body-exceptional-renewal.php` (en `inc/hubspot-swpm-stripe-bridge/`).
+  4. Configurar el agente externo de cron (cada 15 min).
+  5. Enviar el email de prueba desde el panel y revisar la vista previa de destinatarios (esperados ~860 según el backup del 21/10/2026: nivel 3 con alta anterior al 13/10/2026).
+  6. Activar el interruptor antes del 31/01/2027 y comprobar ese día que el contador de enviados sube de 50 en 50.
+
+### Diagnóstico abierto: nivel de membresía 3 → 2 tras comprar
+- Con el backup de producción (21/10/2026 22:00) se confirmó que 4 socios con compra nueva (7803, 8006, 8450, 8623) están en nivel 2: SWPM los subió a 3 al pagar (log) y después volvió a 2. Núcleo de SWPM 4.8.5, Form Builder y tema de producción sin modificar frente al código oficial/repositorio; la causa sigue sin identificar.
+- Herramienta de diagnóstico preparada fuera del repositorio (`~/Desktop/webs/plugins/mgmit-level-audit.php`, mu-plugin): registra cada UPDATE de `membership_level` con su pila de llamadas y envía un email si un socio pasa de 3 a 2. Pendiente de subir a `wp-content/mu-plugins/` y de hacer una compra de prueba.
+- Seguridad (a resolver fuera del repositorio): `hufeland.php` y `cncl.php` en la raíz web de producción; el primero lleva la contraseña de la base de datos en claro (rotar y borrar/proteger).
+
 ## 2026-10-12
 
 ### Eliminado
