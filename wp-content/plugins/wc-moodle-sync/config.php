@@ -64,3 +64,50 @@ if ( ! defined( 'WCMS_SEND_CERTIFICATE' ) ) {
 if ( ! defined( 'WCMS_SEND_COUPON' ) ) {
 	define( 'WCMS_SEND_COUPON', false );
 }
+
+/**
+ * Activar/desactivar la entrega de titulaciones (certificado por nota mínima
+ * del examen, ver WCMS_DEGREES). Independiente de WCMS_SEND_CERTIFICATE y WCMS_SEND_COUPON.
+ */
+if ( ! defined( 'WCMS_SEND_DEGREE' ) ) {
+	define( 'WCMS_SEND_DEGREE', false );
+}
+
+/**
+ * Titulación: un único certificado que se entrega cuando el alumno cumple TODOS
+ * los requisitos de nota mínima de la lista (evento grade_updated).
+ *
+ *  - template     : plantilla PNG del certificado, relativa a assets/ ('' = plantilla por defecto).
+ *  - center_x     : centro horizontal del nombre y la fecha, como fracción del ancho (0.5 = centro del lienzo).
+ *  - requirements : exámenes que deben superarse, cada uno con:
+ *      name        : etiqueta (solo para logs).
+ *      course_id   : curso Moodle que contiene el examen (el del payload del webhook).
+ *      cmid        : ID del módulo (course module) del quiz de examen.
+ *      min_percent : % mínimo de la nota máxima del examen (80 = 80 %).
+ *      max         : puntos totales esperados del examen (solo se usa para avisar si cambian).
+ *
+ * Cohort 3 (Grundkurse)  -> "GRUNDKURS-EXAMEN" (curso 10, sobre 46)
+ * Cohort 2 (Aufbaukurse) -> "AUFBAUKURS-EXAMEN" (curso 9, sobre 42)
+ */
+if ( ! defined( 'WCMS_DEGREES' ) ) {
+	define( 'WCMS_DEGREES', array(
+		'template'     => 'certificate-template-degree.png',
+		'center_x'     => 0.531,
+		'requirements' => array(
+			array(
+				'name'        => 'Grundkurs',
+				'course_id'   => 10,
+				'cmid'        => 246,
+				'min_percent' => 80,
+				'max'         => 46,
+			),
+			array(
+				'name'        => 'Aufbaukurs',
+				'course_id'   => 9,
+				'cmid'        => 252,
+				'min_percent' => 80,
+				'max'         => 42,
+			),
+		),
+	) );
+}

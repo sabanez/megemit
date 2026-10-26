@@ -242,6 +242,32 @@ class WCMS_Moodle_Api {
 	}
 
 	/**
+	 * Devuelve la nota de un módulo concreto (identificado por su cmid) de un curso.
+	 *
+	 * @param int $moodle_user_id
+	 * @param int $moodle_course_id
+	 * @param int $cmid  ID del course module (quiz, etc.).
+	 * @return array|null  array( 'graderaw' => float|null, 'grademax' => float ) o null si el
+	 *                     módulo no se encuentra entre los grade items del curso.
+	 */
+	public function get_item_grade( $moodle_user_id, $moodle_course_id, $cmid ) {
+		$items = $this->get_course_grade_items( $moodle_user_id, $moodle_course_id );
+
+		foreach ( $items as $item ) {
+			if ( ! isset( $item['cmid'] ) || (int) $item['cmid'] !== (int) $cmid ) {
+				continue;
+			}
+
+			return array(
+				'graderaw' => isset( $item['graderaw'] ) && null !== $item['graderaw'] ? (float) $item['graderaw'] : null,
+				'grademax' => isset( $item['grademax'] ) ? (float) $item['grademax'] : 0.0,
+			);
+		}
+
+		return null;
+	}
+
+	/**
 	 * Elimina a un usuario de uno o varios cohorts de Moodle.
 	 * Al perder la pertenencia al cohort, la matriculación sincronizada
 	 * en los cursos correspondientes también se retira (según la config.

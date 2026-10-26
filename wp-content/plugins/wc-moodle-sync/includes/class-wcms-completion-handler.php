@@ -122,7 +122,17 @@ class WCMS_Completion_Handler {
 		}
 
 		if ( $event_type === 'grade_updated' ) {
-			return $this->handle_grade_updated( $wp_user, $moodle_course_id );
+			// La titulación se evalúa antes y es independiente de WCMS_SEND_COUPON.
+			$degree = $this->handle_degree_check( $wp_user, $moodle_course_id );
+			$result = $this->handle_grade_updated( $wp_user, $moodle_course_id );
+
+			if ( $result instanceof WP_REST_Response ) {
+				$data           = $result->get_data();
+				$data['degree'] = $degree;
+				$result->set_data( $data );
+			}
+
+			return $result;
 		}
 
 		$this->update_exams_and_certificates_meta( $wp_user, $moodle_course_id );
@@ -217,6 +227,80 @@ class WCMS_Completion_Handler {
 		$this->logger->info( "exam_passed: certificado generado y email enviado a {$wp_user->user_email}.", self::$log_context );
 
 		return rest_ensure_response( array( 'status' => 'ok', 'certificate' => basename( $pdf_path ) ) );
+	}
+
+	/**
+	 * Titulación: si el alumno alcanza la nota mínima en TODOS los exámenes de
+	 * WCMS_DEGREES, genera el certificado y lo envía por email (una sola vez).
+	 * Solo actúa si el curso del evento es uno de los de los requisitos.
+	 *
+	 * @param WP_User $wp_user
+	 * @param int     $moodle_course_id
+	 * @return string  disabled | not_applicable | already_issued | no_data | pending | error | ok
+	 */
+	private function handle_degree_check( $wp_user, $moodle_course_id ) {
+		if ( ! WCMS_SEND_DEGREE ) {
+			return 'disabled';
+		}
+
+		$config       = WCMS_DEGREES;
+		$requirements = isset( $config['requirements'] ) ? $config['requirements'] : array();
+
+		$course_ids = array();
+		foreach ( $requirements as $req ) {
+			$course_ids[] = (int) $req['course_id'];
+		}
+		if ( ! in_array( (int) $moodle_course_id, $course_ids, true ) ) {
+			return 'not_applicable';
+		}
+
+		$meta_key = '_wcms_degree_certificate';
+		if ( get_user_meta( $wp_user->ID, $meta_key, true ) ) {
+			return 'already_issued';
+		}
+
+		$moodle_user_id = (int) get_user_meta( $wp_user->ID, '_wcms_moodle_user_id', true );
+		if ( ! $moodle_user_id ) {
+			$this->logger->warning( "degree: user #{$wp_user->ID} sin _wcms_moodle_user_id.", self::$log_context );
+			return 'no_data';
+		}
+
+		$api = WCMS_Moodle_Api::get_instance();
+
+		foreach ( $requirements as $req ) {
+			$grade = $api->get_item_grade( $moodle_user_id, (int) $req['course_id'], (int) $req['cmid'] );
+
+			if ( null === $grade ) {
+				$this->logger->warning( "degree: examen '{$req['name']}' (cmid {$req['cmid']}) no encontrado en el curso #{$req['course_id']} para user #{$wp_user->ID}.", self::$log_context );
+				return 'no_data';
+			}
+
+			if ( (float) $req['max'] !== $grade['grademax'] ) {
+				$this->logger->warning( "degree: examen '{$req['name']}' grademax={$grade['grademax']} distinto del esperado {$req['max']}.", self::$log_context );
+			}
+
+			$percent = ( null !== $grade['graderaw'] && $grade['grademax'] > 0 ) ? ( $grade['graderaw'] / $grade['grademax'] ) * 100 : null;
+
+			if ( null === $percent || $percent < (float) $req['min_percent'] - 0.0001 ) {
+				$obtained = null === $percent ? 'sin nota' : round( $percent, 1 ) . '%';
+				$this->logger->info( "degree: user #{$wp_user->ID} aún no cumple '{$req['name']}' ({$obtained}, mínimo {$req['min_percent']}%).", self::$log_context );
+				return 'pending';
+			}
+		}
+
+		$template = isset( $config['template'] ) ? $config['template'] : '';
+		$center_x = isset( $config['center_x'] ) ? (float) $config['center_x'] : 0.5;
+		$pdf_path = WCMS_Certificate::get_instance()->generate( $wp_user, $template, 'degree', $center_x );
+		if ( is_wp_error( $pdf_path ) ) {
+			$this->logger->error( "degree: error generando certificado para user #{$wp_user->ID}: " . $pdf_path->get_error_message(), self::$log_context );
+			return 'error';
+		}
+
+		update_user_meta( $wp_user->ID, $meta_key, basename( $pdf_path ) );
+		WCMS_Mailer::get_instance()->send_certificate( $wp_user, $pdf_path );
+		$this->logger->info( "degree: certificado generado y email enviado a {$wp_user->user_email}.", self::$log_context );
+
+		return 'ok';
 	}
 
 	/**

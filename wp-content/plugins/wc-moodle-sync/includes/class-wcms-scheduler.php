@@ -103,7 +103,7 @@ class WCMS_Scheduler {
 	/**
 	 * Encola la tarea de matriculación para el pedido, evitando duplicados.
 	 * Solo se considera procesado ('_wcms_enrolled') si Moodle confirmó el alta;
-	 * si falló, un nuevo cambio de estado (p. ej. a Completado) vuelve a intentarlo.
+	 * si falló, un nuevo cambio de estado a Completado vuelve a intentarlo.
 	 *
 	 * @param int $order_id
 	 */
@@ -113,7 +113,7 @@ class WCMS_Scheduler {
 		}
 
 		if ( function_exists( 'as_enqueue_async_action' ) ) {
-			// Evita duplicar el job cuando processing y completed se disparan seguidos.
+			// Evita duplicar el job si Completado se dispara varias veces seguidas.
 			if ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( 'wcms_process_order', array( $order_id ), 'wcms_group' ) ) {
 				return;
 			}

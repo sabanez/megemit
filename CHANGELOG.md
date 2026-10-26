@@ -40,6 +40,17 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 
 ---
 
+## 2026-10-22
+
+### wc-moodle-sync 1.8.0
+- **Titulación**: un único certificado cuando el alumno alcanza el 80 % en GRUNDKURS-EXAMEN (curso 10, cmid 246, sobre 46) y AUFBAUKURS-EXAMEN (curso 9, cmid 252, sobre 42). Se evalúa en `grade_updated`; interruptor propio `WCMS_SEND_DEGREE` (por defecto `false`); deduplicación por user meta `_wcms_degree_certificate`.
+- Nueva plantilla `assets/certificate-template-degree.png`; `WCMS_Certificate::generate()` admite plantilla, prefijo y centro horizontal. `WCMS_Moodle_API::get_item_grade()` nuevo.
+- Incluye 1.7.2: la matrícula solo se dispara en pedido Completado.
+- Plugin Moodle aparte `local_wcms_bridge` 1.0.1 (fuera del repo): escucha notas y envía el webhook; modo "solo registro" por defecto.
+- Los 39 alumnos que ya cumplían se normalizan con la meta `legacy` antes de activar el envío. Bonificaciones en pausa.
+
+---
+
 ## 2026-10-19
 
 ### Corregido

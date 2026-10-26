@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WooCommerce & Moodle Sync
  * Description: Valida y crea usuarios en Moodle antes del pago. Matricula en cursos tras confirmar la compra. Asíncrono y compatible con packs multicurso.
- * Version:     1.7.1
+ * Version:     1.8.0
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author:      MeGeMIT
@@ -25,7 +25,7 @@ function wcms_msg( $de, $en ) {
 	return ( 0 === strpos( get_locale(), 'de' ) ) ? $de : $en;
 }
 
-define( 'WCMS_VERSION', '1.7.1' );
+define( 'WCMS_VERSION', '1.8.0' );
 define( 'WCMS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WCMS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -74,9 +74,8 @@ final class WC_Moodle_Sync {
 		// Inicializar guard de reembolso (bloquea el reembolso si el curso ya se ha iniciado).
 		WCMS_Refund_Guard::get_instance();
 
-		// Disparar matriculación solo cuando el pago está confirmado.
-		add_action( 'woocommerce_order_status_processing', array( $this, 'maybe_enqueue_sync' ), 10, 1 );
-		add_action( 'woocommerce_order_status_completed',  array( $this, 'maybe_enqueue_sync' ), 10, 1 );
+		// Disparar matriculación solo cuando el pedido está Completado (no en Procesando).
+		add_action( 'woocommerce_order_status_completed', array( $this, 'maybe_enqueue_sync' ), 10, 1 );
 
 		// Disparar desmatriculación cuando el pedido se cancela, se reembolsa o falla el pago.
 		add_action( 'woocommerce_order_status_cancelled', array( $this, 'maybe_enqueue_unenroll' ), 10, 1 );

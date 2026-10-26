@@ -1,8 +1,8 @@
 # WooCommerce & Moodle Sync
 
-Versión: 1.6.0 — PHP 7.4+, WooCommerce 5+
+Versión: 1.8.0 — PHP 7.4+, WooCommerce 5+
 
-Matricula automáticamente a compradores de WooCommerce en cursos Moodle de forma asíncrona (vía cohorts). Genera cupones de descuento al finalizar un curso, cupones de bonificación al alcanzar el 40%/80% de progreso combinado, y certificados PDF al aprobar un examen.
+Matricula automáticamente a compradores de WooCommerce en cursos Moodle de forma asíncrona (vía cohorts). Genera cupones de descuento al finalizar un curso, cupones de bonificación al alcanzar el 40%/80% de progreso combinado (en pausa), certificados PDF al aprobar un examen, y la titulación (certificado único) al superar el 80% en los dos exámenes.
 
 ## Configuración
 
@@ -36,10 +36,13 @@ define( 'WCMS_COUPON_SHOP_URL', 'https://megemit.org/produktkategorie/mdlc/' );
 // Direcciones en copia (CC) para los emails al alumno (vacío = sin copia)
 define( 'WCMS_WELCOME_EMAIL_CC', 'persona1@megemit.org,persona2@megemit.org' );
 
-// Activar/desactivar certificado PDF (exam_passed) y cupón (course_completed)
+// Activar/desactivar certificado PDF (exam_passed), cupón (course_completed) y titulación
 define( 'WCMS_SEND_CERTIFICATE', true );
 define( 'WCMS_SEND_COUPON', true );
+define( 'WCMS_SEND_DEGREE', true );
 ```
+
+La titulación se configura con `WCMS_DEGREES` (plantilla, centrado del texto y exámenes requeridos, ver más abajo).
 
 ### 3. Productos en WooCommerce
 
@@ -69,7 +72,7 @@ Crear en **WooCommerce > Productos > Categorías** una categoría con nombre exa
 
 ## Webhook de Moodle
 
-> ⚠️ **PENDIENTE DE PROGRAMAR (lado Moodle):** todo lo descrito en esta sección está implementado y operativo en WordPress — el endpoint REST, la generación de cupón/certificado y el envío de los emails funcionan ya si se les hace una llamada válida (probado manualmente con `curl`, ver más abajo). **Lo que falta es la pieza en Moodle** que detecte los eventos `course_completed` y `exam_passed` (aprobar el quiz) y haga el POST automático hacia este endpoint con el `WCMS_COMPLETION_SECRET` correspondiente. Sin esa pieza, nadie llama al endpoint y no se envía ningún cupón ni certificado de forma automática. Posibles vías a evaluar cuando se aborde: plugin de Moodle de tipo "Webhooks/Event Observer" de terceros, o un observer de eventos personalizado (`course_completed`, `mod_quiz\event\attempt_submitted`) que dispare el `curl`/HTTP POST.
+> ℹ️ **Lado Moodle:** el plugin `local_wcms_bridge` (ZIP aparte, ver sección más abajo) detecta `grade_updated` y `course_completed` y hace el POST a este endpoint. **`exam_passed` sigue sin tener disparador automático en Moodle** (no existe un evento nativo único para «examen aprobado»); hoy solo puede dispararse con una llamada manual (`curl`).
 
 El plugin expone un endpoint REST que Moodle debe llamar en dos eventos:
 
@@ -125,9 +128,28 @@ agregado del curso) de **todos los cursos en los que está matriculado** en Mood
 - Envía email de felicitación (mismo diseño que el de finalización de curso, con el texto
   adaptado al % de progreso alcanzado).
 
-> ⚠️ **PENDIENTE DE PROGRAMAR (lado Moodle):** al igual que `course_completed` y `exam_passed`,
-> falta el observer de eventos en Moodle que dispare este evento cada vez que se actualiza una
-> nota de un módulo (`\core\event\user_graded` o similar) y haga el POST hacia este endpoint.
+> ℹ️ El plugin de Moodle `local_wcms_bridge` envía este evento al actualizarse una nota de módulo
+> (`\core\event\user_graded`) o al enviarse un quiz (`attempt_submitted`). Las **bonificaciones están
+> en pausa** hasta definir las reglas de asignación (los umbrales 40%/80% actuales son provisionales).
+
+### Titulación (certificado único) — evento `grade_updated`
+
+No es un evento nuevo: se evalúa dentro de `grade_updated`, antes y de forma independiente de las
+bonificaciones, y solo si `WCMS_SEND_DEGREE` está activo y el curso del evento es uno de los exámenes.
+
+El alumno recibe **un solo certificado** cuando alcanza el **80 %** de la nota máxima en **los dos**
+exámenes (`WCMS_DEGREES`):
+
+| Cohort | Examen | Curso Moodle | cmid | Máximo |
+|---|---|---|---|---|
+| 3 · Grundkurse | GRUNDKURS-EXAMEN | 10 | 246 | 46 |
+| 2 · Aufbaukurse | AUFBAUKURS-EXAMEN | 9 | 252 | 42 |
+
+- El % se calcula con el `grademax` real devuelto por Moodle; `max` en la config solo genera un aviso en el log si cambia.
+- Plantilla: `assets/certificate-template-degree.png`; nombre y fecha se superponen centrados según `center_x`.
+- Se envía con `WCMS_Mailer::send_certificate()` (texto en alemán, PDF adjunto) y se guarda en `wp-content/uploads/wcms-certificates/degree-*.pdf`.
+- Deduplicación por usuario (meta `_wcms_degree_certificate`). No hay envío retroactivo: el certificado se emite solo cuando llega un evento `grade_updated`. Los alumnos que ya cumplían los requisitos antes de activar la función (39 en la verificación del 2026-10-21) **recibirían el certificado si Moodle emite un evento nuevo de nota de los cursos 9 o 10 para ellos**, porque no tienen aún la meta de deduplicación.
+- Respuesta REST: clave `degree` con `disabled | not_applicable | already_issued | no_data | pending | error | ok`.
 
 ### Evento: examen aprobado → certificado PDF
 
@@ -143,6 +165,18 @@ agregado del curso) de **todos los cursos en los que está matriculado** en Mood
 - Envía email en alemán con el PDF adjunto.
 - El certificado se guarda en `wp-content/uploads/wcms-certificates/`.
 - Deduplicación: si el certificado ya fue emitido para ese usuario/curso, devuelve `already_issued`.
+
+---
+
+## Plugin de Moodle `local_wcms_bridge`
+
+ZIP independiente (`local_wcms_bridge-v1.0.1.zip`, Moodle 4.4). Se instala en Administración del sitio > Plugins > Instalar plugins.
+
+- Escucha `\core\event\user_graded` (solo ítems de módulo), `\mod_quiz\event\attempt_submitted` y `\core\event\course_completed`, y encola un POST a este endpoint (tarea ad hoc, con reintentos; descarta si WordPress responde 404).
+- Ajustes en Administración > Plugins locales: activar, **solo registro** (por defecto, no envía; escribe en el cron), URL del endpoint, secreto (= `WCMS_COMPLETION_SECRET`) y cursos permitidos (`9,10`).
+- No incluye `exam_passed`.
+
+Orden recomendado de puesta en marcha: instalar, poner cursos `9,10`, activar en modo «solo registro», comprobar que llegan eventos en el cron, desmarcar «solo registro» y por último activar `WCMS_SEND_DEGREE` en WordPress.
 
 ---
 
@@ -175,10 +209,11 @@ wc-moodle-sync/
 │   ├── class-wcms-moodle-api.php       Wrapper HTTP para la API REST de Moodle
 │   ├── class-wcms-mailer.php           Emails: bienvenida, cupón y certificado
 │   ├── class-wcms-checkout-guard.php   Valida/crea usuario Moodle antes del pago
-│   ├── class-wcms-completion-handler.php  Webhook receptor: cupón y certificado
+│   ├── class-wcms-completion-handler.php  Webhook receptor: cupón, certificado y titulación
 │   └── class-wcms-certificate.php      Generador de certificado PDF con GD
 ├── assets/
 │   ├── certificate-template.png        Plantilla PNG limpia (1684×1192 px)
+│   ├── certificate-template-degree.png Plantilla de la titulación (1684×1192 px)
 │   └── fonts/
 │       ├── BrushScript.ttf             Fuente cursiva para el nombre
 │       └── TimesItalic.ttf             Fuente itálica para la fecha
