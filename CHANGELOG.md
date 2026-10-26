@@ -35,7 +35,8 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 - Los 4 changelog propios que convivían se han fusionado en este único `CHANGELOG.md` (raíz): el raíz, `docs/CHANGELOG.md`, `wp-content/plugins/hubspot-mapper/CHANGELOG.md` y `wp-content/plugins/wc-moodle-sync/CHANGELOG.md`. Ordenado por fecha (más reciente primero); las entradas heredadas indican su origen. Verificado que se conservan las 541 líneas de contenido y todas las fechas.
 - Eliminados `docs/CHANGELOG.md` y los changelog internos de `hubspot-mapper` y `wc-moodle-sync` (el historial sigue en este archivo y en git).
 - `docs/README.md`, `docs/00-START-HERE.md`, `docs/GETTING_STARTED.md` y `docs/INDEX.md`: enlaces actualizados a `../CHANGELOG.md`. `docs/INDEX.md` ya no indica copiar el changelog entre `docs/` y la raíz (origen de la duplicación).
-- Pendiente de decidir: en el checkout principal existen sin versionar `wp-content/plugins/hubspot-mapper-backup/CHANGELOG.md` y `wp-content/plugins/simple-hubspot-swpm-stripe-bridge/CHANGELOG.md` (copias antiguas, fuera de esta rama), y un `wc-moodle-sync/CHANGELOG.md` más reciente (1.8.0 del 22/10/2026, 1.7.x) que habrá que integrar aquí al fusionar esa rama.
+- Integradas también las entradas `wc-moodle-sync` 1.8.0 (22/10/2026) y 1.7.2 (15/10/2026), del changelog que tenía el checkout principal sin versionar, en su versión íntegra.
+- Pendiente de decidir: en el checkout principal existen sin versionar `wp-content/plugins/hubspot-mapper-backup/CHANGELOG.md` y `wp-content/plugins/simple-hubspot-swpm-stripe-bridge/CHANGELOG.md` (copias antiguas de plugins sustituidos, fuera del repositorio).
 - Los changelog de plugins de terceros (WooCommerce, Yoast, SWPM, etc.) no se tocan.
 
 ---
@@ -43,11 +44,35 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 ## 2026-10-22
 
 ### wc-moodle-sync 1.8.0
-- **Titulación**: un único certificado cuando el alumno alcanza el 80 % en GRUNDKURS-EXAMEN (curso 10, cmid 246, sobre 46) y AUFBAUKURS-EXAMEN (curso 9, cmid 252, sobre 42). Se evalúa en `grade_updated`; interruptor propio `WCMS_SEND_DEGREE` (por defecto `false`); deduplicación por user meta `_wcms_degree_certificate`.
-- Nueva plantilla `assets/certificate-template-degree.png`; `WCMS_Certificate::generate()` admite plantilla, prefijo y centro horizontal. `WCMS_Moodle_API::get_item_grade()` nuevo.
-- Incluye 1.7.2: la matrícula solo se dispara en pedido Completado.
-- Plugin Moodle aparte `local_wcms_bridge` 1.0.1 (fuera del repo): escucha notas y envía el webhook; modo "solo registro" por defecto.
-- Los 39 alumnos que ya cumplían se normalizan con la meta `legacy` antes de activar el envío. Bonificaciones en pausa.
+*Origen: wc-moodle-sync/CHANGELOG.md*
+
+Titulación: certificado único al superar los dos exámenes, y plugin de Moodle que avisa a WordPress.
+
+- Nuevo flujo de titulación dentro del evento `grade_updated` (`WCMS_Completion_Handler::handle_degree_check()`).
+  Se evalúa antes y de forma independiente de los cupones (`WCMS_SEND_COUPON`), y solo si el curso del
+  evento es uno de los exámenes configurados. La respuesta REST incluye una clave `degree`
+  (`disabled | not_applicable | already_issued | no_data | pending | error | ok`).
+- Se entrega **un solo certificado** cuando el alumno alcanza el **80 %** de la nota máxima en **los dos**
+  exámenes: GRUNDKURS-EXAMEN (curso 10, cmid 246, sobre 46) y AUFBAUKURS-EXAMEN (curso 9, cmid 252, sobre 42).
+  El % se calcula con el `grademax` real de Moodle; `max` en la config solo avisa en el log si cambia.
+  Dedupe con la user meta `_wcms_degree_certificate`.
+- `config.php`: nuevas constantes `WCMS_SEND_DEGREE` (interruptor propio, por defecto `false`, independiente de
+  `WCMS_SEND_CERTIFICATE` y `WCMS_SEND_COUPON`) y `WCMS_DEGREES` (plantilla, centrado y requisitos).
+- `WCMS_Moodle_Api::get_item_grade()` — nota de un módulo concreto por `cmid`.
+- `WCMS_Certificate::generate()` acepta plantilla, prefijo de fichero y centro horizontal del texto
+  (los valores por defecto no alteran el certificado de `exam_passed`).
+- Nueva plantilla `assets/certificate-template-degree.png` (firma de la Dra. Ina Chammah). Se reutiliza
+  `WCMS_Mailer::send_certificate()` (el texto ya habla de «ambos exámenes»).
+- Sin envío retroactivo: el certificado solo se emite al llegar un evento `grade_updated`. Los 39 alumnos
+  que ya cumplían (verificación 2026-10-21) lo recibirían si Moodle emite un evento nuevo de nota de los
+  cursos 9 o 10 para ellos, ya que no tienen aún la meta `_wcms_degree_certificate`.
+- Nuevo plugin de Moodle `local_wcms_bridge` v1.0.1 (ZIP aparte): observer de `user_graded`,
+  `attempt_submitted` y `course_completed` que hace el POST a este endpoint mediante tarea ad hoc con
+  reintentos. Modo «solo registro» por defecto, lista de cursos permitidos (`9,10`) y deduplicación de avisos.
+  Resuelve el pendiente de «lado Moodle» para `grade_updated` y `course_completed`; `exam_passed` queda fuera.
+- Requisito en Moodle: el servicio externo del token necesita también `core_enrol_get_users_courses`,
+  `core_cohort_get_cohorts` y `core_cohort_get_cohort_members` (los dos últimos solo para diagnóstico).
+- Bonificaciones (`grade_updated` 40 %/80 %) sin cambios: en pausa a la espera de definir las reglas.
 
 ---
 
@@ -55,6 +80,21 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 
 ### Corregido
 - `basel-child/woocommerce/pdf/MeGeMit/invoice.php`: la factura de WooCommerce ya no muestra los datos bancarios en pedidos pagados con Klarna (no es una transferencia). Se añade `stripe_klarna` (ID real de la pasarela de Stripe para Klarna) a `$already_paid_methods`; el valor `'Klarna'` no coincidía por la comparación estricta y la distinción de mayúsculas. Comentario de cabecera actualizado con los ID por método de pago.
+
+---
+
+## 2026-10-15
+
+### wc-moodle-sync 1.7.2
+*Origen: wc-moodle-sync/CHANGELOG.md*
+
+La matrícula en Moodle solo se dispara al pasar el pedido a Completado.
+
+- Eliminado el hook `woocommerce_order_status_processing` de la matriculación: ya no se
+  matricula en Procesando, ni en pedidos del checkout ni en los creados desde el admin.
+- Solo `woocommerce_order_status_completed` encola `WCMS_Scheduler::enqueue()`.
+- La desmatriculación (cancelado/reembolsado/fallido) no cambia.
+- Los pedidos ya matriculados no se alteran.
 
 ---
 
