@@ -293,6 +293,31 @@ function concloo_function(){
 }
 add_shortcode('concloo', 'concloo_function' );
 
+// HelpMI Terminbuchung Shortcode: [helpmi] (sustituye a [concloo], mismo comportamiento)
+function helpmi_function(){
+        global $current_user;
+	wp_get_current_user();
+	date_default_timezone_set("Europe/Berlin");
+	$timestamp = time();
+	$sig = hash_hmac('sha256', $current_user->user_login.'|'.$timestamp, MGMIT_HELPMI_SHARED_SECRET);
+	$termin = '';
+	if ( get_query_var('termin') ) {
+		$termin = '&termin='.get_query_var('termin');
+	}
+	$Ausgabe = '<iframe id="superFrame" src="'.MGMIT_HELPMI_URL.'/de/buchen?user='.urlencode($current_user->user_login).'&ts='.$timestamp.'&sig='.$sig.$termin.'" style="width: 100%; border: none;" scrolling="no" height="100"></iframe>
+<script type="text/javascript">
+  window.addEventListener(\'message\', function(e) {
+    switch(e.data[0]) {
+      case \'setIframeHeight\':
+        document.getElementById(\'superFrame\').height = e.data[1];
+        break;
+    }
+  }, false);
+</script>';
+                return $Ausgabe;
+}
+add_shortcode('helpmi', 'helpmi_function' );
+
 // Concloo Service-Plattform Shortcode: [cncl]
 function cncl_function(){
         global $current_user;

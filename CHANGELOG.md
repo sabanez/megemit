@@ -13,6 +13,7 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 ## 2026-10-26
 
 ### Añadido
+- **basel-child `functions.php`**: shortcode `[helpmi]` (`helpmi_function()`), réplica de `[concloo]` que incrusta el portal de reservas de HelpMI (`MGMIT_HELPMI_URL/de/buchen?user&ts&sig`, firma HMAC-SHA256 con `MGMIT_HELPMI_SHARED_SECRET`). Constantes nuevas en `wp-config.php`.
 - Aviso excepcional de normalización de pagos (`inc/hubspot-swpm-stripe-bridge/flow-exceptional-renewal.php`, plantilla `email-templates/body-exceptional-renewal.php`, cargado desde `loader.php`). Email único, en alemán, a los socios del nivel de pago cuya membresía se gestionó manualmente hasta el 13/10/2026: les informa de que deben suscribirse ellos desde la web (URL configurable). **Apagado por defecto y sin URL no envía nada.**
   - Destinatarios: nivel 3 con `subscription_starts` anterior al 13/10/2026 (la fecha de corte y el resto son configurables). Quedan fuera quienes tengan alta desde el 13/10 (flujo normal de SWPM) y, como red de seguridad, quien tenga un pago en `swpm_payments_tbl` o un `subscr_id` `sub_`. No exige estado activo (a la fecha de envío estarán `expired`).
   - Envío: **una única fecha para todos, 31/01/2027, sin excepciones** y sin depender de la fecha de alta ni de «alta + 1 año» (la fecha es configurable). Cron cada 15 min por lotes (50 por defecto) con bloqueo, un único envío por socio (option `mgmit_exc_renewal_sent`). El email no menciona fecha de fin de la membresía anterior.
