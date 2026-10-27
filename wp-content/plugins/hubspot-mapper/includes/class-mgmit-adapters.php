@@ -97,6 +97,16 @@ class MGMIT_Mapper_Adapters {
                 'args'     => 3,
                 'resolver' => array('MGMIT_Mapper_Adapters', 'resolve_profile_builder'),
             ),
+            'ultimate_membership' => array(
+                'label'    => 'Ultimate Membership (Indeed Ultimate Membership Pro)',
+                // Se dispara tras wp_insert_user() y el guardado de user meta, tanto en
+                // el formulario de registro completo como en el 'register_lite'.
+                // Prioridad > 1 para ir después de los callbacks internos del plugin.
+                'hook'     => 'ihc_register_action_after_insert',
+                'priority' => 20,
+                'args'     => 5,
+                'resolver' => array('MGMIT_Mapper_Adapters', 'resolve_ultimate_membership'),
+            ),
         );
 
         return apply_filters('mgmit_mapper_adapters', $defaults);
@@ -149,6 +159,7 @@ class MGMIT_Mapper_Adapters {
         if (empty($field_map)) {
             return;
         }
+        $value_maps = (isset($mapping['value_maps']) && is_array($mapping['value_maps'])) ? $mapping['value_maps'] : array();
 
         $email_field = isset($mapping['email_field']) ? $mapping['email_field'] : '';
         $props       = array();
@@ -156,6 +167,9 @@ class MGMIT_Mapper_Adapters {
 
         foreach ($field_map as $wp_field => $hs_prop) {
             $value = self::pick($data, $post, $wp_field);
+            if ($value !== '' && !empty($value_maps[$wp_field]) && is_array($value_maps[$wp_field])) {
+                $value = self::apply_value_map($value, $value_maps[$wp_field]);
+            }
             if ($value === '') {
                 continue;
             }
@@ -223,6 +237,39 @@ class MGMIT_Mapper_Adapters {
             return self::flatten($post[$key]);
         }
         return '';
+    }
+
+    /**
+     * Traduce los textos de un campo select/radio/checkbox a los valores de HubSpot
+     * según la tabla de equivalencias del mapeo. Cada parte separada por ';' se
+     * traduce por separado: primero coincidencia exacta, luego normalizada (sin
+     * acentos, mayúsculas ni signos). Lo que no esté en la tabla se deja igual
+     * para que lo resuelva la coincidencia automática contra HubSpot.
+     *
+     * @param string $value Valor ya aplanado.
+     * @param array  $map   [texto del formulario => valor HubSpot].
+     * @return string
+     */
+    private static function apply_value_map($value, $map) {
+        $normalized = array();
+        foreach ($map as $from => $to) {
+            $normalized[MGMIT_HS_Forms::normalize_text($from)] = $to;
+        }
+
+        $out = array();
+        foreach (explode(';', $value) as $part) {
+            $part = trim($part);
+            if ($part === '') {
+                continue;
+            }
+            if (isset($map[$part])) {
+                $out[] = $map[$part];
+                continue;
+            }
+            $norm = MGMIT_HS_Forms::normalize_text($part);
+            $out[] = ($norm !== '' && isset($normalized[$norm])) ? $normalized[$norm] : $part;
+        }
+        return implode(';', $out);
     }
 
     /**
@@ -320,5 +367,26 @@ class MGMIT_Mapper_Adapters {
             return wp_unslash($hook_args[0]);
         }
         return self::post_data();
+    }
+
+    /**
+     * Ultimate Membership (Indeed Ultimate Membership Pro):
+     * ihc_register_action_after_insert($uid, $postData, $fields, $shortcodeAttr, $type).
+     * Los campos enviados llegan en el segundo argumento. Se añade user_email
+     * desde el usuario creado por si el formulario no lo envía (register_lite).
+     *
+     * @param array $hook_args
+     * @return array
+     */
+    public static function resolve_ultimate_membership($hook_args) {
+        $data = (isset($hook_args[1]) && is_array($hook_args[1])) ? wp_unslash($hook_args[1]) : self::post_data();
+
+        if (empty($data['user_email']) && !empty($hook_args[0])) {
+            $user = get_userdata((int) $hook_args[0]);
+            if ($user) {
+                $data['user_email'] = $user->user_email;
+            }
+        }
+        return $data;
     }
 }

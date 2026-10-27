@@ -660,95 +660,166 @@ class MGMIT_HS_Forms {
     }
 
     /**
+     * Opciones [value, label] de una propiedad enumeration de HubSpot (sin las ocultas).
+     * Cacheadas por objeto+propiedad durante la petición.
+     *
+     * @param string $token          Access token de HubSpot.
+     * @param string $prop_name      Nombre de la propiedad (sin prefijo de objeto).
+     * @param string $object_type_id Objeto HubSpot (0-1 contact, 0-2 company, 0-3 deal, 0-5 ticket).
+     * @return array Lista de array('value' => string, 'label' => string).
+     */
+    private static function get_property_options($token, $prop_name, $object_type_id = '0-1') {
+        static $options_cache = array();
+
+        if ($token === '' || $prop_name === '') {
+            return array();
+        }
+
+        $cache_key = $object_type_id . ':' . $prop_name;
+        if (isset($options_cache[$cache_key])) {
+            return $options_cache[$cache_key];
+        }
+
+        $url      = self::get_api_base() . '/crm/v3/properties/' . self::object_type_slug($object_type_id) . '/' . rawurlencode($prop_name);
+        $response = wp_remote_get(
+            $url,
+            array(
+                'headers' => array('Authorization' => 'Bearer ' . $token),
+                'timeout' => 15,
+            )
+        );
+
+        $opts = array();
+        if (is_wp_error($response) || (int) wp_remote_retrieve_response_code($response) !== 200) {
+            self::log('get_property_options: no se pudo leer propiedad "' . $prop_name . '" de "' . self::object_type_slug($object_type_id) . '".');
+        } else {
+            $data = json_decode(wp_remote_retrieve_body($response), true);
+            if (is_array($data) && isset($data['options']) && is_array($data['options'])) {
+                foreach ($data['options'] as $opt) {
+                    if (!isset($opt['value']) || !empty($opt['hidden'])) {
+                        continue;
+                    }
+                    $opts[] = array(
+                        'value' => (string) $opt['value'],
+                        'label' => isset($opt['label']) ? (string) $opt['label'] : (string) $opt['value'],
+                    );
+                }
+            }
+        }
+
+        $options_cache[$cache_key] = $opts;
+        return $opts;
+    }
+
+    /**
+     * Opciones de una propiedad HubSpot a partir de la clave del mapeo
+     * (formato `objeto-propiedad` o solo `propiedad`). Usado por el admin.
+     *
+     * @param string $prop_key
+     * @return array|null null si no hay token; lista (posiblemente vacía) de {value,label} en otro caso.
+     */
+    public static function get_options_for_key($prop_key) {
+        $token = MGMIT_HS_Contacts::get_token();
+        if ($token === '') {
+            return null;
+        }
+        $parsed = self::parse_prop_key($prop_key);
+        return self::get_property_options($token, $parsed['name'], $parsed['objectTypeId']);
+    }
+
+    /**
+     * Normaliza un texto para comparar: minúsculas, sin acentos, sin signos
+     * y con espacios colapsados.
+     *
+     * @param string $text
+     * @return string
+     */
+    public static function normalize_text($text) {
+        $text = remove_accents((string) $text);
+        $text = function_exists('mb_strtolower') ? mb_strtolower($text, 'UTF-8') : strtolower($text);
+        $text = preg_replace('/[^a-z0-9]+/', ' ', $text);
+        return trim($text);
+    }
+
+    /**
      * Busca $value entre las opciones válidas de una propiedad enumeration en HubSpot.
-     * Primero comparación exacta; si no hay match, búsqueda case-insensitive.
+     * Orden de comparación para cada parte: valor exacto, valor sin distinguir
+     * mayúsculas, label exacto, y por último valor/label normalizados (sin acentos,
+     * signos ni espacios extra).
      * Para valores múltiples ";" separados, corrige cada parte por separado.
      *
      * @param string $token          Access token de HubSpot.
      * @param string $prop_name      Nombre de la propiedad HubSpot (enumeration).
-     * @param string $value          Valor o valores ";" separados a resolver.
+     * @param string $value          Valor (o varios separados por ';') a resolver.
      * @param string $object_type_id Objeto HubSpot (0-1 contact, 0-2 company, 0-3 deal, 0-5 ticket).
-     * @return string|false Valor corregido listo para enviar, o false si ninguna parte tiene match.
+     * @return string|false Valor corregido listo para enviar, o false si alguna parte no tiene match.
      */
     private static function resolve_enum_value($token, $prop_name, $value, $object_type_id = '0-1') {
-        static $options_cache = array();
-
         if ($token === '' || $prop_name === '' || $value === '') {
             return false;
         }
 
-        $cache_key = $object_type_id . ':' . $prop_name;
-
-        // Obtener opciones (cacheadas por objeto+prop).
-        if (!isset($options_cache[$cache_key])) {
-            $url      = self::get_api_base() . '/crm/v3/properties/' . self::object_type_slug($object_type_id) . '/' . rawurlencode($prop_name);
-            $response = wp_remote_get(
-                $url,
-                array(
-                    'headers' => array('Authorization' => 'Bearer ' . $token),
-                    'timeout' => 15,
-                )
-            );
-            if (is_wp_error($response) || (int) wp_remote_retrieve_response_code($response) !== 200) {
-                self::log('resolve_enum_value: no se pudo leer propiedad "' . $prop_name . '" de "' . self::object_type_slug($object_type_id) . '".');
-                $options_cache[$cache_key] = array();
-            } else {
-                $data = json_decode(wp_remote_retrieve_body($response), true);
-                $opts = array();
-                if (is_array($data) && isset($data['options']) && is_array($data['options'])) {
-                    foreach ($data['options'] as $opt) {
-                        if (isset($opt['value'])) {
-                            $opts[] = $opt['value'];
-                        }
-                    }
-                }
-                $options_cache[$cache_key] = $opts;
-            }
-        }
-
-        $existing = $options_cache[$cache_key];
+        $existing = self::get_property_options($token, $prop_name, $object_type_id);
         if (empty($existing)) {
             return false;
         }
 
-        $parts   = array_filter(array_map('trim', explode(';', $value)));
-        $resolved = array();
+        $parts       = array_filter(array_map('trim', explode(';', $value)));
+        $resolved    = array();
         $all_matched = true;
 
         foreach ($parts as $v) {
-            // Exacto.
-            if (in_array($v, $existing, true)) {
-                $resolved[] = $v;
-                continue;
-            }
-            // Case-insensitive.
-            $match = false;
-            foreach ($existing as $opt) {
-                if (strcasecmp($v, $opt) === 0) {
-                    $resolved[] = $opt;
-                    $match = true;
-                    self::log('resolve_enum_value: corregido "' . $v . '" → "' . $opt . '" en prop=' . $prop_name);
-                    break;
-                }
-            }
-            if (!$match) {
+            $match = self::match_option($v, $existing);
+            if ($match === false) {
                 $all_matched = false;
                 self::log('resolve_enum_value: sin match para "' . $v . '" en prop=' . $prop_name);
+                continue;
             }
+            if ($match !== $v) {
+                self::log('resolve_enum_value: corregido "' . $v . '" → "' . $match . '" en prop=' . $prop_name);
+            }
+            $resolved[] = $match;
         }
 
-        if (empty($resolved)) {
-            return false;
-        }
-
-        // Si no todos tuvieron match, indicarlo pero devolver los que sí.
-        // Retornamos false solo si NINGUNO tuvo match (ya cubierto arriba).
-        // Si hay mezcla: devolver los válidos y marcar como unsafe en process().
-        if (!$all_matched) {
+        // Si no todos tuvieron match, devolvemos false: process() marca la prop como unsafe.
+        if (empty($resolved) || !$all_matched) {
             return false;
         }
 
         return implode(';', $resolved);
+    }
+
+    /**
+     * @param string $v        Texto a localizar.
+     * @param array  $options  Lista de array('value', 'label').
+     * @return string|false Value de la opción o false.
+     */
+    private static function match_option($v, $options) {
+        foreach ($options as $opt) {
+            if ($v === $opt['value']) {
+                return $opt['value'];
+            }
+        }
+        foreach ($options as $opt) {
+            if (strcasecmp($v, $opt['value']) === 0) {
+                return $opt['value'];
+            }
+        }
+        foreach ($options as $opt) {
+            if ($v === $opt['label']) {
+                return $opt['value'];
+            }
+        }
+        $norm = self::normalize_text($v);
+        if ($norm === '') {
+            return false;
+        }
+        foreach ($options as $opt) {
+            if ($norm === self::normalize_text($opt['value']) || $norm === self::normalize_text($opt['label'])) {
+                return $opt['value'];
+            }
+        }
+        return false;
     }
 
     /**
