@@ -10,6 +10,12 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 
 ---
 
+## 2026-10-28
+
+### basel-child — saludo formal alemán en emails de cliente de WooCommerce
+- Nuevo `inc/woocommerce/email-greeting.php` (`mgmit_wc_email_greeting()`), cargado desde `inc/woocommerce/loader.php`: reutiliza `mgmit_bridge_build_salutation()` (courtesy_de y job_title_de de HubSpot) con email, nombre y apellido del pedido. Fallback «Sehr geehrte(r) Vorname Nachname».
+- Overrides `customer-completed-order`, `customer-invoice`, `customer-processing-order` y `customer-on-hold-order`: sustituido el saludo («Hi %s,» / «Guten Tag, Nombre Apellido!») por el saludo formal. Resto del email sin cambios.
+
 ## 2026-10-26
 
 ### Añadido

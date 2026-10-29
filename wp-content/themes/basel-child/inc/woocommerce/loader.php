@@ -14,6 +14,9 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/invoice-endpoint.php';
 require_once __DIR__ . '/webhook-filters.php';
 
+// Saludo formal alemán (courtesy_de / job_title_de de HubSpot) en los emails de cliente.
+require_once __DIR__ . '/email-greeting.php';
+
 // Fase 1 (docs/CREDIT_NOTE_STORNO_PLUGIN_PLAN.md): registro del documento "credit-note".
 require_once __DIR__ . '/credit-note-document.php';
 

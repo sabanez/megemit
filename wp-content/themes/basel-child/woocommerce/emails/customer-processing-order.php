@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 
 <?php /* translators: %s: Customer first name */ ?>
-<p>Guten Tag, <?php printf( esc_html( $order->get_billing_first_name() )); ?> <?php printf( esc_html( $order->get_billing_last_name() )); ?>!<p>
+<p><?php echo esc_html( mgmit_wc_email_greeting( $order ) ); ?>,</p>
 <p>Vielen Dank für Ihren Auftrag! Wir haben Ihre Bestellung #<?php printf( esc_html( $order->get_order_number() )); ?> erhalten und werden sie umgehend bearbeiten.</p>
 
 <?php
