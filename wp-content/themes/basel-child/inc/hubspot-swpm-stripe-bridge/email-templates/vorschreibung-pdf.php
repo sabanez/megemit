@@ -190,7 +190,7 @@ table.sums tr.last td {
 <div id="footer">
     Medizinische Gesellschaft f&uuml;r Mikroimmuntherapie (MeGeMIT)<br/>
     SPACES/Gertrude-Fr&ouml;hlich-Sandner-Str. 2, Tower 9 &middot; 1100 Wien &middot; T. 0043-(0)-1- 9 30 27 30 40 &middot; Fax: 0043-(0)-1- 391 000 4<br/>
-    UID: ATU68398067 &middot; Steuernummer (DE): 182/123/21261<br/>
+    UID: ATU68398067 &middot; Steuernummer (DE): 182/123/21261 &middot; Steuernummer (ESP): N0382118H<br/>
     www.megemit.org &middot; www.mikroimmuntherapie.com &middot; info@megemit.org<br/>
 <?php if ( file_exists( $icon_path ) ) : ?>
     <img src="<?php echo esc_attr( $icon_path ); ?>" alt="" /> @mikroimmuntherapie

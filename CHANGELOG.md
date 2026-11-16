@@ -10,6 +10,12 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 
 ---
 
+## 2026-11-16
+
+### basel-child — Steuernummer (ESP) en el pie de las facturas PDF
+- Se añade `Steuernummer (ESP): N0382118H` junto a `Steuernummer (DE)` en el pie de: `woocommerce/pdf/MeGeMit/invoice.php`, `credit-note.php` y las plantillas PDF SWPM/Stripe `mitgliedschaft-pdf.php` y `vorschreibung-pdf.php`.
+- `basel-child-v2` no se modifica (tema no activo).
+
 ## 2026-10-28
 
 ### basel-child — saludo formal alemán en emails de cliente de WooCommerce
