@@ -36,9 +36,12 @@ class WCMS_Certificate {
 	 * Genera el PDF del certificado y devuelve la ruta al archivo.
 	 *
 	 * @param WP_User $wp_user
+	 * @param string  $template  Plantilla PNG relativa a assets/ ('' = plantilla por defecto).
+	 * @param string  $prefix    Prefijo del nombre de fichero del PDF.
+	 * @param float   $center_x  Centro horizontal del texto como fracción del ancho (0.5 = centro del lienzo).
 	 * @return string|WP_Error  Ruta absoluta al PDF o error.
 	 */
-	public function generate( $wp_user ) {
+	public function generate( $wp_user, $template = '', $prefix = 'certificate', $center_x = 0.5 ) {
 		$upload_dir = wp_upload_dir();
 		$cert_dir   = trailingslashit( $upload_dir['basedir'] ) . 'wcms-certificates';
 
@@ -59,7 +62,10 @@ class WCMS_Certificate {
 
 		// Cargar template PNG directamente
 		$png_path = self::TEMPLATE_PNG;
-		$img      = imagecreatefrompng( $png_path );
+		if ( '' !== $template && file_exists( WCMS_PATH . 'assets/' . basename( $template ) ) ) {
+			$png_path = WCMS_PATH . 'assets/' . basename( $template );
+		}
+		$img = imagecreatefrompng( $png_path );
 		if ( ! $img ) {
 			return new WP_Error( 'wcms_cert_gd', 'Error cargando template PNG con GD.' );
 		}
@@ -70,10 +76,10 @@ class WCMS_Certificate {
 		$blue = imagecolorallocate( $img, 29, 95, 165 ); // color de la fecha
 
 		// Nombre en cursiva, centrado — 46% del alto
-		$this->draw_centered_text( $img, 46, self::FONT_SCRIPT, $name, $dark, $w, (int) ( $h * 0.46 ) );
+		$this->draw_centered_text( $img, 46, self::FONT_SCRIPT, $name, $dark, (int) ( $w * $center_x ), (int) ( $h * 0.46 ) );
 
 		// Fecha en itálica azul, centrada — 72% del alto
-		$this->draw_centered_text( $img, 26, self::FONT_ITALIC, $date, $blue, $w, (int) ( $h * 0.72 ) );
+		$this->draw_centered_text( $img, 26, self::FONT_ITALIC, $date, $blue, (int) ( $w * $center_x ), (int) ( $h * 0.72 ) );
 
 		// Guardar PNG modificado en temporal
 		$png_path = sys_get_temp_dir() . '/wcms_cert_' . $wp_user->ID . '_' . time() . '.png';
@@ -81,7 +87,7 @@ class WCMS_Certificate {
 		imagedestroy( $img );
 
 		// Empaquetar PNG en PDF
-		$pdf_path = $cert_dir . '/certificate-' . $wp_user->ID . '-' . time() . '.pdf';
+		$pdf_path = $cert_dir . '/' . sanitize_file_name( $prefix ) . '-' . $wp_user->ID . '-' . time() . '.pdf';
 		$result   = $this->png_to_pdf( $png_path, $pdf_path, $w, $h );
 		@unlink( $png_path );
 
@@ -93,12 +99,12 @@ class WCMS_Certificate {
 	}
 
 	/**
-	 * Dibuja texto centrado horizontalmente en la imagen.
+	 * Dibuja texto centrado horizontalmente en $center_x (px) de la imagen.
 	 */
-	private function draw_centered_text( $img, $size, $font, $text, $color, $canvas_w, $y ) {
+	private function draw_centered_text( $img, $size, $font, $text, $color, $center_x, $y ) {
 		$bbox = imagettfbbox( $size, 0, $font, $text );
 		$tw   = $bbox[2] - $bbox[0];
-		$x    = (int) ( ( $canvas_w - $tw ) / 2 );
+		$x    = (int) ( $center_x - $tw / 2 );
 		imagettftext( $img, $size, 0, $x, $y, $color, $font, $text );
 	}
 

@@ -31,11 +31,42 @@ class WCMS_Mailer {
 			'Content-Type: text/html; charset=UTF-8',
 			'From: MeGeMIT Online-Akademie <akademie@megemit.org>',
 		);
+		$headers = array_merge( $headers, $this->build_cc_headers( WCMS_WELCOME_EMAIL_CC ) );
 
 		$attachments = array( $pdf_path );
 
 		add_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 		wp_mail( $wp_user->user_email, $subject, $body, $headers, $attachments );
+		remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
+	}
+
+	/**
+	 * Modo de prueba: envía el email del certificado a los administradores en lugar de al alumno.
+	 * Mismo cuerpo y mismo PDF; el asunto lleva [PRUEBA] y un aviso indica el alumno real.
+	 *
+	 * @param WP_User $wp_user
+	 * @param string  $pdf_path
+	 * @param string  $recipients  Emails separados por comas ('' = admin_email).
+	 */
+	public function send_certificate_test( $wp_user, $pdf_path, $recipients = '' ) {
+		$to = array_filter( array_map( 'sanitize_email', array_map( 'trim', explode( ',', (string) $recipients ) ) ) );
+		if ( empty( $to ) ) {
+			$to = array( get_option( 'admin_email' ) );
+		}
+
+		$name   = trim( $wp_user->first_name . ' ' . $wp_user->last_name );
+		$notice = '<div style="max-width:600px;margin:10px auto;padding:10px 14px;background:#fff4e0;border:1px solid #e0b060;font-family:Arial,sans-serif;font-size:13px;color:#1d1c1d;">'
+			. '<strong>PRUEBA</strong> &mdash; este email no se ha enviado al alumno.<br>'
+			. 'Alumno: ' . esc_html( $name ) . ' &lt;' . esc_html( $wp_user->user_email ) . '&gt; (usuario #' . (int) $wp_user->ID . ')'
+			. '</div>';
+
+		$headers = array(
+			'Content-Type: text/html; charset=UTF-8',
+			'From: MeGeMIT Online-Akademie <akademie@megemit.org>',
+		);
+
+		add_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
+		wp_mail( $to, '[PRUEBA] Ihr MeGeMIT-Zertifikat', $notice . $this->build_certificate_html(), $headers, array( $pdf_path ) );
 		remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 	}
 
@@ -114,19 +145,42 @@ class WCMS_Mailer {
 
 		$body = $this->build_html( $wp_user, $username, $password, $is_new, $courses_str, $login_url );
 
+		$headers = array(
+			'Content-Type: text/html; charset=UTF-8',
+			'From: MeGeMIT Online-Akademie <akademie@megemit.org>',
+		);
+		$headers = array_merge( $headers, $this->build_cc_headers( WCMS_WELCOME_EMAIL_CC ) );
+
 		add_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 
 		wp_mail(
 			$wp_user->user_email,
 			$subject,
 			$body,
-			array(
-				'Content-Type: text/html; charset=UTF-8',
-				'From: MeGeMIT Online-Akademie <akademie@megemit.org>',
-			)
+			$headers
 		);
 
 		remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
+	}
+
+	/**
+	 * Construye cabeceras Bcc: a partir de una lista de emails separados por comas.
+	 * Se usa Bcc en lugar de Cc para que el alumno no vea que hay copias.
+	 *
+	 * @param string $emails_csv
+	 * @return array
+	 */
+	private function build_cc_headers( $emails_csv ) {
+		$headers = array();
+
+		foreach ( explode( ',', (string) $emails_csv ) as $email ) {
+			$email = trim( $email );
+			if ( is_email( $email ) ) {
+				$headers[] = 'Bcc: ' . $email;
+			}
+		}
+
+		return $headers;
 	}
 
 	/**
@@ -139,22 +193,62 @@ class WCMS_Mailer {
 		$subject = 'Ihr Prämien-Gutschein von der MeGeMIT Online-Akademie';
 		$body    = $this->build_completion_html( $coupon_code );
 
+		$headers = array(
+			'Content-Type: text/html; charset=UTF-8',
+			'From: MeGeMIT Online-Akademie <akademie@megemit.org>',
+		);
+		$headers = array_merge( $headers, $this->build_cc_headers( WCMS_WELCOME_EMAIL_CC ) );
+
 		add_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 
 		wp_mail(
 			$wp_user->user_email,
 			$subject,
 			$body,
-			array(
-				'Content-Type: text/html; charset=UTF-8',
-				'From: MeGeMIT Online-Akademie <akademie@megemit.org>',
-			)
+			$headers
 		);
 
 		remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 	}
 
-	private function build_completion_html( $coupon_code ) {
+	/**
+	 * Envía email de felicitación con cupón de bonificación al alcanzar
+	 * el 40% o el 80% de progreso (nota combinada) en la Online-Akademie.
+	 *
+	 * @param WP_User $wp_user
+	 * @param string  $coupon_code
+	 * @param int     $threshold  40 u 80.
+	 */
+	public function send_bonus_coupon( $wp_user, $coupon_code, $threshold ) {
+		$subject = 'Ihr Prämien-Gutschein von der MeGeMIT Online-Akademie';
+		$subtitle = sprintf(
+			'SIE HABEN %d%% IHRES FORTSCHRITTS IN DER ONLINE-AKADEMIE ERREICHT, UM SICH <strong>EINE</strong> PR&Auml;MIE AUSZUSUCHEN!',
+			(int) $threshold
+		);
+		$body = $this->build_completion_html( $coupon_code, $subtitle );
+
+		$headers = array(
+			'Content-Type: text/html; charset=UTF-8',
+			'From: MeGeMIT Online-Akademie <akademie@megemit.org>',
+		);
+		$headers = array_merge( $headers, $this->build_cc_headers( WCMS_WELCOME_EMAIL_CC ) );
+
+		add_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
+
+		wp_mail(
+			$wp_user->user_email,
+			$subject,
+			$body,
+			$headers
+		);
+
+		remove_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
+	}
+
+	private function build_completion_html( $coupon_code, $subtitle = null ) {
+		if ( null === $subtitle ) {
+			$subtitle = 'SIE HABEN GEN&Uuml;GEND PUNKTE IN DER ONLINE-AKADEMIE ERREICHT, UM SICH <strong>EINE</strong> PR&Auml;MIE AUSZUSUCHEN!';
+		}
 		$shop_url    = defined( 'WCMS_COUPON_SHOP_URL' ) ? WCMS_COUPON_SHOP_URL : 'https://megemit.org/produktkategorie/mdlc/';
 		$logo_url    = 'https://megemit.org/wp-content/uploads/2025/06/CNCL_Logo.png';
 		$mascot_url  = 'https://megemit.org/wp-content/uploads/2025/07/Oh-Meggy.jpg';
@@ -187,8 +281,7 @@ class WCMS_Mailer {
         HERZLICHEN GL&Uuml;CKWUNSCH
       </h1>
       <p style="margin:12pt 0 0;font-family:Arial,sans-serif;font-size:12pt;color:#006ab4;text-align:center;line-height:1.5;">
-        SIE HABEN GEN&Uuml;GEND PUNKTE IN DER ONLINE-AKADEMIE ERREICHT, UM SICH
-        <strong>EINE</strong> PR&Auml;MIE AUSZUSUCHEN!
+        <?php echo $subtitle; ?>
       </p>
     </td>
   </tr>
@@ -289,31 +382,31 @@ class WCMS_Mailer {
     <td style="padding:30px 35px;color:#1d1c1d;font-family:Arial,sans-serif;font-size:14px;line-height:1.6;">
 
 		<?php if ( $is_new ) : ?>
-      <p style="margin:0 0 6px 0;">Se ha creado un acceso para ti a la academia en línea MeGeMIT.</p>
+      <p style="margin:0 0 6px 0;">Für Sie wurde ein Zugang zur MeGeMIT Online-Akademie eingerichtet.</p>
 		<?php else : ?>
-      <p style="margin:0 0 6px 0;">Se ha matriculado tu usuario en la academia en línea MeGeMIT.</p>
+      <p style="margin:0 0 6px 0;">Ihr Benutzer wurde in der MeGeMIT Online-Akademie eingeschrieben.</p>
 		<?php endif; ?>
 
 		<?php if ( ! empty( $courses_str ) ) : ?>
-      <p style="margin:0 0 6px 0;">Se le ha concedido acceso al siguiente curso:</p>
+      <p style="margin:0 0 6px 0;">Ihnen wurde Zugang zu folgendem Kurs gewährt:</p>
       <p style="margin:0 0 20px 0;"><?php echo esc_html( $courses_str ); ?></p>
 		<?php endif; ?>
 
 		<?php if ( $is_new ) : ?>
-      <p style="margin:0 0 6px 0;">Estos son sus datos de inicio de sesión preliminares:</p>
-      <p style="margin:0 0 4px 0;"><strong>Nombre de usuario:</strong> <?php echo esc_html( $username ); ?></p>
-      <p style="margin:0 0 25px 0;"><strong>Contraseña:</strong> <?php echo esc_html( $password ); ?></p>
+      <p style="margin:0 0 6px 0;">Hier sind Ihre vorläufigen Zugangsdaten:</p>
+      <p style="margin:0 0 4px 0;"><strong>Benutzername:</strong> <?php echo esc_html( $username ); ?></p>
+      <p style="margin:0 0 25px 0;"><strong>Passwort:</strong> <?php echo esc_html( $password ); ?></p>
 		<?php endif; ?>
 
-      <!-- TUS PRIMEROS PASOS -->
+      <!-- IHRE ERSTEN SCHRITTE -->
       <p style="margin:0 0 15px 0;">
-        <strong style="color:#0b5394;">TUS PRIMEROS PASOS:</strong>
+        <strong style="color:#0b5394;">IHRE ERSTEN SCHRITTE:</strong>
       </p>
 
-      <!-- ACCESO -->
+      <!-- ZUGANG -->
       <p style="margin:0 0 6px 0;">
-        <strong style="background-color:#ff9900;padding:1px 4px;">ACCESO:</strong>&nbsp;
-        Inicie sesión con sus datos de acceso indicados anteriormente a través del siguiente enlace:
+        <strong style="background-color:#ff9900;padding:1px 4px;">ZUGANG:</strong>&nbsp;
+        Melden Sie sich mit den oben angegebenen Zugangsdaten über folgenden Link an:
       </p>
 		<?php if ( ! empty( $login_url ) ) : ?>
       <p style="margin:0 0 6px 0;">
@@ -324,31 +417,31 @@ class WCMS_Mailer {
 		<?php endif; ?>
 		<?php if ( $is_new ) : ?>
       <p style="margin:0 0 25px 0;">
-        Deberás cambiar tu contraseña al iniciar sesión por primera vez, por lo que solo será válida para ese primer inicio de sesión.
-        Te recomendamos ver este
-        <a href="https://vimeo.com/1101819608/aa7456e267?share=copy" style="color:#1155cc;"><strong>video tutorial</strong></a>
-        para comenzar.
+        Beim ersten Anmelden müssen Sie Ihr Passwort ändern, daher ist es nur für diese erste Anmeldung gültig.
+        Wir empfehlen Ihnen, sich dieses
+        <a href="https://vimeo.com/1101819608/aa7456e267?share=copy" style="color:#1155cc;"><strong>Video-Tutorial</strong></a>
+        anzusehen, um zu beginnen.
       </p>
 		<?php else : ?>
-      <p style="margin:0 0 25px 0;">Accede con tus credenciales habituales.</p>
+      <p style="margin:0 0 25px 0;">Melden Sie sich mit Ihren gewohnten Zugangsdaten an.</p>
 		<?php endif; ?>
 
-      <!-- APOYO -->
+      <!-- SUPPORT -->
       <p style="margin:0 0 6px 0;">
-        <strong style="background-color:#ff9900;padding:1px 4px;">APOYO:</strong>&nbsp;
-        Si necesita ayuda o asistencia inmediata, no dude en ponerse en contacto con la academia en línea
-        por teléfono o correo electrónico (le responderemos lo antes posible durante el horario laboral):
+        <strong style="background-color:#ff9900;padding:1px 4px;">SUPPORT:</strong>&nbsp;
+        Falls Sie Hilfe oder sofortige Unterstützung benötigen, kontaktieren Sie bitte die Online-Akademie
+        per Telefon oder E-Mail (wir antworten Ihnen während der Geschäftszeiten so schnell wie möglich):
       </p>
-      <p style="margin:0 0 4px 0;">Correo electrónico: <a href="mailto:akademie@megemit.org" style="color:#1155cc;">akademie@megemit.org</a></p>
-      <p style="margin:0 0 25px 0;">Teléfono: <a href="tel:+436641646894" style="color:#1155cc;">+43 664 1646894</a></p>
+      <p style="margin:0 0 4px 0;">E-Mail: <a href="mailto:akademie@megemit.org" style="color:#1155cc;">akademie@megemit.org</a></p>
+      <p style="margin:0 0 25px 0;">Telefon: <a href="tel:+436641646894" style="color:#1155cc;">+43 664 1646894</a></p>
 
-      <p style="margin:0 0 20px 0;"><strong><em>¡Les deseamos mucha diversión y valiosas perspectivas!</em></strong></p>
+      <p style="margin:0 0 20px 0;"><strong><em>Wir wünschen Ihnen viel Freude und wertvolle Erkenntnisse!</em></strong></p>
 
-      <p style="margin:0 0 20px 0;">El equipo de tu academia online</p>
+      <p style="margin:0 0 20px 0;">Ihr Online-Akademie Team</p>
 
       <!-- Footer links -->
       <p style="margin:0 0 4px 0;font-size:13px;color:#1d1c1d;">
-        <em>Iniciar sesión:
+        <em>Anmelden:
           <?php if ( ! empty( $login_url ) ) : ?>
           <a href="<?php echo esc_url( $login_url ); ?>" style="color:#1155cc;">www.onlineakademie.megemit.org</a>
           <?php else : ?>
@@ -357,10 +450,10 @@ class WCMS_Mailer {
         </em>
       </p>
       <p style="margin:0 0 4px 0;font-size:13px;color:#1d1c1d;">
-        <em>Correo electrónico: <a href="mailto:akademie@megemit.org" style="color:#1155cc;">akademie@megemit.org</a></em>
+        <em>E-Mail: <a href="mailto:akademie@megemit.org" style="color:#1155cc;">akademie@megemit.org</a></em>
       </p>
       <p style="margin:0;font-size:13px;color:#1d1c1d;">
-        <em>Teléfono: +43 664 164 689 4</em>
+        <em>Telefon: +43 664 164 689 4</em>
       </p>
 
     </td>

@@ -6,57 +6,86 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Envía el email de bienvenida/confirmación de membresía con los 5 documentos adjuntos.
  *
- * @param array  $ipn_data  Datos del hook swpm_payment_ipn_processed.
- * @param string $gender    'male', 'female' o '' (no especificado).
+ * Deja traza al inicio y captura cualquier error de PHP para que un fallo no pase en silencio.
+ *
+ * @param array $ipn_data Datos del hook swpm_payment_ipn_processed.
  */
-function mgmit_bridge_send_membership_email( $ipn_data, $gender ) {
+function mgmit_bridge_send_membership_email( $ipn_data ) {
+    MGMIT_Webhook_Sender::debug_log(
+        'send_membership_email: iniciado (payer_email=' . ( isset( $ipn_data['payer_email'] ) ? sanitize_email( $ipn_data['payer_email'] ) : '' ) .
+        ', swpm_id=' . ( isset( $ipn_data['swpm_id'] ) ? $ipn_data['swpm_id'] : '' ) .
+        ', subscr_id=' . ( isset( $ipn_data['subscr_id'] ) ? $ipn_data['subscr_id'] : '' ) . ')'
+    );
+
+    try {
+        mgmit_bridge_send_membership_email_run( $ipn_data );
+    } catch ( \Throwable $e ) {
+        MGMIT_Webhook_Sender::debug_log(
+            'send_membership_email: ERROR ' . get_class( $e ) . ': ' . $e->getMessage() . ' en ' . basename( $e->getFile() ) . ':' . $e->getLine()
+        );
+    }
+}
+
+function mgmit_bridge_send_membership_email_run( $ipn_data ) {
 
     $email      = isset( $ipn_data['payer_email'] ) ? sanitize_email( $ipn_data['payer_email'] ) : '';
     $first_name = isset( $ipn_data['first_name'] )  ? sanitize_text_field( $ipn_data['first_name'] ) : '';
     $last_name  = isset( $ipn_data['last_name'] )   ? sanitize_text_field( $ipn_data['last_name'] )  : '';
     $amount     = isset( $ipn_data['mc_gross'] )    ? sanitize_text_field( $ipn_data['mc_gross'] )   : '0.00';
+    $txn_id     = isset( $ipn_data['txn_id'] )      ? sanitize_file_name( $ipn_data['txn_id'] )      : 'sinref';
 
     if ( empty( $email ) ) {
         MGMIT_Webhook_Sender::debug_log( 'send_membership_email: email vacío, omitiendo envío' );
-        return;
+        return false;
     }
 
-    // Datos de facturación del usuario WP
-    $wp_user_id       = email_exists( $email );
-    $billing_address  = '';
-    $billing_city     = '';
-    $billing_postcode = '';
-    $billing_state    = '';
-    $billing_country  = '';
-    if ( $wp_user_id ) {
-        $billing_address  = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_address_1', true ) );
-        $billing_city     = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_city',      true ) );
-        $billing_postcode = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_postcode',  true ) );
-        $billing_state    = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_state',     true ) );
-        $billing_country  = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_country',   true ) );
+    // Datos de facturación del usuario WP (primero por el email de registro del socio,
+    // que puede diferir del email escrito en Stripe Checkout).
+    $swpm_member      = mgmit_bridge_get_swpm_member_from_ipn( $ipn_data );
+    $wp_user_id       = ( $swpm_member && ! empty( $swpm_member->email ) ) ? email_exists( $swpm_member->email ) : false;
+    if ( ! $wp_user_id ) {
+        $wp_user_id = email_exists( $email );
+    }
+    $member_address   = mgmit_bridge_get_member_address( $swpm_member, $wp_user_id );
+    $billing_address  = $member_address['address'];
+    $billing_city     = $member_address['city'];
+    $billing_postcode = $member_address['postcode'];
+    $billing_state    = $member_address['state'];
+    $billing_country  = $member_address['country'];
+
+    // Confirmación de membresía: dirección del perfil del socio en SWPM (la que coincide con HubSpot).
+    $profile_address  = mgmit_bridge_get_swpm_profile_address( $swpm_member );
+    $member_street    = $profile_address['street'];
+    $member_postcode  = $profile_address['postcode'];
+    $member_city      = $profile_address['city'];
+    $member_country   = $profile_address['country'];
+
+    // Saludo formal vía HubSpot (courtesy_de + job_title_de), con fallback seguro si falla la consulta.
+    $salutation       = mgmit_bridge_build_salutation_for_ipn( $ipn_data, $first_name, $last_name );
+    $first_name       = $salutation['first_name'];
+    $last_name        = $salutation['last_name'];
+    $greeting_line    = $salutation['greeting'];
+    $salutation_full  = $salutation['courtesy_de']; // valor de HubSpot tal cual, para los PDFs
+    $salutation_label = $salutation_full;
+    $job_title        = $salutation['job_title_de'];
+
+    // Dirección de HubSpot (con el mismo email del socio que el saludo): respaldo de la
+    // confirmación (si el perfil SWPM no tiene dirección) y de la factura (tras Stripe).
+    $hubspot_address  = mgmit_bridge_get_hubspot_address( $salutation['lookup_email'] );
+    if ( '' === $member_street && '' === $member_postcode && '' === $member_city ) {
+        $member_street   = $hubspot_address['address'];
+        $member_postcode = $hubspot_address['postcode'];
+        $member_city     = $hubspot_address['city'];
+        $member_country  = $hubspot_address['country'];
     }
 
-    // Saludo según género
-    if ( 'female' === $gender ) {
-        $salutation_label = 'Sehr geehrte Frau';
-        $salutation_full  = 'Frau';
-        $greeting_line    = 'Sehr geehrte Frau ' . $last_name;
-    } elseif ( 'male' === $gender ) {
-        $salutation_label = 'Sehr geehrter Herr';
-        $salutation_full  = 'Herr';
-        $greeting_line    = 'Sehr geehrter Herr ' . $last_name;
-    } else {
-        $salutation_label = 'Herr/Frau';
-        $salutation_full  = '';
-        $greeting_line    = 'Sehr geehrte/r ' . $last_name;
-    }
+    // Fecha del pago: hoy en un envío normal; la del pago original en un reenvío manual.
+    $pay_date       = mgmit_bridge_payment_datetime( $ipn_data );
+    $year           = $pay_date->format( 'Y' );
+    $date_formatted = $pay_date->format( 'd.m.Y' );
 
-    $year           = gmdate( 'Y' );
-    $date_formatted = gmdate( 'd.m.Y' );
-
-    $header_img_path     = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
-    $logo_watermark_path = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
-    $header_img_url      = get_stylesheet_directory_uri() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
+    $header_img_path = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
+    $header_img_url  = get_stylesheet_directory_uri() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
 
     // Generar los 2 PDFs dinámicos
     $tmp_dir = wp_upload_dir();
@@ -67,19 +96,33 @@ function mgmit_bridge_send_membership_email( $ipn_data, $gender ) {
     }
 
     $pdf_mitglied    = trailingslashit( $tmp_dir ) . 'Mitgliedschaftbestaetigung_' . time() . '.pdf';
-    $pdf_vorschreib  = trailingslashit( $tmp_dir ) . 'Vorschreibung_' . time() . '.pdf';
+    $pdf_vorschreib  = trailingslashit( $tmp_dir ) . 'rechnung_' . $txn_id . '.pdf';
 
     $ok_mitglied   = mgmit_bridge_generate_pdf( 'mitgliedschaft-pdf', $pdf_mitglied, compact(
-        'first_name', 'last_name', 'billing_postcode', 'billing_city',
-        'amount', 'year', 'date_formatted', 'salutation_label',
-        'header_img_path', 'logo_watermark_path'
+        'first_name', 'last_name', 'member_street', 'member_postcode', 'member_city', 'member_country',
+        'amount', 'year', 'date_formatted', 'salutation_label', 'job_title',
+        'header_img_path'
     ) );
 
+    $invoice_vars = mgmit_bridge_build_invoice_vars( $ipn_data );
+
     $ok_vorschreib = mgmit_bridge_generate_pdf( 'vorschreibung-pdf', $pdf_vorschreib, compact(
-        'first_name', 'last_name', 'salutation_full', 'greeting_line',
+        'first_name', 'last_name', 'salutation_full', 'job_title', 'hubspot_address',
         'billing_address', 'billing_city', 'billing_postcode', 'billing_state', 'billing_country',
-        'amount', 'year', 'date_formatted', 'header_img_path'
-    ) );
+        'amount', 'date_formatted', 'header_img_path'
+    ) + $invoice_vars );
+
+    // Copia de la factura para el aviso al administrador (mismo archivo que recibe el cliente).
+    // No se guarda en reenvíos manuales, que no generan aviso.
+    if ( $ok_vorschreib && empty( $ipn_data['mgmit_pay_date'] ) && empty( $ipn_data['mgmit_send_to'] ) ) {
+        $admin_copy_dir = trailingslashit( $tmp_dir ) . 'admin-copy';
+        if ( wp_mkdir_p( $admin_copy_dir ) ) {
+            $admin_copy = trailingslashit( $admin_copy_dir ) . basename( $pdf_vorschreib );
+            if ( copy( $pdf_vorschreib, $admin_copy ) ) {
+                mgmit_bridge_admin_invoice_stash( $admin_copy );
+            }
+        }
+    }
 
     // Construir lista de adjuntos
     $static_dir  = __DIR__ . '/email-attachments/static/';
@@ -110,12 +153,15 @@ function mgmit_bridge_send_membership_email( $ipn_data, $gender ) {
 
     $subject = 'Herzlich Willkommen als Mitglied bei der MeGeMIT';
 
-    $sent = wp_mail( $email, $subject, $body_html, $headers, $attachments );
+    // Destinatario: el email del pago; en un envío de prueba manual, el indicado en 'mgmit_send_to'.
+    $to = ( ! empty( $ipn_data['mgmit_send_to'] ) && is_email( $ipn_data['mgmit_send_to'] ) ) ? $ipn_data['mgmit_send_to'] : $email;
+
+    $sent = wp_mail( $to, $subject, $body_html, $headers, $attachments );
 
     if ( $sent ) {
-        MGMIT_Webhook_Sender::debug_log( 'send_membership_email: enviado OK a ' . $email );
+        MGMIT_Webhook_Sender::debug_log( 'send_membership_email: enviado OK a ' . $to );
     } else {
-        MGMIT_Webhook_Sender::debug_log( 'send_membership_email: wp_mail() devolvió false para ' . $email );
+        MGMIT_Webhook_Sender::debug_log( 'send_membership_email: wp_mail() devolvió false para ' . $to );
     }
 
     // Borrar PDFs temporales
@@ -127,6 +173,183 @@ function mgmit_bridge_send_membership_email( $ipn_data, $gender ) {
         // phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink
         unlink( $pdf_vorschreib );
     }
+
+    return (bool) $sent;
+}
+
+/**
+ * Reenvío manual del email de bienvenida (con factura y confirmación) de un pago ya
+ * registrado en swpm_payments_tbl. Los documentos llevan la fecha del pago original.
+ *
+ * @param object $payment Fila de swpm_payments_tbl (email, first_name, last_name, member_id,
+ *                        txn_date, txn_id, subscr_id, payment_amount, gateway).
+ * @param string $send_to Si se indica, el email se envía a esta dirección en vez de a la del pago (prueba).
+ * @return bool true si wp_mail() lo aceptó.
+ */
+function mgmit_bridge_resend_membership_email( $payment, $send_to = '' ) {
+    $ipn_data = array(
+        'payer_email'    => $payment->email,
+        'first_name'     => $payment->first_name,
+        'last_name'      => $payment->last_name,
+        'mc_gross'       => $payment->payment_amount,
+        'txn_id'         => $payment->txn_id,
+        'subscr_id'      => $payment->subscr_id,
+        'swpm_id'        => $payment->member_id,
+        'gateway'        => $payment->gateway,
+        'mgmit_pay_date' => $payment->txn_date,
+        'mgmit_send_to'  => $send_to,
+    );
+
+    MGMIT_Webhook_Sender::debug_log(
+        'send_membership_email: REENVÍO manual (payer_email=' . sanitize_email( $payment->email ) . ', swpm_id=' . $payment->member_id .
+        ', fecha del pago=' . $payment->txn_date . ( $send_to ? ', enviado a ' . sanitize_email( $send_to ) . ' en vez de al cliente' : '' ) . ')'
+    );
+
+    try {
+        return mgmit_bridge_send_membership_email_run( $ipn_data );
+    } catch ( \Throwable $e ) {
+        MGMIT_Webhook_Sender::debug_log(
+            'send_membership_email: ERROR en reenvío ' . get_class( $e ) . ': ' . $e->getMessage() . ' en ' . basename( $e->getFile() ) . ':' . $e->getLine()
+        );
+        return false;
+    }
+}
+
+/**
+ * Aviso interno por cada alta nueva de membresía: llega a info@megemit.org (cambiable con el
+ * filtro 'mgmit_bridge_admin_notification_email'). Se envía desde su propio hook, tras el email
+ * al cliente, para que no dependa de que ese se envíe bien. El reenvío manual no lo dispara.
+ */
+add_action( 'swpm_payment_ipn_processed', 'mgmit_bridge_send_admin_new_subscription_email', 20, 1 );
+
+/**
+ * Guarda (o devuelve) la ruta de la copia de la factura del pago en curso, para adjuntarla al
+ * aviso del administrador. El email al cliente la deja aquí; el aviso la usa y la borra.
+ *
+ * @param string|null $path Ruta a guardar; null para solo leer.
+ * @return string Ruta guardada ('' si no hay).
+ */
+function mgmit_bridge_admin_invoice_stash( $path = null ) {
+    static $stash = '';
+    if ( null !== $path ) {
+        $stash = $path;
+    }
+    return $stash;
+}
+
+function mgmit_bridge_send_admin_new_subscription_email( $ipn_data ) {
+    try {
+        mgmit_bridge_send_admin_new_subscription_email_run( $ipn_data );
+    } catch ( \Throwable $e ) {
+        MGMIT_Webhook_Sender::debug_log(
+            'admin_new_subscription: ERROR ' . get_class( $e ) . ': ' . $e->getMessage() . ' en ' . basename( $e->getFile() ) . ':' . $e->getLine()
+        );
+    }
+
+    // Borrar siempre la copia temporal de la factura (también si el aviso se omitió o falló).
+    $invoice_copy = mgmit_bridge_admin_invoice_stash();
+    if ( $invoice_copy && file_exists( $invoice_copy ) ) {
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink
+        unlink( $invoice_copy );
+    }
+    mgmit_bridge_admin_invoice_stash( '' );
+}
+
+function mgmit_bridge_send_admin_new_subscription_email_run( $ipn_data ) {
+    $to = apply_filters( 'mgmit_bridge_admin_notification_email', 'info@megemit.org' );
+    if ( ! is_email( $to ) ) {
+        return;
+    }
+
+    // Una sola notificación por pago.
+    $dedupe_key = 'mgmit_admin_notif_' . md5( ( isset( $ipn_data['txn_id'] ) ? $ipn_data['txn_id'] : '' ) . '|' . ( isset( $ipn_data['subscr_id'] ) ? $ipn_data['subscr_id'] : '' ) );
+    if ( get_transient( $dedupe_key ) ) {
+        MGMIT_Webhook_Sender::debug_log( 'admin_new_subscription: ya notificado, se omite (' . $dedupe_key . ')' );
+        return;
+    }
+    set_transient( $dedupe_key, 1, DAY_IN_SECONDS );
+
+    $member     = mgmit_bridge_get_swpm_member_from_ipn( $ipn_data );
+    $first_name = $member && ! empty( $member->first_name ) ? $member->first_name : ( isset( $ipn_data['first_name'] ) ? $ipn_data['first_name'] : '' );
+    $last_name  = $member && ! empty( $member->last_name ) ? $member->last_name : ( isset( $ipn_data['last_name'] ) ? $ipn_data['last_name'] : '' );
+    $name       = trim( $first_name . ' ' . $last_name );
+    $email      = $member && ! empty( $member->email ) ? $member->email : ( isset( $ipn_data['payer_email'] ) ? $ipn_data['payer_email'] : '' );
+    $member_id  = $member ? $member->member_id : ( isset( $ipn_data['swpm_id'] ) ? $ipn_data['swpm_id'] : '' );
+
+    $level_id   = isset( $ipn_data['membership_level'] ) && '' !== $ipn_data['membership_level'] ? $ipn_data['membership_level'] : ( $member ? $member->membership_level : '' );
+    $level_name = '';
+    if ( $level_id && class_exists( 'SwpmMembershipLevelUtils' ) ) {
+        $level_name = SwpmMembershipLevelUtils::get_membership_level_name_by_level_id( $level_id );
+    }
+
+    $stripe  = mgmit_bridge_get_stripe_invoice_info( $ipn_data );
+    $amount  = isset( $ipn_data['mc_gross'] ) ? number_format( (float) $ipn_data['mc_gross'], 2, ',', '.' ) . ' €' : '';
+    $sub_id  = isset( $ipn_data['subscr_id'] ) ? $ipn_data['subscr_id'] : '';
+    $sandbox = class_exists( 'SwpmSettings' ) && SwpmSettings::get_instance()->get_value( 'enable-sandbox-testing' );
+
+    $rows = array(
+        'Name'                  => $name,
+        'E-Mail'                => $email,
+        'Mitgliedsnummer'       => $member_id,
+        'Mitgliedschaft'        => $level_name,
+        'Betrag'                => $amount,
+        'Zahlungsart'           => $stripe['payment_label'],
+        'Rechnungsnummer'       => $stripe['invoice_number'],
+        'Datum'                 => wp_date( 'd.m.Y H:i' ),
+        'Stripe-Abonnement'     => $sub_id,
+    );
+
+    $html  = '<p>Es wurde eine neue Mitgliedschaft abgeschlossen.</p>';
+    $html .= '<table cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">';
+    foreach ( $rows as $label => $value ) {
+        if ( '' === (string) $value ) {
+            continue;
+        }
+        $html .= '<tr><td style="border:1px solid #ddd;background:#f5f5f5"><strong>' . esc_html( $label ) . '</strong></td>' .
+                 '<td style="border:1px solid #ddd">' . esc_html( $value ) . '</td></tr>';
+    }
+    $html .= '</table>';
+
+    // Factura adjunta: la misma que recibe el cliente (la deja el email de bienvenida).
+    $invoice_pdf = mgmit_bridge_admin_invoice_stash();
+    $attachments = array();
+    if ( $invoice_pdf && file_exists( $invoice_pdf ) ) {
+        $attachments[] = $invoice_pdf;
+        $html         .= '<p>Anbei die Rechnung, wie sie an das Mitglied gesendet wurde.</p>';
+    } else {
+        $html .= '<p><em>Die Rechnung konnte nicht angeh&auml;ngt werden.</em></p>';
+    }
+
+    if ( false !== stripos( (string) $stripe['payment_label'], 'SEPA' ) ) {
+        $html .= '<p><em>Hinweis: Eine SEPA-Lastschrift wird erst nach einigen Werktagen von der Bank best&auml;tigt. Die Zahlung kann bis dahin noch ausstehend sein.</em></p>';
+    }
+
+    $links = array();
+    if ( $member_id ) {
+        $links[] = '<a href="' . esc_url( admin_url( 'admin.php?page=simple_wp_membership&member_action=edit&member_id=' . absint( $member_id ) ) ) . '">Mitglied in WordPress ansehen</a>';
+    }
+    if ( $sub_id ) {
+        $links[] = '<a href="' . esc_url( 'https://dashboard.stripe.com/' . ( $sandbox ? 'test/' : '' ) . 'subscriptions/' . rawurlencode( $sub_id ) ) . '">Abonnement in Stripe ansehen</a>';
+    }
+    if ( $links ) {
+        $html .= '<p>' . implode( ' &middot; ', $links ) . '</p>';
+    }
+
+    $from_name   = sanitize_text_field( get_option( 'blogname' ) );
+    $admin_email = sanitize_email( get_option( 'admin_email' ) );
+    $headers     = array(
+        'Content-Type: text/html; charset=UTF-8',
+        'From: ' . $from_name . ' <' . $admin_email . '>',
+    );
+
+    $subject = 'Neue MeGeMIT-Mitgliedschaft: ' . ( '' !== $name ? $name : $email ) . ( '' !== $amount ? ' (' . $amount . ')' : '' );
+
+    $sent = wp_mail( $to, $subject, $html, $headers, $attachments );
+
+    MGMIT_Webhook_Sender::debug_log(
+        'admin_new_subscription: ' . ( $sent ? 'enviado OK a ' : 'wp_mail() devolvió false para ' ) . $to . ' (socio ' . $member_id . ', factura adjunta: ' . ( $attachments ? 'sí' : 'no' ) . ')'
+    );
+
 }
 
 /**

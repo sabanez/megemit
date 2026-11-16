@@ -10,12 +10,14 @@ class MGMIT_Mapper_Admin_UI {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('wp_ajax_mgmit_mapper_save_mapping', array($this, 'ajax_save_mapping'));
         add_action('wp_ajax_mgmit_mapper_delete_mapping', array($this, 'ajax_delete_mapping'));
+        add_action('wp_ajax_mgmit_mapper_duplicate_mapping', array($this, 'ajax_duplicate_mapping'));
+        add_action('wp_ajax_mgmit_mapper_get_options', array($this, 'ajax_get_options'));
         add_action('wp_ajax_mgmit_mapper_save_credentials', array($this, 'ajax_save_credentials'));
     }
 
     public function add_admin_menu() {
         add_menu_page(
-            'MeGeMIT HubSpot Mapper',
+            'HubSpot Mapper',
             'HubSpot Mapper',
             'manage_options',
             'hubspot-mapper',
@@ -40,7 +42,9 @@ class MGMIT_Mapper_Admin_UI {
             'ajaxurl'      => admin_url('admin-ajax.php'),
             'nonce_save'   => wp_create_nonce('mgmit-mapper-save'),
             'nonce_delete' => wp_create_nonce('mgmit-mapper-delete'),
+            'nonce_duplicate' => wp_create_nonce('mgmit-mapper-duplicate'),
             'nonce_creds'  => wp_create_nonce('mgmit-mapper-creds'),
+            'nonce_options' => wp_create_nonce('mgmit-mapper-options'),
             'list_url'     => admin_url('admin.php?page=hubspot-mapper'),
             'strings'      => array(
                 'confirm_delete' => '¿Seguro que quieres eliminar este mapeo? Esta acción no se puede deshacer.',
@@ -95,7 +99,7 @@ class MGMIT_Mapper_Admin_UI {
         <div class="wrap">
             <h1 class="wp-heading-inline">
                 <span class="dashicons dashicons-share-alt2" style="font-size:28px;width:28px;height:28px;vertical-align:middle;margin-right:6px;"></span>
-                MeGeMIT: HubSpot Mapper (Frontend)
+                HubSpot Mapper (Frontend)
             </h1>
             <a href="<?php echo esc_url($add_url); ?>" class="page-title-action">&#43; Añadir Mapeo</a>
             <hr class="wp-header-end">
@@ -105,6 +109,9 @@ class MGMIT_Mapper_Admin_UI {
             <?php endif; ?>
             <?php if (isset($_GET['deleted'])): ?>
             <div class="notice notice-success is-dismissible"><p><strong>Mapeo eliminado correctamente.</strong></p></div>
+            <?php endif; ?>
+            <?php if (isset($_GET['duplicated'])): ?>
+            <div class="notice notice-success is-dismissible"><p><strong>Mapeo duplicado. Revisa y guarda los cambios (p. ej. idioma o selector) antes de continuar.</strong></p></div>
             <?php endif; ?>
 
             <div style="margin-bottom:16px;background:#e5f5fa;padding:10px 14px;border-left:4px solid #00a0d2;font-size:13px;">
@@ -126,7 +133,7 @@ class MGMIT_Mapper_Admin_UI {
             $source_text       = array(
                 'constant' => 'constante <code>MGMIT_HS_ACCESS_TOKEN_SECRET</code> (wp-config.php)',
                 'own'      => 'este plugin',
-                'bridge'   => 'plugin MeGeMIT HubSpot Bridge (respaldo)',
+                'bridge'   => 'plugin HubSpot Bridge (respaldo)',
             );
             ?>
             <div style="margin:16px 0;padding:14px 16px;background:#fff;border:1px solid #c3c4c7;border-radius:4px;max-width:760px;">
@@ -216,6 +223,11 @@ class MGMIT_Mapper_Admin_UI {
                             </td>
                             <td data-colname="Acciones">
                                 <a href="<?php echo esc_url($edit_url); ?>" class="button button-small">Editar</a>
+                                <button type="button" class="button button-small mgmit-duplicate-mapping"
+                                    data-id="<?php echo esc_attr($id); ?>"
+                                    style="margin-left:4px;">
+                                    Duplicar
+                                </button>
                                 <button type="button" class="button button-small mgmit-delete-mapping"
                                     data-id="<?php echo esc_attr($id); ?>"
                                     style="color:#b32d2e;border-color:#b32d2e;margin-left:4px;">
@@ -269,6 +281,7 @@ class MGMIT_Mapper_Admin_UI {
         $source            = $is_new ? '' : (isset($mapping['source']) ? $mapping['source'] : '');
         $email_field       = $is_new ? '' : (isset($mapping['email_field']) ? $mapping['email_field'] : '');
         $fields            = $is_new ? array() : (isset($mapping['mapping']) && is_array($mapping['mapping']) ? $mapping['mapping'] : array());
+        $value_maps        = $is_new ? array() : (isset($mapping['value_maps']) && is_array($mapping['value_maps']) ? $mapping['value_maps'] : array());
         $static_fields     = $is_new ? array() : (isset($mapping['static_fields']) && is_array($mapping['static_fields']) ? $mapping['static_fields'] : array());
         $current_id        = $is_new ? '' : (isset($mapping['id']) ? $mapping['id'] : $mapping_id);
         $do_not_collect    = !$is_new && !empty($mapping['do_not_collect']);
@@ -337,10 +350,10 @@ class MGMIT_Mapper_Admin_UI {
                             <td>
                                 <input type="text" id="mgmit-hs-form-name" class="regular-text code"
                                     value="<?php echo esc_attr($hs_form_name); ?>"
-                                    placeholder="Ej: registro-profesional-nivel-13">
+                                    placeholder="Ej: LLBE - Second registration form LL [France] Pharmacies">
                                 <p class="description">
-                                    Identificador del formulario en HubSpot. Aparecerá como nombre en
-                                    <em>Marketing &rarr; Formularios</em>. Usa solo letras, números y guiones (sin espacios).
+                                    Nombre del formulario en HubSpot. Aparecerá tal cual en
+                                    <em>Marketing &rarr; Formularios</em>. Admite espacios, guiones y corchetes.
                                 </p>
                             </td>
                         </tr>
@@ -376,32 +389,35 @@ class MGMIT_Mapper_Admin_UI {
                             <th scope="row">Mapeo de Campos</th>
                             <td>
                                 <p class="description" style="margin-bottom:10px;">
-                                    Relaciona el atributo <code>name</code> del campo WordPress con la propiedad HubSpot correspondiente.
+                                    Relaciona el atributo <code>name</code> del campo WordPress con la propiedad HubSpot correspondiente.<br>
+                                    Para campos select, radio o checkbox cuyo texto no coincide con las opciones de HubSpot, usa <strong>Valores</strong> para definir la equivalencia.
                                 </p>
                                 <table class="widefat striped" id="mgmit-fields-table" style="max-width:640px;">
                                     <thead>
                                         <tr>
-                                            <th style="width:46%;">Campo WordPress <small style="font-weight:400;display:block;color:#666;">(atributo <code>name</code>)</small></th>
-                                            <th style="width:46%;">Propiedad HubSpot <small style="font-weight:400;display:block;color:#666;">(nombre de la propiedad)</small></th>
-                                            <th style="width:8%;"></th>
+                                            <th style="width:40%;">Campo WordPress <small style="font-weight:400;display:block;color:#666;">(atributo <code>name</code>)</small></th>
+                                            <th style="width:40%;">Propiedad HubSpot <small style="font-weight:400;display:block;color:#666;">(formato: <code>objeto-propiedad</code>, ej: <code>contact-email</code>)</small></th>
+                                            <th style="width:20%;"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="mgmit-fields-body">
                                         <?php if (!empty($fields)): ?>
                                             <?php foreach ($fields as $wp_field => $hs_prop): ?>
-                                            <tr class="mgmit-field-row">
+                                            <tr class="mgmit-field-row" data-value-map="<?php echo esc_attr(wp_json_encode(isset($value_maps[$wp_field]) ? (object) $value_maps[$wp_field] : (object) array())); ?>">
                                                 <td><input type="text" class="mgmit-wp-field widefat code" value="<?php echo esc_attr($wp_field); ?>" placeholder="swpm-472"></td>
-                                                <td><input type="text" class="mgmit-hs-prop widefat code" value="<?php echo esc_attr($hs_prop); ?>" placeholder="firstname"></td>
-                                                <td style="text-align:center;">
+                                                <td><input type="text" class="mgmit-hs-prop widefat code" value="<?php echo esc_attr($hs_prop); ?>" placeholder="contact-firstname"></td>
+                                                <td style="text-align:center;white-space:nowrap;">
+                                                    <button type="button" class="button button-small mgmit-toggle-values" title="Equivalencias de valores (select / radio / checkbox)">Valores</button>
                                                     <button type="button" class="button button-small mgmit-remove-row" title="Eliminar fila" style="color:#b32d2e;border-color:#b32d2e;">&#10005;</button>
                                                 </td>
                                             </tr>
                                             <?php endforeach; ?>
                                         <?php else: ?>
-                                            <tr class="mgmit-field-row">
+                                            <tr class="mgmit-field-row" data-value-map="{}">
                                                 <td><input type="text" class="mgmit-wp-field widefat code" value="" placeholder="swpm-472"></td>
                                                 <td><input type="text" class="mgmit-hs-prop widefat code" value="" placeholder="firstname"></td>
-                                                <td style="text-align:center;">
+                                                <td style="text-align:center;white-space:nowrap;">
+                                                    <button type="button" class="button button-small mgmit-toggle-values" title="Equivalencias de valores (select / radio / checkbox)">Valores</button>
                                                     <button type="button" class="button button-small mgmit-remove-row" title="Eliminar fila" style="color:#b32d2e;border-color:#b32d2e;">&#10005;</button>
                                                 </td>
                                             </tr>
@@ -427,9 +443,9 @@ class MGMIT_Mapper_Admin_UI {
                                 <table class="widefat striped" id="mgmit-static-fields-table" style="max-width:640px;">
                                     <thead>
                                         <tr>
-                                            <th style="width:40%;">Propiedad HubSpot <small style="font-weight:400;display:block;color:#666;">(nombre de la propiedad)</small></th>
+                                            <th style="width:40%;">Propiedad HubSpot <small style="font-weight:400;display:block;color:#666;">(formato: <code>objeto-propiedad</code>, ej: <code>deal-dealname</code>; sin prefijo = contact)</small></th>
                                             <th style="width:40%;">Valor fijo</th>
-                                            <th style="width:12%;text-align:center;">Concatenar <small style="font-weight:400;display:block;color:#666;">checkbox múltiple</small></th>
+                                            <th style="width:12%;text-align:center;">Concatenar <small style="font-weight:400;display:block;color:#666;">checkbox múltiple, solo objeto contact</small></th>
                                             <th style="width:8%;"></th>
                                         </tr>
                                     </thead>
@@ -437,7 +453,7 @@ class MGMIT_Mapper_Admin_UI {
                                         <?php if (!empty($static_fields)): ?>
                                             <?php foreach ($static_fields as $sf): ?>
                                             <tr class="mgmit-static-field-row">
-                                                <td><input type="text" class="mgmit-sf-prop widefat code" value="<?php echo esc_attr(isset($sf['hs_prop']) ? $sf['hs_prop'] : ''); ?>" placeholder="hs_lead_source"></td>
+                                                <td><input type="text" class="mgmit-sf-prop widefat code" value="<?php echo esc_attr(isset($sf['hs_prop']) ? $sf['hs_prop'] : ''); ?>" placeholder="deal-dealname"></td>
                                                 <td><input type="text" class="mgmit-sf-value widefat code" value="<?php echo esc_attr(isset($sf['value']) ? $sf['value'] : ''); ?>" placeholder="SWPM"></td>
                                                 <td style="text-align:center;"><input type="checkbox" class="mgmit-sf-append" value="1" <?php checked(!empty($sf['append'])); ?> title="Añadir al valor existente en lugar de sobreescribir"></td>
                                                 <td style="text-align:center;">
@@ -486,6 +502,7 @@ class MGMIT_Mapper_Admin_UI {
         $email_field     = isset($_POST['email_field'])     ? sanitize_text_field($_POST['email_field'])     : '';
         $fields_raw         = isset($_POST['fields'])         ? (array) $_POST['fields']         : array();
         $static_fields_raw  = isset($_POST['static_fields'])  ? (array) $_POST['static_fields']  : array();
+        $value_maps_raw     = isset($_POST['value_maps'])     ? (array) $_POST['value_maps']     : array();
         $do_not_collect     = !empty($_POST['do_not_collect']);
 
         if (empty($form_id)) {
@@ -498,6 +515,23 @@ class MGMIT_Mapper_Admin_UI {
             $hs_prop  = isset($field['hs_prop'])  ? sanitize_text_field($field['hs_prop'])  : '';
             if ($wp_field !== '' && $hs_prop !== '') {
                 $mapping[$wp_field] = $hs_prop;
+            }
+        }
+
+        // Equivalencias de valores: [campo WP => [texto del formulario => valor HubSpot]].
+        // Solo se guardan para campos que siguen en el mapeo.
+        $value_maps = array();
+        foreach ($value_maps_raw as $vm) {
+            $vm_field = isset($vm['wp_field']) ? sanitize_text_field($vm['wp_field']) : '';
+            if ($vm_field === '' || !isset($mapping[$vm_field]) || empty($vm['pairs']) || !is_array($vm['pairs'])) {
+                continue;
+            }
+            foreach ($vm['pairs'] as $pair) {
+                $from = isset($pair['from']) ? sanitize_text_field($pair['from']) : '';
+                $to   = isset($pair['to'])   ? sanitize_text_field($pair['to'])   : '';
+                if ($from !== '' && $to !== '') {
+                    $value_maps[$vm_field][$from] = $to;
+                }
             }
         }
 
@@ -525,8 +559,13 @@ class MGMIT_Mapper_Admin_UI {
                 wp_send_json_error('El campo "Nombre en HubSpot" es obligatorio para que aparezca en Marketing → Formularios.');
             }
 
+            $hs_props_bare = array();
+            foreach (array_values($mapping) as $hs_prop_val) {
+                $parsed_val = class_exists('MGMIT_HS_Forms') ? MGMIT_HS_Forms::parse_prop_key($hs_prop_val) : array('name' => $hs_prop_val);
+                $hs_props_bare[] = $parsed_val['name'];
+            }
             $has_email = ($email_field !== '' && isset($mapping[$email_field]))
-                || in_array('email', array_values($mapping), true);
+                || in_array('email', $hs_props_bare, true);
             if (!$has_email) {
                 wp_send_json_error('Falta el email: indica el "Campo Email" (debe existir en el mapeo) o mapea un campo a la propiedad HubSpot "email".');
             }
@@ -541,6 +580,7 @@ class MGMIT_Mapper_Admin_UI {
             'email_field'     => $do_not_collect ? '' : $email_field,
             'mapping'         => $do_not_collect ? array() : $mapping,
             'static_fields'   => $do_not_collect ? array() : $static_fields,
+            'value_maps'      => $do_not_collect ? array() : $value_maps,
             'do_not_collect'  => $do_not_collect,
         );
 
@@ -575,6 +615,33 @@ class MGMIT_Mapper_Admin_UI {
         ));
     }
 
+    /**
+     * Devuelve las opciones (value + label) de una propiedad enumeration de HubSpot
+     * para rellenar los desplegables de equivalencias de valores.
+     */
+    public function ajax_get_options() {
+        check_ajax_referer('mgmit-mapper-options', 'security');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Permisos insuficientes.');
+        }
+
+        $prop = isset($_POST['prop']) ? sanitize_text_field($_POST['prop']) : '';
+        if ($prop === '') {
+            wp_send_json_error('Indica primero la propiedad HubSpot.');
+        }
+
+        $options = MGMIT_HS_Forms::get_options_for_key($prop);
+        if ($options === null) {
+            wp_send_json_error('No hay Access Token de HubSpot configurado.');
+        }
+        if (empty($options)) {
+            wp_send_json_error('La propiedad "' . $prop . '" no tiene opciones (no es select/radio/checkbox) o no existe en HubSpot.');
+        }
+
+        wp_send_json_success(array('options' => $options));
+    }
+
     public function ajax_delete_mapping() {
         check_ajax_referer('mgmit-mapper-delete', 'security');
 
@@ -602,6 +669,59 @@ class MGMIT_Mapper_Admin_UI {
 
         wp_send_json_success(array(
             'redirect' => admin_url('admin.php?page=hubspot-mapper&deleted=1'),
+        ));
+    }
+
+    public function ajax_duplicate_mapping() {
+        check_ajax_referer('mgmit-mapper-duplicate', 'security');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Permisos insuficientes.');
+        }
+
+        $id = isset($_POST['id']) ? sanitize_text_field($_POST['id']) : '';
+
+        if ($id === '') {
+            wp_send_json_error('ID no válido.');
+        }
+
+        $config  = $this->get_config();
+        $source  = null;
+
+        foreach ($config as $index => $m) {
+            $current_id = isset($m['id']) ? $m['id'] : strval($index);
+            if ($current_id === $id) {
+                $source = $m;
+                break;
+            }
+        }
+
+        if ($source === null) {
+            wp_send_json_error('Mapeo no encontrado.');
+        }
+
+        $existing_names = array();
+        foreach ($config as $m) {
+            $existing_names[] = isset($m['name']) ? $m['name'] : '';
+        }
+
+        $base_name = isset($source['name']) && $source['name'] !== '' ? $source['name'] : 'Mapeo';
+        $new_name  = $base_name . ' (copia)';
+        $suffix    = 2;
+        while (in_array($new_name, $existing_names, true)) {
+            $new_name = $base_name . ' (copia ' . $suffix . ')';
+            $suffix++;
+        }
+
+        $duplicate         = $source;
+        $duplicate['id']   = $this->generate_id();
+        $duplicate['name'] = $new_name;
+
+        $config[] = $duplicate;
+        update_option(MGMIT_MAPPER_OPTION, $config);
+
+        wp_send_json_success(array(
+            'redirect' => admin_url('admin.php?page=hubspot-mapper&view=edit&mapping_id=' . urlencode($duplicate['id']) . '&duplicated=1'),
         ));
     }
 

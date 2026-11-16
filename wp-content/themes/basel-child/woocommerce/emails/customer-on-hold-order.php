@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  */
 do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 
-<p>Guten Tag, <?php printf( esc_html( $order->get_billing_first_name() )); ?> <?php printf( esc_html( $order->get_billing_last_name() )); ?>!<br /><br />Wir bedanken uns sehr für Ihre Bestellung und Ihr damit verbundenes Interesse an der Mikroimmuntherapie.<br />Sobald Ihre Zahlung bei uns eingeht, wird Ihre Bestellung bearbeitet.<br />Bitte überweisen Sie den unten stehenden Betrag auf folgendes Konto:</p>
+<p><?php echo esc_html( mgmit_wc_email_greeting( $order ) ); ?>,<br /><br />Wir bedanken uns sehr für Ihre Bestellung und Ihr damit verbundenes Interesse an der Mikroimmuntherapie.<br />Sobald Ihre Zahlung bei uns eingeht, wird Ihre Bestellung bearbeitet.<br />Bitte überweisen Sie den unten stehenden Betrag auf folgendes Konto:</p>
 <?php
 
 /*

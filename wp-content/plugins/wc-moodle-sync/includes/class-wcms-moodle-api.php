@@ -13,6 +13,9 @@ class WCMS_Moodle_Api {
 
 	private static $log_context = array( 'source' => 'wc-moodle-sync' );
 
+	/** @var bool Última búsqueda de usuario rechazada por permisos del token. */
+	private $lookup_denied = false;
+
 	public static function get_instance() {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
@@ -31,6 +34,7 @@ class WCMS_Moodle_Api {
 	 * @return int|false  ID de usuario Moodle o false si no existe.
 	 */
 	public function find_user( $username, $email = '' ) {
+		$this->lookup_denied = false;
 		$this->logger->debug( "Buscando usuario en Moodle por username: {$username}", self::$log_context );
 
 		$res = $this->request( 'core_user_get_users_by_field', array(
@@ -42,6 +46,8 @@ class WCMS_Moodle_Api {
 			$this->logger->info( "find_user: encontrado por username '{$username}' con ID {$res[0]['id']}.", self::$log_context );
 			return (int) $res[0]['id'];
 		}
+
+		$this->check_lookup_denied( $res );
 
 		// Fallback: buscar por email si se proporcionó.
 		if ( ! empty( $email ) ) {
@@ -56,10 +62,33 @@ class WCMS_Moodle_Api {
 				$this->logger->info( "find_user: encontrado por email '{$email}' con ID {$res_email[0]['id']} (username en Moodle: {$res_email[0]['username']}).", self::$log_context );
 				return (int) $res_email[0]['id'];
 			}
+
+			$this->check_lookup_denied( $res_email );
+		}
+
+		if ( $this->lookup_denied ) {
+			$this->logger->error( "find_user({$username}): el token de Moodle no tiene permiso para core_user_get_users_by_field; no se puede saber si el usuario existe.", self::$log_context );
+			return false;
 		}
 
 		$this->logger->debug( "find_user({$username}): usuario no existe en Moodle.", self::$log_context );
 		return false;
+	}
+
+	/**
+	 * Indica si la última búsqueda de find_user() falló por falta de permiso del token
+	 * (en ese caso "no encontrado" no significa "no existe").
+	 *
+	 * @return bool
+	 */
+	public function is_lookup_denied() {
+		return $this->lookup_denied;
+	}
+
+	private function check_lookup_denied( $res ) {
+		if ( is_array( $res ) && isset( $res['errorcode'] ) && 'accessexception' === $res['errorcode'] ) {
+			$this->lookup_denied = true;
+		}
 	}
 
 	/**
@@ -97,6 +126,15 @@ class WCMS_Moodle_Api {
 		if ( isset( $res['exception'] ) ) {
 			$debuginfo = isset( $res['debuginfo'] ) ? $res['debuginfo'] : 'sin debuginfo';
 			$this->logger->error( "create_user({$username}): excepción Moodle — {$res['message']} (errorcode: {$res['errorcode']}) | debuginfo: {$debuginfo}", self::$log_context );
+
+			// Moodle rechaza la creación porque el username o el email ya existen (cuenta creada
+			// previamente fuera de este plugin). find_user() no lo había localizado, pero Moodle
+			// acaba de confirmar que sí existe: recuperar su ID en lugar de bloquear el checkout.
+			if ( false !== stripos( $debuginfo, 'already' ) || false !== stripos( $res['message'], 'already' ) ) {
+				$this->logger->warning( "create_user({$username}): usuario ya existente según Moodle, reintentando búsqueda.", self::$log_context );
+				return $this->find_user( $username, $wp_user->user_email );
+			}
+
 			return false;
 		}
 
@@ -110,34 +148,156 @@ class WCMS_Moodle_Api {
 	}
 
 	/**
-	 * Matricula a un usuario en uno o varios cursos Moodle (roleid=5 Estudiante).
+	 * Añade a un usuario a uno o varios cohorts de Moodle.
+	 *
+	 * La matriculación real a los cursos/módulos la resuelve Moodle mediante el método
+	 * de matriculación "Sincronización de cohortes" configurado en cada curso — este
+	 * método no matricula directamente a ningún curso, solo gestiona la pertenencia al cohort.
+	 * Añadir a un usuario a un cohort del que ya es miembro no da error en Moodle (operación idempotente).
 	 *
 	 * @param int   $moodle_user_id
-	 * @param array $course_ids  Array de IDs (enteros) de cursos Moodle.
+	 * @param array $cohort_ids  Array de IDs (enteros) de cohorts de Moodle.
 	 * @return bool
 	 */
-	public function enrol_users( $moodle_user_id, $course_ids ) {
-		$this->logger->info( "Matriculando usuario Moodle #{$moodle_user_id} en cursos: " . implode( ', ', $course_ids ), self::$log_context );
+	public function add_to_cohort( $moodle_user_id, $cohort_ids ) {
+		$this->logger->info( "Añadiendo usuario Moodle #{$moodle_user_id} a cohorts: " . implode( ', ', $cohort_ids ), self::$log_context );
 
-		$enrolments = array();
-		foreach ( $course_ids as $course_id ) {
-			$enrolments[] = array(
-				'roleid'   => 5,
-				'userid'   => $moodle_user_id,
-				'courseid' => (int) $course_id,
+		$members = array();
+		foreach ( $cohort_ids as $cohort_id ) {
+			$members[] = array(
+				'cohorttype' => array(
+					'type'  => 'id',
+					'value' => (string) (int) $cohort_id,
+				),
+				'usertype' => array(
+					'type'  => 'id',
+					'value' => (string) (int) $moodle_user_id,
+				),
 			);
 		}
 
-		$res = $this->request( 'enrol_manual_enrol_users', array(
-			'enrolments' => $enrolments,
+		$res = $this->request( 'core_cohort_add_cohort_members', array(
+			'members' => $members,
 		) );
 
 		if ( is_array( $res ) && isset( $res['exception'] ) ) {
-			$this->logger->error( "enrol_users(#{$moodle_user_id}): excepción Moodle — {$res['message']} (errorcode: {$res['errorcode']})", self::$log_context );
+			$this->logger->error( "add_to_cohort(#{$moodle_user_id}): excepción Moodle — {$res['message']} (errorcode: {$res['errorcode']})", self::$log_context );
 			return false;
 		}
 
-		$this->logger->info( "enrol_users(#{$moodle_user_id}): matriculación completada.", self::$log_context );
+		$this->logger->info( "add_to_cohort(#{$moodle_user_id}): añadido a cohort(s) correctamente.", self::$log_context );
+		return true;
+	}
+
+	/**
+	 * Devuelve los cursos en los que el usuario está matriculado en Moodle.
+	 *
+	 * @param int $moodle_user_id
+	 * @return array[]  Cada elemento con al menos 'id' (course id). Array vacío si falla.
+	 */
+	public function get_user_courses( $moodle_user_id ) {
+		$this->logger->debug( "Obteniendo cursos matriculados del usuario Moodle #{$moodle_user_id}.", self::$log_context );
+
+		$res = $this->request( 'core_enrol_get_users_courses', array(
+			'userid' => (int) $moodle_user_id,
+		) );
+
+		if ( ! is_array( $res ) || isset( $res['exception'] ) ) {
+			$msg = isset( $res['message'] ) ? $res['message'] : 'respuesta inválida';
+			$this->logger->error( "get_user_courses(#{$moodle_user_id}): {$msg}", self::$log_context );
+			return array();
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Devuelve los grade items (módulos calificables) de un curso para un usuario,
+	 * vía la función WS 'gradereport_user_get_grade_items'.
+	 *
+	 * @param int $moodle_user_id
+	 * @param int $moodle_course_id
+	 * @return array[]  Cada elemento con 'graderaw' (nota obtenida) y 'grademax' (nota máxima).
+	 *                  Array vacío si falla o no hay items calificables.
+	 */
+	public function get_course_grade_items( $moodle_user_id, $moodle_course_id ) {
+		$this->logger->debug( "Obteniendo grade items del curso #{$moodle_course_id} para usuario Moodle #{$moodle_user_id}.", self::$log_context );
+
+		$res = $this->request( 'gradereport_user_get_grade_items', array(
+			'courseid' => (int) $moodle_course_id,
+			'userid'   => (int) $moodle_user_id,
+		) );
+
+		if ( ! is_array( $res ) || isset( $res['exception'] ) ) {
+			$msg = isset( $res['message'] ) ? $res['message'] : 'respuesta inválida';
+			$this->logger->error( "get_course_grade_items(#{$moodle_course_id}, #{$moodle_user_id}): {$msg}", self::$log_context );
+			return array();
+		}
+
+		if ( empty( $res['usergrades'][0]['gradeitems'] ) ) {
+			return array();
+		}
+
+		return $res['usergrades'][0]['gradeitems'];
+	}
+
+	/**
+	 * Devuelve la nota de un módulo concreto (identificado por su cmid) de un curso.
+	 *
+	 * @param int $moodle_user_id
+	 * @param int $moodle_course_id
+	 * @param int $cmid  ID del course module (quiz, etc.).
+	 * @return array|null  array( 'graderaw' => float|null, 'grademax' => float ) o null si el
+	 *                     módulo no se encuentra entre los grade items del curso.
+	 */
+	public function get_item_grade( $moodle_user_id, $moodle_course_id, $cmid ) {
+		$items = $this->get_course_grade_items( $moodle_user_id, $moodle_course_id );
+
+		foreach ( $items as $item ) {
+			if ( ! isset( $item['cmid'] ) || (int) $item['cmid'] !== (int) $cmid ) {
+				continue;
+			}
+
+			return array(
+				'graderaw' => isset( $item['graderaw'] ) && null !== $item['graderaw'] ? (float) $item['graderaw'] : null,
+				'grademax' => isset( $item['grademax'] ) ? (float) $item['grademax'] : 0.0,
+			);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Elimina a un usuario de uno o varios cohorts de Moodle.
+	 * Al perder la pertenencia al cohort, la matriculación sincronizada
+	 * en los cursos correspondientes también se retira (según la config.
+	 * "Sincronización de cohortes" de cada curso).
+	 *
+	 * @param int   $moodle_user_id
+	 * @param array $cohort_ids  Array de IDs (enteros) de cohorts de Moodle.
+	 * @return bool
+	 */
+	public function remove_from_cohort( $moodle_user_id, $cohort_ids ) {
+		$this->logger->info( "Eliminando usuario Moodle #{$moodle_user_id} de cohorts: " . implode( ', ', $cohort_ids ), self::$log_context );
+
+		$members = array();
+		foreach ( $cohort_ids as $cohort_id ) {
+			$members[] = array(
+				'cohortid' => (int) $cohort_id,
+				'userid'   => (int) $moodle_user_id,
+			);
+		}
+
+		$res = $this->request( 'core_cohort_delete_cohort_members', array(
+			'members' => $members,
+		) );
+
+		if ( is_array( $res ) && isset( $res['exception'] ) ) {
+			$this->logger->error( "remove_from_cohort(#{$moodle_user_id}): excepción Moodle — {$res['message']} (errorcode: {$res['errorcode']})", self::$log_context );
+			return false;
+		}
+
+		$this->logger->info( "remove_from_cohort(#{$moodle_user_id}): eliminado de cohort(s) correctamente.", self::$log_context );
 		return true;
 	}
 

@@ -27,25 +27,100 @@ class WCMS_Scheduler {
 	private function __construct() {
 		$this->logger = wc_get_logger();
 		add_action( 'wcms_process_order', array( $this, 'run' ), 10, 1 );
+		add_action( 'wcms_process_unenroll', array( $this, 'run_unenroll' ), 10, 1 );
+	}
+
+	/**
+	 * Encola la tarea de desmatriculación para el pedido. Solo actúa si el pedido
+	 * llegó a matricularse (guardia de idempotencia vía '_wcms_job_queued') y si
+	 * todavía no se ha desmatriculado.
+	 *
+	 * @param int $order_id
+	 */
+	public function enqueue_unenroll( $order_id ) {
+		// '_wcms_job_queued' es el flag heredado (<1.7.1) de pedidos ya procesados.
+		if ( ! get_post_meta( $order_id, '_wcms_enrolled', true ) && ! get_post_meta( $order_id, '_wcms_job_queued', true ) ) {
+			return; // Nunca se matriculó: nada que revertir.
+		}
+
+		if ( get_post_meta( $order_id, '_wcms_unenroll_done', true ) ) {
+			return; // Ya desmatriculado.
+		}
+
+		if ( function_exists( 'as_enqueue_async_action' ) ) {
+			as_enqueue_async_action( 'wcms_process_unenroll', array( $order_id ), 'wcms_group' );
+		} else {
+			$this->run_unenroll( $order_id );
+		}
+	}
+
+	/**
+	 * Worker ejecutado en segundo plano: elimina de los cohorts de Moodle
+	 * correspondientes a los cursos del pedido cancelado/reembolsado/fallido.
+	 *
+	 * @param int $order_id
+	 */
+	public function run_unenroll( $order_id ) {
+		if ( get_post_meta( $order_id, '_wcms_unenroll_done', true ) ) {
+			return;
+		}
+
+		$order = wc_get_order( $order_id );
+		if ( ! $order ) {
+			$this->logger->error( "Unenroll: pedido #{$order_id} no encontrado.", self::$log_context );
+			return;
+		}
+
+		$course_data = $this->collect_cohort_data( $order );
+		if ( empty( $course_data['ids'] ) ) {
+			return;
+		}
+
+		$user_id = $order->get_user_id();
+		if ( ! $user_id ) {
+			return;
+		}
+
+		$moodle_user_id = (int) get_user_meta( $user_id, '_wcms_moodle_user_id', true );
+		if ( ! $moodle_user_id ) {
+			return;
+		}
+
+		$api = WCMS_Moodle_Api::get_instance();
+		$ok  = $api->remove_from_cohort( $moodle_user_id, $course_data['ids'] );
+
+		if ( $ok ) {
+			update_post_meta( $order_id, '_wcms_unenroll_done', 'yes' );
+			delete_post_meta( $order_id, '_wcms_enrolled' );
+			delete_post_meta( $order_id, '_wcms_job_queued' );
+			$this->logger->info( "Pedido #{$order_id}: usuario Moodle #{$moodle_user_id} desmatriculado (estado: {$order->get_status()}).", self::$log_context );
+			$order->add_order_note( sprintf( 'Moodle: usuario #%d eliminado de los cohorts %s.', $moodle_user_id, implode( ', ', $course_data['ids'] ) ) );
+		} else {
+			$order->add_order_note( 'Moodle: no se pudo desmatricular al usuario (ver registro wc-moodle-sync; ¿permiso del token para core_cohort_delete_cohort_members?).' );
+		}
 	}
 
 	/**
 	 * Encola la tarea de matriculación para el pedido, evitando duplicados.
+	 * Solo se considera procesado ('_wcms_enrolled') si Moodle confirmó el alta;
+	 * si falló, un nuevo cambio de estado a Completado vuelve a intentarlo.
 	 *
 	 * @param int $order_id
 	 */
 	public function enqueue( $order_id ) {
-		if ( get_post_meta( $order_id, '_wcms_job_queued', true ) ) {
+		if ( get_post_meta( $order_id, '_wcms_enrolled', true ) ) {
 			return;
 		}
 
 		if ( function_exists( 'as_enqueue_async_action' ) ) {
+			// Evita duplicar el job si Completado se dispara varias veces seguidas.
+			if ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( 'wcms_process_order', array( $order_id ), 'wcms_group' ) ) {
+				return;
+			}
 			as_enqueue_async_action( 'wcms_process_order', array( $order_id ), 'wcms_group' );
 		} else {
 			$this->run( $order_id );
 		}
-
-		update_post_meta( $order_id, '_wcms_job_queued', 'yes' );
 	}
 
 	/**
@@ -54,37 +129,50 @@ class WCMS_Scheduler {
 	 * @param int $order_id
 	 */
 	public function run( $order_id ) {
+		if ( get_post_meta( $order_id, '_wcms_enrolled', true ) ) {
+			return;
+		}
+
 		$order = wc_get_order( $order_id );
 		if ( ! $order ) {
 			$this->logger->error( "Pedido #{$order_id} no encontrado.", self::$log_context );
 			return;
 		}
 
-		$course_data = $this->collect_course_data( $order );
+		$course_data = $this->collect_cohort_data( $order );
 		if ( empty( $course_data['ids'] ) ) {
 			return;
 		}
-		$course_ids   = $course_data['ids'];
+		$cohort_ids   = $course_data['ids'];
 		$course_names = $course_data['names'];
 
 		$user_id = $order->get_user_id();
 		if ( ! $user_id ) {
 			$this->logger->warning( "Pedido #{$order_id} realizado por invitado. Ignorado.", self::$log_context );
+			$order->add_order_note( 'Moodle: pedido sin cliente registrado (invitado), no se matriculó. Asigna un cliente al pedido y vuelve a ponerlo en Completado.' );
 			return;
 		}
 
 		$moodle_user_id = (int) get_user_meta( $user_id, '_wcms_moodle_user_id', true );
 		if ( ! $moodle_user_id ) {
-			$this->logger->error( "Pedido #{$order_id}: usuario WP #{$user_id} no tiene _wcms_moodle_user_id. La validación de checkout pudo haber fallado.", self::$log_context );
-			return;
+			// Pedido creado desde el admin: el checkout guard no corrió, intentamos crear/encontrar el usuario ahora.
+			$moodle_user_id = $this->ensure_moodle_user( $user_id, $order_id );
+			if ( ! $moodle_user_id ) {
+				return;
+			}
 		}
 
 		$api      = WCMS_Moodle_Api::get_instance();
-		$enrolled = $api->enrol_users( $moodle_user_id, $course_ids );
+		$enrolled = $api->add_to_cohort( $moodle_user_id, $cohort_ids );
 
 		if ( ! $enrolled ) {
+			$order->add_order_note( 'Moodle: falló el alta en los cohorts ' . implode( ', ', $cohort_ids ) . ' (ver registro wc-moodle-sync). Se reintentará al volver a cambiar el estado del pedido.' );
 			return;
 		}
+
+		update_post_meta( $order_id, '_wcms_enrolled', 'yes' );
+		delete_post_meta( $order_id, '_wcms_unenroll_done' );
+		$order->add_order_note( sprintf( 'Moodle: usuario #%d añadido a los cohorts %s.', $moodle_user_id, implode( ', ', $cohort_ids ) ) );
 
 		$wp_user  = get_userdata( $user_id );
 		$username = strtolower( $wp_user->user_login );
@@ -102,18 +190,60 @@ class WCMS_Scheduler {
 	}
 
 	/**
-	 * Extrae IDs y nombres de cursos Moodle de los items del pedido.
+	 * Garantiza que el usuario WP tiene un usuario en Moodle asociado.
+	 * Usado cuando el pedido se crea desde el admin (el checkout guard no corrió).
+	 *
+	 * @param int $user_id   ID de usuario WP.
+	 * @param int $order_id  ID del pedido (solo para logging).
+	 * @return int  moodle_user_id, o 0 si no se pudo crear/encontrar.
+	 */
+	private function ensure_moodle_user( $user_id, $order_id ) {
+		$wp_user  = get_userdata( $user_id );
+		$username = strtolower( $wp_user->user_login );
+		$api      = WCMS_Moodle_Api::get_instance();
+
+		$moodle_user_id = $api->find_user( $username, $wp_user->user_email );
+
+		if ( ! $moodle_user_id ) {
+			$password       = wp_generate_password( 12, false, false ) . 'Aa1@';
+			$moodle_user_id = $api->create_user( $wp_user, $username, $password );
+
+			if ( ! $moodle_user_id ) {
+				$this->logger->error( "Pedido #{$order_id}: no se pudo crear el usuario {$username} en Moodle desde el admin.", self::$log_context );
+
+				$note = "Moodle: no se pudo crear/localizar al usuario {$username} ({$wp_user->user_email}), no se matriculó.";
+				if ( $api->is_lookup_denied() ) {
+					$note .= ' El token de Moodle no tiene permiso para core_user_get_users_by_field: si el usuario ya existe en Moodle (otro username o mismo email), añádelo al cohort a mano y corrige el permiso del servicio web.';
+				}
+				$order = wc_get_order( $order_id );
+				if ( $order ) {
+					$order->add_order_note( $note );
+				}
+				return 0;
+			}
+
+			update_user_meta( $user_id, '_wcms_moodle_tmp_password', $password );
+		}
+
+		update_user_meta( $user_id, '_wcms_moodle_user_id', $moodle_user_id );
+		$this->logger->info( "Pedido #{$order_id}: usuario Moodle #{$moodle_user_id} asociado al usuario WP #{$user_id} (creado desde admin).", self::$log_context );
+
+		return $moodle_user_id;
+	}
+
+	/**
+	 * Extrae IDs de cohort Moodle y nombres de curso de los items del pedido.
 	 *
 	 * @param WC_Order $order
 	 * @return array { ids: int[], names: string[] }
 	 */
-	private function collect_course_data( $order ) {
+	private function collect_cohort_data( $order ) {
 		$ids   = array();
 		$names = array();
 
 		foreach ( $order->get_items() as $item ) {
 			$product_id = $item->get_product_id();
-			$raw        = get_post_meta( $product_id, 'moodle_course_ids', true );
+			$raw        = get_post_meta( $product_id, 'moodle_cohort_ids', true );
 
 			if ( empty( $raw ) ) {
 				continue;

@@ -25,6 +25,22 @@ class WCMS_Completion_Handler {
 
 	private static $log_context = array( 'source' => 'wc-moodle-sync' );
 
+	/**
+	 * Mapeo estático moodle_course_id => valor a guardar en la meta
+	 * 'exams_and_certificates' del usuario WP al completar ese curso.
+	 */
+	/**
+	 * Mapeo: moodle_section_id (sección dentro del curso "Examen", ID 5)
+	 * => valor a guardar en 'exams_and_certificates'.
+	 * Se recibe como 'moodle_course_id' en el payload del webhook.
+	 *
+	 * Sección 6 = Grundkurs | Sección 7 = Aufbaukurs
+	 */
+	private static $course_exam_map = array(
+		6 => 'Grundkurs (Basic course)',
+		7 => 'Aufbaukurs (Advanced course)',
+	);
+
 	public static function get_instance() {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
@@ -105,7 +121,28 @@ class WCMS_Completion_Handler {
 			return $this->handle_exam_passed( $wp_user, $moodle_course_id );
 		}
 
+		if ( $event_type === 'grade_updated' ) {
+			// La titulación se evalúa antes y es independiente de WCMS_SEND_COUPON.
+			$degree = $this->handle_degree_check( $wp_user, $moodle_course_id );
+			$result = $this->handle_grade_updated( $wp_user, $moodle_course_id );
+
+			if ( $result instanceof WP_REST_Response ) {
+				$data           = $result->get_data();
+				$data['degree'] = $degree;
+				$result->set_data( $data );
+			}
+
+			return $result;
+		}
+
+		$this->update_exams_and_certificates_meta( $wp_user, $moodle_course_id );
+
 		// Flujo course_completed: cupón descuento + email de felicitación.
+		if ( ! WCMS_SEND_COUPON ) {
+			$this->logger->info( "course-complete: WCMS_SEND_COUPON desactivado. Ignorado para user #{$wp_user->ID}.", self::$log_context );
+			return rest_ensure_response( array( 'status' => 'disabled' ) );
+		}
+
 		$meta_key = '_wcms_coupon_course_' . $moodle_course_id;
 
 		$existing = get_user_meta( $wp_user->ID, $meta_key, true );
@@ -128,6 +165,37 @@ class WCMS_Completion_Handler {
 	}
 
 	/**
+	 * Añade el valor mapeado del curso a la meta 'exams_and_certificates'
+	 * del usuario, sin duplicados. No-op si el curso no está en el mapeo.
+	 *
+	 * @param WP_User $wp_user
+	 * @param int     $moodle_course_id
+	 * @return void
+	 */
+	private function update_exams_and_certificates_meta( $wp_user, $moodle_course_id ) {
+		if ( ! isset( self::$course_exam_map[ $moodle_course_id ] ) ) {
+			$this->logger->info( "exams_and_certificates: curso #{$moodle_course_id} no mapeado. Ignorado para user #{$wp_user->ID}.", self::$log_context );
+			return;
+		}
+
+		$value = self::$course_exam_map[ $moodle_course_id ];
+
+		$current = get_user_meta( $wp_user->ID, 'exams_and_certificates', true );
+		if ( ! is_array( $current ) ) {
+			$current = array();
+		}
+
+		if ( in_array( $value, $current, true ) ) {
+			$this->logger->info( "exams_and_certificates: '{$value}' ya presente para user #{$wp_user->ID}. Ignorado.", self::$log_context );
+			return;
+		}
+
+		$current[] = $value;
+		update_user_meta( $wp_user->ID, 'exams_and_certificates', $current );
+		$this->logger->info( "exams_and_certificates: '{$value}' añadido para user #{$wp_user->ID}.", self::$log_context );
+	}
+
+	/**
 	 * Flujo exam_passed: genera certificado PDF y envía email con adjunto.
 	 *
 	 * @param WP_User $wp_user
@@ -135,6 +203,11 @@ class WCMS_Completion_Handler {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	private function handle_exam_passed( $wp_user, $moodle_course_id ) {
+		if ( ! WCMS_SEND_CERTIFICATE ) {
+			$this->logger->info( "exam_passed: WCMS_SEND_CERTIFICATE desactivado. Ignorado para user #{$wp_user->ID}.", self::$log_context );
+			return rest_ensure_response( array( 'status' => 'disabled' ) );
+		}
+
 		$meta_key = '_wcms_cert_course_' . $moodle_course_id;
 
 		$existing = get_user_meta( $wp_user->ID, $meta_key, true );
@@ -154,6 +227,241 @@ class WCMS_Completion_Handler {
 		$this->logger->info( "exam_passed: certificado generado y email enviado a {$wp_user->user_email}.", self::$log_context );
 
 		return rest_ensure_response( array( 'status' => 'ok', 'certificate' => basename( $pdf_path ) ) );
+	}
+
+	/**
+	 * Titulación: si el alumno alcanza la nota mínima en TODOS los exámenes de
+	 * WCMS_DEGREES, genera el certificado y lo envía por email (una sola vez).
+	 * Solo actúa si el curso del evento es uno de los de los requisitos.
+	 *
+	 * @param WP_User $wp_user
+	 * @param int     $moodle_course_id
+	 * @return string  disabled | not_applicable | already_issued | no_data | pending | error | ok | ok_test
+	 */
+	private function handle_degree_check( $wp_user, $moodle_course_id ) {
+		if ( ! WCMS_SEND_DEGREE ) {
+			return 'disabled';
+		}
+
+		$config       = WCMS_DEGREES;
+		$requirements = isset( $config['requirements'] ) ? $config['requirements'] : array();
+
+		$course_ids = array();
+		foreach ( $requirements as $req ) {
+			$course_ids[] = (int) $req['course_id'];
+		}
+		if ( ! in_array( (int) $moodle_course_id, $course_ids, true ) ) {
+			return 'not_applicable';
+		}
+
+		$meta_key = '_wcms_degree_certificate';
+		if ( get_user_meta( $wp_user->ID, $meta_key, true ) ) {
+			return 'already_issued';
+		}
+
+		$moodle_user_id = (int) get_user_meta( $wp_user->ID, '_wcms_moodle_user_id', true );
+		if ( ! $moodle_user_id ) {
+			$this->logger->warning( "degree: user #{$wp_user->ID} sin _wcms_moodle_user_id.", self::$log_context );
+			return 'no_data';
+		}
+
+		$api = WCMS_Moodle_Api::get_instance();
+
+		foreach ( $requirements as $req ) {
+			$grade = $api->get_item_grade( $moodle_user_id, (int) $req['course_id'], (int) $req['cmid'] );
+
+			if ( null === $grade ) {
+				$this->logger->warning( "degree: examen '{$req['name']}' (cmid {$req['cmid']}) no encontrado en el curso #{$req['course_id']} para user #{$wp_user->ID}.", self::$log_context );
+				return 'no_data';
+			}
+
+			if ( (float) $req['max'] !== $grade['grademax'] ) {
+				$this->logger->warning( "degree: examen '{$req['name']}' grademax={$grade['grademax']} distinto del esperado {$req['max']}.", self::$log_context );
+			}
+
+			$percent = ( null !== $grade['graderaw'] && $grade['grademax'] > 0 ) ? ( $grade['graderaw'] / $grade['grademax'] ) * 100 : null;
+
+			if ( null === $percent || $percent < (float) $req['min_percent'] - 0.0001 ) {
+				$obtained = null === $percent ? 'sin nota' : round( $percent, 1 ) . '%';
+				$this->logger->info( "degree: user #{$wp_user->ID} aún no cumple '{$req['name']}' ({$obtained}, mínimo {$req['min_percent']}%).", self::$log_context );
+				return 'pending';
+			}
+		}
+
+		$template = isset( $config['template'] ) ? $config['template'] : '';
+		$center_x = isset( $config['center_x'] ) ? (float) $config['center_x'] : 0.5;
+		$pdf_path = WCMS_Certificate::get_instance()->generate( $wp_user, $template, 'degree', $center_x );
+		if ( is_wp_error( $pdf_path ) ) {
+			$this->logger->error( "degree: error generando certificado para user #{$wp_user->ID}: " . $pdf_path->get_error_message(), self::$log_context );
+			return 'error';
+		}
+
+		update_user_meta( $wp_user->ID, $meta_key, basename( $pdf_path ) );
+
+		if ( WCMS_DEGREE_TEST_MODE ) {
+			WCMS_Mailer::get_instance()->send_certificate_test( $wp_user, $pdf_path, WCMS_DEGREE_TEST_EMAIL );
+			$this->logger->info( "degree: [PRUEBA] certificado de {$wp_user->user_email} generado y enviado a los administradores; alumno marcado.", self::$log_context );
+			return 'ok_test';
+		}
+
+		WCMS_Mailer::get_instance()->send_certificate( $wp_user, $pdf_path );
+		$this->logger->info( "degree: certificado generado y email enviado a {$wp_user->user_email}.", self::$log_context );
+
+		return 'ok';
+	}
+
+	/**
+	 * Umbrales de % de nota combinado que otorgan cupón de bonificación,
+	 * en orden ascendente (importante para no saltarse el 40% si el update
+	 * llega ya con el alumno por encima del 80%).
+	 */
+	private static $bonus_thresholds = array( 40, 80 );
+
+	/**
+	 * Máximo de cupones activos (sin usar) que un cliente puede tener a la vez,
+	 * contando todos los cupones emitidos por este plugin (finalización + bonificación).
+	 */
+	private static $max_active_coupons = 2;
+
+	/**
+	 * Flujo grade_updated: recalcula el % de nota global combinado del alumno
+	 * (suma de graderaw / suma de grademax de todos los módulos de todos los
+	 * cursos matriculados) y, si cruza el umbral del 40% o 80% por primera vez
+	 * y no ha alcanzado el límite de cupones activos, emite un cupón de bonificación.
+	 *
+	 * @param WP_User $wp_user
+	 * @param int     $moodle_course_id
+	 * @return WP_REST_Response|WP_Error
+	 */
+	private function handle_grade_updated( $wp_user, $moodle_course_id ) {
+		if ( ! WCMS_SEND_COUPON ) {
+			$this->logger->info( "grade_updated: WCMS_SEND_COUPON desactivado. Ignorado para user #{$wp_user->ID}.", self::$log_context );
+			return rest_ensure_response( array( 'status' => 'disabled' ) );
+		}
+
+		$percent = $this->calc_combined_grade_percent( $wp_user );
+		if ( false === $percent ) {
+			$this->logger->info( "grade_updated: no se pudo calcular el % combinado para user #{$wp_user->ID} (sin cursos matriculados o sin items calificados aún).", self::$log_context );
+			return rest_ensure_response( array( 'status' => 'no_data' ) );
+		}
+
+		$this->logger->info( "grade_updated: user #{$wp_user->ID} % combinado = " . round( $percent, 2 ) . '%.', self::$log_context );
+
+		$issued = array();
+
+		foreach ( self::$bonus_thresholds as $threshold ) {
+			if ( $percent < $threshold ) {
+				continue;
+			}
+
+			$meta_key = "_wcms_bonus_{$threshold}_coupon";
+			if ( get_user_meta( $wp_user->ID, $meta_key, true ) ) {
+				continue; // Ya emitido para este umbral.
+			}
+
+			if ( $this->count_active_coupons( $wp_user->user_email ) >= self::$max_active_coupons ) {
+				$this->logger->info( "grade_updated: límite de " . self::$max_active_coupons . " cupones activos alcanzado para user #{$wp_user->ID}. Umbral {$threshold}% no otorgado.", self::$log_context );
+				continue;
+			}
+
+			$coupon_code = $this->create_coupon( $wp_user );
+			if ( is_wp_error( $coupon_code ) ) {
+				$this->logger->error( "grade_updated: error creando cupón de bonificación {$threshold}% para user #{$wp_user->ID}: " . $coupon_code->get_error_message(), self::$log_context );
+				continue;
+			}
+
+			update_user_meta( $wp_user->ID, $meta_key, $coupon_code );
+			WCMS_Mailer::get_instance()->send_bonus_coupon( $wp_user, $coupon_code, $threshold );
+			$this->logger->info( "grade_updated: cupón de bonificación {$coupon_code} ({$threshold}%) emitido y email enviado a {$wp_user->user_email}.", self::$log_context );
+			$issued[ $threshold ] = $coupon_code;
+		}
+
+		return rest_ensure_response( array(
+			'status'         => 'ok',
+			'percent'        => round( $percent, 2 ),
+			'coupons_issued' => $issued,
+		) );
+	}
+
+	/**
+	 * Calcula el % de nota combinado del alumno: suma de las notas obtenidas
+	 * entre suma de las notas máximas, de todos los módulos (itemtype 'mod')
+	 * de todos los cursos en los que está matriculado en Moodle. Se excluye
+	 * el item de tipo 'course' (total agregado) para no depender del método
+	 * de agregación configurado en cada curso.
+	 *
+	 * @param WP_User $wp_user
+	 * @return float|false  Porcentaje (0-100+) o false si no se puede calcular.
+	 */
+	private function calc_combined_grade_percent( $wp_user ) {
+		$moodle_user_id = (int) get_user_meta( $wp_user->ID, '_wcms_moodle_user_id', true );
+		if ( ! $moodle_user_id ) {
+			$this->logger->warning( "calc_combined_grade_percent: user #{$wp_user->ID} sin _wcms_moodle_user_id.", self::$log_context );
+			return false;
+		}
+
+		$api     = WCMS_Moodle_Api::get_instance();
+		$courses = $api->get_user_courses( $moodle_user_id );
+		if ( empty( $courses ) ) {
+			return false;
+		}
+
+		$sum_obtained = 0.0;
+		$sum_max      = 0.0;
+
+		foreach ( $courses as $course ) {
+			$course_id = isset( $course['id'] ) ? (int) $course['id'] : 0;
+			if ( ! $course_id ) {
+				continue;
+			}
+
+			$items = $api->get_course_grade_items( $moodle_user_id, $course_id );
+			foreach ( $items as $item ) {
+				if ( ! isset( $item['itemtype'] ) || 'mod' !== $item['itemtype'] ) {
+					continue; // Excluye el total del curso y otros items no calificables por módulo.
+				}
+				if ( ! isset( $item['graderaw'] ) || null === $item['graderaw'] ) {
+					continue; // Módulo aún sin calificar.
+				}
+				if ( empty( $item['grademax'] ) ) {
+					continue;
+				}
+
+				$sum_obtained += (float) $item['graderaw'];
+				$sum_max      += (float) $item['grademax'];
+			}
+		}
+
+		if ( $sum_max <= 0 ) {
+			return false;
+		}
+
+		return ( $sum_obtained / $sum_max ) * 100;
+	}
+
+	/**
+	 * Cuenta los cupones activos (sin usar) emitidos por este plugin para un email.
+	 *
+	 * @param string $email
+	 * @return int
+	 */
+	private function count_active_coupons( $email ) {
+		$coupons = wc_get_coupons( array(
+			'limit'           => -1,
+			'customer_email'  => $email,
+		) );
+
+		$count = 0;
+		foreach ( $coupons as $coupon ) {
+			if ( 0 !== stripos( $coupon->get_code(), 'megemit-' ) ) {
+				continue; // Solo cupones emitidos por este plugin.
+			}
+			if ( $coupon->get_usage_count() < 1 ) {
+				$count++;
+			}
+		}
+
+		return $count;
 	}
 
 	/**

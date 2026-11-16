@@ -11,7 +11,7 @@ docs/
 ├── README.md                          ← COMIENZA AQUÍ (visión general)
 ├── GETTING_STARTED.md                 ← Guía para nuevos desarrolladores
 ├── ARCHITECTURE.md                    ← Especificación técnica completa
-├── CHANGELOG.md                       ← Historial de cambios (v1.0.0 → v1.3.1)
+├── ../CHANGELOG.md                    ← Historial de cambios (único, en la raíz del proyecto)
 ├── HUBSPOT_INTEGRATION.md             ← Guía de integración HubSpot (detallada)
 ├── HUBSPOT_BRIDGE_PLUGIN_PLAN.md      ← Blueprint del plugin (especificación)
 └── INDEX.md                           ← Este archivo (navegación)
@@ -215,7 +215,7 @@ docs/
 - [Ver README (Inicio)](README.md)
 - [Ver GETTING_STARTED (Nuevos dev)](GETTING_STARTED.md)
 - [Ver ARCHITECTURE (Especificación)](ARCHITECTURE.md)
-- [Ver CHANGELOG (Historial)](CHANGELOG.md)
+- [Ver CHANGELOG (Historial)](../CHANGELOG.md)
 - [Ver HUBSPOT_INTEGRATION (Integración)](HUBSPOT_INTEGRATION.md)
 - [Ver HUBSPOT_BRIDGE_PLUGIN_PLAN (Plugin)](HUBSPOT_BRIDGE_PLUGIN_PLAN.md)
 
@@ -249,11 +249,8 @@ docs/
    - Consideraciones importantes
    ```
 
-3. **Sincroniza con docs/**
-   ```bash
-   cp docs/CHANGELOG.md ../../CHANGELOG.md
-   # O viceversa, según dónde hagas el cambio primero
-   ```
+3. **Un único changelog**
+   El historial vive solo en `CHANGELOG.md` (raíz del proyecto). No crear ni copiar otros archivos de changelog (ni en `docs/` ni dentro de los plugins propios).
 
 ---
 

@@ -16,7 +16,7 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 <div id="footer">
 	Medizinische Gesellschaft für Mikroimmuntherapie (MeGeMIT)<br/>
 	SPACES/Gertrude-Fröhlich-Sandner-Str. 2, Tower 9 &middot; 1100 Wien &middot; T. 0043-(0)-1- 9 30 27 30 40 &middot; Fax: 0043-(0)-1- 391 000 4<br/>
-	UID: ATU68398067 &middot; Steuernummer (DE): 182/123/21261<br/>
+	UID: ATU68398067 &middot; Steuernummer (DE): 182/123/21261 &middot; Steuernummer (ESP): N0382118H<br/>
 	www.megemit.org &middot; www.mikroimmuntherapie.com &middot; info@megemit.org<br/>
 	<?php if ( file_exists( $fb_icon_path ) ) : ?>
 	<img src="<?php echo esc_attr( $fb_icon_path ); ?>" style="width:9pt;height:9pt;vertical-align:middle;" alt="Facebook" />
@@ -38,8 +38,24 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 			<?php
 			$billing_first   = $this->order->get_billing_first_name();
 			$billing_last    = $this->order->get_billing_last_name();
-			$billing_name    = trim( $billing_first . ' ' . $billing_last );
+			$billing_email   = $this->order->get_billing_email();
 			$billing_company = $this->order->get_billing_company();
+
+			// Tratamiento y título resueltos vía HubSpot (courtesy_de, job_title_de),
+			// con fallback seguro si la consulta falla. Sustituye al antiguo meta _anrede del checkout.
+			// Email de la cuenta del cliente (el de WordPress, que está en HubSpot); en pedidos de invitado, el de facturación.
+			$hs_customer   = $this->order->get_customer_id() ? get_userdata( $this->order->get_customer_id() ) : false;
+			$hs_email      = $hs_customer ? $hs_customer->user_email : $billing_email;
+			$hs_salutation = function_exists( 'mgmit_bridge_build_salutation_logged' )
+				? mgmit_bridge_build_salutation_logged( $hs_email, $billing_first, $billing_last )
+				: array( 'courtesy_label' => '', 'job_title_de' => '' );
+
+			$billing_name = trim( implode( ' ', array_filter( array(
+				$hs_salutation['courtesy_label'],
+				$hs_salutation['job_title_de'],
+				$billing_first,
+				$billing_last,
+			) ) ) );
 
 			$address_fields = array(
 				'first_name' => '',
@@ -132,13 +148,17 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 			<td>
 				<span class="item-name"><?php echo esc_html( $item['name'] ); ?></span>
 				<?php do_action( 'wpo_wcpdf_before_item_meta', $this->get_type(), $item, $this->order ); ?>
-				<?php if ( ! empty( $item['sku'] ) || ! empty( $item['meta'] ) ) : ?>
+				<?php $invoice_extra_info = trim( (string) get_post_meta( $item['product_id'], 'invoice_extra_info', true ) ); ?>
+				<?php if ( ! empty( $item['sku'] ) || ! empty( $item['meta'] ) || '' !== $invoice_extra_info ) : ?>
 				<div class="item-meta">
 					<?php if ( ! empty( $item['sku'] ) ) : ?>
-						<span class="sku">Artikel-Nr.:<?php echo esc_html( $item['sku'] ); ?><?php if ( ! empty( $item['meta'] ) ) : ?> | <?php endif; ?></span>
+						<span class="sku">Artikel-Nr.:<?php echo esc_html( $item['sku'] ); ?><?php if ( ! empty( $item['meta'] ) || '' !== $invoice_extra_info ) : ?> | <?php endif; ?></span>
 					<?php endif; ?>
 					<?php if ( ! empty( $item['meta'] ) ) : ?>
-						<?php echo wp_kses_post( $item['meta'] ); ?>
+						<?php echo wp_kses_post( $item['meta'] ); ?><?php if ( '' !== $invoice_extra_info ) : ?> | <?php endif; ?>
+					<?php endif; ?>
+					<?php if ( '' !== $invoice_extra_info ) : ?>
+						<?php echo esc_html( $invoice_extra_info ); ?>
 					<?php endif; ?>
 				</div>
 				<?php endif; ?>
@@ -161,8 +181,27 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 	<tfoot>
 		<?php foreach ( $this->get_woocommerce_totals() as $key => $total ) : ?>
 		<tr class="<?php echo esc_attr( $key ); ?>">
-			<th><?php echo esc_html( $total['label'] ); ?></th>
-			<td><?php echo esc_html( $total['value'] ); ?></td>
+			<th><?php
+			echo esc_html( $total['label'] );
+			if ( 'order_total' === $key ) {
+				$net_total = $this->order->get_total() - $this->order->get_total_tax();
+				echo ' (netto ' . wp_kses_post( wc_price( $net_total, array( 'currency' => $this->order->get_currency() ) ) ) . ')';
+			}
+			?></th>
+			<td><?php
+			if ( 'order_total' === $key ) {
+				echo wp_kses_post( wc_price( $this->order->get_total(), array( 'currency' => $this->order->get_currency() ) ) );
+			} else {
+				echo esc_html( $total['value'] );
+			}
+			?></td>
+		</tr>
+		<?php endforeach; ?>
+		<?php foreach ( $this->order->get_tax_totals() as $tax ) : ?>
+		<?php $tax_percent = WC_Tax::get_rate_percent_value( $tax->rate_id ); ?>
+		<tr class="tax-rate-row">
+			<th>enthaltene Mehrwertsteuer zum Satz von <?php echo esc_html( $tax_percent . ' %' ); ?></th>
+			<td><?php echo wp_kses_post( $tax->formatted_amount ); ?></td>
 		</tr>
 		<?php endforeach; ?>
 	</tfoot>
@@ -185,21 +224,33 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 
 <?php do_action( 'wpo_wcpdf_after_order_details', $this->get_type(), $this->order ); ?>
 
-<!-- INSTRUCCIÓN DE PAGO: pdf24_10 → 9.6pt regular -->
+<!-- INSTRUCCIÓN DE PAGO / DATOS BANCARIOS: varía según método de pago y país de facturación.
+     - stripe (tarjeta) / stripe_klarna (Klarna) / ppcp-gateway / ppcp-card-button-gateway (PayPal): ya pagado, sin datos bancarios.
+     - bacs (transferencia) desde Suiza (CH): solo cuenta Raiffeisenbank Oberaudorf eG.
+     - bacs desde el resto de países: las dos cuentas (Bank Austria + Raiffeisenbank Oberaudorf eG). -->
 <?php
-$totals_data   = $this->get_woocommerce_totals();
-$total_display = ! empty( $totals_data['order_total']['value'] ) ? $totals_data['order_total']['value'] : '';
+$already_paid_methods = array( 'stripe', 'stripe_klarna', 'ppcp-gateway', 'ppcp-card-button-gateway' );
+$payment_method       = $this->order->get_payment_method();
+$is_swiss             = 'CH' === $this->order->get_billing_country();
 ?>
-<p class="payment-instruction">Bitte überweisen sie den Betrag von <?php echo esc_html( $total_display ); ?> unter Angabe der Rechnungsnummer auf eines der unten angegeben Konten.</p>
+<?php if ( in_array( $payment_method, $already_paid_methods, true ) ) : ?>
+<p class="payment-instruction">Die Bezahlung ist bereits per Klarna, PayPal oder Kredit-/Debitkarte erfolgt.</p>
+<?php else : ?>
+<?php
+$total_display = wc_price( $this->order->get_total(), array( 'currency' => $this->order->get_currency() ) );
+?>
+<p class="payment-instruction">Bitte überweisen sie den Betrag von <?php echo wp_kses_post( $total_display ); ?> unter Angabe der Rechnungsnummer auf eines der unten angegeben Konten.</p>
 
 <!-- DATOS BANCARIOS: pdf24_07 → 9.6pt bold, dos columnas -->
 <table class="bank-table">
 	<tr>
+		<?php if ( ! $is_swiss ) : ?>
 		<td class="bank-col">
 			<p>Bank Austria:</p>
 			<p>IBAN:AT19 1200 0100 0563 5676</p>
 			<p>BIC:BKAUATWW</p>
 		</td>
+		<?php endif; ?>
 		<td class="bank-col">
 			<p>Raiffeisenbank Oberaudorf eG:</p>
 			<p>IBAN:DE47 7116 2355 0000 0600 62</p>
@@ -207,6 +258,7 @@ $total_display = ! empty( $totals_data['order_total']['value'] ) ? $totals_data[
 		</td>
 	</tr>
 </table>
+<?php endif; ?>
 
 <!-- AVISO LEGAL: pdf24_22 → 5.8pt bold, fondo #efefef -->
 <div class="legal-box">

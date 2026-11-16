@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Stripe confirma la cancelación (class.swpm-utils-subscription.php:648).
  * En ese momento degradamos el nivel del miembro al nivel gratuito.
  * update_membership_level_and_role dispara swpm_membership_level_changed,
- * que es donde enviamos el webhook (ver PASO 2).
+ * que es donde enviamos el email de confirmación de baja (ver PASO 2).
  */
 add_action( 'updated_post_meta', 'mgmit_bridge_watch_subscr_status', 10, 4 );
 
@@ -62,8 +62,9 @@ function mgmit_bridge_watch_subscr_status( $meta_id, $post_id, $meta_key, $meta_
  * PASO 2 — swpm_membership_level_changed
  *
  * SWPM dispara este hook desde dentro de update_membership_level_and_role(),
- * cuando el nivel ya está guardado en DB. Aquí leemos el estado actualizado
- * y enviamos el webhook con datos correctos.
+ * cuando el nivel ya está guardado en DB. Aquí enviamos el email de
+ * confirmación de baja al socio. La notificación a HubSpot la gestiona
+ * Stripe directamente mediante su propio webhook.
  */
 add_action( 'swpm_membership_level_changed', 'mgmit_bridge_on_level_changed', 10, 1 );
 
@@ -83,21 +84,20 @@ function mgmit_bridge_on_level_changed( $data ) {
         return;
     }
 
-    MGMIT_Webhook_Sender::debug_log( 'on_level_changed: member_id=' . $member_id . ' from=' . $from_level . ' to=' . $to_level . ' — enviando webhook' );
-    mgmit_bridge_send_deactivation_webhook( $member_id, $to_level );
+    MGMIT_Webhook_Sender::debug_log( 'on_level_changed: member_id=' . $member_id . ' from=' . $from_level . ' to=' . $to_level . ' — enviando email de baja' );
+    mgmit_bridge_send_cancellation_email( $member_id );
 }
 
 /**
- * Construye el payload con el estado ya actualizado y lo envía al webhook externo.
+ * Envía el email de confirmación de baja al socio.
  *
- * @param int $member_id   ID del miembro SWPM.
- * @param int $new_level_id Nivel al que se ha degradado (ya en DB).
+ * @param int $member_id ID del miembro SWPM ya degradado al nivel gratuito.
  */
-function mgmit_bridge_send_deactivation_webhook( $member_id, $new_level_id ) {
+function mgmit_bridge_send_cancellation_email( $member_id ) {
     $member = SwpmMemberUtils::get_user_by_id( $member_id );
 
-    if ( ! $member ) {
-        MGMIT_Webhook_Sender::debug_log( 'send_deactivation_webhook: miembro no encontrado id=' . $member_id );
+    if ( ! $member || empty( $member->email ) ) {
+        MGMIT_Webhook_Sender::debug_log( 'send_cancellation_email: miembro no encontrado o sin email, id=' . $member_id );
         return;
     }
 
@@ -105,82 +105,31 @@ function mgmit_bridge_send_deactivation_webhook( $member_id, $new_level_id ) {
     $first_name = sanitize_text_field( $member->first_name );
     $last_name  = sanitize_text_field( $member->last_name );
 
-    $wp_user_id = email_exists( $email );
-    if ( ! $wp_user_id ) {
-        $wp_user_id = 0;
+    if ( ! is_email( $email ) ) {
+        MGMIT_Webhook_Sender::debug_log( 'send_cancellation_email: email inválido para member_id=' . $member_id );
+        return;
     }
 
-    // Nivel ya actualizado en DB — leemos desde la fuente para asegurar consistencia
-    $level_id  = $new_level_id;
-    $level_row = SwpmUtils::get_membership_level_row_by_id( $level_id );
-    $level_name = ( $level_row && isset( $level_row->alias ) ) ? $level_row->alias : '';
+    $salutation      = mgmit_bridge_build_salutation_for_member( $member );
+    $greeting_line   = $salutation['greeting'];
+    $header_img_url  = get_stylesheet_directory_uri() . '/woocommerce/pdf/MeGeMit/header_invoice.jpg';
 
-    $subscr_id = sanitize_text_field( (string) SwpmMemberUtils::get_member_field_by_id( $member_id, 'subscr_id' ) );
-    $now_iso   = gmdate( 'Y-m-d\TH:i:s' );
+    $body_html = mgmit_bridge_render_template( 'body-cancellation', compact( 'greeting_line', 'header_img_url' ) );
 
-    $billing_phone    = '';
-    $billing_company  = '';
-    $billing_address  = '';
-    $billing_city     = '';
-    $billing_state    = '';
-    $billing_postcode = '';
-    $billing_country  = '';
-    if ( $wp_user_id ) {
-        $billing_phone    = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_phone',     true ) );
-        $billing_company  = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_company',   true ) );
-        $billing_address  = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_address_1', true ) );
-        $billing_city     = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_city',      true ) );
-        $billing_state    = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_state',     true ) );
-        $billing_postcode = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_postcode',  true ) );
-        $billing_country  = sanitize_text_field( get_user_meta( $wp_user_id, 'billing_country',   true ) );
-    }
-
-    // Limpiar caché de usuario para que roles reflejen el nivel actualizado
-    clean_user_cache( $wp_user_id );
-    $wp_user = $wp_user_id ? get_userdata( $wp_user_id ) : null;
-
-    $payload = array(
-        'id'                 => $wp_user_id,
-        'email'              => $email,
-        'first_name'         => $first_name,
-        'last_name'          => $last_name,
-        'username'           => $wp_user ? $wp_user->user_login : ( isset( $member->user_name ) ? $member->user_name : '' ),
-        'role'               => $wp_user ? implode( ',', $wp_user->roles ) : '',
-        'date_created'       => $now_iso,
-        'date_modified'      => $now_iso,
-        'is_paying_customer' => false,
-        'billing'            => array(
-            'first_name' => $first_name,
-            'last_name'  => $last_name,
-            'email'      => $email,
-            'phone'      => $billing_phone,
-            'company'    => $billing_company,
-            'address_1'  => $billing_address,
-            'city'       => $billing_city,
-            'state'      => $billing_state,
-            'postcode'   => $billing_postcode,
-            'country'    => $billing_country,
-        ),
-        'shipping'           => array(
-            'first_name' => '',
-            'last_name'  => '',
-            'company'    => '',
-            'address_1'  => '',
-            'city'       => '',
-            'state'      => '',
-            'postcode'   => '',
-            'country'    => '',
-            'phone'      => '',
-        ),
-        'meta_data'          => array(
-            array( 'key' => 'membership_level_id',   'value' => $level_id ),
-            array( 'key' => 'membership_level_name', 'value' => $level_name ),
-            array( 'key' => 'subscription_id',       'value' => $subscr_id ),
-            array( 'key' => 'to_status',             'value' => 'inactive' ),
-            array( 'key' => 'source',                'value' => 'swpm' ),
-        ),
+    $admin_email = sanitize_email( get_option( 'admin_email' ) );
+    $from_name   = sanitize_text_field( get_option( 'blogname' ) );
+    $headers     = array(
+        'Content-Type: text/html; charset=UTF-8',
+        'From: ' . $from_name . ' <' . $admin_email . '>',
     );
 
-    MGMIT_Webhook_Sender::debug_log( 'send_deactivation_webhook: enviando payload level_id=' . $level_id . ' level_name=' . $level_name );
-    MGMIT_Webhook_Sender::send( $payload, 'customer.updated' );
+    $subject = 'Bestätigung Ihrer Kündigung bei der MeGeMIT';
+
+    $sent = wp_mail( $email, $subject, $body_html, $headers );
+
+    if ( $sent ) {
+        MGMIT_Webhook_Sender::debug_log( 'send_cancellation_email: enviado OK a ' . $email );
+    } else {
+        MGMIT_Webhook_Sender::debug_log( 'send_cancellation_email: wp_mail() devolvió false para ' . $email );
+    }
 }
