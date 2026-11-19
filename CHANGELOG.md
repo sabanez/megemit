@@ -10,6 +10,16 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 
 ---
 
+## 2026-11-19
+
+### basel-child — Compatibilidad de `CreditNote` con PDF Invoices & Packing Slips 6.0.0 (pendiente de validar)
+
+- **Síntoma:** la página de Pedidos de wp-admin devolvía error crítico en producción tras actualizar el plugin a la 6.0.0.
+- **Causa:** la 6.0.0 añade tipos estrictos de retorno y de parámetros a `OrderDocument`; `CreditNote` sobrescribía esos métodos sin tipos → `PHP Fatal error: Declaration of ... must be compatible with ...`.
+- **Cambio** (`inc/woocommerce/class-credit-note.php`): `init_settings(): void`, `init(): void`, `exists(): bool`, `get_title()/get_number_title()/get_date_title(): string`, `get_filename( string $context, array $args ): string`, `get_pdf_settings_fields( string $option_name ): array`.
+- **Requisito:** la clase exige plugin PDF Invoices & Packing Slips ≥ 6.0.0 y PHP ≥ 8.0 (hosting actualizado a PHP 8.3.36).
+- Revisados `credit-note-split.php`, `invoice-split.php`, `credit-note-document.php` y la plantilla `pdf/MeGeMit/credit-note.php`: las funciones y métodos del plugin que usan siguen existiendo en la 6.0.0.
+
 ## 2026-11-16
 
 ### basel-child — Steuernummer (ESP) en el pie de las facturas PDF

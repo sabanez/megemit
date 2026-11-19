@@ -5,7 +5,7 @@
 | Componente | Versión | Notas |
 |---|---|---|
 | WordPress | 6.9.4 | |
-| PHP | 8.3 local / **7.4 producción** | Compatibilidad 7.4 obligatoria |
+| PHP | 8.3 local / 8.3.36 producción | Hosting actualizado el 2026-11-19 |
 | MySQL | 8.4.8 | ServBay, macOS |
 | Tema activo | Basel Child | Padre: Basel |
 | DB | `megemit_database` | Prefix: `wpgr_`, user: `root`, host: `localhost` |
@@ -14,7 +14,7 @@
 
 1. **Aprobación previa** antes de cualquier modificación de código.
 2. **Fases incrementales** — validar cada fase antes de continuar; registrar en `CHANGELOG.md`.
-3. **PHP 7.4 estricto** — prohibido: constructor promotion, union types, named arguments, match expressions, nullsafe operator.
+3. **PHP 8.3** — producción y local en 8.3; se pueden usar tipos de retorno/parámetros, `mixed`, union types, etc. Evitar construcciones deprecadas (propiedades dinámicas, `null` a parámetros string).
 4. Trabaja ahorrando el máximo de tokens para optimizar el uso de los agentes.
 5. Compacta la conversación cuando lleve un 70%
 6. Trabaja como un desarrollador senior de WordPress con más de 15 años de experiencia
