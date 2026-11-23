@@ -1651,3 +1651,25 @@ input#payment_method_stripe_klarna {display:none  !important;}
 .swpm-hidden-field {
     display: none !important;
 }
+
+/* (23.11.2026) Menú móvil abierto: ocultar widgets flotantes de terceros (Buttonizer, chat Tidio,
+   widget de cookies Borlabs). Quedaban por encima del overlay (z-index 99999 / 999999999 frente a 400),
+   capturaban los toques en Android y abrían ventanas que dejaban el menú abierto y la página bloqueada. */
+body.act-mobile-menu .buttonizer-group,
+body.act-mobile-menu #tidio-chat,
+body.act-mobile-menu #BorlabsCookieWidget {
+	visibility: hidden !important;
+	pointer-events: none !important;
+}
+
+
+/* (23.11.2026) Red de seguridad del menú móvil: si el <body> pierde las clases mobile-nav-from-left/right
+   (ver mgmit_restore_body_classes() en functions.php), el panel se mantiene escondido fuera de pantalla
+   y solo se muestra con act-mobile-menu. Con las clases presentes estas reglas no se aplican. */
+body:not(.mobile-nav-from-left):not(.mobile-nav-from-right) .mobile-nav {
+	left: 0;
+	transform: translate3d(-270px, 0, 0);
+}
+body.act-mobile-menu:not(.mobile-nav-from-left):not(.mobile-nav-from-right) .mobile-nav {
+	transform: translate3d(0, 0, 0);
+}

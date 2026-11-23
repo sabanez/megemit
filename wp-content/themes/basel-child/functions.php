@@ -487,7 +487,7 @@ if( ! function_exists( 'basel_header_block_widget_area' ) ) {
                     <div class="basel-search-wrapper">
                         <div class="basel-search-inner">
                             <span class="basel-close-search">Schließen</span>
-                            <form role="search" method="get" id="searchform" class="searchform " action="https://www.dev.megemit.org/">
+                            <form role="search" method="get" id="searchform" class="searchform " action="https://www.megemit.org/">
                                 <div>
                                     <label class="screen-reader-text">Suche:</label>
                                     <input type="text" class="search-field" placeholder="Suche…" value="" name="s" id="s">
@@ -1009,56 +1009,51 @@ add_filter( 'wpsl_more_info_template', 'custom_more_info_template' );
 
 function custom_more_info_template() {
 
-    global $wpsl_settings, $wpsl;
+    // WPSL 3.x: el JS siempre despliega .wpsl-more-info-listings dentro del <li>, sin depender de more_info_location.
+    global $wpsl_settings;
 
-    $more_info_url = '#';
+    $show_contact = empty( $wpsl_settings['show_contact_details'] ); // Si ya se muestra en el listado, no se duplica
+    $show_hours   = empty( $wpsl_settings['hide_hours'] );
 
-    if ( $wpsl_settings['template_id'] == 'default' && $wpsl_settings['more_info_location'] == 'info window' ) {
-        $more_info_url = '#wpsl-search-wrap';
+    $t  = '<% if ( hasMoreInfoData || obj.sprachen || obj.onlinecheckbox ) { %>' . "\r\n";
+    $t .= "\t\t\t" . '<p class="wpsl-more-info"><a class="wpsl-store-details wpsl-store-listing" aria-expanded="false" href="#wpsl-id-<%= id %>">' . esc_html__( 'More info', 'wp-store-locator' ) . '</a></p>' . "\r\n";
+    $t .= "\t\t\t" . '<div id="wpsl-id-<%= id %>" class="wpsl-more-info-listings">' . "\r\n";
+    $t .= "\t\t\t\t" . '<% if ( obj.description ) { %>' . "\r\n";
+    $t .= "\t\t\t\t" . '<%= description %>' . "\r\n";
+    $t .= "\t\t\t\t" . '<% } %>' . "\r\n";
+
+    if ( $show_contact ) {
+        $t .= "\t\t\t\t" . '<% if ( obj.phone || obj.fax || obj.email ) { %>' . "\r\n";
+        $t .= "\t\t\t\t" . '<p>' . "\r\n";
+        $t .= "\t\t\t\t" . '<% if ( obj.phone ) { %>' . "\r\n";
+        $t .= "\t\t\t\t" . '<span><strong>' . esc_html__( 'Phone', 'wp-store-locator' ) . '</strong>: <%= formatPhoneNumber( phone ) %></span>' . "\r\n";
+        $t .= "\t\t\t\t" . '<% } %>' . "\r\n";
+        $t .= "\t\t\t\t" . '<% if ( obj.fax ) { %>' . "\r\n";
+        $t .= "\t\t\t\t" . '<span><strong>' . esc_html__( 'Fax', 'wp-store-locator' ) . '</strong>: <%= fax %></span>' . "\r\n";
+        $t .= "\t\t\t\t" . '<% } %>' . "\r\n";
+        $t .= "\t\t\t\t" . '<% if ( obj.email ) { %>' . "\r\n";
+        $t .= "\t\t\t\t" . '<span><strong>' . esc_html__( 'Email', 'wp-store-locator' ) . '</strong>: <a href="mailto:<%= email %>"><%= email %></a></span>' . "\r\n";
+        $t .= "\t\t\t\t" . '<% } %>' . "\r\n";
+        $t .= "\t\t\t\t" . '</p>' . "\r\n";
+        $t .= "\t\t\t\t" . '<% } %>' . "\r\n";
     }
 
-    if ( $wpsl_settings['more_info_location'] == 'store listings' ) {
-        $more_info_template = '<% if ( !_.isEmpty( phone ) || !_.isEmpty( fax ) || !_.isEmpty( email ) ) { %>' . "\r\n";
-        $more_info_template .= "\t\t\t" . '<p><a class="wpsl-store-details wpsl-store-listing" href="#wpsl-id-<%= id %>">' . esc_html( $wpsl->i18n->get_translation( 'more_label', __( 'More info', 'wpsl' ) ) ) . '</a></p>' . "\r\n";
-        $more_info_template .= "\t\t\t" . '<div id="wpsl-id-<%= id %>" class="wpsl-more-info-listings">' . "\r\n";
-        $more_info_template .= "\t\t\t\t" . '<% if ( description ) { %>' . "\r\n";
-        $more_info_template .= "\t\t\t\t" . '<%= description %>' . "\r\n";
-        $more_info_template .= "\t\t\t\t" . '<% } %>' . "\r\n";
-
-        if ( !$wpsl_settings['show_contact_details'] ) {
-            $more_info_template .= "\t\t\t\t" . '<p>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<% if ( phone ) { %>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<span><strong>' . esc_html( $wpsl->i18n->get_translation( 'phone_label', __( 'Phone', 'wpsl' ) ) ) . '</strong>: <%= formatPhoneNumber( phone ) %></span>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<% } %>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<% if ( fax ) { %>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<span><strong>' . esc_html( $wpsl->i18n->get_translation( 'fax_label', __( 'Fax', 'wpsl' ) ) ) . '</strong>: <%= fax %></span>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<% } %>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<% if ( email ) { %>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<span><strong>' . esc_html( $wpsl->i18n->get_translation( 'email_label', __( 'Email', 'wpsl' ) ) ) . '</strong>: <a href="mailto:<%= email %>"><%= email %></a></span>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<% } %>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '</p>' . "\r\n";
-        }
-
-        if ( !$wpsl_settings['hide_hours'] ) {
-            $more_info_template .= "\t\t\t\t" . '<% if ( hours ) { %>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<div class="wpsl-store-hours"><strong>' . esc_html( $wpsl->i18n->get_translation( 'hours_label', __( 'Hours', 'wpsl' ) ) ) . '</strong><%= hours %></div>' . "\r\n";
-            $more_info_template .= "\t\t\t\t" . '<% } %>' . "\r\n";
-        }
-            
-        $more_info_template .= '<% if ( sprachen ) { %>' . "\r\n";
-        $more_info_template .= '<p><strong>Weitere Sprachen: </strong><%= sprachen %></p>' . "\r\n";
-        $more_info_template .= '<% } %>' . "\r\n";
-		$more_info_template .= '<% if ( onlinecheckbox ) { %>' . "\r\n";
-        $more_info_template .= '<p><strong>Online-Sprechstunde wird angeboten</strong></p>' . "\r\n";
-        $more_info_template .= '<% } %>' . "\r\n";
-        $more_info_template .= "\t\t\t" . '</div>' . "\r\n";
-        $more_info_template .= "\t\t\t" . '<% } %>';
-
-    } else {
-        $more_info_template = '<p><a class="wpsl-store-details" href="' . $more_info_url . '">' . esc_html( $wpsl->i18n->get_translation( 'more_label', __( 'More info', 'wpsl' ) ) ) . '</a></p>';
+    if ( $show_hours ) {
+        $t .= "\t\t\t\t" . '<% if ( obj.hours ) { %>' . "\r\n";
+        $t .= "\t\t\t\t" . '<div class="wpsl-store-hours"><strong>' . esc_html__( 'Hours', 'wp-store-locator' ) . '</strong><%= hours %></div>' . "\r\n";
+        $t .= "\t\t\t\t" . '<% } %>' . "\r\n";
     }
-    
-    return $more_info_template;
+
+    $t .= '<% if ( obj.sprachen ) { %>' . "\r\n";
+    $t .= '<p><strong>Weitere Sprachen: </strong><%= sprachen %></p>' . "\r\n";
+    $t .= '<% } %>' . "\r\n";
+    $t .= '<% if ( obj.onlinecheckbox ) { %>' . "\r\n";
+    $t .= '<p><strong>Online-Sprechstunde wird angeboten</strong></p>' . "\r\n";
+    $t .= '<% } %>' . "\r\n";
+    $t .= "\t\t\t" . '</div>' . "\r\n";
+    $t .= "\t\t\t" . '<% } %>';
+
+    return $t;
 }
 
 add_filter('action_scheduler_queue_runner_interval', function() {
@@ -1153,7 +1148,6 @@ function mgmit_block_checkout_for_guests() {
     }
 }
 
-
 // Weiter-zur-Kasse-Button ersetzen durch Hinweismeldung
 remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
 add_action( 'woocommerce_proceed_to_checkout', 'mgmit_guest_checkout_notice', 20 );
@@ -1170,17 +1164,35 @@ function mgmit_guest_checkout_notice() {
 
 // =============================================================================
 // SWPM: registro para clientes WooCommerce (email existe en WP pero no en SWPM)
-// 1. Bloquea emails ya registrados en SWPM (corrige bug del form builder).
-// 2. Actualiza el WP user existente con los datos del formulario SWPM.
+//
+// Contexto: clientes que compraron en WooCommerce tienen cuenta en wp_users
+// pero no en swpm_members_tbl. El form builder de SWPM (plugin swpm-form-builder)
+// tiene un bug en su validación de email: usa "AND user_name != ''" en la query,
+// lo que permite registrar emails duplicados si el miembro SWPM tiene username
+// vacío. Además, cuando el email existe en wp_users, create_wp_user() devuelve
+// el ID del usuario existente sin actualizar ningún dato.
+//
+// Solución en dos partes:
+// 1. Reemplazar la validación de email duplicado en SWPM con una query correcta.
+// 2. Tras el registro exitoso, sobreescribir el WP user con los datos del form.
 // =============================================================================
 
-// Validación: bloquea si el email ya existe en SWPM
+/**
+ * Bloquea el registro si el email ya existe en SWPM.
+ *
+ * Sustituye la validación nativa del form builder que usa "AND user_name != ''"
+ * y puede pasar por alto miembros con username vacío (registros incompletos).
+ * Se engancha en swpm_validate_registration_form_submission, que el form builder
+ * ejecuta antes de guardar (class.swpm-fb-form.php, validate_and_save(), línea 728).
+ *
+ * El form builder genera campos con name="swpm-{id}" dinámico, así que se
+ * detecta el campo email buscando el primer valor válido con prefijo "swpm-".
+ */
 function mgmit_swpm_validate_email_not_in_swpm( $error ) {
     if ( ! empty( $error ) ) {
-        return $error; // ya hay otro error, no pisar
+        return $error; // otro filtro previo ya devolvió error, no pisar
     }
 
-    // El form builder usa name="swpm-{id}" — buscamos el campo email por type
     $email = '';
     foreach ( $_POST as $key => $value ) {
         if ( strpos( $key, 'swpm-' ) === 0 && is_email( sanitize_email( $value ) ) ) {
@@ -1207,7 +1219,21 @@ function mgmit_swpm_validate_email_not_in_swpm( $error ) {
 }
 add_filter( 'swpm_validate_registration_form_submission', 'mgmit_swpm_validate_email_not_in_swpm' );
 
-// Post-registro: actualiza WP user existente con los datos del formulario
+/**
+ * Sobreescribe el WP user existente con los datos introducidos en el form SWPM.
+ *
+ * Cuando el email pertenece a un cliente WooCommerce (existe en wp_users pero no
+ * en swpm_members_tbl), SwpmUtils::create_wp_user() devuelve el ID del usuario
+ * existente sin modificarlo. Esta función completa el proceso actualizando:
+ * - user_login y user_nicename: via $wpdb->update directo porque wp_update_user()
+ *   no permite cambiar user_login (campo protegido en el core de WordPress).
+ *   Se llama clean_user_cache() para invalidar el object cache del usuario.
+ * - user_pass, first_name, last_name, display_name: via wp_update_user().
+ *
+ * Se engancha en los dos hooks de fin de registro posibles:
+ * - swpm_front_end_registration_complete_fb   → form builder (plugin swpm-form-builder)
+ * - swpm_front_end_registration_complete_user_data → formulario estándar SWPM
+ */
 function mgmit_swpm_sync_wp_user_on_registration( $data ) {
     if ( empty( $data['email'] ) ) {
         return;
@@ -1215,16 +1241,16 @@ function mgmit_swpm_sync_wp_user_on_registration( $data ) {
 
     $wp_user = get_user_by( 'email', sanitize_email( $data['email'] ) );
     if ( ! $wp_user ) {
-        return;
+        return; // email nuevo, WP user lo acaba de crear SWPM, nada que sincronizar
     }
 
     if ( in_array( 'administrator', (array) $wp_user->roles, true ) ) {
-        return;
+        return; // nunca tocar administradores
     }
 
     global $wpdb;
 
-    // user_login no se puede cambiar con wp_update_user, requiere update directo
+    // user_login requiere update directo en wp_users (wp_update_user no lo permite)
     if ( ! empty( $data['user_name'] ) ) {
         $new_login = sanitize_user( $data['user_name'], true );
         if ( $new_login !== $wp_user->user_login ) {
@@ -1262,3 +1288,30 @@ function mgmit_swpm_sync_wp_user_on_registration( $data ) {
 }
 add_action( 'swpm_front_end_registration_complete_fb', 'mgmit_swpm_sync_wp_user_on_registration' );
 add_action( 'swpm_front_end_registration_complete_user_data', 'mgmit_swpm_sync_wp_user_on_registration' );
+
+
+/**
+ * Repara las clases del <body> si se pierden al cargar la página (23.11.2026).
+ *
+ * Revolution Slider carga tptools.js con `async` en el <head>. En recargas con el script en caché
+ * (típico de Chrome en Android) puede ejecutarse cuando el <body> ya existe pero aún no se ha
+ * procesado la etiqueta <body class="...">: escribe body.className = " rs-ISM" y el parser descarta
+ * después el atributo class real. El <body> se queda sin `mobile-nav-from-left` y el panel del menú
+ * móvil deja de esconderse (queda visible y no se puede cerrar).
+ *
+ * Este script se ejecuta justo tras abrirse el <body> y reaplica las clases que faltan.
+ *
+ * @return void
+ */
+function mgmit_restore_body_classes(): void {
+	$classes = array_values( array_filter( array_map( 'sanitize_html_class', get_body_class() ) ) );
+	if ( empty( $classes ) ) {
+		return;
+	}
+	?>
+<script id="mgmit-body-class-guard">
+(function(){var b=document.body;if(!b){return;}var w=<?php echo wp_json_encode( $classes ); ?>;for(var i=0;i<w.length;i++){if(!b.classList.contains(w[i])){b.classList.add(w[i]);}}})();
+</script>
+	<?php
+}
+add_action( 'wp_body_open', 'mgmit_restore_body_classes', 1 );

@@ -31,12 +31,23 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 <?php do_action( 'wpo_wcpdf_before_document_label', $this->get_type(), $this->order ); ?>
 <?php do_action( 'wpo_wcpdf_after_document_label', $this->get_type(), $this->order ); ?>
 
+<?php
+// Pedidos facturados por línea: una nota de abono por factura afectada (ver inc/woocommerce/credit-note-split.php).
+// En el resto, una sola vista con el comportamiento de siempre.
+$credit_views = function_exists( 'mgmit_build_credit_note_views' )
+	? mgmit_build_credit_note_views( $this )
+	: array( array( 'number' => null ) );
+?>
+<?php foreach ( $credit_views as $view_index => $view ) : ?>
+<div class="mgmit-invoice"<?php echo $view_index > 0 ? ' style="page-break-before:always;"' : ''; ?>>
+
 <!-- DIRECCIÓN + FECHA -->
 <table class="address-date-table">
 	<tr>
 		<td class="billing-col">
 			<?php do_action( 'wpo_wcpdf_before_billing_address', $this->get_type(), $this->order ); ?>
 			<?php
+			if ( 0 === $view_index ) {
 			$billing_first   = $this->order->get_billing_first_name();
 			$billing_last    = $this->order->get_billing_last_name();
 			$billing_email   = $this->order->get_billing_email();
@@ -70,6 +81,7 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 				'country'    => $this->order->get_billing_country(),
 			);
 			$formatted_address = WC()->countries->get_formatted_address( $address_fields );
+			}
 			?>
 			<?php if ( $billing_name ) : ?>
 				<span class="billing-name"><?php echo esc_html( $billing_name ); ?></span>
@@ -100,11 +112,17 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 
 <!-- NÚMERO DE STORNO + REFERENCIA A LA FACTURA ORIGINAL + Nº DE PEDIDO
      Formato calcado del histórico de Solve: "Storno-Rechnungsnummer: S50148 zu Rechnung: M12853" -->
-<?php $related_invoice = $this->get_related_invoice_number(); ?>
+<?php $related_invoice = ( null !== $view['number'] ) ? $view['related'] : $this->get_related_invoice_number(); ?>
 <div class="invoice-numbers">
 	<p>
 		<span class="inv-label">Storno-Rechnungsnummer:</span>
-		<span class="inv-value"><?php $this->number( $this->get_type() ); ?></span>
+		<span class="inv-value"><?php
+		if ( null !== $view['number'] ) {
+			echo esc_html( $view['number'] );
+		} else {
+			$this->number( $this->get_type() );
+		}
+		?></span>
 		<?php if ( ! empty( $related_invoice ) ) : ?>
 		<span class="inv-label"> zu Rechnung:</span>
 		<span class="inv-value"><?php echo esc_html( $related_invoice ); ?></span>
@@ -141,10 +159,14 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 	</thead>
 	<tbody>
 		<?php $pos = 1; ?>
-		<?php foreach ( $this->get_order_items() as $item_id => $item ) : ?>
+		<?php
+		// Nota por línea: una sola fila con el importe abonado; si no, todas las líneas del pedido.
+		$credit_rows = ( null !== $view['number'] ) ? array( $view['item']['item_id'] => $view['item'] ) : $this->get_order_items();
+		?>
+		<?php foreach ( $credit_rows as $item_id => $item ) : ?>
 		<tr class="<?php echo esc_attr( $item['row_class'] ); ?>">
 			<td class="td-center"><?php echo esc_html( $pos ); ?></td>
-			<td class="td-center"><?php echo esc_html( $item['quantity'] ); ?></td>
+			<td class="td-center"><?php echo esc_html( ( null !== $view['number'] ) ? $view['qty'] : $item['quantity'] ); ?></td>
 			<td>
 				<span class="item-name"><?php echo esc_html( $item['name'] ); ?></span>
 				<?php do_action( 'wpo_wcpdf_before_item_meta', $this->get_type(), $item, $this->order ); ?>
@@ -166,8 +188,13 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 			$unit_price = ! empty( $item['price'] ) ? $item['price'] : $item['order_price'];
 			$line_price = $item['order_price'];
 			?>
+			<?php if ( null !== $view['number'] ) : ?>
+			<td class="td-right"><?php echo wp_kses_post( wc_price( -1 * ( $view['gross'] / $view['qty'] ), array( 'currency' => $this->order->get_currency() ) ) ); ?></td>
+			<td class="td-right"><?php echo wp_kses_post( wc_price( -1 * $view['gross'], array( 'currency' => $this->order->get_currency() ) ) ); ?></td>
+			<?php else : ?>
 			<td class="td-right">-<?php echo esc_html( $unit_price ); ?></td>
 			<td class="td-right">-<?php echo esc_html( $line_price ); ?></td>
+			<?php endif; ?>
 		</tr>
 		<?php $pos++; ?>
 		<?php endforeach; ?>
@@ -181,6 +208,14 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 		<col style="width:13%" />
 	</colgroup>
 	<tfoot>
+		<?php if ( null !== $view['number'] ) : ?>
+		<?php foreach ( $view['totals'] as $total_row ) : ?>
+		<tr class="<?php echo esc_attr( isset( $total_row['class'] ) ? $total_row['class'] : '' ); ?>">
+			<th><?php echo esc_html( $total_row['label'] ); ?></th>
+			<td><?php echo wp_kses_post( $total_row['value'] ); ?></td>
+		</tr>
+		<?php endforeach; ?>
+		<?php else : ?>
 		<?php foreach ( $this->get_woocommerce_totals() as $key => $total ) : ?>
 		<tr class="<?php echo esc_attr( $key ); ?>">
 			<th><?php
@@ -207,6 +242,7 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 			<td>-<?php echo wp_kses_post( $tax->formatted_amount ); ?></td>
 		</tr>
 		<?php endforeach; ?>
+		<?php endif; ?>
 	</tfoot>
 </table>
 
@@ -221,5 +257,8 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 <?php do_action( 'wpo_wcpdf_after_order_details', $this->get_type(), $this->order ); ?>
 
 <?php // Sin aviso de Storno ni caja legal: el documento termina tras los totales, igual que el histórico de Solve. ?>
+
+</div><!-- /.mgmit-invoice -->
+<?php endforeach; ?>
 
 <?php do_action( 'wpo_wcpdf_after_document', $this->get_type(), $this->order ); ?>

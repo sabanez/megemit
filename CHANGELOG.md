@@ -10,6 +10,26 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 
 ---
 
+## 2026-11-23
+
+### basel-child — Menú móvil: widgets flotantes de terceros bloqueaban el cierre en Android (pendiente de validar)
+
+- **Síntoma:** en Android el menú lateral no se cerraba y la página quedaba bloqueada (en iOS funcionaba).
+- **Causa (confirmada en Chrome real de Android con emulador):** con el menú abierto, Buttonizer (`.buttonizer-group`, z-index 99999), el chat Tidio (`#tidio-chat`, z-index 999999999) y el widget de cookies de Borlabs (`#BorlabsCookieWidget`) quedaban por encima del overlay `.basel-close-side` (z-index 400) y seguían siendo pulsables. Un toque en ellos abría el chat a pantalla completa o navegaba fuera; al volver, el menú seguía abierto con `overflow:hidden` en el body.
+- **Cambio** (`style.css`, final del archivo): con `body.act-mobile-menu` esos tres elementos pasan a `visibility:hidden; pointer-events:none`.
+- **Verificado en emulador Android con el código en producción:** con el menú abierto Tidio y Borlabs pasan a `visibility:hidden` y recuperan `visible` al cerrar; un toque donde antes estaba Instagram ya no navega fuera. **Pendiente:** prueba en un Android real. Este cambio no era la causa del bloqueo (ver la entrada siguiente), solo evitaba toques accidentales sobre widgets.
+- **Herramienta:** emulador Android compartido fuera del repositorio (`~/Library/Android/`), no forma parte del proyecto.
+
+### basel-child — Menú móvil atascado en Android: el `<body>` perdía todas sus clases (pendiente de validar)
+
+- **Síntoma:** tras subir/bajar la página y recargar por gesto (pull-to-refresh) en Chrome de Android, el panel del menú quedaba visible y no se podía cerrar. Reproducido en el emulador (Pixel7_API34, Chrome 113): el `body` pasaba de ~32 clases a solo `rs-ISM document-ready`.
+- **Causa:** Revolution Slider carga `tptools.js` con `async` en el `<head>`. En recargas con el script en caché se ejecuta con el `<body>` ya creado pero sin procesar su etiqueta: escribe `body.className = " rs-ISM"` y el parser descarta después el `class` real. Sin `mobile-nav-from-left` el CSS de Basel no aplica el `translate3d(-270px)` que esconde `.mobile-nav`, por lo que queda siempre visible. El servidor envía el HTML correcto (comprobado). Mecanismo exacto del parser inferido de la evidencia, no demostrado.
+- **Cambio 1** (`functions.php`): `mgmit_restore_body_classes()` en `wp_body_open` (prioridad 1) imprime un script que reaplica las clases de `get_body_class()` que falten en el `body`.
+- **Cambio 2** (`style.css`): red de seguridad; solo si faltan `mobile-nav-from-left` y `mobile-nav-from-right`, `.mobile-nav` queda fuera de pantalla (`translate3d(-270px)`) y se muestra únicamente con `act-mobile-menu`.
+- **No se toca** el plugin Revolution Slider (opcional descartado por riesgo: cambiar `async` por `defer` en `tp-tools`).
+- **Verificado en emulador Android (Pixel7_API34, Chrome 113) con el código en producción:** 9 recargas reales por pull-to-refresh, 0 con el `body` roto (antes se rompía en la mayoría); `.mobile-nav` en `x:-270` tras cada una; abrir con el burger y cerrar con el overlay funciona. **Pendiente:** prueba en un Android real.
+- **Defecto menor conocido:** `sanitize_html_class()` aplicado a la entrada `wpb-js-composer js-comp-ver-9.0.1` de `get_body_class()` (contiene espacio y puntos) añade la clase inofensiva `wpb-js-composerjs-comp-ver-901`. Pendiente de corregir separando las entradas por espacios antes de sanear.
+
 ## 2026-11-19
 
 ### basel-child — Compatibilidad de `CreditNote` con PDF Invoices & Packing Slips 6.0.0 (pendiente de validar)
@@ -20,17 +40,109 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 - **Requisito:** la clase exige plugin PDF Invoices & Packing Slips ≥ 6.0.0 y PHP ≥ 8.0 (hosting actualizado a PHP 8.3.36).
 - Revisados `credit-note-split.php`, `invoice-split.php`, `credit-note-document.php` y la plantilla `pdf/MeGeMit/credit-note.php`: las funciones y métodos del plugin que usan siguen existiendo en la 6.0.0.
 
+## 2026-11-17
+
+### basel-child — Autocompletar pedidos pagados con tarjeta Stripe (pendiente de validar)
+- Diagnóstico: el cobro con tarjeta y el webhook de Stripe funcionan; el pedido pasa solo a Procesando. Lo que esperaba al admin era el paso a Completado, del que depende la matrícula en Moodle (`wc-moodle-sync` ≥ 1.7.2 solo matricula en Completado). No era un fallo.
+- Nuevo `inc/woocommerce/autocomplete-card.php` (cargado desde `loader.php`): filtro `woocommerce_payment_complete_order_status`; si el método de pago es `stripe` (tarjeta) y WooCommerce iba a dejar el pedido en Procesando, lo deja en Completado y añade una nota de pedido. Solo se ejecuta con el cobro ya confirmado.
+- Excluidos: Klarna, SEPA, PayPal, BACS y los pedidos con alguna membresía SWPM (`swpm_get_level_from_attribute()`), que siguen con revisión manual (su activación depende de `swpm_update_level_after_payment` en Completado).
+- Interruptor `MGMIT_AUTOCOMPLETE_CARD` en `config.php`, **apagado por defecto** (`false`). Para activarlo, ponerlo a `true`.
+- Probado en local con `wp eval-file` (pedidos en memoria): con `false` nada cambia; con `true`, tarjeta → completed, tarjeta + membresía / Klarna / BACS → processing, estado on-hold intacto.
+- Pendiente: prueba end-to-end con un pago de test de Stripe y validar en producción.
+
 ## 2026-11-16
 
 ### basel-child — Steuernummer (ESP) en el pie de las facturas PDF
 - Se añade `Steuernummer (ESP): N0382118H` junto a `Steuernummer (DE)` en el pie de: `woocommerce/pdf/MeGeMit/invoice.php`, `credit-note.php` y las plantillas PDF SWPM/Stripe `mitgliedschaft-pdf.php` y `vorschreibung-pdf.php`.
 - `basel-child-v2` no se modifica (tema no activo).
 
+### basel-child — Factura independiente por línea de pedido (Fase 1, pendiente de validar)
+- Motivo: centralizar en WooCommerce lo que hacía el gestor externo (se desconecta) y poder anular la factura de un solo producto sin tocar las demás.
+- Nuevo `inc/woocommerce/invoice-split.php`: en pedidos creados desde `MGMIT_INVOICE_SPLIT_SINCE` (2026-11-16, `config.php`) con 2 o más productos y sin envío ni tasas con importe, se genera una factura por línea dentro del mismo PDF. Mismo número de pedido, número de factura propio por línea.
+- Numeración: la primera línea conserva el número nativo del plugin PDF Invoices; las demás consumen números del mismo contador. La asignación línea → número se guarda en la meta `_mgmit_split_invoices` del pedido (regenerar el PDF da siempre lo mismo).
+- `woocommerce/pdf/MeGeMit/invoice.php`: bucle por factura (cabecera, dirección, líneas, totales con IVA propio, instrucción de pago por el importe de esa factura, salto de página). Pie sin cambios. Pedidos de una sola línea o anteriores a la fecha: salida idéntica a la anterior.
+
+#### Fase 2 — descarga por factura en WooCommerce (pendiente de validar en producción)
+- `inc/woocommerce/invoice-endpoint.php`: `mgmit_get_invoice_pdf_url( $order_id, $item_id = 0 )`. Con `item_id` la URL va firmada (HMAC sobre `pedido:línea`) y devuelve solo la factura de esa línea (`invoice-{número}.pdf`); sin él, el PDF con todas. Las URLs ya emitidas siguen siendo válidas.
+- Nuevo `inc/woocommerce/invoice-metabox.php`: cuadro «Rechnungen (eine pro Produkt)» en la ficha del pedido (lateral) con número, producto, importe y descarga por factura, más «Descargar todas». Solo en pedidos facturados por línea.
+- Probado en local (pedido de prueba 21732): descarga individual, completa y token manipulado (403).
+
+#### Fase 3 — nota de abono por factura (pendiente de validar en producción)
+- Nuevo `inc/woocommerce/credit-note-split.php`. En pedidos facturados por línea con facturas ya numeradas:
+  - Reembolso con líneas seleccionadas (`woocommerce_order_refunded`): una nota de abono por línea reembolsada, con el importe reembolsado (admite reembolso parcial; una línea puede acabar con varias notas).
+  - Cancelación (`woocommerce_order_status_cancelled`, antes del email propio): una nota por cada línea con importe pendiente de abonar (descuenta lo ya abonado por reembolsos).
+  - Reembolsos sin líneas (solo importe) y pedidos de factura única: sin cambios (una nota por pedido).
+- Numeración: la primera nota del pedido usa el número nativo del documento `credit-note`; las demás, números consecutivos del mismo contador (serie de notas de abono, independiente de la de facturas). Se guarda en `_mgmit_split_credit_notes` (clave `refund:línea` / `cancel:línea`) y se registra en notas del pedido; no se duplican.
+- `woocommerce/pdf/MeGeMit/credit-note.php`: una nota por hoja con su número, «zu Rechnung» con el nº de su factura e importes negativos. El PDF del reembolso o la cancelación incluye solo las notas de ese evento; la descarga del cuadro, todas o las de una línea.
+- `credit-note-endpoint.php`: `item_id` opcional con firma propia (URLs anteriores siguen válidas). `invoice-metabox.php`: bajo cada factura, sus notas de abono con descarga.
+- Probado en local (pedidos de prueba): reembolso completo, reembolso parcial, cancelación con remanente, email de cancelación con solo la nota del evento, pedido de una línea sin cambios.
+- Pendiente: Fase 4 (revisión de emails y adjuntos).
+
+## 2026-11-02
+
+### wordpress-activity-report — Fase A: métricas de usuarios por recencia (en desarrollo, v1.1.0)
+- Motivo: las cifras de «Activos 24 h / 7 d / 30 d» resultaban confusas; WordPress solo guarda el último acceso, no el historial, así que no hay usuarios únicos por día reales. Ahora se muestran por lo que son.
+- Universo = miembros de Simple Membership (si SWPM existe; si no, usuarios de WordPress con la fuente de login elegida), excluyendo los roles configurados (por defecto `administrator` y `shop_manager`; en local, 8 miembros). El modo `auto` prioriza SWPM.
+- Informe: tabla de estados excluyentes por último acceso (activos ≤30 d, en riesgo ≤90, inactivos ≤365, dormidos >365, sin acceso registrado; los tramos son configurables) y tabla acumulada de accesos recientes (24 h / 7 d / 30 d), con notas que explican cómo se calcula cada una. Aviso si el acceso más reciente conocido tiene más de 7 días.
+- Nuevo método `segments()` en las fuentes de login (clase base `WPAR_Login_Base`, una consulta por fuente). Roles excluidos se resuelven con listas de IDs/logins (sin JOIN por login: `swpm_members_tbl` es `latin1` y chocaba con la collation de `wp_users`).
+- Config: `exclude_roles` y `recency_days` (campos en la pestaña Configuración). CSV y conclusiones actualizados. Bloque `active` de las métricas sustituido por `users`.
+- Verificado en local con instante de referencia 2026-09-11 11:00 UTC contra SQL manual: universo 6.696; activos 1; en riesgo 1; inactivos 1.072; dormidos 5.617; sin acceso 5 (coinciden).
+- Pendiente: Fase B (actividad por acciones con series), engagement y activación sobre usuarios de WordPress vinculados a miembros SWPM, y Fase C (v1.1.0 y ZIP).
+
+### Renombrado: `mgmit-activity-report` → `wordpress-activity-report` (v1.0.0)
+- El prefijo `mgmit` coincidía con el nombre de una de las páginas del sitio. El plugin pasa a llamarse **WordPress Activity Report** (carpeta y archivo principal `wordpress-activity-report`, autor genérico «Technical Team»).
+- Identificadores: clases/constantes `MGMIT_AR_*` → `WPAR_*`; option `mgmit_ar_config` → `wpar_config`; filtros y acciones `mgmit_ar_*` → `wpar_*` (`wpar_config`, `wpar_login_sources`, `wpar_action_sources`, `wpar_wc_statuses`); archivos `class-mgmit-ar-*.php` → `class-wpar-*.php`; slug de página `wordpress-activity-report`.
+- Las entradas del 2026-10-28 conservan el nombre antiguo como histórico.
+- Verificado en local: sin restos de `mgmit` en el plugin, `php -l` correcto, activación y pantalla con las mismas cifras (activación global 21,6 %, 1.473 activados). Plugin desactivado y opción borrada tras la prueba.
+- ZIP: `~/Desktop/webs/plugins/wordpress-activity-report-v1.0.0.zip`; eliminado el ZIP anterior `mgmit-activity-report-v1.0.0.zip`.
+
+---
+
 ## 2026-10-28
 
 ### basel-child — saludo formal alemán en emails de cliente de WooCommerce
 - Nuevo `inc/woocommerce/email-greeting.php` (`mgmit_wc_email_greeting()`), cargado desde `inc/woocommerce/loader.php`: reutiliza `mgmit_bridge_build_salutation()` (courtesy_de y job_title_de de HubSpot) con email, nombre y apellido del pedido. Fallback «Sehr geehrte(r) Vorname Nachname».
 - Overrides `customer-completed-order`, `customer-invoice`, `customer-processing-order` y `customer-on-hold-order`: sustituido el saludo («Hi %s,» / «Guten Tag, Nombre Apellido!») por el saludo formal. Resto del email sin cambios.
+
+### mgmit-activity-report 1.0.0 (en desarrollo) — Fase 1: esqueleto y configuración
+- Plugin nuevo `wp-content/plugins/mgmit-activity-report/` (informe de actividad: DAU/WAU/MAU, engagement, activación; reutilizable entre WordPress). PHP 7.4.
+- `includes/class-mgmit-ar-config.php`: config en `wp_options['mgmit_ar_config']` (sin autoload), saneado completo, filtro `mgmit_ar_config`, import/export JSON. Identificadores SQL de acciones personalizadas restringidos a `[A-Za-z0-9_]`.
+- `includes/class-mgmit-ar-admin-ui.php`: Herramientas → Activity Report (pestañas Informe/Configuración), guardado, importación y exportación con nonce y `manage_options`.
+- Fase 1 validada.
+
+### mgmit-activity-report 1.0.0 — Fase 2 descartada (tracker de logins)
+- Se probó un tracker con tabla propia `{prefix}mgmit_activity`; se **retiró** por decisión de producto: la funcionalidad debe ser en vivo y de solo lectura, sin tablas ni inserciones. Eliminados `class-mgmit-ar-tracker.php`, hooks, cron, opciones `retention_days` y la fuente «tabla propia». Las pruebas se hicieron en local y se limpiaron (tabla y opciones borradas).
+
+### mgmit-activity-report 1.0.0 — Fase 3: adaptadores de lectura (solo SELECT)
+- `includes/class-mgmit-ar-sources.php`: interfaces `MGMIT_AR_Login_Source` / `MGMIT_AR_Action_Source` y registro. Modo `auto` = fuente de login disponible con el login más reciente. Filtros `mgmit_ar_login_sources`, `mgmit_ar_action_sources`, `mgmit_ar_wc_statuses`.
+- `includes/class-mgmit-ar-login-sources.php`: Wordfence (`wflogins`, `loginOK`, evento por login), Simple Membership (`last_accessed`) y meta de usuario configurable (timestamp unix o fecha; `login_usermeta_type`). SWPM y usermeta solo guardan el último login: los activos son ventanas hasta hoy, sin serie histórica.
+- `includes/class-mgmit-ar-action-sources.php`: WooCommerce (HPOS o posts clásicos, estados completed/processing, solo clientes registrados), Download Monitor (descargas completadas con usuario; hora del sitio convertida a UTC) y acción personalizada por tabla/columnas (fecha en UTC).
+- Pestaña Informe: tabla de fuentes detectadas con su cobertura.
+- Verificado en local (sin activar el plugin) contra `COUNT` manuales: Wordfence 363, SWPM 784, meta `wfls-last-login` 699, clientes WooCommerce 560, usuarios con descarga 1211; coinciden.
+- Fase 3 validada.
+
+### mgmit-activity-report 1.0.0 — Fase 4: métricas y conclusiones
+- `includes/class-mgmit-ar-metrics.php`: `MGMIT_AR_Metrics::get($cfg, $force)` (caché por transient según `cache_ttl`; 0 = sin caché) y `compute($cfg, $now)`. Todo con `SELECT`.
+  - Activos en 24 h / 7 d / 30 d (ventanas móviles hasta «ahora») y % sobre registrados. DAU medio real solo con fuentes por evento (Wordfence).
+  - Engagement: stickiness (DAU/MAU; con DAU medio si hay fuente por evento, si no con los activos de 24 h), interacciones (acciones de valor) de 30 d, usuarios con acción y interacciones por usuario activo. La fórmula elegida en config decide el titular.
+  - Activación: registrados con ≥1 acción en o tras el alta, tiempo medio hasta la primera, % en los primeros 7 días y desglose por acción; para todos los registrados y las altas de los últimos 30/90/365 días. Se informa aparte de quienes tienen acciones anteriores al alta (`activated_any`).
+- `includes/class-mgmit-ar-conclusions.php`: conclusiones por reglas con umbrales de config (`stickiness_low`, `activation_low`): calidad del dato (fuente sin histórico o sin actualizar), actividad, stickiness (con mínimo de 30 activos para valorarla), activación global y reciente, rapidez de activación y acción más efectiva.
+- Verificado en local con instante de referencia 2026-09-11 11:00 UTC contra SQL manual: activos 1/1/2 y 1.473 activados (coinciden). La copia local tiene muy pocos accesos recientes, por lo que los activos son muy bajos.
+- Fase 4 validada.
+
+### mgmit-activity-report 1.0.0 — Fase 5: informe en pantalla y CSV
+- Pestaña Informe (`class-mgmit-ar-admin-ui.php`): tablas de activos (día/semana/mes), engagement (titular según fórmula), activación por grupos (todos y altas de 30/90/365 días, con desglose por acción), conclusiones y fuentes detectadas. Botón «Actualizar» (nonce) que se salta la caché.
+- `includes/class-mgmit-ar-export.php`: exportación a CSV (`admin-post.php?action=mgmit_ar_export_csv`, nonce y `manage_options`), UTF-8 con BOM y separador `;`, con protección contra inyección de fórmulas en celdas de texto.
+- Verificado en local como administrador: pantalla y CSV se generan con las mismas cifras que las métricas de la Fase 4.
+- Fase 5 validada.
+
+### mgmit-activity-report 1.0.0 — Fase 6: empaquetado
+- Conclusiones: decimales con formato local (coma) igual que las tablas.
+- ZIP generado: `~/Desktop/webs/plugins/mgmit-activity-report-v1.0.0.zip` (11 entradas, sin `.DS_Store`). `php -l` correcto sobre la copia extraída; sin sintaxis exclusiva de PHP 8 (revisión estática).
+- Prueba de activación en local: el plugin activa sin errores, crea `mgmit_ar_config` y la pantalla se genera. Se desactivó y se borró la opción después de la prueba.
+- Uso en otro WordPress: instalar el ZIP → Herramientas → Activity Report → Configuración (fuente de login, acciones de valor, umbrales) o importar el JSON exportado de este sitio.
+
+---
 
 ## 2026-10-26
 
