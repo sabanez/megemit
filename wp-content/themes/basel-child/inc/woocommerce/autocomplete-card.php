@@ -7,13 +7,16 @@
  * destino a "Completado" para que el flujo posterior (matrícula en Moodle,
  * email de pedido completado) no espere al administrador.
  *
- * Reglas:
+ * Pedidos gratuitos (total = 0, incluye cupones del 100 %): no hay pago que
+ * validar, así que se completan siempre al momento, sin interruptor y sin
+ * excepciones (también membresías SWPM). Reglas de abajo = solo tarjeta:
+ *
  *  - Solo si MGMIT_AUTOCOMPLETE_CARD es true (config.php; apagado por defecto).
  *  - Solo método de pago 'stripe' (tarjeta). Quedan fuera Klarna, SEPA, PayPal, BACS.
  *  - Quedan fuera los pedidos con alguna membresía SWPM (siguen con revisión manual).
  *
- * El filtro solo se ejecuta cuando el cobro ya está confirmado, así que nunca
- * completa un pedido sin pago.
+ * Para tarjeta, el filtro solo se ejecuta con el cobro confirmado, así que nunca
+ * completa un pedido con pago pendiente.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,14 +32,20 @@ add_filter( 'woocommerce_payment_complete_order_status', 'mgmit_autocomplete_car
  * @return string
  */
 function mgmit_autocomplete_card_status( $status, $order_id, $order = false ) {
-    if ( ! defined( 'MGMIT_AUTOCOMPLETE_CARD' ) || ! MGMIT_AUTOCOMPLETE_CARD ) {
-        return $status;
-    }
-
     if ( ! $order instanceof WC_Order ) {
         $order = wc_get_order( $order_id );
     }
     if ( ! $order ) {
+        return $status;
+    }
+
+    // Pedido gratuito: nada que cobrar, se valida al momento.
+    if ( 'processing' === $status && 0.0 === (float) $order->get_total() ) {
+        $order->add_order_note( 'Autocompletado: pedido gratuito, sin pago que validar.' );
+        return 'completed';
+    }
+
+    if ( ! defined( 'MGMIT_AUTOCOMPLETE_CARD' ) || ! MGMIT_AUTOCOMPLETE_CARD ) {
         return $status;
     }
 

@@ -12,6 +12,13 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 
 ## 2026-11-23
 
+### basel-child — Pedidos gratuitos se completan al instante (pendiente de validar)
+
+- **Síntoma:** los pedidos de productos gratuitos quedaban en «Procesando» esperando aprobación manual, y sin pasar a «Completado» no se disparaba la matrícula Moodle ni el nivel SWPM.
+- **Causa:** `autocomplete-card.php` solo cubría tarjeta Stripe (y apagado por defecto); un pedido de 0 € no usa Stripe, así que WooCommerce lo dejaba en «Procesando».
+- **Cambio** (`inc/woocommerce/autocomplete-card.php`): si el estado destino es `processing` y el total del pedido es 0 (incluye cupones del 100 %), pasa a `completed` con nota de pedido. Sin interruptor y sin excluir membresías SWPM. Lógica de tarjeta sin cambios.
+- **Probado en local** (pedidos en memoria): total 0 → completed; BACS/Stripe de pago → processing; on-hold intacto. **Pendiente:** pedido real de 0 € en checkout.
+
 ### basel-child — Menú móvil: widgets flotantes de terceros bloqueaban el cierre en Android (pendiente de validar)
 
 - **Síntoma:** en Android el menú lateral no se cerraba y la página quedaba bloqueada (en iOS funcionaba).
