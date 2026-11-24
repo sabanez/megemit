@@ -39,3 +39,6 @@ require_once __DIR__ . '/credit-note-mailer.php';
 
 // Autocompletar pedidos pagados con tarjeta Stripe (excluye membresías; interruptor en config.php).
 require_once __DIR__ . '/autocomplete-card.php';
+
+// Oferta: código promocional único de Stripe al comprar el producto de oferta.
+require_once __DIR__ . '/offer-promo-code.php';

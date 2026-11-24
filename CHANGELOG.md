@@ -10,6 +10,14 @@ Registro único de todas las modificaciones técnicas del proyecto (tema, plugin
 
 ---
 
+## 2026-11-24
+
+### basel-child — Oferta: código promocional único de Stripe al comprar el producto 23510 (validado con pedido de prueba)
+
+- **Objetivo:** cada pedido completado con el producto 23510 genera un código promocional de Stripe (1 uso, 60 días) sobre el cupón del 100 % / 12 meses, y lo envía en el email «pedido completado».
+- **Cambio:** nuevo `inc/woocommerce/offer-promo-code.php` (cargado desde `loader.php`) y constantes `MGMIT_OFFER_*` en `config.php`. Genera en `woocommerce_order_status_completed` (prioridad 5, antes del email), idempotente por meta de pedido, reintenta si el código existe, claves/modo test-live tomados del botón SWPM. Email en alemán, nota de pedido y dato en la ficha del pedido.
+- **Configurado:** botón SWPM 21962 y cupón live `gvD4JM9w`. **Validado:** pedido de prueba genera el código en Stripe y el email lo incluye. **Pendiente:** `MGMIT_OFFER_STRIPE_COUPON_TEST` (solo si se quiere usar el modo sandbox); activar «Allow Promotion Codes» en el botón; marcar el producto como «Vender individualmente»; probar en modo test (código válido, reutilizado, caducado).
+
 ## 2026-11-23
 
 ### basel-child — Pedidos gratuitos se completan al instante (pendiente de validar)

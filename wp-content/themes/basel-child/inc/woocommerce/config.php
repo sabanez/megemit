@@ -44,3 +44,27 @@ if ( ! defined( 'INVOICE_SECRET' ) ) {
 if ( ! defined( 'MGMIT_AUTOCOMPLETE_CARD' ) ) {
     define( 'MGMIT_AUTOCOMPLETE_CARD', false );
 }
+
+/**
+ * Oferta "producto WooCommerce => código promocional Stripe" (offer-promo-code.php).
+ * Cada pedido completado con el producto genera un código de un solo uso sobre
+ * un cupón de Stripe del 100 % (12 meses). Los IDs de cupón son distintos en
+ * modo test y live: rellenar ambos. El modo se toma de SWPM (enable-sandbox-testing).
+ */
+if ( ! defined( 'MGMIT_OFFER_PRODUCT_ID' ) ) {
+    define( 'MGMIT_OFFER_PRODUCT_ID', 23510 );
+}
+if ( ! defined( 'MGMIT_OFFER_STRIPE_COUPON_LIVE' ) ) {
+    define( 'MGMIT_OFFER_STRIPE_COUPON_LIVE', 'gvD4JM9w' );
+}
+if ( ! defined( 'MGMIT_OFFER_STRIPE_COUPON_TEST' ) ) {
+    define( 'MGMIT_OFFER_STRIPE_COUPON_TEST', '' ); // PENDIENTE: ID del cupón en Stripe test.
+}
+/** ID (post) del botón Stripe Subscription de SWPM: de él se toman las claves de Stripe. */
+if ( ! defined( 'MGMIT_OFFER_SWPM_BUTTON_ID' ) ) {
+    define( 'MGMIT_OFFER_SWPM_BUTTON_ID', 21962 );
+}
+/** Días de validez del código desde la compra. */
+if ( ! defined( 'MGMIT_OFFER_CODE_DAYS' ) ) {
+    define( 'MGMIT_OFFER_CODE_DAYS', 60 );
+}
