@@ -203,6 +203,14 @@ span.item-name {
 	font-weight: normal;
 }
 
+/* IVA de la línea, bajo Einzelpreis */
+span.item-tax {
+	display: block;
+	font-size: 6.5pt;
+	font-weight: normal;
+	color: #000000;
+}
+
 /* pdf24_19: SKU/meta 4.8pt regular */
 .item-meta {
 	margin-top: 0.5mm;

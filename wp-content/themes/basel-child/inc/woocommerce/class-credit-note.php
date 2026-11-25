@@ -47,17 +47,17 @@ class CreditNote extends OrderDocumentMethods {
 		return apply_filters( 'wpo_wcpdf_document_store_settings', true, $this );
 	}
 
-	public function get_title() {
+	public function get_title(): string {
 		$title = __( 'Credit Note', 'megemit' );
 		return apply_filters( 'wpo_wcpdf_document_title', $title, $this );
 	}
 
-	public function get_number_title() {
+	public function get_number_title(): string {
 		$title = __( 'Credit Note Number:', 'megemit' );
 		return apply_filters( 'wpo_wcpdf_document_number_title', $title, $this );
 	}
 
-	public function get_date_title() {
+	public function get_date_title(): string {
 		$title = __( 'Credit Note Date:', 'megemit' );
 		return apply_filters( 'wpo_wcpdf_document_date_title', $title, $this );
 	}
@@ -66,7 +66,7 @@ class CreditNote extends OrderDocumentMethods {
 		return apply_filters( 'wpo_wcpdf_document_shipping_address_title', __( 'Ship To:', 'megemit' ), $this );
 	}
 
-	public function init() {
+	public function init(): void {
 		$this->save_settings();
 		$this->initiate_date();
 		$this->initiate_number();
@@ -74,7 +74,7 @@ class CreditNote extends OrderDocumentMethods {
 		do_action( 'wpo_wcpdf_init_document', $this );
 	}
 
-	public function exists() {
+	public function exists(): bool {
 		return ! empty( $this->data['number'] );
 	}
 
@@ -98,7 +98,7 @@ class CreditNote extends OrderDocumentMethods {
 		return (string) $invoice->get_number();
 	}
 
-	public function get_filename( $context = 'download', $args = array() ) {
+	public function get_filename( string $context = 'download', array $args = array() ): string {
 		$order_count = isset( $args['order_ids'] ) ? count( $args['order_ids'] ) : 1;
 		$name        = _n( 'credit-note', 'credit-notes', $order_count, 'megemit' );
 
@@ -134,7 +134,7 @@ class CreditNote extends OrderDocumentMethods {
 	 * Recortado respecto a Invoice::get_pdf_settings_fields() — se puede
 	 * ampliar en una fase posterior (shipping address, notas, etc.) si hace falta.
 	 */
-	public function init_settings() {
+	public function init_settings(): void {
 		do_action( "wpo_wcpdf_before_{$this->type}_init_settings", $this );
 
 		foreach ( $this->output_formats as $output_format ) {
@@ -160,7 +160,7 @@ class CreditNote extends OrderDocumentMethods {
 		do_action( "wpo_wcpdf_after_{$this->type}_init_settings", $this );
 	}
 
-	public function get_pdf_settings_fields( $option_name ) {
+	public function get_pdf_settings_fields( string $option_name ): array {
 		$settings_fields = array(
 			array(
 				'type'     => 'section',

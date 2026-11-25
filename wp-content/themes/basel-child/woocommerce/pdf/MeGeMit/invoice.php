@@ -28,6 +28,16 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 <?php do_action( 'wpo_wcpdf_before_document_label', $this->get_type(), $this->order ); ?>
 <?php do_action( 'wpo_wcpdf_after_document_label', $this->get_type(), $this->order ); ?>
 
+<?php
+// Una factura por línea de pedido (pedidos nuevos con 2+ productos); en el resto, una sola vista con el
+// comportamiento de siempre. Ver inc/woocommerce/invoice-split.php.
+$invoice_views = function_exists( 'mgmit_build_invoice_views' )
+	? mgmit_build_invoice_views( $this )
+	: array( array( 'number' => null, 'items' => $this->get_order_items(), 'totals' => null, 'gross' => null ) );
+?>
+<?php foreach ( $invoice_views as $view_index => $view ) : ?>
+<div class="mgmit-invoice"<?php echo $view_index > 0 ? ' style="page-break-before:always;"' : ''; ?>>
+
 <!-- DIRECCIÓN + FECHA
      Nombre en negrita (pdf24_07), resto en regular (pdf24_10)
      Fecha alineada al fondo de la columna derecha, misma línea que ciudad -->
@@ -36,6 +46,7 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 		<td class="billing-col">
 			<?php do_action( 'wpo_wcpdf_before_billing_address', $this->get_type(), $this->order ); ?>
 			<?php
+			if ( 0 === $view_index ) {
 			$billing_first   = $this->order->get_billing_first_name();
 			$billing_last    = $this->order->get_billing_last_name();
 			$billing_email   = $this->order->get_billing_email();
@@ -69,6 +80,7 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 				'country'    => $this->order->get_billing_country(),
 			);
 			$formatted_address = WC()->countries->get_formatted_address( $address_fields );
+			}
 			?>
 			<?php if ( $billing_name ) : ?>
 				<span class="billing-name"><?php echo esc_html( $billing_name ); ?></span>
@@ -105,7 +117,13 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 <div class="invoice-numbers">
 	<p>
 		<span class="inv-label"><?php $this->number_title(); ?></span>
-		<span class="inv-value"><?php $this->number( $this->get_type() ); ?></span>
+		<span class="inv-value"><?php
+		if ( null !== $view['number'] ) {
+			echo esc_html( $view['number'] );
+		} else {
+			$this->number( $this->get_type() );
+		}
+		?></span>
 	</p>
 	<p>
 		<span class="inv-label"><?php $this->order_number_title(); ?></span>
@@ -141,7 +159,7 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 	</thead>
 	<tbody>
 		<?php $pos = 1; ?>
-		<?php foreach ( $this->get_order_items() as $item_id => $item ) : ?>
+		<?php foreach ( $view['items'] as $item_id => $item ) : ?>
 		<tr class="<?php echo esc_attr( $item['row_class'] ); ?>">
 			<td class="td-center"><?php echo esc_html( $pos ); ?></td>
 			<td class="td-center"><?php echo esc_html( $item['quantity'] ); ?></td>
@@ -179,6 +197,14 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 		<col style="width:13%" />
 	</colgroup>
 	<tfoot>
+		<?php if ( is_array( $view['totals'] ) ) : ?>
+		<?php foreach ( $view['totals'] as $total_row ) : ?>
+		<tr class="<?php echo esc_attr( isset( $total_row['class'] ) ? $total_row['class'] : '' ); ?>">
+			<th><?php echo esc_html( $total_row['label'] ); ?></th>
+			<td><?php echo wp_kses_post( $total_row['value'] ); ?></td>
+		</tr>
+		<?php endforeach; ?>
+		<?php else : ?>
 		<?php foreach ( $this->get_woocommerce_totals() as $key => $total ) : ?>
 		<tr class="<?php echo esc_attr( $key ); ?>">
 			<th><?php
@@ -204,6 +230,7 @@ $fb_icon_path    = get_stylesheet_directory() . '/woocommerce/pdf/MeGeMit/facebo
 			<td><?php echo wp_kses_post( $tax->formatted_amount ); ?></td>
 		</tr>
 		<?php endforeach; ?>
+		<?php endif; ?>
 	</tfoot>
 </table>
 
@@ -237,7 +264,7 @@ $is_swiss             = 'CH' === $this->order->get_billing_country();
 <p class="payment-instruction">Die Bezahlung ist bereits per Klarna, PayPal oder Kredit-/Debitkarte erfolgt.</p>
 <?php else : ?>
 <?php
-$total_display = wc_price( $this->order->get_total(), array( 'currency' => $this->order->get_currency() ) );
+$total_display = wc_price( null !== $view['gross'] ? $view['gross'] : $this->order->get_total(), array( 'currency' => $this->order->get_currency() ) );
 ?>
 <p class="payment-instruction">Bitte überweisen sie den Betrag von <?php echo wp_kses_post( $total_display ); ?> unter Angabe der Rechnungsnummer auf eines der unten angegeben Konten.</p>
 
@@ -264,5 +291,8 @@ $total_display = wc_price( $this->order->get_total(), array( 'currency' => $this
 <div class="legal-box">
 	<p>Beachten Sie bitte zum Widerrufsrecht und Stornobedingungen unseren angefügten Allgemeinen Geschäftsbedingungen.</p>
 </div>
+
+</div><!-- /.mgmit-invoice -->
+<?php endforeach; ?>
 
 <?php do_action( 'wpo_wcpdf_after_document', $this->get_type(), $this->order ); ?>
